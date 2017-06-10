@@ -69,7 +69,7 @@ implemented in PyRabdLib, as provided in [1].
  | LFibRand116      | LFib(2^64, 55, 24, +)              |   110 x 4 bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
  | LFibRand668      | LFib(2^64, 607, 273, +)            | 1,214 x 4 bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
  | LFibRand1340     | LFib(2^64, 1279, 861, +)           | 2,558 x 4 bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- |<Mersenne twister>| MT19937                            |     6 x 4 bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
+ | Mersenne twister | MT19937                            |     6 x 4 bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
 
 
