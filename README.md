@@ -60,16 +60,16 @@ implemented in PyRabdLib, as provided in [1].
 
  | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4 bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4 bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
- | MRGRand287       | Marsa-LFIB4                        |   256 x 4 bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3                            |    47 x 4 bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4 bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | LFibRand78       | LFib(2^64, 17, 5, +)               |    34 x 4 bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFibRand116      | LFib(2^64, 55, 24, +)              |   110 x 4 bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFibRand668      | LFib(2^64, 607, 273, +)            | 1,214 x 4 bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFibRand1340     | LFib(2^64, 1279, 861, +)           | 2,558 x 4 bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- | Mersenne twister | MT19937                            |     6 x 4 bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
+ | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | LFibRand78       | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFibRand116      | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFibRand668      | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFibRand1340     | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
 
 
