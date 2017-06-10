@@ -336,6 +336,7 @@ the next distribution and generic methods:
 
 
 **betavariate**(self, alpha, beta)
+
 Beta distribution.
 
 Conditions on the parameters are alpha > 0 and beta > 0.
@@ -343,11 +344,13 @@ Returned values range between 0 and 1.
 
 
 **choice**(self, seq)
+
 Chooses a random element from a non-empty sequence.  'seq' has  to  be  non 
 empty.
 
 
 **choices**(population, weights=None, *, cum_weights=None, k=1)
+
 Returns a k sized list of elements chosen from the population  with  repla-
 cement. If the population is empty, raises IndexError.
 
@@ -373,6 +376,7 @@ ented for older versions.
 
 
 **expovariate**(self, lambd)
+
 Exponential distribution.
 
 lambd is 1.0 divided by the desired  mean.   It  should  be  nonzero.  (The 
@@ -382,12 +386,14 @@ positive, and from negative infinity to 0 if lambd is negative.
 
 
 **gammavariate**(self, alpha, beta)
+
 Gamma distribution.  Not the gamma function!
     
 Conditions on the parameters are alpha > 0 and beta > 0.
 
 
 **gauss**(self, mu, sigma)
+
 Gaussian distribution.
 
 mu is the mean, and sigma is the standard deviation.
@@ -397,16 +403,19 @@ Not thread-safe without a lock around calls.
 
 
 **getrandbits(self, k)**
+
 Returns a Python integer with k random bits. Inheriting generators may also 
 provide it as an optional part of their API.  When available, getrandbits() 
 enables randrange() to handle arbitrarily large ranges.
 
 
 **getstate**(self)
+
 Returns internal state; can be passed to setstate() later.
 
 
 **lognormvariate**(self, mu, sigma)
+
 Log normal distribution.
 
 If you take the natural logarithm of this distribution, you'll get a normal 
@@ -415,6 +424,7 @@ mu can have any value, and sigma must be greater than zero.
 
 
 **normalvariate**(self, mu, sigma)
+
 Normal distribution.
 
 mu is the mean, and sigma is the standard deviation. See method gauss() for 
@@ -422,15 +432,19 @@ a faster but not thread-safe equivalent.
 
 
 **paretovariate**(self, alpha)
+
 Pareto distribution.  alpha is the shape parameter.
 
 
 **randint**(self, a, b)
+
 Returns a random integer in range [a, b], including both end points.
 
 
 **randrange**(self, stop)
+
 **randrange**(self, start, stop=None, step=1)
+
 Returns a randomly selected element from range(start, stop, step).  This is 
 equivalent  to  choice( range(start, stop, step) ) without building a range 
 object.
@@ -440,6 +454,7 @@ should not be used because the function may use them in unexpected ways.
 
 
 **sample**(self, population, k)
+
 Chooses k unique random elements from a population sequence or set.
 
 Returns a new list containing elements from the  population  while  leaving 
@@ -458,6 +473,7 @@ ation: sample(range(10000000), 60)
 
 
 **seed**(self, a=None, version=2)
+
 Initialize internal state from hashable object.
 
 None or no argument seeds from current time or  from  an  operating  system 
@@ -470,10 +486,12 @@ If *a* is an int, all bits are used.
 
 
 **setstate**(self, state)
+
 Restores internal state from object returned by getstate().
 
 
 **shuffle**(self, x, random=None)
+
 Shuffle the sequence x in place. Returns None.
 
 The optional argument random is a 0-argument function  returning  a  random 
@@ -490,6 +508,7 @@ the period of the Mersenne Twister random number generator.
 
 
 **triangular**(self, low=0.0, high=1.0, mode=None)
+
 Triangular distribution.
 
 Continuous distribution bounded by given lower and upper limits, and having 
@@ -503,10 +522,12 @@ http://en.wikipedia.org/wiki/Triangular_distribution
 
 
 **uniform**(self, a, b)
+
 Gets a random number in the range [a, b) or [a, b] depending on rounding.
 
 
 **vonmisesvariate**(self, mu, kappa)
+
 Circular data distribution.
 
 mu is the mean angle, expressed in radians between 0 and 2*pi, and kappa is 
@@ -516,6 +537,7 @@ angle over the range 0 to 2*pi.
 
 
 **weibullvariate**(self, alpha, beta)
+
 Weibull distribution.
 
 alpha is the scale parameter and beta is the shape parameter.
