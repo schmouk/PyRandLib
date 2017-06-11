@@ -195,7 +195,7 @@ class BaseRandom( Random ):
         Constructor. Should _seed be None or not an integer then the 
         local time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attribute self._value and sets it
+        super().__init__( _seed )  ## this call creates attribute self._value and sets it
         
         
     #=========================================================================
