@@ -130,4 +130,4 @@ class MRGRand287( BaseMRG ):
         # then returns float value within [0.0, 1.0)
         return  myValue / 4294967295.0
  
-#=====   end of module   umrgshortrand.py   ==================================
+#=====   end of module   mrgrand287.py   ==================================
