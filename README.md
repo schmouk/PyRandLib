@@ -29,8 +29,8 @@ their randomness characteristics are explained in every related module.
 
 The Mersenne twister PRG proposed by Matsumoto and Nishimura - see [5] -  is
 the  most  widely  used  PRG.  The  Random  class of module random in Python 
-implements this PRG. It is also implemented in C++ and Java standard librar-
-ies for instance.
+implements this PRG.  It is  also  implemented  in  C++  and  Java  standard 
+libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001).  Unfortunately, 
 this PRG is a little bit long to compute (up to 3 times than LCGs,  60% more 
@@ -46,8 +46,8 @@ Installation
 ------------
 
 Currently, the only way to install PyRandLib is to download the .zip, .7z or
-.tar  archive,  and to put all of their contents in sub-directory site-pack-
-ages of directory Lib in your Python environment.
+.tar  archive,  and  to  put  all  of  their contents in sub-directory site-
+packages of directory Lib in your Python environment.
 
 
 
@@ -128,8 +128,8 @@ This lets inheriting classes implement the PRGs related core methods.
 
 ### FastRand32  -  2^32 periodicity
 
-**FastRand32** implements a Linear Congruential Generator dedicated to  32-
-bits  calculations  with  very short period  (about 4.3e+09) but very short 
+**FastRand32** implements a  Linear  Congruential  Generator  dedicated  to  
+32-bits  calculations with very short period (about 4.3e+09) but very short 
 time computation.
 
 LCG models  evaluate  pseudo-random  numbers  suites  *x(i)*  as  a  simple 
@@ -142,9 +142,9 @@ these  two  values  have  evaluated  to  be the 'best' ones for LCGs within
 TestU01 while m = 2^32.
  
 Results are nevertheless considered to be poor as stated in the  evaluation
-done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommend-
-ed to use such pseudo-random  numbers  generators  for  serious  simulation 
-applications.
+done  by  Pierre  L'Ecuyer  and  Richard  Simard.   Therefore,  it  is  not 
+recommended  to  use  such pseudo-random  numbers  generators  for  serious  
+simulation applications.
 
 See FastRand63 for a 2^63 (i.e. about 9.2e+18) period LC-Generator with low 
 computation time and 'better' randomness characteristics.
@@ -153,12 +153,12 @@ computation time and 'better' randomness characteristics.
 
 ### FastRand63  -  2^63 periodicity
 
-**FastRand63** implements a Linear Congruential Generator dedicated to  63-
-bits  calculations with a short period  (about 9.2e+18) and very short time 
-computation.
+**FastRand63** implements a  Linear  Congruential  Generator  dedicated  to  
+63-bits  calculations  with  a short period  (about 9.2e+18) and very short 
+time computation.
 
-LCG models evaluate pseudo-random numbers suites *x(i)* as a simple mathem-
-atical function of *x(i-1)*:
+LCG  models  evaluate  pseudo-random  numbers  suites *x(i)*  as  a  simple 
+mathematical function of *x(i-1)*:
 
     x(i) = ( a * x(i-1) + c ) mod m 
    
@@ -167,10 +167,10 @@ since these two values have evaluated to be the 'best' ones for LCGs within
 TestU01 while *m* = 2^63.
  
 Results are nevertheless considered to be poor as stated in the  evaluation
-done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommend-
-ed to use such pseudo-random  numbers  generators  for  serious  simulation 
-applications,  even  if FastRandom63 fails on very far less tests than does
-FastRandom32.
+done  by  Pierre  L'Ecuyer  and  Richard  Simard.   Therefore,  it  is  not 
+recommended  to  use  such  pseudo-random  numbers  generators  for serious  
+simulation applications,  even if FastRandom63 fails on very far less tests 
+than does FastRandom32.
 
 See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25%
 lower computation time.
@@ -184,18 +184,18 @@ with a long period  (2^287, i.e. 2.49e+86)  and low computation time (about
 twice  the  computation  time  of  above  LCGs)  but  256  integers  memory 
 consumption.
 
-Multiple Recursive Generators (MRGs) use  recurrence  to  evaluate  pseudo-
-random numbers suites. For 2 to more different values of *k*, recurrence is 
-of the form:
+Multiple  Recursive   Generators   (MRGs)   use  recurrence   to   evaluate  
+pseudo-random  numbers  suites.  For  2  to  more  different values of *k*, 
+recurrence is of the form:
 
     x(i) = A * SUM[ x(i-k) ]  mod M
 
-MRGs offer very large periods with the best known results in the  evaluation  
-of their randomness,  as evaluated by Pierre L'Ecuyer and Richard Simard. It 
-is therefore strongly recommended to use such pseudo-random  numbers  gener-
-ators rather than LCG ones for serious simulation applications.
+MRGs offer very large periods with the best known results in the evaluation  
+of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard. It 
+is  therefore  strongly  recommended  to  use  such  pseudo-random  numbers  
+generators rather than LCG ones for serious simulation applications.
 
-The implementation of this MRG 32-bits model is finally based  on  a  Lagged  
+The implementation of this MRG 32-bits model is finally based on  a  Lagged  
 Fibonacci generator (LFIB), the Marsa-LFIB4 one.
 
 Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
@@ -208,12 +208,12 @@ where op is an operation that can be
     * (multiplication),
     ^(bitwise exclusive-or).
     
-With the + or - operation, such generators are true MRGs.  They  offer  very 
-large periods  with  the  best  known  results  in  the  evaluation of their 
-randomness,  as evaluated by Pierre L'Ecuyer  and  Richard Simard  in  their 
+With the + or - operation, such generators are true MRGs.  They offer  very 
+large periods  with  the  best  known  results  in  the evaluation of their 
+randomness,  as evaluated by Pierre L'Ecuyer and  Richard Simard  in  their 
 paper.
 
-The  Marsa-LIBF4  version,  i.e.  **MRGRand287**  implementation,  uses  the 
+The  Marsa-LIBF4  version,  i.e. **MRGRand287**  implementation,  uses  the 
 recurrence:
 
     x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
@@ -224,12 +224,12 @@ recurrence:
 
 **MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with
 a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86)
-and 80 % more computation time but with much less memory  space  consumption 
+and 80 % more computation time but with much less memory space  consumption 
 (47 vs. 256 integers).
    
-The implementation of this MRG 31-bits model is  based on  DX-47-3  pseudo-
-random  generator  proposed  by Deng and Lin, see [2].  The DX-47-3 version 
-uses the recurrence:
+The  implementation  of  this  MRG  31-bits  model  is  based  on   DX-47-3  
+pseudo-random   generator  proposed  by Deng and Lin, see [2].  The DX-47-3 
+version uses the recurrence:
 
     x(i) = (2^26+2^19) * ( x(i-1) + x(i-24) + x(i-47) ) mod (2^31-1)
 
@@ -267,8 +267,8 @@ periods  with the best known results in the evaluation of their randomness,
 as stated in the evaluation  done  by  Pierre L'Ecuyer  and  Richard Simard
 while offering very low computation times.
 
-The implementation of  **LFibRand78** is based on a Lagged Fibonacci gener-
-ator (LFib) which uses the recurrence:
+The implementation of   **LFibRand78**  is  based  on  a  Lagged  Fibonacci 
+generator (LFib) which uses the recurrence:
 
     x(i) = ( x(i-5) + x(i-17) ) mod 2^64
 
@@ -360,8 +360,8 @@ empty.
 
 **choices**(population, weights=None, *, cum_weights=None, k=1)
 
-Returns a k sized list of elements chosen from the population  with  repla-
-cement. If the population is empty, raises IndexError.
+Returns a k  sized  list  of  elements  chosen  from  the  population  with  
+replacement. If the population is empty, raises IndexError.
 
 If a weights sequence is specified,  selections are made according  to  the 
 relative weights.  Alternatively,  if a cum_weights sequence is given,  the 
@@ -380,8 +380,8 @@ The weights or cum_weights can use any numeric type that interoperates with
 the float values returned by random()  (that includes integers, floats, and 
 fractions but excludes decimals).
 
-Notice: 'choices' has been provided since Python 3.6.  It should be implem-
-ented for older versions.
+Notice:  'choices'  has  been  provided  since  Python 3.6.  It  should  be 
+implemented for older versions.
 
 
 **expovariate**(self, lambd)
@@ -477,8 +477,8 @@ contains  repeats,  then  each  occurrence  is  a possible selection in the
 sample.
 
 To choose a sample in a range of integers, use range as an  argument.  This 
-is  especially  fast  and  space efficient for sampling from a large popul-
-ation: sample(range(10000000), 60)
+is   especially  fast  and  space  efficient  for  sampling  from  a  large 
+population: sample(range(10000000), 60)
 
 
 **seed**(self, a=None, version=2)
