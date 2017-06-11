@@ -48,6 +48,7 @@ Installation
 Currently, the only way to install PyRandLib is to download the .zip, .7z or
 .tar  archive,  and to put all of their contents in sub-directory site-pack-
 ages of directory Lib in your Python environment.
+A distribution version (to be installed via pip or easy-install) is to come.
 
 
 
