@@ -44,11 +44,9 @@ randomness than the Mersenne twister PRG.
 
 Installation
 ------------
-
 Currently, the only way to install PyRandLib is  to  download  the  .zip  or
-.tar.gz  archive,  and to put  all  of their contents in sub-directory site-
-packages of directory Lib in your Python environment.  You may  then  remove
-from there file '\_config.yml' which is of no use for library PyRandLib.
+.tar.gz  archive  and  to  directly put sub-directory PyRandLib in directory 
+site-packages, in main directory Lib in your Python environment.
 
 A distribution version (to be installed via pip or easy-install in cmd  tool
 or in console) is to come.
