@@ -48,7 +48,8 @@ Installation
 Currently, the only way to install PyRandLib is  to  download  the  .zip  or
 .tar.gz archive, then to directly put sub-directory 'PyRandLib' from archive
 into directory 'site-packages',  in the main directory 'Lib' of your  Python 
-environment.
+environment.  See https://schmouk.github.io/PyRandLib/ for an easy access to
+download versions.
 
 A distribution version (to be installed via pip or easy-install in cmd  tool
 or in console) is to come.
