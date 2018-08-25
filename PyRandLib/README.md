@@ -3,16 +3,37 @@ Many best in class pseudo random generators grouped into one simple library.
 
 
 
-License
--------
+## License
 PyRandLib is distributed under the MIT license for its largest use.
 If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
+```
+Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
+
+Permission is hereby granted,  free of charge,  to any person obtaining a copy
+of this software and associated documentation files (the "Software"),  to deal
+in the Software without restriction, including  without  limitation the rights
+to use,  copy,  modify,  merge,  publish,  distribute, sublicense, and/or sell
+copies of the Software,  and  to  permit  persons  to  whom  the  Software  is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS",  WITHOUT WARRANTY OF ANY  KIND,  EXPRESS  OR
+IMPLIED,  INCLUDING  BUT  NOT  LIMITED  TO  THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT  SHALL  THE
+AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR  ANY CLAIM,  DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  TORT OR OTHERWISE, ARISING FROM,
+OUT  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 
-Intro
------
+
+
+## Intro
 This library implements some of the best-in-class pseudo  random  generators
 as  evaluated  by  Pierre L'Ecuyer  and Richard Simard in their famous paper
 "TestU01:  A C library for empirical testing of  random  number  generators"
@@ -42,23 +63,20 @@ randomness than the Mersenne twister PRG.
 
 
 
-Installation
-------------
-
+## Installation
 Currently, the only way to install PyRandLib is  to  download  the  .zip  or
 .tar.gz archive, then to directly put sub-directory 'PyRandLib' from archive
 into directory 'site-packages',  in the main directory 'Lib' of your  Python 
 environment.  See https://schmouk.github.io/PyRandLib/ for an easy access to
-download versions.
+download versions or click on  tab  **releases**  on  home  page  of  GitHub 
+repository.
 
 A distribution version (to be installed via pip or easy-install in cmd  tool
 or in console) is to come.
 
 
 
-Randomness evaluation
----------------------
-
+## Randomness evaluation
 In [1], every known PRG at the time of the editing has been tested according
 to three different sets of tests:
 * _small crush_ is a small set of simple tests that quickly  tests  some  of
@@ -87,8 +105,7 @@ implemented in PyRabdLib, as provided in [1].
 
 
 
-Implementation
---------------
+## Implementation
 Current implementation of PyRandLib uses Python 3.x with no Cython version.
 
 Python 2.7 could be later available,  if asked for.  Cython  implementations
@@ -96,8 +113,7 @@ could also be later available.
 
 
 
-Architecture overview
----------------------
+## Architecture overview
 Each of the implemented PRG is described in an independent module. The  name
 of the module is directly related to the name of the related class.
 
@@ -339,8 +355,7 @@ Please notice that the TestUO1 article states that the operator  should  be
 
 
 
-Inherited Distribution and Generic Functions
---------------------------------------------
+## Inherited Distribution and Generic Functions
 (some of next explanation may be free to exact copy of Python 3.6 documentation.
 See https://docs.python.org/3.6/library/random.html?highlight=random#module-random)
 
@@ -558,8 +573,7 @@ alpha is the scale parameter and beta is the shape parameter.
 
 
 
-References
-----------
+## References
 
 **[1]** Pierre L'Ecuyer and Richard Simard. 2007. 
 *TestU01: A C library for empirical testing of random number generators*. 
