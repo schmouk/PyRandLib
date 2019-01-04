@@ -125,8 +125,8 @@ class FastRand32( BaseLCG ):
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
             if _state < 0.0 :
-                inState = -_state
-            if inState >= 1.0:
+                _state = -_state
+            if _state >= 1.0:
                 self._value = int( _state + 0.5 ) & 0xffffffff
             else:
                 self._value = int( _state * 0x100000000) & 0xffffffff
