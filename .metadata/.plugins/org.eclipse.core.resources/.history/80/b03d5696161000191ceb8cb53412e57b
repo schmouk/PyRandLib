@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding/baselcg.py=utf-8
+encoding/baselfib64.py=utf-8
+encoding/basemrg.py=utf-8
+encoding/baserandom.py=utf-8
+encoding/fastrand32.py=utf-8
+encoding/fastrand63.py=utf-8
+encoding/lfib116.py=utf-8
+encoding/lfib1340.py=utf-8
+encoding/lfib668.py=utf-8
+encoding/lfib78.py=utf-8
+encoding/mrgrand1457.py=utf-8
+encoding/mrgrand287.py=utf-8
