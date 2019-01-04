@@ -33,7 +33,7 @@ SOFTWARE.
 
 
 
-## Intro 
+## Intro
 This library implements some of the best-in-class pseudo  random  generators
 as  evaluated  by  Pierre L'Ecuyer  and Richard Simard in their famous paper
 "TestU01:  A C library for empirical testing of  random  number  generators"

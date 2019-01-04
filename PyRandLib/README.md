@@ -9,7 +9,7 @@ If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -33,7 +33,7 @@ SOFTWARE.
 
 
 
-## Intro 
+## Intro
 This library implements some of the best-in-class pseudo  random  generators
 as  evaluated  by  Pierre L'Ecuyer  and Richard Simard in their famous paper
 "TestU01:  A C library for empirical testing of  random  number  generators"
