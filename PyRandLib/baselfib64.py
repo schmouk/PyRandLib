@@ -34,9 +34,6 @@ class BaseLFib64( BaseRandom ):
     Definition of the base class for all LFib pseudo-random generators based
     on 64-bits generated numbers.
     This module is part of library PyRandLib.
-    
-    Copyright (c) 2017-2018 Philippe Schmouker
-
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     

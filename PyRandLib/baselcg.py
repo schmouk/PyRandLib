@@ -32,9 +32,6 @@ class BaseLCG( BaseRandom ):
     """
     Definition of the base class for all LCG pseudo-random generators.
     This module is part of library PyRandLib.
-    
-    Copyright (c) 2017-2018 Philippe Schmouker
-
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 

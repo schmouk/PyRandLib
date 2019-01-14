@@ -45,7 +45,7 @@ class LFib1340( BaseLFib64 ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -69,7 +69,7 @@ class LFib1340( BaseLFib64 ):
     '+'.  We've implemented here the original operator: '+'.
        
     See LFib78,  LFib116 and LFib668 for long  period  LFib  generators  (resp.  2^78,  
-    2^116  and  2^668 periods, i.e. resp. 3.0e+23, 8.3e+34 and 2.4e+403 periods) while 
+    2^116  and  2^668 periods, i.e. resp. 3.0e+23, 8.3e+34 and 1.2e+201 periods) while 
     same computation time and far higher precision (64-bits calculations)  than  MRGs, 
     but memory consumption (resp. 17, 55 and 607 integers).
     
@@ -81,7 +81,7 @@ class LFib1340( BaseLFib64 ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
 
       diceRoll = LFib1340()
       print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}

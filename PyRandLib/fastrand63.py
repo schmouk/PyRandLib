@@ -35,9 +35,6 @@ class FastRand63( BaseLCG ):
     to  63-bits calculations with very short period (about 9.2e+18) and short
     time computation.
     This module is part of library PyRandLib.
-    
-    Copyright (c) 2017-2018 Philippe Schmouker
-
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -65,7 +62,7 @@ class FastRand63( BaseLCG ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand63()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 

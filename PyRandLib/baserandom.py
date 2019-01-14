@@ -32,9 +32,6 @@ class BaseRandom( Random ):
     """
     This is the base class for all pseudo-random numbers generators.
     This module is part of library PyRandLib.
-    
-    Copyright (c) 2017-2018 Philippe Schmouker
-
 
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator and  FastRand63  for a  
     2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time.

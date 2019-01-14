@@ -33,9 +33,6 @@ class MRGRand287( BaseMRG ):
     Pseudo-random numbers generator  - Definition of a fast 32-bits Multiple Recursive
     Generator with a long period (2.49e+86).
     This module is part of library PyRandLib.
-    
-    Copyright (c) 2017-2018 Philippe Schmouker
-
 
     Multiple Recursive Generators (MRGs)  use  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -78,8 +75,8 @@ class MRGRand287( BaseMRG ):
     See MRGRand1457 for a  longer  period  MR-Generator  (2^1457,  i.e. 4.0e+438)  and 
     longer  computation  time  (2^31-1  modulus  calculations)  but  less memory space 
     consumption (47 integers).
-    See MRGRand49507 for a far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  low 
-    computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
+    See MRGRand49507 for a far longer period  (2^49_507,  i.e. 1.2e+14_903)  with  low 
+    computation  time  too  (31-bits  modulus)  but  use  of  more memory space (1_597 
     integers).
       
     Furthermore this class is callable:
@@ -88,7 +85,7 @@ class MRGRand287( BaseMRG ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand287()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
@@ -119,7 +116,7 @@ class MRGRand287( BaseMRG ):
     #=========================================================================
     # 'protected' constant
     _LIST_SIZE = 256        # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO    = 4294967295 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-47-3 MRG
+    _MODULO    = 4294967295 # i.e. 0xffffffff, or (1<<32)-1, the modulo for DX-47-3 MRG
             
  
     #=========================================================================
