@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -36,7 +36,7 @@ class FastRand63( BaseLCG ):
     time computation.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2018 Philippe Schmouker
+    Copyright (c) 2017-2019 Philippe Schmouker
 
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-

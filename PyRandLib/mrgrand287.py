@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -34,7 +34,7 @@ class MRGRand287( BaseMRG ):
     Generator with a long period (2.49e+86).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2018 Philippe Schmouker
+    Copyright (c) 2017-2019 Philippe Schmouker
 
 
     Multiple Recursive Generators (MRGs)  use  recurrence  to  evaluate  pseudo-random
@@ -119,7 +119,7 @@ class MRGRand287( BaseMRG ):
     #=========================================================================
     # 'protected' constant
     _LIST_SIZE = 256        # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO    = 4294967295 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-47-3 MRG
+    _MODULO    = 4294967295 # i.e. 0xffffffff, or (1<<31)-1, the modulo for DX-47-3 MRG
             
  
     #=========================================================================

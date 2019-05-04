@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -35,7 +35,7 @@ class BaseLFib64( BaseRandom ):
     on 64-bits generated numbers.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2018 Philippe Schmouker
+    Copyright (c) 2017-2019 Philippe Schmouker
 
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence

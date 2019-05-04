@@ -1,4 +1,4 @@
-# PyRandLib
+# PyRandLib [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)
 Many best in class pseudo random generators grouped into one simple library.
 
 
@@ -9,7 +9,7 @@ If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2018 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
