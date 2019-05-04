@@ -36,13 +36,12 @@ class FastRand32( BaseLCG ):
     short time computation.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2019 Philippe Schmouker
-
+    Copyright (c) 2016-2019 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
     
-        x(i-1): x(i) = (a*x(i-1) + c) mod m 
+        x(i) = (a * x(i-1) + c) mod m 
      
     Results  are  nevertheless  considered  to  be  poor  as  stated  in  the 
     evaluation done by Pierre L'Ecuyer and Richard Simard (Universite de 
@@ -65,7 +64,7 @@ class FastRand32( BaseLCG ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand32()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
@@ -125,8 +124,8 @@ class FastRand32( BaseLCG ):
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
             if _state < 0.0 :
-                inState = -_state
-            if inState >= 1.0:
+                _state = -_state
+            if _state >= 1.0:
                 self._value = int( _state + 0.5 ) & 0xffffffff
             else:
                 self._value = int( _state * 0x100000000) & 0xffffffff

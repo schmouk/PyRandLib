@@ -34,8 +34,7 @@ class LFib116( BaseLFib64 ):
     Generator with quite short period (8.3e+34).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2019 Philippe Schmouker
-
+    Copyright (c) 2016-2019 Philippe Schmouker
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     
@@ -45,7 +44,7 @@ class LFib116( BaseLFib64 ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -81,7 +80,7 @@ class LFib116( BaseLFib64 ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
 
       diceRoll = LFib116()
       print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}

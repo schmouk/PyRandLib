@@ -45,7 +45,7 @@ class LFib668( BaseLFib64 ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -58,7 +58,7 @@ class LFib668( BaseLFib64 ):
     The implementation of this LFib 64-bits model  is  based  on  a  Lagged  Fibonacci 
     generator (LFIB) that uses the recurrence
     
-        x(i) = (x(i-273) + x(i-607)) mod 2^64
+        x(i) = ( x(i-273) + x(i-607) ) mod 2^64
     
     and offers a period of about 2^668 - i.e. 1.2e+201 - with low computation time due
     to the use of a 2^64 modulo but memory space consumption (607 long integers).
@@ -80,7 +80,7 @@ class LFib668( BaseLFib64 ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
 
       diceRoll = LFib668()
       print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}

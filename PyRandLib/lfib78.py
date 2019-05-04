@@ -34,8 +34,7 @@ class LFib78( BaseLFib64 ):
     Generator with quite short period (3.0e+23).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2019 Philippe Schmouker
-
+    Copyright (c) 2016-2019 Philippe Schmouker
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     
@@ -45,7 +44,7 @@ class LFib78( BaseLFib64 ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -58,7 +57,7 @@ class LFib78( BaseLFib64 ):
     The implementation of this LFib 64-bits model  is  based  on  a  Lagged  Fibonacci 
     generator (LFIB) that uses the recurrence
     
-        x(i) = (x(i-5) + x(i-17)) mod 2^64
+        x(i) = ( x(i-5) + x(i-17) ) mod 2^64
     
     and offers a period of about 2^78 - i.e. 3.0e+23 - with low computation  time  due
     to the use of a 2^64 modulo and few memory space consumption (17 long integers).
@@ -80,7 +79,7 @@ class LFib78( BaseLFib64 ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
 
       diceRoll = LFib78()
       print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}

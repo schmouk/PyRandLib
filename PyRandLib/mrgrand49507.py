@@ -31,7 +31,7 @@ from .basemrg import BaseMRG
 class MRGRand49507( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 31-bits Multiple Recursive 
-    Generator with a very long period (1.17e+14903).
+    Generator with a very long period (1.17e+14_903).
     This module is part of library PyRandLib.
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
@@ -53,7 +53,7 @@ class MRGRand49507( BaseMRG ):
     
         x(i) = (-2^25-2^7) * (x(i-7) + x(i-1597)) mod (2^31-1)
         
-    and  offers  a  period  of  about  2^49507  -  i.e. nearly 1.2e+14903  -  with low 
+    and offers a  period  of  about  2^49_507  -  i.e. nearly 1.2e+14_903  -  with low 
     computation time.
 
     See MRGRand287 for a short period  MR-Generator (2^287,  i.e. 2.49e+86)  with  low
@@ -61,10 +61,6 @@ class MRGRand49507( BaseMRG ):
     See MRGRand1457 for a  longer  period  MR-Generator  (2^1457,  i.e. 4.0e+438)  and 
     longer  computation  time  (2^31-1  modulus  calculations)  but  less memory space 
     consumption (47 integers).
-    See MRGRand49507 for a far longer period  (2^49507,  i.e. 1.2e+14903)  with  lower 
-    computation  time  too  (32-bits  modulus)  but  use  of  more  memory space (1597 
-    integers).
-
     
     Class random.Random is sub-subclassed here to use a different basic  generator  of  
     our own devising: in that case, overriden methods are:
@@ -76,7 +72,7 @@ class MRGRand49507( BaseMRG ):
       print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand49507()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 

@@ -34,8 +34,7 @@ class BaseMRG( BaseRandom ):
     Definition of the base class for all MRG pseudo-random generators.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2019 Philippe Schmouker
-
+    Copyright (c) 2016-2019 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:

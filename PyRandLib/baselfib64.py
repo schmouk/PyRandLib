@@ -35,8 +35,7 @@ class BaseLFib64( BaseRandom ):
     on 64-bits generated numbers.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2019 Philippe Schmouker
-
+    Copyright (c) 2016-2019 Philippe Schmouker
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     
