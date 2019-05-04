@@ -1,4 +1,4 @@
-# PyRandLib
+# PyRandLib [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg)](https://github.com/schmouk/pyrandlib/releases)
 Many best in class pseudo random generators grouped into one simple library.
 
 
