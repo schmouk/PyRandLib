@@ -92,7 +92,7 @@ class FastRand63( BaseLCG ):
     """
  
     #=========================================================================
-    def random(self):
+    def random(self) -> float:
         """
         This is the core of the pseudo-random generator.
         Returned values are within [0.0, 1.0).
@@ -102,7 +102,7 @@ class FastRand63( BaseLCG ):
             
  
     #=========================================================================
-    def setstate(self, _state):
+    def setstate(self, _state:(int,float)) -> None:
         """
         _state should have been obtained from a previous call to getstate(),
         and  setstate() restores the internal state of the generator to what

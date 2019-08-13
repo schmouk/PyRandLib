@@ -79,7 +79,7 @@ class BaseLCG( BaseRandom ):
     """
     
     #=========================================================================
-    def __init__(self, _seedState=None):
+    def __init__(self, _seedState: int = None) -> None:
         """
         Constructor.  Should inSeed be None or not an integer  then
         the local time is used (with its shuffled value) as a seed.
@@ -88,7 +88,7 @@ class BaseLCG( BaseRandom ):
             
  
     #=========================================================================
-    def random(self):
+    def random(self) -> float:
         """
         This is the core of the pseudo-random generator.
         Returned values are within [0.0, 1.0).
@@ -99,7 +99,7 @@ class BaseLCG( BaseRandom ):
             
  
     #=========================================================================
-    def getstate(self):
+    def getstate(self) -> int:
         """
         Returns an object capturing the current internal state of the generator.
         This object can be passed to setstate() to restore the state.
@@ -111,7 +111,7 @@ class BaseLCG( BaseRandom ):
             
  
     #=========================================================================
-    def setstate(self, _state):
+    def setstate(self, _state: int) -> None:
         """
         _state should have been obtained from a previous call to getstate(),
         and  setstate() restores the internal state of the generator to what

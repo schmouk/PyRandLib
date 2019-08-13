@@ -213,7 +213,7 @@ class BaseRandom( Random ):
     """
     
     #=========================================================================
-    def __init__(self, _seed=None):
+    def __init__(self, _seed: (int,float,list) = None) -> None:
         """
         Constructor. Should _seed be None or not an integer then the 
         local time is used (with its shuffled value) as a seed.
@@ -222,7 +222,7 @@ class BaseRandom( Random ):
         
         
     #=========================================================================
-    def seed(self, _seed=None):
+    def seed(self, _seed: (int,float,list) = None) -> None:
         """
         Initiates the internal state of this pseudo-random generator.
         """
@@ -233,7 +233,7 @@ class BaseRandom( Random ):
 
  
     #=========================================================================
-    def __call__(self, _max=1.0):
+    def __call__(self, _max: (int,float) = 1.0) -> float:
         """
         This class's instances are callable. The returned value is uniformly
         contained within the interval [0.0 : _max].

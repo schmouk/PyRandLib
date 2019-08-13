@@ -90,7 +90,7 @@ class BaseMRG( BaseRandom ):
     """
     
     #=========================================================================
-    def __init__(self, _seedState=None):
+    def __init__(self, _seedState: (int,float,list) = None) -> None:
         """
         Constructor.
         _seedState is either a valid state, an integer, a float or None.
@@ -110,7 +110,7 @@ class BaseMRG( BaseRandom ):
             
  
     #=========================================================================
-    def random(self):
+    def random(self) -> float:
         """
         This is the core of the pseudo-random generator.
         Returned values are within [0.0, 1.0).
@@ -121,7 +121,7 @@ class BaseMRG( BaseRandom ):
             
  
     #=========================================================================
-    def getstate(self):
+    def getstate(self) -> tuple:
         """
         Return an object capturing the current internal state of the  generator.
         This  object  can be passed to setstate() to restore the state.  It is a
@@ -132,7 +132,7 @@ class BaseMRG( BaseRandom ):
             
  
     #=========================================================================
-    def setstate(self, _seedState):
+    def setstate(self, _seedState: tuple) -> None:
         """
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
@@ -160,7 +160,7 @@ class BaseMRG( BaseRandom ):
                        
  
     #=========================================================================
-    def _initIndex(self, _index):
+    def _initIndex(self, _index: int) -> None:
         """
         Inits the internal index pointing to the internal list.
         """
@@ -171,7 +171,7 @@ class BaseMRG( BaseRandom ):
                        
  
     #=========================================================================
-    def _initList(self, _initialSeed=None):
+    def _initList(self, _initialSeed: list = None) -> None:
         """
         Inits the internal list of values according to some initial
         seed  that  has  to be an integer or a float ranging within

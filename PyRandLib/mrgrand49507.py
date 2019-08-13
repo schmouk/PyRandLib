@@ -107,7 +107,7 @@ class MRGRand49507( BaseMRG ):
             
  
     #=========================================================================
-    def random(self):
+    def random(self) -> float:
         """
         This is the core of the pseudo-random generator.
         Returned values are within [0.0, 1.0).

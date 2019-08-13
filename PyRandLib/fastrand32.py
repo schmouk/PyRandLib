@@ -92,16 +92,16 @@ class FastRand32( BaseLCG ):
     """
     
     #=========================================================================
-    def __init__(self, _seed=None):
+    def __init__(self, _seed: (int,float) = None) -> None:
         """
-        Constructor.  Should _seed be None or not an integer  then
+        Constructor.  Should _seed be None or not  a  numeric  then
         the local time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seed ) # this call creates attribute self._value and sets it
             
  
     #=========================================================================
-    def random(self):
+    def random(self) -> float:
         """
         This is the core of the pseudo-random generator.
         Returned values are within [0.0, 1.0).
@@ -111,7 +111,7 @@ class FastRand32( BaseLCG ):
             
  
     #=========================================================================
-    def setstate(self, _state):
+    def setstate(self, _state: (int,float)) -> None:
         """
         _state should have been obtained from a previous call to getstate(),
         and  setstate() restores the internal state of the generator to what
