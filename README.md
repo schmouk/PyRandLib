@@ -55,11 +55,11 @@ libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001).  Unfortunately, 
 this PRG is a little bit long to compute (up to 3 times than LCGs,  60% more 
-than LFibs and a little bit less than MRGs, see below at section 'Architect-
-ure overview').  Moreover, it fails 4 of the hardest TestU01 tests.  You can 
-still use it as your preferred PRG but PyRandLib implements many other  PRGs
-which  are  either  far  faster  or far better in terms of generated pseudo-
-randomness than the Mersenne twister PRG.
+than  LFibs  and  a  little  bit  less  than  MRGs,  see  below  at  section 
+'Architecture  overview').  Moreover,  it  fails four of the hardest TestU01 
+tests.  You can still use it as your preferred PRG but PyRandLib  implements 
+many  other  PRGs which  are  either  far  faster  or far better in terms of 
+generated pseudo-randomness than the Mersenne twister PRG.
 
 
 
