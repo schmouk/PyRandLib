@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2016-2019 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -33,7 +33,7 @@ class BaseLCG( BaseRandom ):
     Definition of the base class for all LCG pseudo-random generators.
     This module is part of library PyRandLib.
 
-    Copyright (c) 2016-2019 Philippe Schmouker
+    Copyright (c) 2016-2020 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
