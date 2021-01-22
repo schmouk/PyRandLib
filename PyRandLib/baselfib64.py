@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -26,16 +25,18 @@ SOFTWARE.
 #=============================================================================
 from .baserandom import BaseRandom
 from .fastrand63 import FastRand63
+from .types      import SeedStateType, StateType
 
 
 #=============================================================================
 class BaseLFib64( BaseRandom ):
-    """
+    """The base class for all LFib PRG based on 64-bits numbers.
+    
     Definition of the base class for all LFib pseudo-random generators based
     on 64-bits generated numbers.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     
@@ -92,10 +93,10 @@ class BaseLFib64( BaseRandom ):
     should definitively pass.
     """
     
-    #=========================================================================
-    def __init__(self, _seedState: tuple = None) -> None:
-        """
-        Constructor.
+    #------------------------------------------------------------------------=
+    def __init__(self, _seedState: SeedStateType = None) -> None:
+        """Constructor.
+        
         _seedState is either a valid state, an integer,  a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
         self._LIST_SIZE integers and  an index in this list (index  value 
@@ -112,21 +113,21 @@ class BaseLFib64( BaseRandom ):
             # since it internally calls self.setstate().
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         Inheriting classes HAVE TO IMPLEMENT this method - see LFib78
         for an example.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
             
  
-    #=========================================================================
-    def getstate(self) -> tuple:
-        """
-        Return an object capturing the current internal state of the  generator.
+    #------------------------------------------------------------------------=
+    def getstate(self) -> StateType:
+        """Returns an object capturing the current internal state of the  generator.
+        
         This  object  can be passed to setstate() to restore the state.  It is a
         tuple containing a list of self._LIST_SIZE integers and an 
         index in this list (index value being then in range(0,self._LIST_SIZE).
@@ -134,9 +135,10 @@ class BaseLFib64( BaseRandom ):
         return (self._list[:], self._index)
             
  
-    #=========================================================================
-    def setstate(self, _seedState: tuple) -> None:
-        """
+    #------------------------------------------------------------------------=
+    def setstate(self, _seedState: StateType) -> None:
+        """Restores the internal state of the generator.
+        
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
         generator to what it was at the time setstate() was called.
@@ -162,10 +164,9 @@ class BaseLFib64( BaseRandom ):
             self._list = _seedState[0][:]
                        
 
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def _initIndex(self, _index: int) -> None:
-        """
-        Inits the internal index pointing to the internal list.
+        """Inits the internal index pointing to the internal list.
         """
         try:
             self._index = int( _index ) % self._LIST_SIZE
@@ -173,9 +174,10 @@ class BaseLFib64( BaseRandom ):
             self._index = 0
                        
  
-    #=========================================================================
-    def _initList(self, _initialSeed: list = None) -> None:
-        """
+    #------------------------------------------------------------------------=
+    def _initList(self, _initialSeed: StateType = None) -> None:
+        """Inits the internal list of values.
+        
         Inits the internal list of values according to some initial
         seed  that  has  to be an integer or a float ranging within
         [0.0, 1.0).  Should it be None or anything  else  then  the

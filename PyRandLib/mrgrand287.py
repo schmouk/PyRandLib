@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -34,7 +33,7 @@ class MRGRand287( BaseMRG ):
     Generator with a long period (2.49e+86).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs)  use  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -115,16 +114,16 @@ class MRGRand287( BaseMRG ):
     should definitively pass.
     """
     
-    #=========================================================================
+    #------------------------------------------------------------------------=
     # 'protected' constant
     _LIST_SIZE = 256        # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
     _MODULO    = 4294967295 # i.e. 0x7fffffff, or (1<<32)-1, the modulo for DX-47-3 MRG
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         """
         #The Marsa-LIBF4 version uses the recurrence

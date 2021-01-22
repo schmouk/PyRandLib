@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -26,15 +25,16 @@ SOFTWARE.
 #=============================================================================
 from .baserandom import BaseRandom
 from .fastrand32 import FastRand32
+from .types      import SeedStateType, StateType
 
 
 #=============================================================================
 class BaseMRG( BaseRandom ):
-    """
-    Definition of the base class for all MRG pseudo-random generators.
+    """Definition of the base class for all MRG pseudo-random generators.
+    
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -89,10 +89,10 @@ class BaseMRG( BaseRandom ):
     should definitively pass.
     """
     
-    #=========================================================================
-    def __init__(self, _seedState: (int,float,list) = None) -> None:
-        """
-        Constructor.
+    #------------------------------------------------------------------------=
+    def __init__(self, _seedState: SeedStateType = None) -> None:
+        """Constructor.
+        
         _seedState is either a valid state, an integer, a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
         self._LIST_SIZE integers and  an index in this list (index  value 
@@ -109,21 +109,21 @@ class BaseMRG( BaseRandom ):
             # since it internally calls self.setstate().
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         Inheriting classes HAVE TO IMPLEMENT this method - see MRGRand287
         for an example.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
             
  
-    #=========================================================================
-    def getstate(self) -> tuple:
-        """
-        Return an object capturing the current internal state of the  generator.
+    #------------------------------------------------------------------------=
+    def getstate(self) -> StateType:
+        """Returns an object capturing the current internal state of the  generator.
+        
         This  object  can be passed to setstate() to restore the state.  It is a
         tuple containing a list of self._LIST_SIZE integers and an 
         index in this list (index value being then in range(0,self._LIST_SIZE).
@@ -131,9 +131,10 @@ class BaseMRG( BaseRandom ):
         return (self._list[:], self._index)
             
  
-    #=========================================================================
-    def setstate(self, _seedState: tuple) -> None:
-        """
+    #------------------------------------------------------------------------=
+    def setstate(self, _seedState: StateType) -> None:
+        """Restores the internal state of the generator.
+
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
         generator to what it was at the time setstate() was called.
@@ -159,10 +160,9 @@ class BaseMRG( BaseRandom ):
             self._list = _seedState[0][:]
                        
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def _initIndex(self, _index: int) -> None:
-        """
-        Inits the internal index pointing to the internal list.
+        """Inits the internal index pointing to the internal list.
         """
         try:
             self._index = int( _index ) % self._LIST_SIZE
@@ -170,9 +170,10 @@ class BaseMRG( BaseRandom ):
             self._index = 0
                        
  
-    #=========================================================================
-    def _initList(self, _initialSeed: list = None) -> None:
-        """
+    #------------------------------------------------------------------------=
+    def _initList(self, _initialSeed: StateType = None) -> None:
+        """Inits the internal list of values.
+        
         Inits the internal list of values according to some initial
         seed  that  has  to be an integer or a float ranging within
         [0.0, 1.0).  Should it be None or anything  else  then  the

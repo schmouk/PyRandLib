@@ -9,7 +9,7 @@ If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -106,7 +106,8 @@ implemented in PyRabdLib, as provided in [1].
 
 
 ## Implementation
-Current implementation of PyRandLib uses Python 3.x with no Cython version.
+Current implementation of PyRandLib uses Python 3.x with no Cython version.  
+It has been tested with Python 3.8 but should run with most of Python 3 suvbversions.
 
 Python 2.7 could be later available,  if asked for.  Cython  implementations
 could also be later available.
@@ -337,7 +338,7 @@ Please notice that the TestUO1 article states that the operator  should  be
 
 
 
-### LFibRand1340
+### LFibRand1340  -  2^1340 periodicity
 
 **LFibRand1340** implements an LFib 64-bits generator  proposed  by  George
 Marsaglia in [4]. This PRG uses the recurrence

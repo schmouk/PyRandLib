@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -29,11 +28,11 @@ from .baserandom import BaseRandom
 
 #=============================================================================
 class BaseLCG( BaseRandom ):
-    """
-    Definition of the base class for all LCG pseudo-random generators.
+    """Definition of the base class for all LCG pseudo-random generators.
+    
     This module is part of library PyRandLib.
 
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -78,30 +77,31 @@ class BaseLCG( BaseRandom ):
     should definitively pass.
     """
     
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def __init__(self, _seedState: int = None) -> None:
-        """
-        Constructor.  Should inSeed be None or not an integer  then
-        the local time is used (with its shuffled value) as a seed.
+        """Constructor. 
+        
+        Should inSeed be None or not an integer then the local 
+        time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seedState ) # this call creates attribute self._value and sets it
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         Inheriting classes HAVE TO IMPLEMENT this method  -  see FastRand32
         for an example. It should use and initialize attribute self._value.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def getstate(self) -> int:
-        """
-        Returns an object capturing the current internal state of the generator.
+        """Returns an object capturing the current internal state of the generator.
+        
         This object can be passed to setstate() to restore the state.
         For LCG,  the state is defined with  a  single  integer,  'self._value',
         which  has  to  be  used  in  methods 'random() and 'setstate() of every
@@ -110,16 +110,17 @@ class BaseLCG( BaseRandom ):
         return self._value
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def setstate(self, _state: int) -> None:
-        """
+        """Restores the internal state of the generator.
+        
         _state should have been obtained from a previous call to getstate(),
         and  setstate() restores the internal state of the generator to what
         it was at the time setstate() was called.
         Inheriting classes HAVE TO IMPLEMENT this method  -  see  FastRand32
         for an example. It should initialize attribute self._value.
         """
-        raise NotImplementedError
+        raise NotImplementedError()
 
  
 #=====   end of module   baselcg.py   ========================================

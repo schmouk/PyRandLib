@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -25,7 +24,9 @@ SOFTWARE.
 
 #=============================================================================
 import time
-from .baselcg    import BaseLCG
+
+from .baselcg import BaseLCG
+from .types   import Numeric
 
 
 #=============================================================================
@@ -36,7 +37,7 @@ class FastRand63( BaseLCG ):
     time computation.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -91,22 +92,24 @@ class FastRand63( BaseLCG ):
     should definitively pass.
     """
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         """
         self._value = (9219741426499971445 * self._value + 1) & 0x7fffffffffffffff
         return self._value / 9223372036854775808.0
             
  
-    #=========================================================================
-    def setstate(self, _state:(int,float)) -> None:
-        """
-        _state should have been obtained from a previous call to getstate(),
-        and  setstate() restores the internal state of the generator to what
-        it was at the time setstate() was called.
+    #------------------------------------------------------------------------=
+    def setstate(self, _state: Numeric) -> None:
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call 
+        to  getstate(),  and setstate() restores the internal 
+        state of the generator to what it  was  at  the  time 
+        setstate() was called.
         """
         if isinstance( _state, int ):
             self._value = _state & 0x7fffffffffffffff

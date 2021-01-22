@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -26,14 +25,16 @@ SOFTWARE.
 #=============================================================================
 from random import Random
 
+from .types import Numeric, SeedStateType
+
 
 #=============================================================================
 class BaseRandom( Random ):
-    """
-    This is the base class for all pseudo-random numbers generators.
+    """This is the base class for all pseudo-random numbers generators.
+    
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2020 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator and  FastRand63  for a  
     2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time.
@@ -212,19 +213,19 @@ class BaseRandom( Random ):
      |      alpha is the scale parameter and beta is the shape parameter.
     """
     
-    #=========================================================================
-    def __init__(self, _seed: (int,float,list) = None) -> None:
-        """
-        Constructor. Should _seed be None or not an integer then the 
+    #------------------------------------------------------------------------=
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not an integer then the 
         local time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seed )  ## this call creates attribute self._value and sets it
         
         
-    #=========================================================================
-    def seed(self, _seed: (int,float,list) = None) -> None:
-        """
-        Initiates the internal state of this pseudo-random generator.
+    #------------------------------------------------------------------------=
+    def seed(self, _seed: SeedStateType = None) -> None:
+        """Initiates the internal state of this pseudo-random generator.
         """
         try:
             self.setstate( _seed )
@@ -232,11 +233,12 @@ class BaseRandom( Random ):
             super().seed( _seed )
 
  
-    #=========================================================================
-    def __call__(self, _max: (int,float) = 1.0) -> float:
-        """
-        This class's instances are callable. The returned value is uniformly
-        contained within the interval [0.0 : _max].
+    #------------------------------------------------------------------------=
+    def __call__(self, _max: Numeric = 1.0) -> float:
+        """This class's instances are callable.
+        
+        The returned value is uniformly contained 
+        within the interval [0.0 : _max].
         """
         return self.uniform( 0.0, _max )
     

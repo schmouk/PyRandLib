@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -34,7 +33,7 @@ class LFib1340( BaseLFib64 ):
     Generator with quite short period (2.4e+403).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2020 Philippe Schmouker
+    Copyright (c) 2017-2021 Philippe Schmouker
 
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
@@ -111,15 +110,15 @@ class LFib1340( BaseLFib64 ):
     should definitively pass.
     """
 
-    #=========================================================================
+    #------------------------------------------------------------------------=
     # 'protected' constant
     _LIST_SIZE = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-861 and i-1279 -th values

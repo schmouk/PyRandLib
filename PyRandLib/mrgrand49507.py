@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Copyright (c) 2016-2020 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -23,11 +23,11 @@ OUT  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-#=============================================================================
+#----------------------------------------------------------------------------=
 from .basemrg import BaseMRG
 
 
-#=============================================================================
+#----------------------------------------------------------------------------=
 class MRGRand49507( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 31-bits Multiple Recursive 
@@ -100,16 +100,16 @@ class MRGRand49507( BaseMRG ):
     should definitively pass.
     """    
     
-    #=========================================================================
+    #------------------------------------------------------------------------=
     # 'protected' constant
     _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
     _MODULO    = 2147483647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
-    #=========================================================================
+    #------------------------------------------------------------------------=
     def random(self) -> float:
-        """
-        This is the core of the pseudo-random generator.
+        """This is the core of the pseudo-random generator.
+        
         Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-7, i-1597 -th values
@@ -127,4 +127,4 @@ class MRGRand49507( BaseMRG ):
         # then returns float value within [0.0, 1.0)
         return  myValue / 2147483647.0
  
-#=====   end of module   mrgrand49507.py   ===================================
+#----=   end of module   mrgrand49507.py   ----------------------------------=
