@@ -26,7 +26,7 @@ SOFTWARE.
 import time
 
 from .baselcg import BaseLCG
-from .types   import Numeric
+from .types   import Numerical
 
 
 #=============================================================================
@@ -93,10 +93,10 @@ class FastRand32( BaseLCG ):
     """
     
     #------------------------------------------------------------------------=
-    def __init__(self, _seed: Numeric = None) -> None:
+    def __init__(self, _seed: Numerical = None) -> None:
         """Constructor.
         
-        Should _seed be None or not a numeric then the local 
+        Should _seed be None or not a numerical then the local 
         time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seed ) # this call creates attribute self._value and sets it
@@ -113,7 +113,7 @@ class FastRand32( BaseLCG ):
             
  
     #------------------------------------------------------------------------=
-    def setstate(self, _state: Numeric) -> None:
+    def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 

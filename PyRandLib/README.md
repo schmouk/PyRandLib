@@ -123,6 +123,44 @@ Note 3:  a Cython version of PyRandLib might be delivered in a next release.
 Up today, no date is planned for this.
 
 
+## New in release 1.2
+This is available starting at version 1.2 of PyRandLib.  The  call  operator
+(i.e., '()')  gets  a  new signature which is still backward compatible with
+previous versions of this library. Its new use is described here below.  The
+implementation  code  can  be  found  in  class `BaseRandom`,  in  module
+`baserandom.py`.
+
+    from fastrand63 import FastRand63
+    
+    rand = FastRand63()
+    
+    # prints a float random value ranging in [0.0, 1.0]
+    print( rand() )
+    
+    # prints an integer random value ranging in [0, 5]
+    print( rand(5) )
+    
+    # prints a float random value ranging in [0.0, 20.0]
+    print( rand(20.0) 
+    
+    # prints a list of 10 integer values each ranging in [0, 5]
+    print( rand(5, 10) )
+    
+    # prints a list of 10 float values each ranging in [0.0, 1.0]
+    print( rand(times=10) )
+    
+    # prints a list of 4 random values ranging respectively in
+    #    [0, 5], [0.0, 50.0], [0.0, 500.0] and [0, 5000]
+    print( rand(5, 50.0, 500.0, 5000) )
+    						
+    # a more complex call which prints something like:
+    #   [ [3, 11.64307079016269, 127.65395855782158, 4206, [2, 0, 1, 4, 4, 1, 2, 0]],
+    #     [2, 34.22526698212995, 242.54183578253426, 2204, [5, 3, 5, 4, 2, 0, 1, 3]], 
+    #     [0, 17.77303802057933, 417.70662295909983,  559, [4, 1, 5, 0, 5, 3, 0, 5]] ] 
+    print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
+		   
+
+    
 ## Architecture overview
 Each of the implemented PRG is described in an independent module. The  name
 of the module is directly related to the name of the related class.
@@ -136,7 +174,7 @@ aims at providing simple common behavior for all PRG classes of the library,
 the  most  noticeable  one  being the 'callable' nature of every implemented 
 PRGs. For instance:
 
-    rand = UBaseRandom()
+    rand = BaseRandom()
     print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
     print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
     print( rand(a,b) ) # prints a uniform pseudo-random value within [a, b)

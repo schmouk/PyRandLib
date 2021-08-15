@@ -25,9 +25,9 @@ SOFTWARE.
 #=============================================================================
 from typing import List, Tuple, Union
 
-Numeric       = Union[ int, float ]
-StateType     = Union[ Tuple[Numeric], List[Numeric], Tuple[List[Numeric], int] ]
-SeedStateType = Union[ Numeric, StateType ]
+Numerical     = Union[ int, float ]
+StateType     = Union[ Tuple[Numerical], List[Numerical], Tuple[List[Numerical], int] ]
+SeedStateType = Union[ Numerical, StateType ]
 
 
 #=====   end of   PyRandLib.types   =====#

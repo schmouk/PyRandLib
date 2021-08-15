@@ -24,9 +24,9 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
-from typing import Any
+from typing import Any, List, Tuple, Union
 
-from .types import Numeric, SeedStateType
+from .types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================
@@ -243,12 +243,39 @@ class BaseRandom( Random ):
 
  
     #------------------------------------------------------------------------=
-    def __call__(self, _max: Numeric = 1.0) -> float:
+    def __call__(self, _max : Union[Numerical,
+                                    Tuple[Numerical],
+                                    List[Numerical]] = 1.0,
+                       times: int                    = 1   ) -> Numerical:
         """This class's instances are callable.
         
-        The returned value is uniformly contained 
-        within the interval [0.0 : _max].
+        The returned value is uniformly contained within the 
+        interval [0.0 : _max].  When times is set, a list of
+        iterated pseudo-random values is  returned.  'times'
+        must  be an integer.  If less than 1 it is forced to
+        be 1.
+        '_max' may be a list or a tuple of values,  in which
+        case  a  list  of  related  pseudo-random  values is
+        returned with entries of the same type than the same 
+        indexed entry in '_max'.
         """
-        return self.uniform( 0.0, _max )
+        assert isinstance( times, int )
+        if times < 1:
+            times =  1
+         
+        if isinstance( _max, int ):
+            ret = [ self.randint(0, _max) for _ in range(times) ]
+        elif isinstance( _max, float ):
+            ret = [ self.uniform( 0.0, _max ) for _ in range(times) ]
+        else:
+            try:
+                if times == 1:
+                    ret = [ self(m,1) for m in _max] 
+                else:
+                    ret = [ [self(m,1) for m in _max] for _ in range(times) ]
+            except:
+                ret = [ self.__call__(times=1) ]
+        
+        return ret[0] if len(ret) == 1 else ret
     
 #=====   end of module   baserandom.py   =====================================
