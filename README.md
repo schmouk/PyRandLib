@@ -106,11 +106,59 @@ implemented in PyRabdLib, as provided in [1].
 
 
 ## Implementation
-Current implementation of PyRandLib uses Python 3.x with no Cython version.
+Current implementation of PyRandLib uses Python 3.x with no Cython  version.  
+It  has  been  tested  with  Python 3.8 but should run with all of Python 3.
 
-Python 2.7 could be later available,  if asked for.  Cython  implementations
-could also be later available.
+Note 1: PyRandLib version 1.1 and below should work  with  all  versions  of
+Python 3.  In  version 1.2, we have added underscores in numerical constants
+for the better readability of the code.  This feature has been introduced in
+Python 3.6.  If  you  want to use PyRandLib version 1.2 or above with Python
+3.5 or below,  removing these underscores should be sufficient to  have  the
+library running correctly. 
 
+Note 2:  no version or PyRandLib will ever be provided for Python 2 which is 
+a no more maintained version of the Python language.
+
+Note 3:  a Cython version of PyRandLib might be delivered in a next release.
+Up today, no date is planned for this.
+
+
+## New in release 1.2
+This is available starting at version 1.2 of PyRandLib.  The  call  operator
+(i.e., '()')  gets  a  new signature which is still backward compatible with
+previous versions of this library. Its new use is described here below.  The
+implementation  code  can  be  found  in  class `BaseRandom`,  in  module
+`baserandom.py`.
+
+    from fastrand63 import FastRand63
+    
+    rand = FastRand63()
+    
+    # prints a float random value ranging in [0.0, 1.0]
+    print( rand() )
+    
+    # prints an integer random value ranging in [0, 5]
+    print( rand(5) )
+    
+    # prints a float random value ranging in [0.0, 20.0]
+    print( rand(20.0) 
+    
+    # prints a list of 10 integer values each ranging in [0, 5]
+    print( rand(5, 10) )
+    
+    # prints a list of 10 float values each ranging in [0.0, 1.0]
+    print( rand(times=10) )
+    
+    # prints a list of 4 random values ranging respectively in
+    #    [0, 5], [0.0, 50.0], [0.0, 500.0] and [0, 5000]
+    print( rand(5, 50.0, 500.0, 5000) )
+    						
+    # a more complex call which prints something like:
+    #   [ [3, 11.64307079016269, 127.65395855782158, 4206, [2, 0, 1, 4, 4, 1, 2, 0]],
+    #     [2, 34.22526698212995, 242.54183578253426, 2204, [5, 3, 5, 4, 2, 0, 1, 3]], 
+    #     [0, 17.77303802057933, 417.70662295909983,  559, [4, 1, 5, 0, 5, 3, 0, 5]] ] 
+    print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
+		   
 
 
 ## Architecture overview
