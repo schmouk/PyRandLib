@@ -172,12 +172,7 @@ of the module is directly related to the name of the related class.
 **PyRandLib**.  It inherits from the Python built-in class random.Random. It 
 aims at providing simple common behavior for all PRG classes of the library, 
 the  most  noticeable  one  being the 'callable' nature of every implemented 
-PRGs. For instance:
-
-    rand = UBaseRandom()
-    print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-    print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-    print( rand(a,b) ) # prints a uniform pseudo-random value within [a, b)
+PRGs.
 
 Inheriting from the  Python  built-in  class  random.Random,  **BaseRandom**
 provides  access  to  many  useful  distribution  functions  as described in 
@@ -193,6 +188,8 @@ Furthermore, every inheriting class may override methods:
 
 This lets inheriting classes implement the PRGs related core methods.
 
+Notice:  starting at PyRandLib 1.2.0 a new signature is available with  this
+base class. See previous section 'New in release 1.2' for full explanations.
 
 
 ### FastRand32  -  2^32 periodicity
