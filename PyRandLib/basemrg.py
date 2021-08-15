@@ -147,17 +147,24 @@ class BaseMRG( BaseRandom ):
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
-        if not isinstance( _seedState, tuple ):
+        try:
+            count = len( _seedState )
+            
+            if count == 0:
+                self._initIndex( 0 )
+                self._initList()
+                
+            elif count == 1:
+                self._initIndex( 0 )
+                self._initList( _seedState[0] )
+                
+            else:
+                self._initIndex( _seedState[1] )
+                self._list = _seedState[0][:]
+                
+        except:
             self._initIndex( 0 )
             self._initList( _seedState )
-            
-        elif len( _seedState ) < 2:
-            self._initIndex( 0 )
-            self._initList( _seedState[0] )
-            
-        else:
-            self._initIndex( _seedState[1] )
-            self._list = _seedState[0][:]
                        
  
     #------------------------------------------------------------------------=
@@ -181,8 +188,7 @@ class BaseMRG( BaseRandom ):
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
         myRand = FastRand32( _initialSeed )
-        my_list = list( map( lambda _ : int(myRand(self._MODULO+1)), range(self._LIST_SIZE) ) )
-        self._list = my_list
+        self._list = [ int(myRand(self._MODULO+1)) for _ in range(self._LIST_SIZE) ]
 
  
 #=====   end of module   basemrg.py   ========================================

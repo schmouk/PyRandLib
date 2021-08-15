@@ -9,7 +9,7 @@ If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2021 Philippe Schmouker, <schmouk (at) gmail.com>
+Copyright (c) 2016-2021 Philippe Schmouker, <ph.schmouker (at) gmail.com>
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal

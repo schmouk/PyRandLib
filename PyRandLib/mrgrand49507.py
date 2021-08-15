@@ -103,7 +103,7 @@ class MRGRand49507( BaseMRG ):
     #------------------------------------------------------------------------=
     # 'protected' constant
     _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
-    _MODULO    = 2147483647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
+    _MODULO    = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
     #------------------------------------------------------------------------=
@@ -118,13 +118,13 @@ class MRGRand49507( BaseMRG ):
             k7 += MRGRand49507._LIST_SIZE
         
         # then evaluates current value
-        myValue = (-67108992 * (self._list[k7] + self._list[self._index])) % 2147483647
+        myValue = (-67108992 * (self._list[k7] + self._list[self._index])) % 2_147_483_647
         self._list[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % MRGRand49507._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 2147483647.0
+        return  myValue / 2_147_483_647.0
  
 #----=   end of module   mrgrand49507.py   ----------------------------------=

@@ -24,6 +24,7 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
+from typing import Any
 
 from .types import Numeric, SeedStateType
 
@@ -217,10 +218,18 @@ class BaseRandom( Random ):
     def __init__(self, _seed: SeedStateType = None) -> None:
         """Constructor.
         
-        Should _seed be None or not an integer then the 
-        local time is used (with its shuffled value) as a seed.
+        Should _seed be None or not an integer then the local 
+        time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seed )  ## this call creates attribute self._value and sets it
+        
+        
+    #------------------------------------------------------------------------=
+    @property
+    def value(self) -> Any:
+        """Read-only wrapper to built-in attribute '._value'
+        """
+        return self._value
         
         
     #------------------------------------------------------------------------=

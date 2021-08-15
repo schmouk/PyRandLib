@@ -127,14 +127,14 @@ class LFib1340( BaseLFib64 ):
             k861 += LFib1340._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k861] + self._list[self._index]) & 0xffffffffffffffff
+        myValue = (self._list[k861] + self._list[self._index]) & 0xffff_ffff_ffff_ffff
         self._list[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % LFib1340._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 18446744073709551616.0
+        return  myValue / 18_446_744_073_709_551_616.0
 
  
 #=====   end of module   lfib1340.py   ======================================

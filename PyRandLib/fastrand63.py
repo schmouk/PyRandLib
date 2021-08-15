@@ -98,8 +98,8 @@ class FastRand63( BaseLCG ):
         
         Returned values are within [0.0, 1.0).
         """
-        self._value = (9219741426499971445 * self._value + 1) & 0x7fffffffffffffff
-        return self._value / 9223372036854775808.0
+        self._value = (9_219_741_426_499_971_445 * self._value + 1) & 0x7fff_ffff_ffff_ffff
+        return self._value / 9_223_372_036_854_775_808.0
             
  
     #------------------------------------------------------------------------=
@@ -112,7 +112,7 @@ class FastRand63( BaseLCG ):
         setstate() was called.
         """
         if isinstance( _state, int ):
-            self._value = _state & 0x7fffffffffffffff
+            self._value = _state & 0x7fff_ffff_ffff_ffff
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
@@ -120,16 +120,16 @@ class FastRand63( BaseLCG ):
                 _state = -_state
             
             if _state >= 1.0:
-                self._value = int(_state+0.5) & 0x7fffffffffffffff
+                self._value = int(_state+0.5) & 0x7fff_ffff_ffff_ffff
             else:
-                self._value = int(_state*0x8000000000000000) & 0x7fffffffffffffff
+                self._value = int(_state*0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
         
         else:
             t = int(time.time() * 1000.0)
-            self._value = t & 0xffffffff
-            self._value += (t & 0xff000000) <<  8
-            self._value += (t & 0x00ff0000) << 24
-            self._value += (t & 0x0000ff00) << 40
-            self._value += (t & 0x000000fe) << 63
+            self._value = t & 0xffff_ffff
+            self._value += (t & 0xff00_0000) <<  8
+            self._value += (t & 0x00ff_0000) << 24
+            self._value += (t & 0x0000_ff00) << 40
+            self._value += (t & 0x0000_00fe) << 63
 
 #=====   end of module   fastrand63.py   =====================================
