@@ -141,7 +141,7 @@ implementation  code  can  be  found  in  class `BaseRandom`,  in  module
     print( rand(5) )
     
     # prints a float random value ranging in [0.0, 20.0]
-    print( rand(20.0) 
+    print( rand(20.0) )
     
     # prints a list of 10 integer values each ranging in [0, 5]
     print( rand(5, 10) )
