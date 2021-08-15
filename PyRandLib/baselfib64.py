@@ -24,7 +24,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom import BaseRandom
-from .fastrand63 import FastRand63
+from .fastrand32 import FastRand32
 from .types      import SeedStateType, StateType
 
 
@@ -59,7 +59,7 @@ class BaseLFib64( BaseRandom ):
     See LFib78,  LFib116,  LFib668 and LFib1340 for long period LFib generators (resp. 
     2^78,  2^116,  2^668 and 2^1340 periods, i.e. resp. 3.0e+23, 8.3e+34, 1.2e+201 and 
     2.4e+403 periods) while same computation time and far  higher  precision  (64-bits  
-    calculations)  then  MRGs,  but  memory  consumption  (resp. 17,  55, 607 and 1279 
+    calculations) than MRGs,  but more memory consumption (resp. 17,  55, 607 and 1279 
     integers).
     
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
@@ -151,17 +151,24 @@ class BaseLFib64( BaseRandom ):
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
-        if not isinstance( _seedState, tuple ):
+        try:
+            count = len( _seedState )
+            
+            if count == 0:
+                self._initIndex( 0 )
+                self._initList()
+                
+            elif count == 1:
+                self._initIndex( 0 )
+                self._initList( _seedState[0] )
+                
+            else:
+                self._initIndex( _seedState[1] )
+                self._list = _seedState[0][:]
+                
+        except:
             self._initIndex( 0 )
             self._initList( _seedState )
-            
-        elif len( _seedState ) < 2:
-            self._initIndex( 0 )
-            self._initList( _seedState[0] )
-            
-        else:
-            self._initIndex( _seedState[1] )
-            self._list = _seedState[0][:]
                        
 
     #------------------------------------------------------------------------=
@@ -183,15 +190,8 @@ class BaseLFib64( BaseRandom ):
         [0.0, 1.0).  Should it be None or anything  else  then  the
         current local time value is used as initial seed value.
         """
-        myRand = FastRand63( _initialSeed )
-        #-----------------------------------------------------------------
-        def _getValue( _dummy ):
-            myRand()
-            v = myRand._value << 1
-            return v + (1 if myRand() >= 0.5 else 0)
-        #-----------------------------------------------------------------
-        self._list = list( map( _getValue, range(self._LIST_SIZE) ) )
+        myRand = FastRand32( _initialSeed )
+        self._list = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._LIST_SIZE) ]        
 
- 
 #=====   end of module   baselfib64.py   =====================================
 

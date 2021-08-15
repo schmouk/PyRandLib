@@ -9,7 +9,7 @@ If you decide to use this library,  please add the copyright notice to  your
 software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2021 Philippe Schmouker, schmouk (at) typee.ovh
+Copyright (c) 2016-2021 Philippe Schmouker, <ph.schmouker (at) gmail.com>
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -106,12 +106,21 @@ implemented in PyRabdLib, as provided in [1].
 
 
 ## Implementation
-Current implementation of PyRandLib uses Python 3.x with no Cython version.  
-It has been tested with Python 3.8 but should run with most of Python 3 suvbversions.
+Current implementation of PyRandLib uses Python 3.x with no Cython  version.  
+It  has  been  tested  with  Python 3.8 but should run with all of Python 3.
 
-Python 2.7 could be later available,  if asked for.  Cython  implementations
-could also be later available.
+Note 1: PyRandLib version 1.1 and below should work  with  all  versions  of
+Python 3.  In  version 1.2, we have added underscores in numerical constants
+for the better readability of the code.  This feature has been introduced in
+Python 3.6.  If  you  want to use PyRandLib version 1.2 or above with Python
+3.5 or below,  removing these underscores should be sufficient to  have  the
+library running correctly. 
 
+Note 2:  no version or PyRandLib will ever be provided for Python 2 which is 
+a no more maintained version of the Python language.
+
+Note 3:  a Cython version of PyRandLib might be delivered in a next release.
+Up today, no date is planned for this.
 
 
 ## Architecture overview

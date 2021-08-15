@@ -108,8 +108,8 @@ class FastRand32( BaseLCG ):
         
         Returned values are within [0.0, 1.0).
         """
-        self._value = (69069 * self._value + 1) & 0xffffffff
-        return self._value / 4294967296.0
+        self._value = (69069 * self._value + 1) & 0xffff_ffff
+        return self._value / 4_294_967_296.0
             
  
     #------------------------------------------------------------------------=
@@ -123,23 +123,23 @@ class FastRand32( BaseLCG ):
         """
         if isinstance( _state, int ):
             # passed initial seed is an integer, just uses it
-            self._value = _state & 0xffffffff
+            self._value = _state & 0xffff_ffff
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
             if _state < 0.0 :
                 _state = -_state
             if _state >= 1.0:
-                self._value = int( _state + 0.5 ) & 0xffffffff
+                self._value = int( _state + 0.5 ) & 0xffff_ffff
             else:
-                self._value = int( _state * 0x100000000) & 0xffffffff
+                self._value = int( _state * 0x1_0000_0000) & 0xffff_ffff
                 
         else:
             # uses local time as initial seed
             t = int( time.time() * 1000.0 )
-            self._value = ( ((t & 0xff000000) >> 24) +
-                            ((t & 0x00ff0000) >>  8) +
-                            ((t & 0x0000ff00) <<  8) +
-                            ((t & 0x000000ff) << 24)   )
+            self._value = ( ((t & 0xff00_0000) >> 24) +
+                            ((t & 0x00ff_0000) >>  8) +
+                            ((t & 0x0000_ff00) <<  8) +
+                            ((t & 0x0000_00ff) << 24)   )
 
 #=====   end of module   fastrand32.py   =====================================

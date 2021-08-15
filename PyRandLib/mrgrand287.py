@@ -117,7 +117,7 @@ class MRGRand287( BaseMRG ):
     #------------------------------------------------------------------------=
     # 'protected' constant
     _LIST_SIZE = 256        # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO    = 4294967295 # i.e. 0x7fffffff, or (1<<32)-1, the modulo for DX-47-3 MRG
+    _MODULO    = 4_294_967_295 # i.e. 0xffff_ffff, or (1<<32)-1, the modulo for DX-47-3 MRG
             
  
     #------------------------------------------------------------------------=
@@ -143,13 +143,13 @@ class MRGRand287( BaseMRG ):
             k179 += MRGRand287._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k55] + self._list[k119] + self._list[k179] + self._list[self._index]) % 4294967295
+        myValue = (self._list[k55] + self._list[k119] + self._list[k179] + self._list[self._index]) % 4_294_967_295
         self._list[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % self._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 4294967295.0
+        return  myValue / 4_294_967_295.0
  
 #=====   end of module   mrgrand287.py   ==================================
