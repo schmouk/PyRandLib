@@ -26,7 +26,7 @@ SOFTWARE.
 import time
 
 from .baselcg import BaseLCG
-from .types   import Numeric
+from .types   import Numerical
 
 
 #=============================================================================
@@ -103,7 +103,7 @@ class FastRand63( BaseLCG ):
             
  
     #------------------------------------------------------------------------=
-    def setstate(self, _state: Numeric) -> None:
+    def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
