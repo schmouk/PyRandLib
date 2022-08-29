@@ -3,7 +3,7 @@ This file is part of library PyRandLib.
 It is provided under MIT License.
 Please see files README.md and LICENSE.
 
-Copyright (c) 2016-2021 Philippe Schmouker
+Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
 """
 
 from .baselcg        import BaseLCG
