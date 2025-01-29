@@ -41,9 +41,9 @@ as  evaluated  by  Pierre L'Ecuyer  and Richard Simard in their famous paper
 reader will take benefit reading L'Ecuyer & Simard's paper.
 
 Each of the Pseudo  Random  Generator (PRG) implemented in PyRandLib is self 
-documented.  Names of classes directly refer to the kind of PRG they implem-
-ent augmented with some number  characterizing  their  periodicity.  All  of 
-their randomness characteristics are explained in every related module.
+documented.  Names  of  classes  directly  refer  to  the  kind  of PRG they 
+implement augmented with some number characterizing their  periodicity.  All 
+of their randomness characteristics are explained in every related module.
 
 
 ### Why not Mersenne twister?
