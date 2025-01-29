@@ -88,7 +88,7 @@ should definitively pass.
 
 We give you here below a copy of the resulting table for the PRGs that  have
 been  implemented  in  PyRandLib  plus the Mersenne twister one which is not
-implemented in PyRabdLib, as provided in [1].
+implemented in PyRandLib, as provided in [1].
 
  | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
