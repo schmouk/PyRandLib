@@ -3,13 +3,14 @@ This file is part of library PyRandLib.
 It is provided under MIT License.
 Please see files README.md and LICENSE.
 
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 """
 
 from .baselcg        import BaseLCG
 from .baselfib64     import BaseLFib64
 from .basemrg        import BaseMRG
 from .baserandom     import BaseRandom
+from .basewell       import BaseWELL
 from .fastrand32     import FastRand32
 from .fastrand63     import FastRand63
 from .lfib78         import LFib78

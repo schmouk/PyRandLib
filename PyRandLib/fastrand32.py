@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -37,7 +35,7 @@ class FastRand32( BaseLCG ):
     short time computation.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 

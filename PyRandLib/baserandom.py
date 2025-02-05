@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -35,7 +33,7 @@ class BaseRandom( Random ):
     
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator and  FastRand63  for a  
     2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time.
@@ -270,7 +268,7 @@ class BaseRandom( Random ):
         else:
             try:
                 if times == 1:
-                    ret = [ self(m,1) for m in _max] 
+                    ret = [ self(m,1) for m in _max ] 
                 else:
                     ret = [ [self(m,1) for m in _max] for _ in range(times) ]
             except:

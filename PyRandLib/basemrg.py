@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -34,7 +32,7 @@ class BaseMRG( BaseRandom ):
     
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -71,7 +69,7 @@ class BaseMRG( BaseRandom ):
     MRGRand287 for an example.
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
+    We give you here below a copy of the table of tests for the MRGs that have 
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
