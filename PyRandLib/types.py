@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2021-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2021-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -26,8 +24,10 @@ SOFTWARE.
 from typing import List, Tuple, Union
 
 Numerical     = Union[ int, float ]
-StateType     = Union[ Tuple[Numerical], List[Numerical], Tuple[List[Numerical], int] ]
+StateType     = Union[ Tuple[Numerical], List[Numerical], Tuple[List[Numerical], int], Tuple[Tuple[Numerical], int] ]
 SeedStateType = Union[ Numerical, StateType ]
 
 
-#=====   end of   PyRandLib.types   =====#
+#=====   end of   PyRandLib.types   ==========================================
+
+# type: ignore  (just to avoid boring pylance related error checking)
