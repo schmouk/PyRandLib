@@ -195,8 +195,7 @@ class BaseWELL( BaseRandom ):
     #-------------------------------------------------------------------------
     @classmethod
     def _d(s: int) -> int:
-        #assert s >= 0
-        #assert s < 32
+        #assert 0 <= s < 32
         return 0xffff_ffff ^ (1 << s)
 
     #-------------------------------------------------------------------------
@@ -212,29 +211,25 @@ class BaseWELL( BaseRandom ):
     #-------------------------------------------------------------------------
     @classmethod
     def _M2_pos(cls, x: int, t: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return x >> t
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M2_neg(cls, x: int, t: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return (x << t) & 0xffff_ffff
     
     #-------------------------------------------------------------------------
     @classmethod
     def _M3_pos(cls, x: int, t: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return x ^ (x >> t)
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M3_neg(cls, x: int, t: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return x ^ ((x << t) & 0xffff_ffff)
 
     #-------------------------------------------------------------------------
@@ -245,28 +240,32 @@ class BaseWELL( BaseRandom ):
     #-------------------------------------------------------------------------
     @classmethod
     def _M5_pos(cls, x: int, t: int, b: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return x ^ ((x >> t) & b)
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M5_neg(cls, x: int, t: int, b: int) -> int:
-        #assert t >= 0
-        #assert t < 32
+        #assert 0 <= t < 32
         return x ^ ((x << t) & b)
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M6(cls, x: int, q: int, t: int, s: int, a: int) -> int:
-        #assert q >= 0
-        #assert q < 32
-        #assert t >= 0
-        #assert t < 32
-        #assert s >= 0
-        #assert s < 32
+        #assert 0 <= q < 32
+        #assert 0 <= t < 32
+        #assert 0 <= s < 32
         y = (((x << q) & 0xffff_ffff) ^ (x >> (32 - q))) & cls._d(s)
-        return y ^ a if x & 0x8000_0000 else y
+        return y ^ a if x & (1 << t) else y
     
+    #-------------------------------------------------------------------------
+    @classmethod
+    def _tempering(cls, x: int, w: int, b: int, c: int) -> int:
+        #assert 0 <= w < 32
+        #assert 0 <= b <= 0xffff_ffff
+        #assert 0 <= c <= 0xffff_ffff
+        z = (x >> w) << w
+        z = z ^ (((z << 7) & 0xffff_ffff) & b)
+        return z ^ (((z << 15) & 0xffff_ffff) & c)
 
 #=====   end of module   basewell.py   =======================================
