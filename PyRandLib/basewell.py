@@ -264,7 +264,7 @@ class BaseWELL( BaseRandom ):
         #assert 0 <= w < 32
         #assert 0 <= b <= 0xffff_ffff
         #assert 0 <= c <= 0xffff_ffff
-        z = (x >> w) << w
+        z = ((x << (32-w)) & 0xffff_ffff) >> (32 - w)
         z = z ^ (((z << 7) & 0xffff_ffff) & b)
         return z ^ (((z << 15) & 0xffff_ffff) & c)
 
