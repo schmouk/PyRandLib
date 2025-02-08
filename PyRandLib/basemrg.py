@@ -61,9 +61,9 @@ class BaseMRG( BaseRandom ):
     Example:
     
       rand = BaseMRG()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
     Inheriting classes have to define class attributes '_LIST_SIZE' and '_MODULO'. See 
     MRGRand287 for an example.

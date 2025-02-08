@@ -53,9 +53,9 @@ class BaseLCG( BaseRandom ):
 
     Furthermore this class is callable:
       rand = BaseLCG()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 

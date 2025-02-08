@@ -59,9 +59,9 @@ class FastRand32( BaseLCG ):
       
     Furthermore this class is callable:
       rand = FastRand32()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand32()

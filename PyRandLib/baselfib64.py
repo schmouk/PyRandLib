@@ -66,9 +66,9 @@ class BaseLFib64( BaseRandom ):
     Example:
     
       rand = BaseLFib()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
     Inheriting classes have to define class attribute '_LIST_SIZE'.  See LFib78 for an
     example.

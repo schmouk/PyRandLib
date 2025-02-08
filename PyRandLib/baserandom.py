@@ -24,7 +24,7 @@ SOFTWARE.
 from random import Random
 from typing import Any, List, Tuple, Union
 
-from .types import Numerical, SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================

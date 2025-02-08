@@ -34,9 +34,9 @@ class BaseWELL( BaseRandom ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated   Long-period   Linear   Generators    (WELLsGs)   uses   linear 
-    recurrence based on primitive characteristic polynomials associated with left- and 
-    right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equilibrated Long-period Linear Generators (WELLsGs)  use  linear  recurrence
+    based  on  primitive  characteristic  polynomials associated with left- and right- 
+    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 
@@ -46,6 +46,15 @@ class BaseWELL( BaseRandom ):
     numbers generators rather than LCG ones for serious simulation applications.
     Furthermore, WELLs have proven their great ability  to  very  fastly  escape  from 
     zeroland.
+
+    Notice: the algorithm in its 4 different versions has been coded here as a  direct 
+    implementation  of  their  descriptions in the initial paper "Improved Long-Period
+    Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
+    L’ECUYER (Université de Montréal) and MAKOTO MATSUMOTO (Hiroshima University),  in
+    ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.
+    (see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
+    So,  only minimalist optimization has been coded,  with  the  aim  at  easing  the 
+    verification of its proper implementation.
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
     computation time and 16 integers memory little consumption.
@@ -53,16 +62,16 @@ class BaseWELL( BaseRandom ):
     computation time and 32 integers memory consumption.
     See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497c  for a very large period (2^44497,  i.e. 15.1e+13466) with  similar 
+    See Well44497c for a very large period (2^44497,  i.e. 15.1e+13466)  with  similar 
     computation time but use of even more memory space (1,391 integers).
     
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
       rand = BaseWell()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
     Inheriting classes have to define class attributes '_LIST_SIZE'.  See Well512a for 
     an example.
