@@ -21,9 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom import BaseRandom
-from .fastrand32 import FastRand32
-from .types      import SeedStateType, StateType
+from .baserandom       import BaseRandom
+from .fastrand32       import FastRand32
+from .annotation_types import SeedStateType, StateType
 
 
 #=============================================================================

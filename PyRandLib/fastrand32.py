@@ -23,8 +23,8 @@ SOFTWARE.
 #=============================================================================
 import time
 
-from .baselcg import BaseLCG
-from .types   import Numerical
+from .baselcg          import BaseLCG
+from .annotation_types import Numerical
 
 
 #=============================================================================

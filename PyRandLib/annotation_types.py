@@ -28,6 +28,6 @@ StateType     = Union[ Tuple[Numerical], List[Numerical], Tuple[List[Numerical],
 SeedStateType = Union[ Numerical, StateType ]
 
 
-#=====   end of   PyRandLib.types   ==========================================
+#=====   end of   PyRandLib.annotation_types   ===============================
 
-# type: ignore  (just to avoid boring pylance related error checking)
+# type: ignore  (this comment line is just to avoid boring pylance related error checking)
