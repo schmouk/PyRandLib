@@ -57,7 +57,7 @@ class MRGRand287( BaseMRG ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
