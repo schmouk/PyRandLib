@@ -107,7 +107,7 @@ class FastRand32( BaseLCG ):
         Returned values are within [0.0, 1.0).
         """
         self._value = (69069 * self._value + 1) & 0xffff_ffff
-        return self._value / 4_294_967_296.0
+        return self._value * 2.3283064365386963e-10  # / 4_294_967_296.0
             
  
     #------------------------------------------------------------------------=

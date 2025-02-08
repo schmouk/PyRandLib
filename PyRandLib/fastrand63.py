@@ -97,7 +97,7 @@ class FastRand63( BaseLCG ):
         Returned values are within [0.0, 1.0).
         """
         self._value = (9_219_741_426_499_971_445 * self._value + 1) & 0x7fff_ffff_ffff_ffff
-        return self._value / 9_223_372_036_854_775_808.0
+        return self._value * 1.0842021724855044e-19  # / 9_223_372_036_854_775_808.0
             
  
     #------------------------------------------------------------------------=
