@@ -132,7 +132,7 @@ class LFib1340( BaseLFib64 ):
         self._index = (self._index+1) % LFib1340._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue * 5.421010862427522e-20  # / 18_446_744_073_709_551_616.0
+        return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
 
  
 #=====   end of module   lfib1340.py   ======================================
