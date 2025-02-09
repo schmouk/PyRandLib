@@ -34,9 +34,9 @@ class BaseWELL( BaseRandom ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated Long-period Linear Generators (WELLsGs)  use  linear  recurrence
-    based  on  primitive  characteristic  polynomials associated with left- and right- 
-    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equilibrated Long-period Linear Generators (WELL) use linear recurrence based 
+    on  primitive  characteristic  polynomials associated with left- and right- shifts 
+    and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 
@@ -244,18 +244,21 @@ class BaseWELL( BaseRandom ):
     #-------------------------------------------------------------------------
     @classmethod
     def _M4(cls, x: int, a: int) -> int:
-        return x >> 1 if x & 0x8000_0000 else x >> 1
+        #assert 0 <= a <= 0xffff_ffff
+        return x >> 1 ^ a if x & 0x8000_0000 else x >> 1
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M5_pos(cls, x: int, t: int, b: int) -> int:
         #assert 0 <= t < 32
+        #assert 0 <= b <= 0xffff_ffff
         return x ^ ((x >> t) & b)
 
     #-------------------------------------------------------------------------
     @classmethod
     def _M5_neg(cls, x: int, t: int, b: int) -> int:
         #assert 0 <= t < 32
+        #assert 0 <= b <= 0xffff_ffff
         return x ^ ((x << t) & b)
 
     #-------------------------------------------------------------------------
@@ -277,4 +280,33 @@ class BaseWELL( BaseRandom ):
         z = z ^ (((z << 7) & 0xffff_ffff) & b)
         return z ^ (((z << 15) & 0xffff_ffff) & c)
 
+    #-------------------------------------------------------------------------
+    @property
+    def _a1(self):
+        return 0xda44_2d24
+    
+    @property
+    def _a2(self):
+        return 0xd3e4_3ffd
+    
+    @property
+    def _a3(self):
+        return 0x8bdc_b91e
+    
+    @property
+    def _a4(self):
+        return 0x86a9_d87e
+    
+    @property
+    def _a5(self):
+        return 0xa8c2_96d1
+    
+    @property
+    def _a6(self):
+        return 0x5d6b_45cc
+    
+    @property
+    def _a7(self):
+        return 0xb729_fcec
+    
 #=====   end of module   basewell.py   =======================================
