@@ -89,8 +89,8 @@ class LFib1340( BaseLFib64 ):
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
+    We give you here below a copy of the table of tests for the LFibs that have 
+    been implemented in PyRandLib,  as provided in paper "TestU01, ..."  -  see
     file README.md.
 
  | PyRabndLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
@@ -108,12 +108,12 @@ class LFib1340( BaseLFib64 ):
     should definitively pass.
     """
 
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     # 'protected' constant
     _LIST_SIZE = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         

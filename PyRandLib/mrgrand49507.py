@@ -79,9 +79,8 @@ class MRGRand49507( BaseMRG ):
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    We give you here below a copy of the table of tests for the MRGs  that  have  been
+    implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
  | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -97,13 +96,13 @@ class MRGRand49507( BaseMRG ):
     should definitively pass.
     """    
     
-    #=========================================================================
+    #-------------------------------------------------------------------------
     # 'protected' constant
     _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
     _MODULO    = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
-    #=========================================================================
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         

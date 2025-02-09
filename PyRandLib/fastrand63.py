@@ -90,7 +90,7 @@ class FastRand63( BaseLCG ):
     should definitively pass.
     """
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
@@ -100,7 +100,7 @@ class FastRand63( BaseLCG ):
         return self._value * 1.0842021724855044e-19  # / 9_223_372_036_854_775_808.0
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         

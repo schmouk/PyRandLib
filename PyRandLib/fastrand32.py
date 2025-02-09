@@ -90,7 +90,7 @@ class FastRand32( BaseLCG ):
     should definitively pass.
     """
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def __init__(self, _seed: Numerical = None) -> None:
         """Constructor.
         
@@ -100,7 +100,7 @@ class FastRand32( BaseLCG ):
         super().__init__( _seed ) # this call creates attribute self._value and sets it
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
@@ -110,7 +110,7 @@ class FastRand32( BaseLCG ):
         return self._value * 2.3283064365386963e-10  # / 4_294_967_296.0
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         
