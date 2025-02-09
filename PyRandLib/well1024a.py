@@ -46,16 +46,16 @@ class Well1024a( BaseWELL ):
     zeroland.
 
     Notice: the algorithm in its Well1024a version has been coded  here  as  a  direct 
-    implementation  of  their  descriptions in the initial paper "Improved Long-Period
+    implementation  of  its  descriptions in the initial paper:  "Improved Long-Period
     Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
-    L’ECUYER (Université de Montréal) and MAKOTO MATSUMOTO (Hiroshima University),  in
-    ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.
+    L'ECUYER (Université de Montréal) and Makoto MATSUMOTO (Hiroshima University),  in
+    ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1-16.
     (see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
-    So,  only minimalist optimization has been coded,  with  the  aim  at  easing  the 
+    As such,  only minimalist optimization has been coded,  with the aim at easing the 
     verification of its proper implementation.
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
-    computation time and 16 integers memory little consumption.
+    computation time and 16 integers memory consumption.
     See Well1024a for a longer period WELL-Generator  (2^1024,  i.e. 2.68e+308),  same 
     computation time and 32 integers memory consumption.
     See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
@@ -70,7 +70,7 @@ class Well1024a( BaseWELL ):
       print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
     Notice that for simulating the roll of a dice you should program:
-      diceRoll = MRGRand287()
+      diceRoll = Well1024a()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Such a programming is an accelerated while still robust emulation of the inherited 
@@ -87,11 +87,13 @@ class Well1024a( BaseWELL ):
  | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | Well512a         | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well19937c (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497b       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
-    (1)The Well19937b generator provided with library PyRandLib implements the
-    Well19937a algorithm augmented with an associated tempering algorithm.
+    (1)The Well19937c generator provided with library PyRandLib implements the
+    Well19937a  algorithm  augmented  with  an associated tempering algorithm.
+    This should very slightly slow down its CPU  performance  while  enhancing 
+    its pseudo-randomness quality, as measured by TestU01.
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -103,7 +105,7 @@ class Well1024a( BaseWELL ):
         
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 16     # this Well1024a PRNG is based on a suite containing 16 integers
+    _LIST_SIZE = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (23-bits long each)
             
  
     #-------------------------------------------------------------------------
@@ -115,13 +117,16 @@ class Well1024a( BaseWELL ):
         i = self._index
         i_1 = (i - 1) & 0x1f
 
-        z0 = self._list[i_1]  # notice:  all blocks of bits in the internal state are 32 bits wide, which leads
-                              # to a great simplification for the implementation of the generic WELL algorithm.
+        z0 = self._list[i_1]
+            # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
+            # simplification for the implementation of the generic WELL algorithm when evaluating z0.
         z1 = self._list[i] ^ self._M3_pos(self._list[(i + 3) & 0x1f], 8)
         z2 = self._M3_neg(self._list[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._list[(i + 10) & 0x1f], 14)
         
         self._list[i] = z1 ^ z2
         self._list[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
+            # notice: the last term of the above equation in the WELL generic algorithm is, for its Well1024a
+            # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 
         self._index = i_1
         return self._list[i] * 2.328_306_436_538_696_289_062_5e-10
