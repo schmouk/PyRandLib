@@ -203,12 +203,6 @@ class BaseWELL( BaseRandom ):
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _d(s: int) -> int:
-        #assert 0 <= s < 32
-        return 0xffff_ffff ^ (1 << s)
-
-    #-------------------------------------------------------------------------
-    @classmethod
     def _M0(cls, x: int = None) -> int:
         return 0
  
@@ -271,6 +265,12 @@ class BaseWELL( BaseRandom ):
         y = (((x << q) & 0xffff_ffff) ^ (x >> (32 - q))) & cls._d(s)
         return y ^ a if x & (1 << t) else y
     
+    #-------------------------------------------------------------------------
+    @classmethod
+    def _d(s: int) -> int:
+        #assert 0 <= s < 32
+        return 0xffff_ffff ^ (1 << s)
+
     #-------------------------------------------------------------------------
     @classmethod
     def _tempering(cls, x: int, b: int, c: int) -> int:
