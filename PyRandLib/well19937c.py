@@ -60,7 +60,7 @@ class Well19937c( BaseWELL ):
     computation time and 32 integers memory consumption.
     See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497c for a very large period (2^44497,  i.e. 15.1e+13466)  with  similar 
+    See Well44497c for a very large period (2^44497,  i.e. 1.51e+13466)  with  similar 
     computation time but use of even more memory space (1,391 integers).
     
     Furthermore, this class is callable:
@@ -128,9 +128,9 @@ class Well19937c( BaseWELL ):
         z3 = z1 ^ z2
 
         self._list[i] = z3
-        self._list[i_1] = z0 ^ self._M3_neg(z1, 9) ^ self._M2_neg(z2, 21) ^ self._M3_pos(z3, 21
+        self._list[i_1] = z0 ^ self._M3_neg(z1, 9) ^ self._M2_neg(z2, 21) ^ self._M3_pos(z3, 21)
         self._index = i_1
-        
+
         return self._tempering(z3, 0xe46e1700, 0x9b868000) * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
 
 
