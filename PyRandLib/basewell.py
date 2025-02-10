@@ -249,17 +249,17 @@ class BaseWELL( BaseRandom ):
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _M5_pos(cls, x: int, t: int, b: int) -> int:
+    def _M5_pos(cls, x: int, t: int, a: int) -> int:
         #assert 0 <= t < 32
         #assert 0 <= b <= 0xffff_ffff
-        return x ^ ((x >> t) & b)
+        return x ^ ((x >> t) & a)
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _M5_neg(cls, x: int, t: int, b: int) -> int:
+    def _M5_neg(cls, x: int, t: int, a: int) -> int:
         #assert 0 <= t < 32
-        #assert 0 <= b <= 0xffff_ffff
-        return x ^ ((x << t) & b)
+        #assert 0 <= a <= 0xffff_ffff
+        return x ^ ((x << t) & a)
 
     #-------------------------------------------------------------------------
     @classmethod
@@ -267,16 +267,19 @@ class BaseWELL( BaseRandom ):
         #assert 0 <= q < 32
         #assert 0 <= t < 32
         #assert 0 <= s < 32
+        #assert 0 <= a <= 0xffff_ffff
         y = (((x << q) & 0xffff_ffff) ^ (x >> (32 - q))) & cls._d(s)
         return y ^ a if x & (1 << t) else y
     
     #-------------------------------------------------------------------------
     @classmethod
-    def _tempering(cls, x: int, w: int, b: int, c: int) -> int:
-        #assert 0 <= w < 32
+    def _tempering(cls, x: int, b: int, c: int) -> int:
         #assert 0 <= b <= 0xffff_ffff
         #assert 0 <= c <= 0xffff_ffff
-        z = ((x << (32-w)) & 0xffff_ffff) >> (32 - w)
+        #assert 0 <= w <= 32
+        # z = ((z << (32 - w)) & 0xffff_ffff) >> (32 - w)
+            # notice: the generic algorithm truncs x on w-bits. All of the implemented
+            # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
         z = z ^ (((z << 7) & 0xffff_ffff) & b)
         return z ^ (((z << 15) & 0xffff_ffff) & c)
 
@@ -307,6 +310,6 @@ class BaseWELL( BaseRandom ):
     
     @property
     def _a7(self):
-        return 0xb729_fcec
+        return 0xb729_fcec#
     
 #=====   end of module   basewell.py   =======================================
