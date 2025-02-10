@@ -27,7 +27,7 @@ from .basewell import BaseWELL
 class Well1024a( BaseWELL ):
     """
     Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
-    Long-period Linear generator with a large period (2^512, i.e. 1.34e+154).
+    Long-period Linear generator with a large period (2^1024, i.e. 2.68e+308).
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker
@@ -105,7 +105,7 @@ class Well1024a( BaseWELL ):
         
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (23-bits long each)
+    _LIST_SIZE = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (32-bits wide each)
             
  
     #-------------------------------------------------------------------------
@@ -121,15 +121,18 @@ class Well1024a( BaseWELL ):
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
         z1 = self._list[i] ^ self._M3_pos(self._list[(i + 3) & 0x1f], 8)
+            # notice: the transformation applied to self._list[i] for Well1024a
+            # is the identity which leads to simplification also
         z2 = self._M3_neg(self._list[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._list[(i + 10) & 0x1f], 14)
+        z3 = z1 ^ z2
         
-        self._list[i] = z1 ^ z2
+        self._list[i] = z3
         self._list[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well1024a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 
         self._index = i_1
-        return self._list[i] * 2.328_306_436_538_696_289_062_5e-10
+        return z3 * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
 
 
 #=====   end of module   well1024a.py   ======================================
