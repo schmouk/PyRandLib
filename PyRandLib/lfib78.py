@@ -123,7 +123,7 @@ class LFib78( BaseLFib64 ):
             k5 += LFib78._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k5] + self._list[self._index]) & 18_446_744_073_709_551_615
+        myValue = (self._list[k5] + self._list[self._index]) & 0xffff_ffff_ffff_ffff
         self._list[self._index] = myValue
         
         # next index

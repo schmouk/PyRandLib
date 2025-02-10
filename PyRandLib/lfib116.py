@@ -124,14 +124,14 @@ class LFib116( BaseLFib64 ):
             k24 += LFib116._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k24] + self._list[self._index]) & 18_446_744_073_709_551_615
+        myValue = (self._list[k24] + self._list[self._index]) & 0xffff_ffff_ffff_ffff
         self._list[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % LFib116._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue * 5.421010862427522e-20  # / 18_446_744_073_709_551_616.0
+        return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
 
  
 #=====   end of module   lfib116.py   ========================================

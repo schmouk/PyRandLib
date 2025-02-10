@@ -121,6 +121,6 @@ class MRGRand49507( BaseMRG ):
         self._index = (self._index+1) % MRGRand49507._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue * 4.656612875245797e-10  # / 2_147_483_647.0
+        return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0
  
 #=====   end of module   mrgrand49507.py   ===================================
