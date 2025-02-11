@@ -267,7 +267,7 @@ class BaseWELL( BaseRandom ):
     
     #-------------------------------------------------------------------------
     @classmethod
-    def _d(s: int) -> int:
+    def _d(cls, s: int) -> int:
         #assert 0 <= s < 32
         return 0xffff_ffff ^ (1 << s)
 
@@ -280,6 +280,7 @@ class BaseWELL( BaseRandom ):
         # z = ((z << (32 - w)) & 0xffff_ffff) >> (32 - w)
             # notice: the generic algorithm truncs x on w-bits. All of the implemented
             # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
+        z = x
         z = z ^ (((z << 7) & 0xffff_ffff) & b)
         return z ^ (((z << 15) & 0xffff_ffff) & c)
 

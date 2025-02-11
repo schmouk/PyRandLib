@@ -24,7 +24,7 @@ SOFTWARE.
 from .basewell import BaseWELL
 
 #=============================================================================
-class well44497b( BaseWELL ):
+class Well44497b( BaseWELL ):
     """
     Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
     Long-period Linear generator with a large period (2^44497, i.e. 1.51e+13466).

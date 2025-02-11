@@ -262,9 +262,9 @@ class BaseRandom( Random ):
             times =  1
          
         if isinstance( _max, int ):
-            ret = [ self.randint(0, _max) for _ in range(times) ]
+            ret = [ int(_max * self.random()) for _ in range(times) ]
         elif isinstance( _max, float ):
-            ret = [ self.uniform( 0.0, _max ) for _ in range(times) ]
+            ret = [ _max * self.random() for _ in range(times) ]
         else:
             try:
                 if times == 1:
