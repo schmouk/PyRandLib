@@ -124,8 +124,8 @@ class LFib116( BaseLFib64 ):
             k24 += LFib116._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k24] + self._list[self._index]) & 0xffff_ffff_ffff_ffff
-        self._list[self._index] = myValue
+        myValue = (self._state[k24] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % LFib116._LIST_SIZE

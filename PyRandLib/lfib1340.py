@@ -125,8 +125,8 @@ class LFib1340( BaseLFib64 ):
             k861 += LFib1340._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k861] + self._list[self._index]) & 0xffff_ffff_ffff_ffff
-        self._list[self._index] = myValue
+        myValue = (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % LFib1340._LIST_SIZE

@@ -109,7 +109,7 @@ class BaseLFib64( BaseRandom ):
         """
         super().__init__( _seedState )
             # this  call  creates  the  two  attributes
-            # self._list and self._index, and sets them
+            # self._state and self._index, and sets them
             # since it internally calls self.setstate().
             
  
@@ -132,7 +132,7 @@ class BaseLFib64( BaseRandom ):
         tuple containing a list of self._LIST_SIZE integers and an 
         index in this list (index value being then in range(0,self._LIST_SIZE).
         """
-        return (self._list[:], self._index)
+        return (self._state[:], self._index)
             
  
     #------------------------------------------------------------------------=
@@ -156,19 +156,19 @@ class BaseLFib64( BaseRandom ):
             
             if count == 0:
                 self._initIndex( 0 )
-                self._initList()
+                self._initState()
                 
             elif count == 1:
                 self._initIndex( 0 )
-                self._initList( _seedState[0] )
+                self._initState( _seedState[0] )
                 
             else:
                 self._initIndex( _seedState[1] )
-                self._list = _seedState[0][:]
+                self._state = _seedState[0][:]
                 
         except:
             self._initIndex( 0 )
-            self._initList( _seedState )
+            self._initState( _seedState )
                        
 
     #------------------------------------------------------------------------=
@@ -182,7 +182,7 @@ class BaseLFib64( BaseRandom ):
                        
  
     #------------------------------------------------------------------------=
-    def _initList(self, _initialSeed: StateType = None) -> None:
+    def _initState(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -191,7 +191,7 @@ class BaseLFib64( BaseRandom ):
         current local time value is used as initial seed value.
         """
         myRand = FastRand32( _initialSeed )
-        self._list = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._LIST_SIZE) ]        
+        self._state = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._LIST_SIZE) ]        
 
 #=====   end of module   baselfib64.py   =====================================
 

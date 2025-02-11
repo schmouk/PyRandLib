@@ -114,8 +114,8 @@ class MRGRand49507( BaseMRG ):
             k7 += MRGRand49507._LIST_SIZE
         
         # then evaluates current value
-        myValue = (-67_108_992 * (self._list[k7] + self._list[self._index])) % 2_147_483_647
-        self._list[self._index] = myValue
+        myValue = (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % MRGRand49507._LIST_SIZE

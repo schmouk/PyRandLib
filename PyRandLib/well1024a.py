@@ -117,17 +117,17 @@ class Well1024a( BaseWELL ):
         i = self._index
         i_1 = (i - 1) & 0x1f
 
-        z0 = self._list[i_1]
+        z0 = self._state[i_1]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
-        z1 = self._list[i] ^ self._M3_pos(self._list[(i + 3) & 0x1f], 8)
-            # notice: the transformation applied to self._list[i] for Well1024a
+        z1 = self._state[i] ^ self._M3_pos(self._state[(i + 3) & 0x1f], 8)
+            # notice: the transformation applied to self._state[i] for Well1024a
             # is the identity which leads to simplification also
-        z2 = self._M3_neg(self._list[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._list[(i + 10) & 0x1f], 14)
+        z2 = self._M3_neg(self._state[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._state[(i + 10) & 0x1f], 14)
         z3 = z1 ^ z2
         
-        self._list[i] = z3
-        self._list[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
+        self._state[i] = z3
+        self._state[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well1024a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 

@@ -122,13 +122,13 @@ class Well19937c( BaseWELL ):
         else:
             i_1, i_2 = 623, 622
 
-        z0 = (self._list[i_1] & 0x0000_0001) ^ (self._list[i_2] & 0xffff_fffe)
-        z1 = self._M3_neg(self._list[i], 25) ^ self._M3_pos(self._list[(i + 70) % 624], 27)
-        z2 = self._M2_pos(self._list[(i + 179) % 624], 19) ^ self._M3_pos(self._list[(i + 449) % 624], 1)
+        z0 = (self._state[i_1] & 0x0000_0001) ^ (self._state[i_2] & 0xffff_fffe)
+        z1 = self._M3_neg(self._state[i], 25) ^ self._M3_pos(self._state[(i + 70) % 624], 27)
+        z2 = self._M2_pos(self._state[(i + 179) % 624], 19) ^ self._M3_pos(self._state[(i + 449) % 624], 1)
         z3 = z1 ^ z2
 
-        self._list[i] = z3
-        self._list[i_1] = z0 ^ self._M3_neg(z1, 9) ^ self._M2_neg(z2, 21) ^ self._M3_pos(z3, 21)
+        self._state[i] = z3
+        self._state[i_1] = z0 ^ self._M3_neg(z1, 9) ^ self._M2_neg(z2, 21) ^ self._M3_pos(z3, 21)
         self._index = i_1
 
         return self._tempering(z3, 0xe46e1700, 0x9b868000) * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
