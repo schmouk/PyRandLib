@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -67,9 +65,9 @@ class MRGRand1457( BaseMRG ):
       
     Furthermore this class is callable:
       rand = MRGRand1457()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Please notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand1457()
@@ -81,9 +79,8 @@ class MRGRand1457( BaseMRG ):
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    We give you here below a copy of the table of tests for the MRGs  that  have  been
+    implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
  | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -100,13 +97,13 @@ class MRGRand1457( BaseMRG ):
     """
     
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     # 'protected' constant
     _LIST_SIZE = 47         # this 'DX-47-3' MRG is based on a suite containing 47 integers
     _MODULO    = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
 
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
@@ -122,14 +119,14 @@ class MRGRand1457( BaseMRG ):
             k24 += MRGRand1457._LIST_SIZE
         
         # then evaluates current value
-        myValue = (67633152 * (self._list[k1] + self._list[k24] + self._list[self._index]) ) % 2_147_483_647
-        self._list[self._index] = myValue
+        myValue = (67633152 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index + 1) % MRGRand1457._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 2_147_483_647.0
+        return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0
 
 
 #=====   end of module   mrgrand1457.py   ====================================

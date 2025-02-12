@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -25,8 +23,8 @@ SOFTWARE.
 #=============================================================================
 import time
 
-from .baselcg import BaseLCG
-from .types   import Numerical
+from .baselcg          import BaseLCG
+from .annotation_types import Numerical
 
 
 #=============================================================================
@@ -37,7 +35,7 @@ class FastRand63( BaseLCG ):
     time computation.
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -61,9 +59,9 @@ class FastRand63( BaseLCG ):
       
     Furthermore this class is callable:
       rand = FastRand63()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand63()
@@ -92,17 +90,17 @@ class FastRand63( BaseLCG ):
     should definitively pass.
     """
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
         Returned values are within [0.0, 1.0).
         """
         self._value = (9_219_741_426_499_971_445 * self._value + 1) & 0x7fff_ffff_ffff_ffff
-        return self._value / 9_223_372_036_854_775_808.0
+        return self._value * 1.084_202_172_485_504_434_007_453e-19  # / 9_223_372_036_854_775_808.0
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         
@@ -120,9 +118,9 @@ class FastRand63( BaseLCG ):
                 _state = -_state
             
             if _state >= 1.0:
-                self._value = int(_state+0.5) & 0x7fff_ffff_ffff_ffff
+                self._value = int(_state + 0.5) & 0x7fff_ffff_ffff_ffff
             else:
-                self._value = int(_state*0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
+                self._value = int(_state * 0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
         
         else:
             t = int(time.time() * 1000.0)

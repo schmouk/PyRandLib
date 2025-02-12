@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -23,9 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom import BaseRandom
-from .fastrand32 import FastRand32
-from .types      import SeedStateType, StateType
+from .baserandom       import BaseRandom
+from .fastrand32       import FastRand32
+from .annotation_types import SeedStateType, StateType
 
 
 #=============================================================================
@@ -34,7 +32,7 @@ class BaseMRG( BaseRandom ):
     
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -63,15 +61,15 @@ class BaseMRG( BaseRandom ):
     Example:
     
       rand = BaseMRG()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
     Inheriting classes have to define class attributes '_LIST_SIZE' and '_MODULO'. See 
     MRGRand287 for an example.
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
+    We give you here below a copy of the table of tests for the MRGs that have 
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
@@ -105,7 +103,7 @@ class BaseMRG( BaseRandom ):
         """
         super().__init__( _seedState )
             # this  call  creates  the  two  attributes
-            # self._list and self._index, and sets them
+            # self._state and self._index, and sets them
             # since it internally calls self.setstate().
             
  
@@ -128,7 +126,7 @@ class BaseMRG( BaseRandom ):
         tuple containing a list of self._LIST_SIZE integers and an 
         index in this list (index value being then in range(0,self._LIST_SIZE).
         """
-        return (self._list[:], self._index)
+        return (self._state[:], self._index)
             
  
     #------------------------------------------------------------------------=
@@ -152,19 +150,19 @@ class BaseMRG( BaseRandom ):
             
             if count == 0:
                 self._initIndex( 0 )
-                self._initList()
+                self._initState()
                 
             elif count == 1:
                 self._initIndex( 0 )
-                self._initList( _seedState[0] )
+                self._initState( _seedState[0] )
                 
             else:
                 self._initIndex( _seedState[1] )
-                self._list = _seedState[0][:]
+                self._state = _seedState[0][:]
                 
         except:
             self._initIndex( 0 )
-            self._initList( _seedState )
+            self._initState( _seedState )
                        
  
     #------------------------------------------------------------------------=
@@ -178,7 +176,7 @@ class BaseMRG( BaseRandom ):
                        
  
     #------------------------------------------------------------------------=
-    def _initList(self, _initialSeed: StateType = None) -> None:
+    def _initState(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -188,7 +186,7 @@ class BaseMRG( BaseRandom ):
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
         myRand = FastRand32( _initialSeed )
-        self._list = [ int(myRand(self._MODULO+1)) for _ in range(self._LIST_SIZE) ]
+        self._state = [ int(myRand(self._MODULO+1)) for _ in range(self._LIST_SIZE) ]
 
  
 #=====   end of module   basemrg.py   ========================================

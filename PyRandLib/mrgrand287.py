@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -33,7 +31,7 @@ class MRGRand287( BaseMRG ):
     Generator with a long period (2.49e+86).
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs)  use  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -59,7 +57,7 @@ class MRGRand287( BaseMRG ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -80,25 +78,24 @@ class MRGRand287( BaseMRG ):
     computation  time  too  (31-bits  modulus)  but  use  of  more memory space (1_597 
     integers).
       
-    Furthermore this class is callable:
+    Furthermore, this class is callable:
       rand = MRGRand287()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand287()
       print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
-    Such a programming is an accelerated while still robust emulation of  the 
-    inherited methods:
+    Such a programming is an accelerated while still robust emulation of the inherited 
+    methods:
       - random.Random.randint(self,1,6) and 
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    We give you here below a copy of the table of tests for the MRGs  that  have  been
+    implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
  | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -114,19 +111,19 @@ class MRGRand287( BaseMRG ):
     should definitively pass.
     """
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 256        # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
+    _LIST_SIZE = 256           # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
     _MODULO    = 4_294_967_295 # i.e. 0xffff_ffff, or (1<<32)-1, the modulo for DX-47-3 MRG
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
         Returned values are within [0.0, 1.0).
         """
-        #The Marsa-LIBF4 version uses the recurrence
+        # The Marsa-LIBF4 version uses the recurrence
         #    x(i) = (x(i-55) + x(i-119) + x(i-179) + x(i-256)) mod 2^32
 
         # evaluates indexes in suite for the i-55, i-119, i-179 (and i-256) -th values
@@ -143,13 +140,14 @@ class MRGRand287( BaseMRG ):
             k179 += MRGRand287._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._list[k55] + self._list[k119] + self._list[k179] + self._list[self._index]) % 4_294_967_295
-        self._list[self._index] = myValue
+        myValue = (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) % 4_294_967_295
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % self._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 4_294_967_295.0
+        return  myValue * 2.328_306_436_538_696_289_062_5e-10  # / 4_294_967_296.0
+
  
 #=====   end of module   mrgrand287.py   ==================================

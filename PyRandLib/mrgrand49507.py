@@ -1,8 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -23,11 +20,11 @@ OUT  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-#----------------------------------------------------------------------------=
+#=============================================================================
 from .basemrg import BaseMRG
 
 
-#----------------------------------------------------------------------------=
+#=============================================================================
 class MRGRand49507( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 31-bits Multiple Recursive 
@@ -68,9 +65,9 @@ class MRGRand49507( BaseMRG ):
       
     Furthermore this class is callable:
       rand = MRGRand49507()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand49507()
@@ -82,9 +79,8 @@ class MRGRand49507( BaseMRG ):
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    We give you here below a copy of the table of tests for the MRGs  that  have  been
+    implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
  | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -100,13 +96,13 @@ class MRGRand49507( BaseMRG ):
     should definitively pass.
     """    
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     # 'protected' constant
     _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
     _MODULO    = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def random(self) -> float:
         """This is the core of the pseudo-random generator.
         
@@ -118,13 +114,13 @@ class MRGRand49507( BaseMRG ):
             k7 += MRGRand49507._LIST_SIZE
         
         # then evaluates current value
-        myValue = (-67108992 * (self._list[k7] + self._list[self._index])) % 2_147_483_647
-        self._list[self._index] = myValue
+        myValue = (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % MRGRand49507._LIST_SIZE
         
         # then returns float value within [0.0, 1.0)
-        return  myValue / 2_147_483_647.0
+        return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0
  
-#----=   end of module   mrgrand49507.py   ----------------------------------=
+#=====   end of module   mrgrand49507.py   ===================================

@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -32,7 +30,7 @@ class BaseLCG( BaseRandom ):
     
     This module is part of library PyRandLib.
 
-    Copyright (c) 2016-2021 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -55,9 +53,9 @@ class BaseLCG( BaseRandom ):
 
     Furthermore this class is callable:
       rand = BaseLCG()
-      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
+      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 
