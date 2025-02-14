@@ -326,7 +326,7 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
 
 
-### Well512a  --  2^512 periodicity
+### Well512a  -  2^512 periodicity
 
 **Well512a** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
@@ -336,7 +336,7 @@ Meanwhile, it should not be able to pass some of the *crush* and *big-crush* tes
 
 
 
-### Well1024a  --  2^1024 periodicity
+### Well1024a  -  2^1024 periodicity
 
 **Well1024a** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
@@ -346,7 +346,7 @@ Meanwhile, it does not pass 4 of the *crush* and 4 of the *big-crush* tests of T
 
 
 
-### Well199937b  --  2^19937 periodicity
+### Well199937b  -  2^19937 periodicity
 
 **Well199937b** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
@@ -356,7 +356,7 @@ Meanwhile, it does not pass 2 of the *crush* and 2 of the *big-crush* tests of T
 
 
 
-### Well44497c  --  2^44497 periodicity
+### Well44497c  -  2^44497 periodicity
 
 **WellWell44497c** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
