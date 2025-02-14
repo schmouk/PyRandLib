@@ -75,7 +75,14 @@ We give you here below a copy of the resulting table for the PRGs that  havebeen
  | LFibRand116      | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
  | LFibRand668      | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
  | LFibRand1340     | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | Well512a         | not available                      |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
+
+    (1)The Well19937b generator provided with library PyRandLib implements the
+    Well19937a algorithm augmented with an associated tempering algorithm.
 
 
 
@@ -239,7 +246,7 @@ recurrence:
 
 
 
-### MRGRand1457  -  2^1457 periodicity
+### MRGRand1457  -  2^1,457 periodicity
 
 **MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with
 a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers).
@@ -250,9 +257,9 @@ The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random 
 
 
 
-### MRGRand49507  -  2^49507 periodicity
+### MRGRand49507  -  2^49,507 periodicity
 
-**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRGs that are implemented in **PyRandLib** (2^49507, i.e. 1.2e+14903) with low computation time also (same as for MRGRand287) but use of much more memory space (1597 integers).
+**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers).
      
 The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
 
@@ -314,7 +321,7 @@ Please notice that the TestUO1 article states that the operator should be
 
 
 
-### LFibRand1340  -  2^1340 periodicity
+### LFibRand1340  -  2^1,340 periodicity
 
 **LFibRand1340** implements an LFib 64-bits generator proposed by George Marsaglia in [4]. This PRNG uses the recurrence
 
@@ -336,7 +343,7 @@ Meanwhile, it should not be able to pass some of the *crush* and *big-crush* tes
 
 
 
-### Well1024a  -  2^1024 periodicity
+### Well1024a  -  2^1,024 periodicity
 
 **Well1024a** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
@@ -346,21 +353,21 @@ Meanwhile, it does not pass 4 of the *crush* and 4 of the *big-crush* tests of T
 
 
 
-### Well199937b  -  2^19937 periodicity
+### Well199937b  -  2^19,937 periodicity
 
 **Well199937b** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^19937 - i.e. 4.32e+6001 - with short computation time and 624 integers memory consumption - just     s the Mersenne-Twister algorithm).  
+It offers a long period of value 2^19,937 - i.e. 4.32e+6,001 - with short computation time and 624 integers memory consumption - just     s the Mersenne-Twister algorithm).  
 It escapes the zeroland at a very fast pace.  
 Meanwhile, it does not pass 2 of the *crush* and 2 of the *big-crush* tests of TestU01.
 
 
 
-### Well44497c  -  2^44497 periodicity
+### Well44497c  -  2^44,497 periodicity
 
 **WellWell44497c** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^44497 - i.e. 1.51e+13466 - with short computation time and 1.391 integers memory consumption.  
+It offers a long period of value 2^44,497 - i.e. 1.51e+13,466 - with short computation time and 1.391 integers memory consumption.  
 It escapes the zeroland at a fast pace.  
 Meanwhile, it might not be able to pass a very few of the *crush* and *big-crush* tests of TestU01, while it can be expected to better behave than the Well19937b version - notice: this version of the WELL algorithm has not been tested in original TestU01 paper.
 
