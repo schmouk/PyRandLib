@@ -71,10 +71,10 @@ We give you here below a copy of the resulting table for the PRGs that  havebeen
  | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
  | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
  | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | LFibRand78       | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFibRand116      | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFibRand668      | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFibRand1340     | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
  | Well512a         | not available                      |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
