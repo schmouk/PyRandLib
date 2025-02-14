@@ -73,7 +73,7 @@ class BaseWELL( BaseRandom ):
       print( rand(a) )   # prints a pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
-    Inheriting classes have to define class attributes '_STATE_SIZE'.  See Well512a for 
+    Inheriting classes have to define class attributes '_STATE_SIZE'. See Well512a for 
     an example.
 
     Reminder:

@@ -65,8 +65,8 @@ class BaseMRG( BaseRandom ):
       print( rand(a) )   # prints a pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
-    Inheriting classes have to define class attributes '_STATE_SIZE' and '_MODULO'. See 
-    MRGRand287 for an example.
+    Inheriting classes have to define class attributes  '_STATE_SIZE'  and  '_MODULO'. 
+    See MRGRand287 for an example.
 
     Reminder:
     We give you here below a copy of the table of tests for the MRGs that have 
