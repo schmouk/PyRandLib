@@ -70,7 +70,7 @@ class BaseLFib64( BaseRandom ):
       print( rand(a) )   # prints a pseudo-random value within [0.0, a)
       print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
     
-    Inheriting classes have to define class attribute '_LIST_SIZE'.  See LFib78 for an
+    Inheriting classes have to define class attribute '_STATE_SIZE'.  See LFib78 for an
     example.
 
     Reminder:
@@ -99,10 +99,10 @@ class BaseLFib64( BaseRandom ):
         
         _seedState is either a valid state, an integer,  a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._LIST_SIZE integers and  an index in this list (index  value 
-        being  then  in range (0,self._LIST_SIZE)).  Should _seedState be 
+        self._STATE_SIZE integers and  an index in this list (index  value 
+        being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
         a sole integer or float then it  is  used  as  initial  seed  for 
-        the  random  filling  of  the  internal  list  of self._LIST_SIZE  
+        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
         integers.  Should _seedState be anything else  (e.g.  None)  then  
         the  shuffling of the local current time value is used as such an 
         initial seed.
@@ -129,8 +129,8 @@ class BaseLFib64( BaseRandom ):
         """Returns an object capturing the current internal state of the  generator.
         
         This  object  can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._LIST_SIZE integers and an 
-        index in this list (index value being then in range(0,self._LIST_SIZE).
+        tuple containing a list of self._STATE_SIZE integers and an 
+        index in this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state[:], self._index)
             
@@ -143,11 +143,11 @@ class BaseLFib64( BaseRandom ):
         getstate(), and setstate() restores the internal state of the 
         generator to what it was at the time setstate() was called.
         About valid state:  this is a tuple containing  a   list   of  
-        self._LIST_SIZE  integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._LIST_SIZE)).  Should 
+        self._STATE_SIZE  integers (31-bits) and an index in this list 
+        (index value being then in range(0,self._STATE_SIZE)).  Should 
         _seedState  be  a  sole  integer  or float then it is used as 
         initial seed for the random filling of the internal  list  of  
-        self._LIST_SIZE integers.  Should _seedState be anything else
+        self._STATE_SIZE integers.  Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
@@ -176,7 +176,7 @@ class BaseLFib64( BaseRandom ):
         """Inits the internal index pointing to the internal list.
         """
         try:
-            self._index = int( _index ) % self._LIST_SIZE
+            self._index = int( _index ) % self._STATE_SIZE
         except:
             self._index = 0
                        
@@ -191,7 +191,7 @@ class BaseLFib64( BaseRandom ):
         current local time value is used as initial seed value.
         """
         myRand = FastRand32( _initialSeed )
-        self._state = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._LIST_SIZE) ]        
+        self._state = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._STATE_SIZE) ]        
 
 #=====   end of module   baselfib64.py   =====================================
 

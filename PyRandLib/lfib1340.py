@@ -110,7 +110,7 @@ class LFib1340( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
+    _STATE_SIZE = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
             
  
     #-------------------------------------------------------------------------
@@ -122,14 +122,14 @@ class LFib1340( BaseLFib64 ):
         # evaluates indexes in suite for the i-861 and i-1279 -th values
         k861 = self._index-861
         if k861 < 0:
-            k861 += LFib1340._LIST_SIZE
+            k861 += LFib1340._STATE_SIZE
         
         # then evaluates current value
         myValue = (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % LFib1340._LIST_SIZE
+        self._index = (self._index+1) % LFib1340._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0

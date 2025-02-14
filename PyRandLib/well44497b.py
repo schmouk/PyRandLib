@@ -105,7 +105,7 @@ class Well44497b( BaseWELL ):
         
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
+    _STATE_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
             
  
     #-------------------------------------------------------------------------

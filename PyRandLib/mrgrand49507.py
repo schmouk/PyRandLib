@@ -98,8 +98,8 @@ class MRGRand49507( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
-    _MODULO    = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
+    _STATE_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
+    _MODULO     = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
     #-------------------------------------------------------------------------
@@ -111,14 +111,14 @@ class MRGRand49507( BaseMRG ):
         # evaluates indexes in suite for the i-7, i-1597 -th values
         k7 = self._index-7
         if k7 < 0:
-            k7 += MRGRand49507._LIST_SIZE
+            k7 += MRGRand49507._STATE_SIZE
         
         # then evaluates current value
         myValue = (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % MRGRand49507._LIST_SIZE
+        self._index = (self._index+1) % MRGRand49507._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0

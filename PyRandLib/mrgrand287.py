@@ -113,8 +113,8 @@ class MRGRand287( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 256           # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO    = 4_294_967_295 # i.e. 0xffff_ffff, or (1<<32)-1, the modulo for DX-47-3 MRG
+    _STATE_SIZE = 256           # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
+    _MODULO     = 4_294_967_295 # i.e. 0xffff_ffff, or (1<<32)-1, the modulo for DX-47-3 MRG
             
  
     #-------------------------------------------------------------------------
@@ -129,22 +129,22 @@ class MRGRand287( BaseMRG ):
         # evaluates indexes in suite for the i-55, i-119, i-179 (and i-256) -th values
         k55 = self._index-55
         if k55 < 0:
-            k55 += MRGRand287._LIST_SIZE
+            k55 += MRGRand287._STATE_SIZE
         
         k119 = self._index-119
         if k119 < 0:
-            k119 += MRGRand287._LIST_SIZE
+            k119 += MRGRand287._STATE_SIZE
         
         k179 = self._index-179
         if k179 < 0:
-            k179 += MRGRand287._LIST_SIZE
+            k179 += MRGRand287._STATE_SIZE
         
         # then evaluates current value
         myValue = (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) % 4_294_967_295
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % self._LIST_SIZE
+        self._index = (self._index+1) % self._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 2.328_306_436_538_696_289_062_5e-10  # / 4_294_967_296.0

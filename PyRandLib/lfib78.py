@@ -108,7 +108,7 @@ class LFib78( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 17 # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
+    _STATE_SIZE = 17 # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
             
  
     #-------------------------------------------------------------------------
@@ -120,14 +120,14 @@ class LFib78( BaseLFib64 ):
         # evaluates indexes in suite for the i-5 and i-17 -th values
         k5 = self._index-5
         if k5 < 0:
-            k5 += LFib78._LIST_SIZE
+            k5 += LFib78._STATE_SIZE
         
         # then evaluates current value
         myValue = (self._state[k5] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % LFib78._LIST_SIZE
+        self._index = (self._index+1) % LFib78._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
