@@ -62,28 +62,57 @@ In [1], every known PRNG at the time of the editing has been tested according to
 * **_crush_** is a bigger set of tests that test  more  deeply expected  random characteristics;
 * **_big crush_** is the ultimate set of difficult tests that any **good**  PRNG should definitively pass.
 
-We give you here below a copy of the resulting table for the PRGs that  havebeen implemented in **PyRandLib** plus the Mersenne twister one which is not implemented in **PyRandLib**, as provided in [1].
+We give you here below a copy of the resulting table for the PRGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.
 
  | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
  | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
- | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
  | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
  | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
  | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
  | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
  | Well512a         | not available                      |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
  | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
-    (1)The Well19937b generator provided with library PyRandLib implements the
-    Well19937a algorithm augmented with an associated tempering algorithm.
+(1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
+
+
+## CPU Performances - Times evaluation
+
+The above table provided times related to the C implementation of the specified PRNGs as measured with TestU01 [1] by the authors of the paper.  
+We provide in the table below the evaluation of times spent in calling the `__call__()` method for all PRNGs implemented in library **PyRandLib**. Then, the measured elapsed time includes the calling and returning Python mechanisms and not only the computation time of the sole algorithm code. This is the duration of interest to you since this is the main use of the library you will have. It only helps comparing the performances between the implemented PRNGs.
+
+We currently provide them as tested with Python 3.9. We will further provide them for every version of Python above 3.9. Time unit is microsecond. Tests have been run on an Intel(R) Core(TM) i5-1035G1 CPU @ 1.00 GHz, 1190 MHz, 4 cores, 8 logical processors, 64-bits, with 8 GB RAM and over Microsoft Windows 11 ed. Family.  
+The evaluation script is provided at the root of this repository: `testCPUPerfs.py`.
+
+Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environment. Measurements with next versions of Python are to come.
+
+**PyRandLib** time-64 bits:
+ | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | FastRand32       |    0.91    |             |             |             |             |        11        |     106     |   *too many*   |
+ | FastRand63       |    0.97    |             |             |             |             |         0        |       5     |       7        |
+ | LFib78           |    1.08    |             |             |             |             |         0        |       0     |       0        |
+ | LFib116          |    1.10    |             |             |             |             |         0        |       0     |       0        |
+ | LFib668          |    1.12    |             |             |             |             |         0        |       0     |       0        |
+ | LFib1340         |    1.12    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand287       |    1.41    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand1457      |    1.13    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand49507     |    1.30    |             |             |             |             |         0        |       0     |       0        |
+ | Well512a         |    2.79    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
+ | Well1024a        |    2.60    |             |             |             |             |         0        |       4     |       4        |
+ | Well19937b (1)   |    3.25    |             |             |             |             |         0        |       2     |       2        |
+ | Well44497c       |    3.69    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
+ 
+ (*missing values in empty columns are to come*)
 
 
 ## Implementation
