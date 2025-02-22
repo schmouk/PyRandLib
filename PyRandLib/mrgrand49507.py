@@ -65,13 +65,14 @@ class MRGRand49507( BaseMRG ):
       
     Furthermore this class is callable:
       rand = MRGRand49507()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand49507()
-      print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+
 
     Such a programming is an accelerated while still robust emulation of  the 
     inherited methods:
@@ -98,8 +99,8 @@ class MRGRand49507( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
-    _MODULO    = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
+    _STATE_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
+    _MODULO     = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
             
  
     #-------------------------------------------------------------------------
@@ -111,14 +112,14 @@ class MRGRand49507( BaseMRG ):
         # evaluates indexes in suite for the i-7, i-1597 -th values
         k7 = self._index-7
         if k7 < 0:
-            k7 += MRGRand49507._LIST_SIZE
+            k7 += MRGRand49507._STATE_SIZE
         
         # then evaluates current value
         myValue = (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % MRGRand49507._LIST_SIZE
+        self._index = (self._index+1) % MRGRand49507._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0

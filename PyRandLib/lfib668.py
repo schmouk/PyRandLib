@@ -73,14 +73,13 @@ class LFib668( BaseLFib64 ):
     Example:
     
       rand = LFib668()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Notice that for simulating the roll of a dice you should program:
-
       diceRoll = LFib668()
-      print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Such a programming is an accelerated while still robust emulation of  the 
     inherited methods:
@@ -94,10 +93,10 @@ class LFib668( BaseLFib64 ):
 
  | PyRabndLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | LFibRand78       | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFibRand116      | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFibRand668      | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFibRand1340     | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib78           | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFib116          | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFib668          | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib1340         | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -109,7 +108,7 @@ class LFib668( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
+    _STATE_SIZE = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
             
  
     #-------------------------------------------------------------------------
@@ -121,14 +120,14 @@ class LFib668( BaseLFib64 ):
         # evaluates indexes in suite for the i-273 and i-607 -th values
         k273 = self._index-273
         if k273 < 0:
-            k273 += LFib668._LIST_SIZE
+            k273 += LFib668._STATE_SIZE
         
         # then evaluates current value
         myValue = (self._state[k273] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % LFib668._LIST_SIZE
+        self._index = (self._index+1) % LFib668._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0

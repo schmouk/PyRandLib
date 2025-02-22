@@ -64,14 +64,14 @@ class MRGRand1457( BaseMRG ):
       random(), seed(), getstate(), and setstate().
       
     Furthermore this class is callable:
-      rand = MRGRand1457()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
-    Please notice that for simulating the roll of a dice you should program:
+    Notice that for simulating the roll of a dice you should program:
       diceRoll = MRGRand1457()
-      print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+
 
     Such a programming is an accelerated while still robust emulation of  the 
     inherited methods:
@@ -99,8 +99,8 @@ class MRGRand1457( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 47         # this 'DX-47-3' MRG is based on a suite containing 47 integers
-    _MODULO    = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
+    _STATE_SIZE = 47         # this 'DX-47-3' MRG is based on a suite containing 47 integers
+    _MODULO     = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
 
  
     #-------------------------------------------------------------------------
@@ -112,18 +112,18 @@ class MRGRand1457( BaseMRG ):
         # evaluates indexes in suite for the i-1, i-24 (and i-47) -th values
         k1  = self._index-1
         if k1 < 0:
-            k1 = MRGRand1457._LIST_SIZE - 1
+            k1 = MRGRand1457._STATE_SIZE - 1
         
         k24 = self._index-24
         if k24 < 0:
-            k24 += MRGRand1457._LIST_SIZE
+            k24 += MRGRand1457._STATE_SIZE
         
         # then evaluates current value
         myValue = (67633152 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index + 1) % MRGRand1457._LIST_SIZE
+        self._index = (self._index + 1) % MRGRand1457._STATE_SIZE
         
         # then returns float value within [0.0, 1.0)
         return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0

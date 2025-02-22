@@ -59,18 +59,13 @@ class FastRand32( BaseLCG ):
       
     Furthermore this class is callable:
       rand = FastRand32()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand32()
-      print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
-
-    Such a programming is an accelerated while still robust emulation of  the 
-    inherited methods:
-      - random.Random.randint(self,1,6) and 
-      - random.Random.randrange(self,1,7,1)
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 

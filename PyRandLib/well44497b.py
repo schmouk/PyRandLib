@@ -64,14 +64,14 @@ class Well44497b( BaseWELL ):
     computation time but use of even more memory space (1,391 integers).
     
     Furthermore, this class is callable:
-      rand = well44497b()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
-    
+      rand = Well44497b()
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
+
     Notice that for simulating the roll of a dice you should program:
-      diceRoll = well44497b()
-      print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      diceRoll = Well44497b()
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Such a programming is an accelerated while still robust emulation of the inherited 
     methods:
@@ -105,7 +105,7 @@ class Well44497b( BaseWELL ):
         
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _LIST_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
+    _STATE_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
             
  
     #-------------------------------------------------------------------------
