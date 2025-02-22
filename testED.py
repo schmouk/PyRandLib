@@ -57,7 +57,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     """
     algo_name = rnd_algo.__class__.__name__
     print('-'*(len(algo_name)+1), algo_name, '-'*(len(algo_name)+1), sep='\n')
-    print (nb_loops, "loops,", nb_entries, "entries in histogram,", "expected mean:", nb_loops // nb_entries)
+    print (nb_loops, "loops,", nb_entries, "entries in histogram,", "expected mean:", round(nb_loops / nb_entries))
 
     hist = [0]*nb_entries
 
@@ -94,19 +94,19 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
 #=============================================================================
 if __name__ == "__main__":
-    test_algo(FastRand32(),   nb_loops = 2_000_000)
-    test_algo(FastRand63(),   nb_loops = 2_000_000)
-    test_algo(LFib78(),       nb_loops = 2_000_000)
-    test_algo(LFib116(),      nb_loops = 2_000_000)
-    test_algo(LFib668(),      nb_loops = 2_000_000)
-    test_algo(LFib1340(),     nb_loops = 2_000_000)
-    test_algo(MRGRand287(),   nb_loops = 2_000_000)
-    test_algo(MRGRand1457(),  nb_loops = 2_000_000)
-    test_algo(MRGRand49507(), nb_loops = 2_000_000)
-    test_algo(Well512a(),     nb_loops = 1_500_000)
-    test_algo(Well1024a(),    nb_loops = 1_500_000)
-    test_algo(Well19937c(),   nb_entries = 2000)
-    test_algo(Well44497b(),   nb_entries = 2000)
+    test_algo(FastRand32(),   3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
+    test_algo(FastRand63(),   3217, nb_loops = 2_000_000)
+    test_algo(LFib78(),       3217, nb_loops = 2_000_000)
+    test_algo(LFib116(),      3217, nb_loops = 2_000_000)
+    test_algo(LFib668(),      3217, nb_loops = 2_000_000)
+    test_algo(LFib1340(),     3217, nb_loops = 2_000_000)
+    test_algo(MRGRand287(),   3217, nb_loops = 2_000_000)
+    test_algo(MRGRand1457(),  3217, nb_loops = 2_000_000)
+    test_algo(MRGRand49507(), 3217, nb_loops = 2_000_000)
+    test_algo(Well512a(),     3217, nb_loops = 1_500_000)
+    test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
+    test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number
+    test_algo(Well44497b(),   nb_entries = 2029)
 
 
 #=====   end of module   testED.py   =========================================

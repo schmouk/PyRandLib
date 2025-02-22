@@ -103,17 +103,15 @@ class Well512a( BaseWELL ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-        
+
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         i = self._index
         i_1 = (i - 1) & 0xf
@@ -131,7 +129,6 @@ class Well512a( BaseWELL ):
         self._state[i_1] = self._M3_neg(z0, 2) ^ self._M3_neg(z1, 18) ^ self._M2_neg(z2, 28) ^ self._M5_neg(z3, 5, self._a1)
 
         self._index = i_1
-        return z3 * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
-
+        return z3
 
 #=====   end of module   well512a.py   =======================================

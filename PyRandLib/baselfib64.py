@@ -92,8 +92,24 @@ class BaseLFib64( BaseRandom ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-    
-    #------------------------------------------------------------------------=
+
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor.
         
@@ -111,43 +127,32 @@ class BaseLFib64( BaseRandom ):
             # this  call  creates  the  two  attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
-            
- 
-    #------------------------------------------------------------------------=
-    def random(self) -> float:
-        """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
-        Inheriting classes HAVE TO IMPLEMENT this method - see LFib78
-        for an example.
-        """
-        raise NotImplementedError()
-            
- 
-    #------------------------------------------------------------------------=
+
+
+    #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
-        This  object  can be passed to setstate() to restore the state.  It is a
+        This  object can be passed to setstate() to restore the state.  It is a
         tuple containing a list of self._STATE_SIZE integers and an 
         index in this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state[:], self._index)
-            
- 
-    #------------------------------------------------------------------------=
+
+
+    #-------------------------------------------------------------------------
     def setstate(self, _seedState: StateType) -> None:
         """Restores the internal state of the generator.
         
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate() was called.
-        About valid state:  this is a tuple containing  a   list   of  
-        self._STATE_SIZE  integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)).  Should 
+        generator to what it was at the time setstate()  was  called.
+        About valid state:  this is a  tuple  containing  a  list  of 
+        self._STATE_SIZE integers (31-bits) and an index in this list 
+        (index value being then in range(0,self._STATE_SIZE)). Should 
         _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of  
-        self._STATE_SIZE integers.  Should _seedState be anything else
+        initial seed for the random filling of the internal  list  of 
+        self._STATE_SIZE integers. Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
@@ -169,9 +174,9 @@ class BaseLFib64( BaseRandom ):
         except:
             self._initIndex( 0 )
             self._initState( _seedState )
-                       
 
-    #------------------------------------------------------------------------=
+
+    #-------------------------------------------------------------------------
     def _initIndex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
@@ -179,9 +184,9 @@ class BaseLFib64( BaseRandom ):
             self._index = int( _index ) % self._STATE_SIZE
         except:
             self._index = 0
-                       
- 
-    #------------------------------------------------------------------------=
+
+
+    #-------------------------------------------------------------------------
     def _initState(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         

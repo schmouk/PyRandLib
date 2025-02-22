@@ -75,7 +75,7 @@ class BaseLCG( BaseRandom ):
     should definitively pass.
     """
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def __init__(self, _seedState: int = None) -> None:
         """Constructor. 
         
@@ -85,18 +85,7 @@ class BaseLCG( BaseRandom ):
         super().__init__( _seedState ) # this call creates attribute self._value and sets it
             
  
-    #------------------------------------------------------------------------=
-    def random(self) -> float:
-        """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
-        Inheriting classes HAVE TO IMPLEMENT this method  -  see FastRand32
-        for an example. It should use and initialize attribute self._value.
-        """
-        raise NotImplementedError()
-            
- 
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def getstate(self) -> int:
         """Returns an object capturing the current internal state of the generator.
         
@@ -106,19 +95,5 @@ class BaseLCG( BaseRandom ):
         inheriting class.
         """
         return self._value
-            
- 
-    #------------------------------------------------------------------------=
-    def setstate(self, _state: int) -> None:
-        """Restores the internal state of the generator.
-        
-        _state should have been obtained from a previous call to getstate(),
-        and  setstate() restores the internal state of the generator to what
-        it was at the time setstate() was called.
-        Inheriting classes HAVE TO IMPLEMENT this method  -  see  FastRand32
-        for an example. It should initialize attribute self._value.
-        """
-        raise NotImplementedError()
-
  
 #=====   end of module   baselcg.py   ========================================

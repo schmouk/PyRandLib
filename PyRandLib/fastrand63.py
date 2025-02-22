@@ -89,17 +89,31 @@ class FastRand63( BaseLCG ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    _NORMALIZE: float = 1.084_202_172_485_504_434_007_453e-19  # i.e. 1.0 / (1 << 63)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 63
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
-        self._value = (9_219_741_426_499_971_445 * self._value + 1) & 0x7fff_ffff_ffff_ffff
-        return self._value * 1.084_202_172_485_504_434_007_453e-19  # / 9_223_372_036_854_775_808.0
-            
- 
+        self._value = (0x7FF3_19FA_A77B_E975 * self._value + 1) & 0x7fff_ffff_ffff_ffff
+        return self._value
+
+
     #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.

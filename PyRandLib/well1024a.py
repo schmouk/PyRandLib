@@ -103,17 +103,15 @@ class Well1024a( BaseWELL ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-        
+
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (32-bits wide each)
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         i = self._index
         i_1 = (i - 1) & 0x1f
@@ -133,7 +131,6 @@ class Well1024a( BaseWELL ):
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 
         self._index = i_1
-        return z3 * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
-
+        return z3
 
 #=====   end of module   well1024a.py   ======================================
