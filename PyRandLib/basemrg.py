@@ -87,19 +87,18 @@ class BaseMRG( BaseRandom ):
     should definitively pass.
     """
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor.
         
-        _seedState is either a valid state, an integer, a float or None.
+        _seedState is either a valid state, an integer, a float or  None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index  value 
+        self._STATE_SIZE integers and an index in this list (index  value 
         being  then  in range(0,self._STATE_SIZE)).  Should _seedState be 
-        a  sole  integer  or  float  then  it is used as initial seed for 
-        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
-        integers.  Should _seedState  be anything else (e.g. None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        a sole integer or float then it is used as initial seed  for  the 
+        random filling of the internal list of self._STATE_SIZE integers. 
+        Should _seedState be anything else (e.g. None) then the shuffling 
+        of the local current time value is used as such an initial seed.
         """
         super().__init__( _seedState )
             # this  call  creates  the  two  attributes
@@ -107,41 +106,30 @@ class BaseMRG( BaseRandom ):
             # since it internally calls self.setstate().
             
  
-    #------------------------------------------------------------------------=
-    def random(self) -> float:
-        """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
-        Inheriting classes HAVE TO IMPLEMENT this method - see MRGRand287
-        for an example.
-        """
-        raise NotImplementedError()
-            
- 
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
-        This  object  can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE integers and an 
-        index in this list (index value being then in range(0,self._STATE_SIZE).
+        This object can be passed to setstate() to restore the state. It is a
+        tuple  containing a list of self._STATE_SIZE integers and an index in 
+        this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state[:], self._index)
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def setstate(self, _seedState: StateType) -> None:
         """Restores the internal state of the generator.
 
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate() was called.
-        About valid state:  this is a tuple containing  a   list   of  
-        self._STATE_SIZE  integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)).  Should 
+        generator to what it was at the time setstate()  was  called.
+        About valid state:  this is a  tuple  containing  a  list  of 
+        self._STATE_SIZE integers (31-bits) and an index in this list 
+        (index value being then in range(0,self._STATE_SIZE)). Should 
         _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of  
-        self._STATE_SIZE integers.  Should _seedState be anything else
+        initial seed for the random filling of the internal  list  of 
+        self._STATE_SIZE integers. Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
@@ -165,7 +153,7 @@ class BaseMRG( BaseRandom ):
             self._initState( _seedState )
                        
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def _initIndex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
@@ -175,7 +163,7 @@ class BaseMRG( BaseRandom ):
             self._index = 0
                        
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def _initState(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         

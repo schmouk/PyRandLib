@@ -110,13 +110,11 @@ class LFib1340( BaseLFib64 ):
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-861 and i-1279 -th values
         k861 = self._index-861
@@ -130,8 +128,6 @@ class LFib1340( BaseLFib64 ):
         # next index
         self._index = (self._index+1) % LFib1340._STATE_SIZE
         
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
-
+        return myValue
  
 #=====   end of module   lfib1340.py   ======================================

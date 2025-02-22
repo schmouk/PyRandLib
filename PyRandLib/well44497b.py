@@ -102,17 +102,15 @@ class Well44497b( BaseWELL ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-        
+
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         i = self._index
         if i >= 2:
@@ -131,7 +129,6 @@ class Well44497b( BaseWELL ):
         self._state[i_1] = z0 ^ self._M3_pos(z1, 20) ^ self._M6(z2, 9, 14, 5, self._a7) ^ z3
         self._index = i_1
 
-        return self._tempering(z3, 0x93dd1400, 0xfa118000) * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
+        return self._tempering(z3, 0x93dd1400, 0xfa118000)
 
-
-#=====   end of module   well512a.py   =======================================
+#=====   end of module   Well44497b.py   =====================================

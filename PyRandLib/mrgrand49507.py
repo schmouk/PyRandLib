@@ -101,13 +101,26 @@ class MRGRand49507( BaseMRG ):
     # 'protected' constant
     _STATE_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
     _MODULO     = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    _NORMALIZE: float = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 31
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-7, i-1597 -th values
         k7 = self._index-7
@@ -121,7 +134,7 @@ class MRGRand49507( BaseMRG ):
         # next index
         self._index = (self._index+1) % MRGRand49507._STATE_SIZE
         
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0
- 
+        # then returns the integer generated value
+        return  myValue
+
 #=====   end of module   mrgrand49507.py   ===================================
