@@ -32,7 +32,7 @@ from PyRandLib import *
 def test_perf(prng_class_name: str, seed_value: int, n_loops: int, n_repeats: int):
     """Evaluates the CPU time spent evaluating a number in [0.0, 1.0)."""
     print("---", prng_class_name, "---")
-    perfs = repeat("rnd()",
+    perfs = repeat("rnd.next()",
                    setup=f"from PyRandLib import {prng_class_name}; rnd = {prng_class_name}({seed_value})",
                    repeat=n_repeats,
                    timer=perf_counter_ns,

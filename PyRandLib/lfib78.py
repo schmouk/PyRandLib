@@ -108,13 +108,11 @@ class LFib78( BaseLFib64 ):
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 17 # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-5 and i-17 -th values
         k5 = self._index-5
@@ -127,9 +125,7 @@ class LFib78( BaseLFib64 ):
         
         # next index
         self._index = (self._index+1) % LFib78._STATE_SIZE
-        
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
 
+        return myValue
  
 #=====   end of module   lfib78.py   =========================================

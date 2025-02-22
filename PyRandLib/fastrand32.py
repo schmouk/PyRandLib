@@ -84,7 +84,7 @@ class FastRand32( BaseLCG ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-    
+
     #-------------------------------------------------------------------------
     def __init__(self, _seed: Numerical = None) -> None:
         """Constructor.
@@ -93,18 +93,16 @@ class FastRand32( BaseLCG ):
         time is used (with its shuffled value) as a seed.
         """
         super().__init__( _seed ) # this call creates attribute self._value and sets it
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         self._value = (69069 * self._value + 1) & 0xffff_ffff
-        return self._value * 2.328_306_436_538_696_289_062_5e-10  # / 4_294_967_296.0
-            
- 
+        return self._value
+
+
     #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
