@@ -112,12 +112,12 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Well19937b (1)   |    3.25    |             |             |             |             |         0        |       2     |       2        |
  | Well44497c       |    3.69    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  
- (*missing values in empty columns are to come*)
-
+(1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.  
+(*missing values in empty columns are to come*)
 
 ## Implementation
 Current implementation of **PyRandLib** uses Python 3.x with no Cython  version.  
-It has been tested with Python 3.8 but should run with all of Python 3.
+It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
 Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants
 for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to  have the library running correctly. 
@@ -162,16 +162,18 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
     print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
 
 
-## New in release 1.3.0
-This is available starting at version 1.3 of **PyRandLib**:
+## New in release 2.0
+Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features:
 
-1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6]) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
+1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
 In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b.
 
-2. A short script `TestED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 1.3 this test is run on all PRNGs.  
+2. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 1.3 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases of **PyRandLib**.
 
-3. Documentation has been enhanced, with typos fixed also, and erroneous docstrings have been fixed also.
+1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
+
+3. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
 4. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
