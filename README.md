@@ -168,17 +168,20 @@ Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them
 1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
 In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b.
 
-2. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 1.3 this test is run on all PRNGs.  
-It is now **highly recommended** to not use previous releases of **PyRandLib**.
+1. The PCG (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
+**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
+
+1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
+It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
 
-3. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
-4. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
+1. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
 
-5. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
+1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
 
 
 ## Architecture overview
@@ -623,7 +626,7 @@ number = {2},
 pages = {145-150},
 year = {2000},
 doi = {10.1080/00031305.2000.10474528},
-URL = {ttp://amstat.tandfonline.com/doi/abs/10.1080/00031305.2000.10474528},
+URL = {http://amstat.tandfonline.com/doi/abs/10.1080/00031305.2000.10474528},
 eprint = {http://amstat.tandfonline.com/doi/pdf/10.1080/00031305.2000.10474528}
 }
 
@@ -645,7 +648,26 @@ In ACM Transactions on Modeling and Computer Simulation (TOMACS) - Special issue
 Vol.8 N.1, Jan. 1998, pp. 3-30.  
 
 
-**[6]** François PANNETON and Pierre L’ECUYER (Université de Montréal) and MAKOTO MATSUMOTO (Hiroshima University). 2006.  
+**[6]** François Panneton and Pierre L'Ecuyer (Université de Montréal) and Makoto Matsumoto (Hiroshima University). 2006.  
 *Improved Long-Period Generators Based on Linear Recurrences Modulo 2*.  
 In ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.  
-(see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
+see [https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf](https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
+
+
+**[7]** Melissa E. O'Neill. 2014.
+*PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation*.
+Submitted to ACM Transactions on Mathematical Software (47 pages)
+Finally: Harvey Mudd College Computer Science Department Technical Report (56 pages).
+
+@techreport{oneill:pcg2014,
+    title = "PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation",
+    author = "Melissa E. O'Neill",
+    institution = "Harvey Mudd College",
+    address = "Claremont, CA",
+    number = "HMC-CS-2014-0905",
+    year = "2014",
+    month = Sep,
+    xurl = "https://www.cs.hmc.edu/tr/hmc-cs-2014-0905.pdf",
+}
+see [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
+
