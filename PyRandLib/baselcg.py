@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom import BaseRandom
+from .baserandom       import BaseRandom
+from .annotation_types import Numerical
 
 
 #=============================================================================
@@ -37,12 +38,12 @@ class BaseLCG( BaseRandom ):
     
         x(i-1): x(i) = (a*x(i-1) + c) mod m 
      
-    Results  are  nevertheless  considered  to  be  poor  as  stated  in  the 
-    evaluation done by Pierre L'Ecuyer and Richard Simard (Universite de 
-    Montreal) in 'TestU01: A C Library for Empirical Testing of Random Number 
-    Generators  -  ACM  Transactions  on  Mathematical Software,  vol.33  n.4,  
-    pp.22-40,  August  2007'.  It is not recommended to use such pseudo-random 
-    numbers generators for serious simulation applications.
+    Results are nevertheless considered to be poor as stated in the evaluation
+    done  by  Pierre  L'Ecuyer  and Richard Simard (Universite de Montreal) in
+    'TestU01: A C Library for Empirical Testing of Random Number Generators  -
+    ACM Transactions on Mathematical Software,  vol.33  n.4,  pp.22-40, August 
+    2007'.  It is not recommended to use such pseudo-random numbers generators 
+    for serious simulation applications.
 
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator with very  low 
     computation  time  but shorter period and worse randomness characteristics
@@ -62,10 +63,10 @@ class BaseLCG( BaseRandom ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -76,13 +77,17 @@ class BaseLCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: int = None) -> None:
+    def __init__(self, _seedState: Numerical = None) -> None:
         """Constructor. 
         
-        Should inSeed be None or not an integer then the local 
-        time is used (with its shuffled value) as a seed.
+        Should _seedState be None then the local time is used as a seed  (with 
+        its shuffled value).
+        Notice: method setstate() is not implemented in base class BaseRandom.
+        So,  it  must be implemented in classes inheriting BaseLCG and it must
+        initialize attribute self._state.
         """
-        super().__init__( _seedState ) # this call creates attribute self._value and sets it
+        super().__init__()
+        self.setstate( _seedState )
             
  
     #-------------------------------------------------------------------------
@@ -94,6 +99,6 @@ class BaseLCG( BaseRandom ):
         which  has  to  be  used  in  methods 'random() and 'setstate() of every
         inheriting class.
         """
-        return self._value
+        return self._state
  
 #=====   end of module   baselcg.py   ========================================

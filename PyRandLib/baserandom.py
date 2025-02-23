@@ -35,24 +35,31 @@ class BaseRandom( Random ):
     
     Copyright (c) 2016-2025 Philippe Schmouker
 
-    See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator and  FastRand63  for a  
-    2^63 (i.e. about 9.2e+18)  period LC-Generator with low computation time with very 
-    low memory consumption (resp. 1 and 2 32-bits integers).
-    
+    See FastRand32 for a 2^32 (i.e. 4.29e+9) period LC-Generator and FastRand63 for  a  
+    2^63 (i.e. about 9.2e+18) period  LC-Generator with very low computation time with 
+    very low memory consumption (resp. 1 and 2 32-bits integers).
+           
+    See LFibRand78, LFibRand116, LFibRand668 and LFibRand1340 for  large  period  LFib
+    generators  (resp.  2^78,  2^116,  2^668  and 2^1340 periods,  i.e. resp. 3.0e+23,
+    8.3e+34, 1.2e+201 and 2.4e+403 periods) while same computation time and far higher
+    precision  (64-bits  calculations) but memory consumption (resp. 17,  55,  607 and
+    1279 32-bits integers).
+
     See MRGRand287 for a short period  MR-Generator (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 32-bits integers memory consumption.
     See MRGRand1457 for a  longer  period  MR-Generator  (2^1457,  i.e. 4.0e+438)  and 
     longer  computation  time  (2^31-1  modulus  calculations)  but  less memory space 
     consumption (32-bits 47 integers).
-    See MRGRand49507 for a far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  low 
+    See MRGRand49507 for a far  larger  period  (2^49507,  i.e. 1.2e+14903)  with  low 
     computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
     32-bits integers).
-       
-    See LFibRand78, LFibRand116, LFibRand668 and LFibRand1340  for  long  period  LFib
-    generators  (resp.  2^78,  2^116,  2^668  and 2^1340 periods,  i.e. resp. 3.0e+23,
-    8.3e+34, 1.2e+201 and 2.4e+403 periods) while same computation time and far higher
-    precision  (64-bits  calculations) but memory consumption (resp. 17,  55,  607 and
-    1279 32-bits integers).
+
+    See Pcg64_32, Pcg128_64 and Pcg1024_32 for medium to very large periods,  very low 
+    computation time,  and for very low memory consumption for the two first (resp. 4, 
+    8 and 1,026 times 32-bits).  Associated periods are resp. 2^64, 2^128 and 2^32830, 
+    i.e. 1.84e+19, 3.40e+38 and 6.53e+9882. These PRNGs provide multi-streams and jump 
+    ahead features.  Since they all are exposing only a part of their internal  state, 
+    they are difficult to reverse and to predict.
 
     See Well512a, Well1024a, Well19937c and Well44479b for large to very large  period 
     generators (resp. 2^512, 2^1024, 2^19937 and 2^44479 periods, i.e. resp. 1.34e+154,
@@ -64,6 +71,9 @@ class BaseRandom( Random ):
     generator of our own devising: in that case, overriden methods are:
     
       random(), seed(), getstate(), and setstate().
+
+    Since version 2.0 of PyRandLib,  the core engine of every PRNG is coded in  method
+    next().
     
     Furthermore this class and all its inheriting sub-classes are callable. Example:
       rand = BaseRandom()
@@ -77,7 +87,7 @@ class BaseRandom( Random ):
     Such a programming is a simplified  while  still  robust  emulation  of  inherited
     methods random.Random.randint(self,1,6) and random.Random.randrange(self,1,7,1).
  
-    Inheriting random.Random, next methods are available:
+    Inheriting from random.Random, next methods are also available:
      |
      |  betavariate(self, alpha, beta)
      |      Beta distribution.
@@ -242,15 +252,7 @@ class BaseRandom( Random ):
         Should _seed be None or not an integer then the local 
         time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed )  ## this call creates attribute self._value and sets it
-
-
-    #-------------------------------------------------------------------------
-    @property
-    def value(self) -> Any:
-        """Read-only wrapper to built-in attribute '._value'
-        """
-        return self._value
+        super().__init__( _seed )
 
 
     #-------------------------------------------------------------------------

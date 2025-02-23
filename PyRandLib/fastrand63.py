@@ -77,10 +77,10 @@ class FastRand63( BaseLCG ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -110,8 +110,8 @@ class FastRand63( BaseLCG ):
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        self._value = (0x7FF3_19FA_A77B_E975 * self._value + 1) & 0x7fff_ffff_ffff_ffff
-        return self._value
+        self._state = (0x7ff3_19fa_a77b_e975 * self._state + 1) & 0x7fff_ffff_ffff_ffff
+        return self._state
 
 
     #-------------------------------------------------------------------------
@@ -124,7 +124,7 @@ class FastRand63( BaseLCG ):
         setstate() was called.
         """
         if isinstance( _state, int ):
-            self._value = _state & 0x7fff_ffff_ffff_ffff
+            self._state = _state & 0x7fff_ffff_ffff_ffff
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
@@ -132,16 +132,16 @@ class FastRand63( BaseLCG ):
                 _state = -_state
             
             if _state >= 1.0:
-                self._value = int(_state + 0.5) & 0x7fff_ffff_ffff_ffff
+                self._state = int(_state + 0.5) & 0x7fff_ffff_ffff_ffff
             else:
-                self._value = int(_state * 0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
+                self._state = int(_state * 0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
         
         else:
             t = int(time.time() * 1000.0)
-            self._value = t & 0xffff_ffff
-            self._value += (t & 0xff00_0000) <<  8
-            self._value += (t & 0x00ff_0000) << 24
-            self._value += (t & 0x0000_ff00) << 40
-            self._value += (t & 0x0000_00fe) << 63
+            self._state = t & 0xffff_ffff
+            self._state |= (t & 0xff00_0000) <<  8
+            self._state |= (t & 0x00ff_0000) << 24
+            self._state |= (t & 0x0000_ff00) << 40
+            self._state |= (t & 0x0000_00fe) << 63
 
 #=====   end of module   fastrand63.py   =====================================

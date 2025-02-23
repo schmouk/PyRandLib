@@ -57,34 +57,34 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     """
     algo_name = rnd_algo.__class__.__name__
     print('-'*(len(algo_name)+1), algo_name, '-'*(len(algo_name)+1), sep='\n')
-    print (nb_loops, "loops,", nb_entries, "entries in histogram,", "expected mean:", round(nb_loops / nb_entries))
+    print (f"{nb_loops:,d} loops, {nb_entries:,d} entries in histogram, expected mean: {round(nb_loops / nb_entries):,d}")
 
     hist = [0]*nb_entries
 
     expected_max_diff_mean_median = (nb_loops / nb_entries) * 0.002    # i.e. difference should be less than 0.2 % of expected mean
     expected_max_stdev = 1.04 * sqrt(nb_loops / nb_entries)            # i.e. +4 % max over expected stdandard deviation
-    expected_max_variance = 4.5                                        # this is the absolute value of the expected max
+    expected_max_variance = 4.5                                        # this is the absolute value of the expected max on local variance
 
     for _ in range(nb_loops):
         n = int(rnd_algo() * nb_entries)
         hist[n] += 1
     
     mn, md, st = mean(hist), median(hist), stdev(hist)
-    print(f"  mean: {mn}, median: {md}, standard deviation: {st:.3f}")
+    print(f"  mean: {mn:,f}, median: {md:,d}, standard deviation: {st:,.3f}")
 
     err = False
 
     if (abs(md - mn) > expected_max_diff_mean_median):
         err = True
-        print(f"  incoherence btw. mean and median values, difference expected to be less than {expected_max_diff_mean_median:.1f}")
+        print(f"  incoherence btw. mean and median values, difference expected to be less than {expected_max_diff_mean_median:,.1f:}")
     if (st > expected_max_stdev):
         err = True
-        print(f"  standard deviation is out of range, should be less than {expected_max_stdev:.3f}")
+        print(f"  standard deviation is out of range, should be less than {expected_max_stdev:_.3f}")
 
     for i in range(nb_entries):
         variance = (hist[i] - mn) / st
         if abs(variance) > expected_max_variance:
-            print(f"  entry {i}: hist = {hist[i]}, variance = {variance} seems too large")
+            print(f"  entry {i:,d}: hist = {hist[i]:,d}, variance = {variance:,.4f} seems too large")
             err = True
 
     if (not err):
