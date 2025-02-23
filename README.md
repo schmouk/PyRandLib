@@ -4,9 +4,8 @@ Many best in class pseudo random generators grouped into one simple library.
 
 
 ## License
-PyRandLib is distributed under the MIT license for its largest use.
-If you decide to use this library,  please add the copyright notice to  your
-software as stated in the LICENSE file.
+PyRandLib is distributed under the MIT license for its largest use.  
+If you decide to use this library,  please add the copyright notice to your software as stated in the LICENSE file.
 
 ```
 Copyright (c) 2016-2025 Philippe Schmouker, <ph.schmouker (at) gmail.com>
@@ -29,7 +28,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  TORT OR OTHERWISE, ARISING FROM,
 OUT  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
 
 
 
@@ -62,7 +60,8 @@ In [1], every known PRNG at the time of the editing has been tested according to
 * **_crush_** is a bigger set of tests that test  more  deeply expected  random characteristics;
 * **_big crush_** is the ultimate set of difficult tests that any **good**  PRNG should definitively pass.
 
-We give you here below a copy of the resulting table for the PRGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.
+We give you here below a copy of the resulting table for the PRGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
+We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
  | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -75,6 +74,9 @@ We give you here below a copy of the resulting table for the PRGs that have been
  | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
  | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
  | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Pcg64_32         | not available                      |     2 x 4 bytes | 2^64    |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg128_64        | not available                      |     4 x 4 bytes | 2^128   |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg1024_32       | not available                      | 1,026 x 4 bytes | 2^32830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
  | Well512a         | not available                      |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
@@ -107,6 +109,9 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | MRGRand287       |    1.41    |             |             |             |             |         0        |       0     |       0        |
  | MRGRand1457      |    1.13    |             |             |             |             |         0        |       0     |       0        |
  | MRGRand49507     |    1.30    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg64_32         |            |             |             |             |             |         0        |       0     |       0        |
+ | Pcg128_64        |            |             |             |             |             |         0        |       0     |       0        |
+ | Pcg1024_32       |            |             |             |             |             |         0        |       0     |       0        | 
  | Well512a         |    2.79    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    2.60    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    3.25    |             |             |             |             |         0        |       2     |       2        |
@@ -119,8 +124,7 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
 Current implementation of **PyRandLib** uses Python 3.x with no Cython  version.  
 It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
-Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants
-for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to  have the library running correctly. 
+Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to  have the library running correctly. 
 
 Note 2: no version or **PyRandLib** will ever be provided for Python 2 which is a no more maintained version of the Python language.
 
@@ -190,22 +194,26 @@ Each of the implemented PRNG is described in an independent module. The  name of
 
 ### BaseRandom  -  the base class for all PRGs
 
-**BaseRandom** is the base class for every implemented PRNG in library 
-**PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
+**BaseRandom** is the base class for every implemented PRNG in library **PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
 
 Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution Functions**.
 
-Furthermore, every inheriting class may override methods:
+Furthermore, every inheriting class MUST override the next three methods (if not, they each raise a `NotImplementedError` exception when called):
+
+* next(),
+* getstate() and
+* setstate()
+
+and may override the next three methods:
 
 * random(),
 * seed(),
-* getrandbits(k),
-* getstate() and
-* setstate().
+* getrandbits(),
 
-This lets inheriting classes implement the PRNs related core methods.
+Notice: starting at PyRandLib 1.2.0, a new signature is available with this base class. See previous section 'New in release 1.2' for full explanations.
 
-Notice: starting at PyRandLib 1.2.0, a new signature is available with  this base class. See previous section 'New in release 1.2' for full explanations.
+Notice: Since PyRandLib 2.0, class `BaseRandom` implements the new method `next()` which is substituted to `random()`. `next()` should now contains the only core of the pseudo-random numbers generator while `random()` calls it to return a float value in the interval [0.0, 1.0) just as previous versions of the library.  
+Since version 2.0 of PyRandLib also, the newly implemented method `getrandbits()` overrides the same method of Python built-in base class `random.Random`.
 
 
 ### FastRand32  -  2^32 periodicity
@@ -237,67 +245,10 @@ LCG model  evaluate pseudo-random numbers suites *x(i)* as a simple mathematical
    
 The implementation of this LCG 63-bits model is based on (*a*=9219741426499971445, *c*=1) since these two values have evaluated to be the *best* ones for LCGs within TestU01 while *m* = 2^63.
  
-Results are nevertheless considered to be poor as stated in the evaluation
-done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use this pseudo-random numbers generatorsfor serious simulation applications, even if FastRandom63 fails on very far less tests 
-than does FastRandom32.
+Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use this pseudo-random numbers generatorsfor serious simulation applications, even if FastRandom63 fails on very far less tests than does FastRandom32.
 
 See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25%
 lower computation time.
-
-
-
-### MRGRand287  -  2^287 periodicity
-
-**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG)
-with a long period  (2^287, i.e. 2.49e+86) and low computation time (about
-twice the computation time of above LCGs) but 256 integers memory consumption.
-
-Multiple Recursive Generators (MRGs) use recurrence to evaluate pseudo-random numbers suites. For 2 to more different values of *k*, recurrence is of the form:
-
-    x(i) = A * SUM[ x(i-k) ]  mod M
-
-MRGs offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard. It is therefore strongly recommended to use such pseudo-random numbers generators rather than LCG ones for serious simulation applications.
-
-The implementation of this specific MRG 32-bits model is finally based on a Lagged Fibonacci generator (LFIB), the Marsa-LFIB4 one.
-
-Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
-
-    x(i) = ( x(i-r) op (x(i-k) ) mod m
-
-where op is an operation that can be
-    + (addition),
-    - (substraction),
-    * (multiplication),
-    ^(bitwise exclusive-or).
-    
-With the + or - operation, such generators are true MRGs. They offer very
-large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard in their paper.
-
-The Marsa-LIBF4 version, i.e. **MRGRand287** implementation, uses the 
-recurrence:
-
-    x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
-
-
-
-### MRGRand1457  -  2^1,457 periodicity
-
-**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with
-a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers).
-   
-The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
-
-    x(i) = (2^26+2^19) * ( x(i-1) + x(i-24) + x(i-47) ) mod (2^31-1)
-
-
-
-### MRGRand49507  -  2^49,507 periodicity
-
-**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers).
-     
-The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
-
-    x(i) = (-2^25-2^7) * ( x(i-7) + x(i-1597) ) mod (2^31-1)
 
 
 
@@ -314,8 +265,7 @@ where op is an operation that can be
     * (multiplication),
     ^(bitwise exclusive-or).
 
-With the + or - operation, such generators are MRGs. They offer very large
-periods  with the best known results in the evaluation of their randomness, as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard while offering very low computation times.
+With the + or - operation, such generators are MRGs. They offer very large periods  with the best known results in the evaluation of their randomness, as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard while offering very low computation times.
 
 The implementation of  **LFibRand78** is based on a Lagged Fibonacci generator (LFib) which uses the recurrence:
 
@@ -347,11 +297,9 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
     x(i) = ( x(i-273) + x(i-607) ) mod 2^64
     
-It offers a period of about 2^668 - i.e. 1.2e+201 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time
-of LCGs) and much memory consumption (607 integers).
+It offers a period of about 2^668 - i.e. 1.2e+201 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much memory consumption (607 integers).
 
-Please notice that the TestUO1 article states that the operator should be 
-'*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
+Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
 
 
 
@@ -364,6 +312,56 @@ Please notice that the TestUO1 article states that the operator should be
 It offers a period of about 2^1340 - i.e. 2.4e+403 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much more memory consumption (1279 integers).
 
 Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
+
+
+
+### MRGRand287  -  2^287 periodicity
+
+**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers memory consumption.
+
+Multiple Recursive Generators (MRGs) use recurrence to evaluate pseudo-random numbers suites. For 2 to more different values of *k*, recurrence is of the form:
+
+    x(i) = A * SUM[ x(i-k) ]  mod M
+
+MRGs offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard. It is therefore strongly recommended to use such pseudo-random numbers generators rather than LCG ones for serious simulation applications.
+
+The implementation of this specific MRG 32-bits model is finally based on a Lagged Fibonacci generator (LFIB), the Marsa-LFIB4 one.
+
+Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
+
+    x(i) = ( x(i-r) op (x(i-k) ) mod m
+
+where op is an operation that can be
+    + (addition),
+    - (substraction),
+    * (multiplication),
+    ^(bitwise exclusive-or).
+    
+With the + or - operation, such generators are true MRGs. They offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard in their paper.
+
+The Marsa-LIBF4 version, i.e. **MRGRand287** implementation, uses the recurrence:
+
+    x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
+
+
+
+### MRGRand1457  -  2^1,457 periodicity
+
+**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers).
+   
+The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
+
+    x(i) = (2^26+2^19) * ( x(i-1) + x(i-24) + x(i-47) ) mod (2^31-1)
+
+
+
+### MRGRand49507  -  2^49,507 periodicity
+
+**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers).
+     
+The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
+
+    x(i) = (-2^25-2^7) * ( x(i-7) + x(i-1597) ) mod (2^31-1)
 
 
 
@@ -410,8 +408,7 @@ Meanwhile, it might not be able to pass a very few of the *crush* and *big-crush
 ## Inherited Distribution and Generic Functions
 (some of next explanation may be free to exact copy of Python 3.6 documentation. See [https://docs.python.org/3.6/library/random.html?highlight=random#module-random](https://docs.python.org/3.6/library/random.html?highlight=random#module-random))
 
-Since the base class **BaseRandom** inherits from the built-in class random.Random, every PRNG class of **PyRandLib** gets automatic access to 
-the next distribution and generic methods:
+Since the base class **BaseRandom** inherits from the built-in class random.Random, every PRNG class of **PyRandLib** gets automatic access to the next distribution and generic methods:
 
 
 **betavariate**(self, alpha, beta)
@@ -446,9 +443,7 @@ Notice: `choices` has been provided since Python 3.6. It should be implemented f
 
 Exponential distribution.
 
-`lambd` is 1.0 divided by the desired mean. It should be nonzero. (The 
-parameter should be called "lambda", but this is a reserved word in 
-Python).  
+`lambd` is 1.0 divided by the desired mean. It should be nonzero. (The parameter should be called "lambda", but this is a reserved word in Python).  
 Returned values range from 0 to positive infinity if `lambd` is positive, and from negative infinity to 0 if `lambd` is negative.
 
 
@@ -483,7 +478,7 @@ Returns internal state; can be passed to `setstate()` later.
 
 Log normal distribution.
 
-If you take the natural logarithm of this distribution, you'll get a normal distribution with mean `mu` and standard deviation `sigma`.
+If you take the natural logarithm of this distribution, you'll get a normal distribution with mean `mu` and standard deviation `sigma`.  
 `mu` can have any value, and `sigma` must be greater than zero.
 
 
@@ -508,8 +503,7 @@ Returns a random integer in range [a, b], including both end points.
 
 **randrange**(self, start, stop=None, step=1)
 
-Returns a randomly selected element from range(start, stop, step). This is
-equivalent to `choice( range(start, stop, step) )` without building a range object.
+Returns a randomly selected element from range(start, stop, step). This is equivalent to `choice( range(start, stop, step) )` without building a range object.
 
 The positional argument pattern matches that of `range()`. Keyword arguments should not be used because the function may use them in unexpected ways.
 
@@ -522,8 +516,7 @@ Returns a new list containing elements from the population while leaving the ori
 
 Members of the population need not be hashable or unique. If the population contains repeats, then each occurrence is a possible selection in the sample.
 
-To choose a sample in a range of integers, use range as an argument. This is especially fast and space efficient for sampling from a large
-population: `sample(range(10000000), 60)`.
+To choose a sample in a range of integers, use range as an argument. This is especially fast and space efficient for sampling from a large population: `sample(range(10000000), 60)`.
 
 
 **seed**(self, a=None, version=2)
@@ -532,8 +525,7 @@ Initialize internal state from hashable object.
 
 None or no argument seeds from current time, or from an operating system specific randomness source if available.
 
-For version 2 (the default), all of the bits are used if `a` is a str,
-bytes, or bytearray. For version 1, the hash() of `a` is used instead.
+For version 2 (the default), all of the bits are used if `a` is a str, bytes, or bytearray. For version 1, the hash() of `a` is used instead.
 
 If `a` is an int, all bits are used.
 
@@ -615,7 +607,6 @@ BibTex:
 **[2]** Lih-Yuan Deng & Dennis K. J. Lin. 2000.  
 *Random number generation for the new century*.  
 The American Statistician Vol.54, N.2, pp. 145–150.
-
 BibTex:
 @article{doi:10.1080/00031305.2000.10474528,
 author = { Lih-Yuan   Deng  and  Dennis K. J.   Lin },
@@ -654,11 +645,10 @@ In ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 
 see [https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf](https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
 
 
-**[7]** Melissa E. O'Neill. 2014.
-*PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation*.
-Submitted to ACM Transactions on Mathematical Software (47 pages)
-Finally: Harvey Mudd College Computer Science Department Technical Report (56 pages).
-
+**[7]** Melissa E. O'Neill. 2014.  
+*PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation*.  
+Submitted to ACM Transactions on Mathematical Software (47 pages)  
+Finally: Harvey Mudd College Computer Science Department Technical Report, HMC-CS-2014-0905, Issued: September 5, 2014 (56 pages).  
 @techreport{oneill:pcg2014,
     title = "PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation",
     author = "Melissa E. O'Neill",
@@ -668,6 +658,5 @@ Finally: Harvey Mudd College Computer Science Department Technical Report (56 pa
     year = "2014",
     month = Sep,
     xurl = "https://www.cs.hmc.edu/tr/hmc-cs-2014-0905.pdf",
-}
-see [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
-
+}  
+see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
