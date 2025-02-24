@@ -58,6 +58,7 @@ if __name__ == "__main__":
     test_perf("MRGRand287"  , 0x3ca5_8796          , 2_000_000, N)
     test_perf("MRGRand1457" , 0x3ca5_8796          , 2_000_000, N)
     test_perf("MRGRand49507", 0x3ca5_8796          , 2_000_000, N)
+    test_perf("Pcg64_32"    , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
     test_perf("Well512a"    , 0x3ca5_8796          , 1_000_000, N)
     test_perf("Well1024a"   , 0x3ca5_8796          , 1_000_000, N)
     test_perf("Well19937c"  , 0x3ca5_8796          , 1_000_000, N)
