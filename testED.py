@@ -57,7 +57,6 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     """
     algo_name = rnd_algo.__class__.__name__
     print('-'*(len(algo_name)+1), algo_name, '-'*(len(algo_name)+1), sep='\n')
-    print (f"{nb_loops:,d} loops, {nb_entries:,d} entries in histogram, expected mean: {round(nb_loops / nb_entries):,d}")
 
     hist = [0]*nb_entries
 
@@ -71,12 +70,13 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     for _ in range(nb_loops):
         n = int(rnd_algo() * nb_entries)
         hist[n] += 1
-    
-    mn, md, st = mean(hist), median(hist), stdev(hist)
-    print(f"  mean: {mn:,f}, median: {md:,f}, standard deviation: {st:,.3f}")
 
     # uncomment next line if you want to print the content of the histograms
-    #print(hist)
+    print(hist, '\n')
+
+    print (f"{nb_loops:,d} loops, {nb_entries:,d} entries in histogram, expected mean: {round(nb_loops / nb_entries):,d}")
+    mn, md, st = mean(hist), median(hist), stdev(hist)
+    print(f"  mean: {mn:,f}, median: {md:,f}, standard deviation: {st:,.3f}")
 
     err = False
 
@@ -98,7 +98,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
             min_variance = variance
         elif variance > max_variance:
             max_variance = variance
-
+            
     print(f"  variances are in range [{min_variance:,.3f} ; {'+' if max_variance > 0.0 else ''}{max_variance:,.3f}]")
 
     if (not err):
@@ -118,6 +118,7 @@ if __name__ == "__main__":
     test_algo(MRGRand1457(),  3217, nb_loops = 2_000_000)
     test_algo(MRGRand49507(), 3217, nb_loops = 2_000_000)
     test_algo(Pcg64_32(),     3217, nb_loops = 2_000_000)
+    test_algo(Pcg128_64(),    3217, nb_loops = 2_000_000)
     test_algo(Well512a(),     3217, nb_loops = 1_500_000)
     test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
     test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number

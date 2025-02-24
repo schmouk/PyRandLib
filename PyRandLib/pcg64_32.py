@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,8 +21,6 @@ SOFTWARE.
 """
 
 #=============================================================================
-import time
-
 from .basepcg          import BasePCG
 from .fastrand32       import FastRand32
 from .annotation_types import Numerical
@@ -40,7 +38,7 @@ class Pcg64_32( BasePCG ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
+    PCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
     
         x(i) = (a * x(i-1) + c) mod m 
@@ -90,11 +88,11 @@ class Pcg64_32( BasePCG ):
     been  implemented  in  PyRandLib,  as provided by the author of PCGs - see
     reference [7] in file README.md.
 
- | PyRandLib class | initial PCG algo name       | Memory Usage   | Period   | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | --------------- | --------------------------- | -------------- | -------- | ------------ | ---------------- | ----------- | -------------- |
- | Pcg64_32        | PCG XSH RS 64/32 (LCG)      |    2 x 4-bytes | 2^64     |     0.79     |          0       |       0     |       0        |
- | Pcg128_64       | PCG XSL RR 128/64 (LCG)     |    4 x 4-bytes | 2^128    |     1.70     |          0       |       0     |       0        |
- | Pcg1024_32      | PCG XSH RS 64/32 (EXT 1024) | 1026 x 4-bytes | 2^32,830 |     0.78     |          0       |       0     |       0        |
+ | PyRandLib class | initial PCG algo name       | Memory Usage    | Period   | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | --------------------------- | --------------- | -------- | ------------ | ---------------- | ----------- | -------------- |
+ | Pcg64_32        | PCG XSH RS 64/32 (LCG)      |     2 x 4-bytes | 2^64     |     0.79     |          0       |       0     |       0        |
+ | Pcg128_64       | PCG XSL RR 128/64 (LCG)     |     4 x 4-bytes | 2^128    |     1.70     |          0       |       0     |       0        |
+ | Pcg1024_32      | PCG XSH RS 64/32 (EXT 1024) | 1,026 x 4-bytes | 2^32,830 |     0.78     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -118,34 +116,11 @@ class Pcg64_32( BasePCG ):
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-
-        '''
-        constexpr bitcount_t bits        = bitcount_t(sizeof(itype) * 8);           // 64
-        constexpr bitcount_t xtypebits   = bitcount_t(sizeof(xtype) * 8);           // 32
-        constexpr bitcount_t sparebits   = bits - xtypebits;                        // 32
-        constexpr bitcount_t opbits =                                               //  3
-                              sparebits-5 >= 64 ? 5
-                            : sparebits-4 >= 32 ? 4
-                            : sparebits-3 >= 16 ? 3
-                            : sparebits-2 >= 4  ? 2
-                            : sparebits-1 >= 1  ? 1
-                            :                     0;
-        constexpr bitcount_t mask = (1 << opbits) - 1;                              // 0b0111 = 0x07
-        constexpr bitcount_t maxrandshift  = mask;                                  // 0x07
-        constexpr bitcount_t topspare     = opbits;                                 // 3
-        constexpr bitcount_t bottomspare = sparebits - topspare;                    // 32 - 3 = 29
-        constexpr bitcount_t xshift     = topspare + (xtypebits+maxrandshift)/2;    // 3 + (32 + 7) / 2 = 3 + 19 = 22
-        bitcount_t rshift =
-            opbits ? bitcount_t(internal >> (bits - opbits)) & mask : 0;            // rshift = internal >> (64-3) & 0x07
-        internal ^= internal >> xshift;                                             // internal ^= internal >> 22
-        xtype result = xtype(internal >> (bottomspare - maxrandshift + rshift));    // internal >> (29-7+rshift)
-        return result;              
-        '''
         # evaluates next internal state
         current_state = self._state
         self._state = (0x5851_F42D_4C95_7F2D * current_state + 0x1405_7B7E_F767_814F) & 0xffff_ffff_ffff_ffff
         # the permutated output is then computed
-        random_shift = (current_state >> 61) & 0x07  # random shift is set with the 3 upper bits of current state
+        random_shift = (current_state >> 61) & 0x07  # random shift is set with the 3 upper bits of internal state
         current_state ^= current_state >> 22         # fixed shift XOR is then evaluated
         return (current_state >> (22 + random_shift)) & 0xffff_ffff
 
@@ -175,6 +150,6 @@ class Pcg64_32( BasePCG ):
         else:
             # uses local time as initial seed
             init_rand = FastRand32()
-            self._state = init_rand.next() << 32 | init_rand.next()
+            self._state = init_rand.next() | (init_rand.next() << 32 )
 
 #=====   end of module   pcg64_32.py   =======================================
