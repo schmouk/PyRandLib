@@ -53,10 +53,10 @@ class BaseLCG( BaseRandom ):
     characteristics than for FastRand32.
 
     Furthermore this class is callable:
-      rand = BaseLCG()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseLCG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 
@@ -86,8 +86,8 @@ class BaseLCG( BaseRandom ):
         So,  it  must be implemented in classes inheriting BaseLCG and it must
         initialize attribute self._state.
         """
-        super().__init__()
-        self.setstate( _seedState )
+        super().__init__( _seedState )  # this internally calls 'setstate()'  which
+                                        # MUST be implemented in inheriting classes
             
  
     #-------------------------------------------------------------------------
