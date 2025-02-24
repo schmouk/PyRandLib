@@ -20,6 +20,7 @@ from .lfib1340       import LFib1340
 from .mrgrand287     import MRGRand287
 from .mrgrand1457    import MRGRand1457
 from .mrgrand49507   import MRGRand49507
+from .pcg64_32       import Pcg64_32
 from .well512a       import Well512a
 from .well1024a      import Well1024a
 from .well19937c     import Well19937c
