@@ -51,7 +51,7 @@ class BasePCG( BaseRandom ):
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to
-    reverse and to predict.
+    invert and to predict.
     
     See Pcg64_32 for a 2^64 (i.e. 1.84e+19) period PC-Generator with very  low 
     computation  time  and  medium period, with 2 32-bits word integers memory 

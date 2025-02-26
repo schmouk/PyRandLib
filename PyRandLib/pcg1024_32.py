@@ -58,7 +58,7 @@ class Pcg1024_32( Pcg64_32 ):
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to
-    reverse and to predict.
+    invert and to predict.
 
     The Pcg1024_32 class implements the "PCG XSH RS 64/32 (EXT 1024)"  version 
     of  th e PCG  algorithm,  as  specified  in  the related paper (see [7] in 

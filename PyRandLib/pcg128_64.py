@@ -56,7 +56,7 @@ class Pcg128_64( BasePCG ):
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to
-    reverse and to predict.
+    invert and to predict.
 
     The Pcg128_64 class implements the  "PCG XSL RR 128/64 (LCG)"  version  of 
     the PCG algorithm,  as specified in the related paper (see [7] in document 
