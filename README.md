@@ -60,28 +60,28 @@ In [1], every known PRNG at the time of the editing has been tested according to
 * **_crush_** is a bigger set of tests that test  more  deeply expected  random characteristics;
 * **_big crush_** is the ultimate set of difficult tests that any **good**  PRNG should definitively pass.
 
-We give you here below a copy of the resulting table for the PRGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
+We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
- | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Pcg64_32         | not available                      |     2 x 4 bytes | 2^64    |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg128_64        | not available                      |     4 x 4 bytes | 2^128   |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg1024_32       | not available                      | 1,026 x 4 bytes | 2^32830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
- | Well512a         | not available                      |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19937 |    4.30     |     1.6      |          0       |       2     |       2        |
+ | PyRabndLib class | TU01 generator name                | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------------------------------- | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |    4.20     |     0.75     |          0       |       5     |       7        |
+ | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Pcg64_32         | not available                      |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg128_64        | not available                      |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg1024_32       | not available                      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
+ | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
 (1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
@@ -192,7 +192,7 @@ So, if you want to see what is currently going on for next release, just check-o
 Each of the implemented PRNG is described in an independent module. The  name of the module is directly related to the name of the related class.
 
 
-### BaseRandom  -  the base class for all PRGs
+### BaseRandom  -  the base class for all PRNGs
 
 **BaseRandom** is the base class for every implemented PRNG in library **PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
 
@@ -272,7 +272,7 @@ The implementation of  **LFibRand78** is based on a Lagged Fibonacci generator (
     x(i) = ( x(i-5) + x(i-17) ) mod 2^64
 
 It offers a period of about 2^78 - i.e. 3.0e+23 - with low computation time
-due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers).
+due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers 32-bits coded).
 
 Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator 
 '+'. We've implemented in **PyRandLib** the original operator '+'.
@@ -285,7 +285,7 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
     x(i) = ( x(i-24) + x(i-55) ) mod 2^64
     
-It offers a period of about 2^116 - i.e. 8.3e+34 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and some memory consumption (55 integers).
+It offers a period of about 2^116 - i.e. 8.3e+34 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and some memory consumption (55 integers 32-bits coded).
 
 Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
 
@@ -297,7 +297,7 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
     x(i) = ( x(i-273) + x(i-607) ) mod 2^64
     
-It offers a period of about 2^668 - i.e. 1.2e+201 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much memory consumption (607 integers).
+It offers a period of about 2^668 - i.e. 1.2e+201 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much memory consumption (607 integers 32-bits coded).
 
 Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
 
@@ -309,7 +309,7 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
     x(i) = ( x(i-861) + x(i-1279) ) mod 2^64
     
-It offers a period of about 2^1340 - i.e. 2.4e+403 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much more memory consumption (1279 integers).
+It offers a period of about 2^1340 - i.e. 2.4e+403 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and much more memory consumption (1279 integers 32-bits coded).
 
 Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib**  the original operator '+'.
 
@@ -317,7 +317,7 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
 ### MRGRand287  -  2^287 periodicity
 
-**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers memory consumption.
+**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers 32-bits coded memory consumption.
 
 Multiple Recursive Generators (MRGs) use recurrence to evaluate pseudo-random numbers suites. For 2 to more different values of *k*, recurrence is of the form:
 
@@ -347,7 +347,7 @@ The Marsa-LIBF4 version, i.e. **MRGRand287** implementation, uses the recurrence
 
 ### MRGRand1457  -  2^1,457 periodicity
 
-**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers).
+**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
    
 The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
 
@@ -357,7 +357,7 @@ The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random 
 
 ### MRGRand49507  -  2^49,507 periodicity
 
-**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers).
+**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRNGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers 32-bits coded).
      
 The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
 
@@ -365,11 +365,38 @@ The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG p
 
 
 
+### Pcg64_32  -  2^64 periodicity
+
+**Pcg64_32** implements a fast 64-bits state and 32-bits output Permutated Congruential Generator with a medium period (2^64, i.e. 1.84e+19) with low computation time and very small memory space consumption (2 integers 32-bits coded).
+
+The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is hard to be reverted and predicted.  
+**PyRandLib** implements for ths the *PCG XSH RS 64/32 (LCG)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+
+
+
+### Pcg128_64  -  2^128 periodicity
+
+**Pcg128_64** implements a fast 128-bits state and 64-bits output Permutated Congruential Generator with a medium period (2^128, i.e. 3.40e+38) with low computation time and very small memory space consumption (4 integers 32-bits coded).
+
+The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is very hard to be reverted and predicted.  
+**PyRandLib** implements for ths the *PCG XSL RR 128/64 (LCG)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+
+
+
+### Pcg1024_32  -  2^32,830 periodicity
+
+**Pcg1024_32** implements a fast 64-bits based state and 32-bits output Permutated Congruential Generator with a very large period (2^32,830, i.e. 6.53e+9882) with low computation time and large memory space consumption (1,026 integers 32-bits coded).
+
+The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value, and an array of 32-bits independant MCG (multiplied congruential geenrators) used to create huge chaos. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is very hard to be reverted and predicted.  
+**PyRandLib** implements for ths the *PCG XSH RS 64/32 (EXT 1024)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+
+
+
 ### Well512a  -  2^512 periodicity
 
 **Well512a** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^252 - i.e. 1.34e+154 - with short computation time and 16 integers memory consumption.  
+It offers a long period of value 2^252 - i.e. 1.34e+154 - with short computation time and 16 integers 32-bits coded memory consumption.  
 It escapes the zeroland at a fast pace.  
 Meanwhile, it should not be able to pass some of the *crush* and *big-crush* tests of TestU01 - notice: this version of the WELL algorithm has not been tested in original TestU01 paper.
 
@@ -379,7 +406,7 @@ Meanwhile, it should not be able to pass some of the *crush* and *big-crush* tes
 
 **Well1024a** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^1024 - i.e. 2.68+308 - with short computation time and 32 integers memory consumption.  
+It offers a long period of value 2^1024 - i.e. 2.68+308 - with short computation time and 32 integers 32-bits coded memory consumption.  
 It escapes the zeroland at a fast pace.  
 Meanwhile, it does not pass 4 of the *crush* and 4 of the *big-crush* tests of TestU01.
 
@@ -389,7 +416,7 @@ Meanwhile, it does not pass 4 of the *crush* and 4 of the *big-crush* tests of T
 
 **Well199937b** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^19,937 - i.e. 4.32e+6,001 - with short computation time and 624 integers memory consumption - just     s the Mersenne-Twister algorithm).  
+It offers a long period of value 2^19,937 - i.e. 4.32e+6,001 - with short computation time and 624 integers 32-bits coded memory consumption - just     s the Mersenne-Twister algorithm).  
 It escapes the zeroland at a very fast pace.  
 Meanwhile, it does not pass 2 of the *crush* and 2 of the *big-crush* tests of TestU01.
 
@@ -399,7 +426,7 @@ Meanwhile, it does not pass 2 of the *crush* and 2 of the *big-crush* tests of T
 
 **WellWell44497c** implements the Well-Equilibrated Long-period Linear generators (WELL) proposed by François Panneton, Pierre L'ECcuyer and Makoto Matsumoto in [6]. This PRNG uses linear recurrence based on primitive characteristic polynomials associated with left- and right- shifts and xor operations to fastly evaluate pseudo-random numbers suites.
 
-It offers a long period of value 2^44,497 - i.e. 1.51e+13,466 - with short computation time and 1.391 integers memory consumption.  
+It offers a long period of value 2^44,497 - i.e. 1.51e+13,466 - with short computation time and 1,391 integers 32-bits coded memory consumption.  
 It escapes the zeroland at a fast pace.  
 Meanwhile, it might not be able to pass a very few of the *crush* and *big-crush* tests of TestU01, while it can be expected to better behave than the Well19937b version - notice: this version of the WELL algorithm has not been tested in original TestU01 paper.
 
@@ -516,7 +543,7 @@ Returns a new list containing elements from the population while leaving the ori
 
 Members of the population need not be hashable or unique. If the population contains repeats, then each occurrence is a possible selection in the sample.
 
-To choose a sample in a range of integers, use range as an argument. This is especially fast and space efficient for sampling from a large population: `sample(range(10000000), 60)`.
+To choose a sample in a range of integers, use range as an argument. This is especially fast and space efficient for sampling from a large population: `sample(range(10_000_000), 60)`.
 
 
 **seed**(self, a=None, version=2)
