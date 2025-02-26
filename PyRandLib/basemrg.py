@@ -23,7 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .baserandom       import BaseRandom
 from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================
@@ -137,24 +137,27 @@ class BaseMRG( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._initindex( 0 )
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._initindex( 0 )
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._initindex( 0 )
+            self._initstate( _seedState )
                        
  
     #-------------------------------------------------------------------------
-    def _initIndex(self, _index: int) -> None:
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -164,7 +167,7 @@ class BaseMRG( BaseRandom ):
                        
  
     #-------------------------------------------------------------------------
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: Numerical = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
