@@ -23,7 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .baserandom       import BaseRandom
 from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================
@@ -60,10 +60,10 @@ class BaseMRG( BaseRandom ):
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
-      rand = BaseMRG()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseMRG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attributes  '_STATE_SIZE'  and  '_MODULO'. 
     See MRGRand287 for an example.
@@ -73,11 +73,11 @@ class BaseMRG( BaseRandom ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | MRGRand287       | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | MRGRand287      | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457     | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507    | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -137,24 +137,27 @@ class BaseMRG( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._initindex( 0 )
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._initindex( 0 )
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._initindex( 0 )
+            self._initstate( _seedState )
                        
  
     #-------------------------------------------------------------------------
-    def _initIndex(self, _index: int) -> None:
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -164,7 +167,7 @@ class BaseMRG( BaseRandom ):
                        
  
     #-------------------------------------------------------------------------
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: Numerical = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial

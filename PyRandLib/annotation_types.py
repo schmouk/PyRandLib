@@ -24,7 +24,8 @@ SOFTWARE.
 from typing import List, Tuple, Union
 
 Numerical     = Union[ int, float ]
-StateType     = Union[ Tuple[Numerical], List[Numerical], Tuple[List[Numerical], int], Tuple[Tuple[Numerical], int] ]
+StatesList    = Union[ Tuple[int], List[int] ]
+StateType     = Union[ StatesList, Tuple[StatesList, int] ]
 SeedStateType = Union[ Numerical, StateType ]
 
 

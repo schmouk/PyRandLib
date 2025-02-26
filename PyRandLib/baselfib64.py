@@ -34,6 +34,7 @@ class BaseLFib64( BaseRandom ):
     
     Definition of the base class for all LFib pseudo-random generators based
     on 64-bits generated numbers.
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker
@@ -65,10 +66,10 @@ class BaseLFib64( BaseRandom ):
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
-      rand = BaseLFib()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseLFib()   # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attribute '_STATE_SIZE'. See LFib78 for an
     example.
@@ -78,12 +79,12 @@ class BaseLFib64( BaseRandom ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | LFibRand78       | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFibRand116      | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFibRand668      | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFibRand1340     | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | LFibRand78      | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFibRand116     | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFibRand668     | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFibRand1340    | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -160,24 +161,27 @@ class BaseLFib64( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._initindex( 0 )
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._initindex( 0 )
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._initindex( 0 )
+            self._initstate( _seedState )
 
 
     #-------------------------------------------------------------------------
-    def _initIndex(self, _index: int) -> None:
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -187,7 +191,7 @@ class BaseLFib64( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial

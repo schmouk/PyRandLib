@@ -47,11 +47,12 @@ class BaseWELL( BaseRandom ):
     Furthermore, WELLs have proven their great ability  to  very  fastly  escape  from 
     zeroland.
 
-    Notice: the algorithm in its 4 different versions has been coded here as a  direct 
-    implementation  of  their  descriptions in the initial paper "Improved Long-Period
-    Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
-    L’ECUYER (Université de Montréal) and MAKOTO MATSUMOTO (Hiroshima University),  in
-    ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.
+    Notice: the algorithm in the 4 different versions implemented here has been  coded 
+    here  as  a  direct  implementation  of  their  descriptions  in the initial paper 
+    "Improved Long-Period Generators Based on Linear Recurrences  Modulo 2",  François  
+    PANNETON  and  Pierre  L’ECUYER  (Université  de  Montréal)  and  Makoto MATSUMOTO 
+    (Hiroshima University),  in ACM Transactions on  Mathematical  Software,  Vol. 32, 
+    No. 1, March 2006, Pages 1–16.
     (see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
     So,  only minimalist optimization has been coded,  with  the  aim  at  easing  the 
     verification of its proper implementation.
@@ -68,10 +69,10 @@ class BaseWELL( BaseRandom ):
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
-      rand = BaseWell()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseWell()   # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attributes '_STATE_SIZE'. See Well512a for 
     an example.
@@ -81,12 +82,12 @@ class BaseWELL( BaseRandom ):
     have  been implemented in PyRandLib,  as provided in paper "TestU01, ..." and when 
     available.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Well512a         | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937b (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497c      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937b generator provided with library PyRandLib implements the
     Well19937a algorithm augmented with an associated tempering algorithm.
@@ -150,24 +151,27 @@ class BaseWELL( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._initindex( 0 )
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._initindex( 0 )
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._initindex( 0 )
+            self._initstate( _seedState )
                        
  
     #-------------------------------------------------------------------------
-    def _initIndex(self, _index: int) -> None:
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -177,7 +181,7 @@ class BaseWELL( BaseRandom ):
                        
  
     #-------------------------------------------------------------------------
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -187,7 +191,7 @@ class BaseWELL( BaseRandom ):
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
         myRand = FastRand32( _initialSeed )
-        self._state = [ int(myRand(0x1_0000_0000)) for _ in range(self._STATE_SIZE) ]
+        self._state = [ myRand.next() for _ in range(self._STATE_SIZE) ]
 
 
     #-------------------------------------------------------------------------
