@@ -29,6 +29,7 @@ class LFib116( BaseLFib64 ):
     """
     Pseudo-random numbers generator  -  Definition of a fast 64-bits Lagged  Fibonacci 
     Generator with quite short period (8.3e+34).
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker

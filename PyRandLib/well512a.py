@@ -28,6 +28,7 @@ class Well512a( BaseWELL ):
     """
     Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
     Long-period Linear generator with a large period (2^512, i.e. 1.34e+154).
+
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker

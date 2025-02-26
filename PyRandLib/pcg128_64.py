@@ -31,7 +31,7 @@ class Pcg128_64( BasePCG ):
     """
     Pseudo-random  numbers  generator  -  Permutated  Congruential  Generator 
     dedicated  to 128-bits calculations and 64-bits output with medium period 
-    (about 3.40e+38) but very short time computation. This PCG class of PRNGs 
+    (about 3.40e+38) but very  short  time  computation.  The  PCG  algorithm 
     offers jump ahead and multi streams features.
 
     This module is part of library PyRandLib.

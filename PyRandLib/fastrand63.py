@@ -33,6 +33,7 @@ class FastRand63( BaseLCG ):
     Pseudo-random numbers generator - Linear Congruential Generator dedicated  
     to  63-bits calculations with very short period (about 9.2e+18) and short
     time computation.
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker

@@ -29,6 +29,7 @@ class LFib1340( BaseLFib64 ):
     """
     Pseudo-random numbers generator  -  Definition of a fast 64-bits Lagged  Fibonacci 
     Generator with quite short period (2.4e+403).
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2017-2025 Philippe Schmouker

@@ -28,6 +28,7 @@ class Well19937c( BaseWELL ):
     """
     Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
     Long-period Linear generator with a large period (2^19937, i.e. 4.32e+6001).
+
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker

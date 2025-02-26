@@ -29,6 +29,7 @@ class MRGRand49507( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 31-bits Multiple Recursive 
     Generator with a very long period (1.17e+14_903).
+
     This module is part of library PyRandLib.
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
