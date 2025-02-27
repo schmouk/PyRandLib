@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical
+from .annotation_types import SeedStateType, StatesListAndState
 
 
 #=============================================================================
@@ -58,20 +58,20 @@ class BaseCWG( BaseRandom ):
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = BaseLCG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = BaseCWG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    been implemented in PyRandLib, as presented in paper [8] - see file README.md.
 
- | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRandLib class | [8] generator name | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------ | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Cwg64           | CWG64              |     1 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128_64       | CWG128_64          |     2 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |_
+ | Cwg128          | CWG128             |     2 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -82,7 +82,7 @@ class BaseCWG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -96,14 +96,17 @@ class BaseCWG( BaseRandom ):
             
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> int:
+    def getstate(self) -> StatesListAndState:
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For LCG,  the state is defined with  a  single  integer,  'self._value',
-        which  has  to  be  used  in  methods 'random() and 'setstate() of every
-        inheriting class.
+        For  CWG,  this  state is defined by a list of control values 
+        (a, weyl and s - or a list of 4 coeffs) and an internal state 
+        value,  which  are used in methods 'next() and 'setstate() of 
+        every inheriting class.
+
+        All inheriting classes MUST IMPLEMENT this method.
         """
-        return self._state
+        raise NotImplementedError()
  
 #=====   end of module   baselcg.py   ========================================
