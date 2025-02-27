@@ -60,7 +60,7 @@ class Cwg128_64( BaseCWG ):
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = CWG128_64()
+      rand = Cwg128_64()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
