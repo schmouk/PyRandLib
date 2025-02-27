@@ -108,7 +108,8 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
 #=============================================================================
 if __name__ == "__main__":
-    test_algo(FastRand32(),   3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
+    test_algo(Cwg64(),        3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
+    test_algo(FastRand32(),   3217, nb_loops = 2_000_000)
     test_algo(FastRand63(),   3217, nb_loops = 2_000_000)
     test_algo(LFib78(),       3217, nb_loops = 2_000_000)
     test_algo(LFib116(),      3217, nb_loops = 2_000_000)

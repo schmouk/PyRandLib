@@ -21,35 +21,37 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom       import BaseRandom
-from .annotation_types import SeedStateType, StatesListAndState
+from typing import Tuple
+
+from .basecwg          import BaseCWG, SplitMix
+from .fastrand32       import FastRand32
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
-class BaseCWG( BaseRandom ):
-    """Definition of the base class for all  Collatz-Weyl pseudo-random Generators.
+class Cwg64( BaseCWG ):
+    """
+    Pseudo-random numbers generator - Collatz-Weyl pseudo-random Generators
+    dedicated  to 64-bits calculations and 64-bits output values with small 
+    period (min 2^70, i.e. 1.18e+21) but very short computation  time.  All
+    CWG  algorithms offer multi streams features, by simply using different
+    initial settings for control value 's' - see below.
     
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    CWG models are chaotic generators that are combined with Weyl sequences to 
-    eliminate  the risk of short cycles.  They have a large period,  a uniform 
-    distribution,  and the ability to generate multiple independent streams by 
-    changing  their  internal  parameters  (Weyl  increment).  CWGs  owe their 
-    exceptional  quality  to  the  arithmetical  dynamics   of  noninvertible,
-    generalized, Collatz mappings based on the wellknown Collatz conjecture. 
-    There is no jump function, but each  odd  number  of  the  Weyl  increment 
-    initiates  a  new  unique  period,  which  enables quick initialization of 
-    independent streams (this text is extracted from [8], see README.md).
-
-    The internal implementation of the CWG algorithm varies according  to  its
-    implemented  version.  See  implementation  classes  to  get  their formal 
-    description.
+    This CWG model evaluates pseudo-random numbers suites x(i) as a  simple
+    mathematical function of 
     
-    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
-    with very low computation time, medium period,  64- bits output values and 
-    very good randomness characteristics.
+        x(i+1) = (x(i) >> 1) * ((a += x(i)) | 1) ^ (weyl += s) 
+
+    and returns as the output value the xored shifted: a >> 48 ^ x(i+1)
+
+    where a, weyl and s are the control values and x the internal state of the
+    PRNG.  's' must be initally odd.  'a', 'weyl' and initial state 'x' may be 
+    initialized each with any 64-bits value.
+    
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
@@ -58,7 +60,7 @@ class BaseCWG( BaseRandom ):
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = BaseCWG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = CWG64()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
@@ -81,57 +83,90 @@ class BaseCWG( BaseRandom ):
     should definitively pass.
     """
     
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
         its shuffled value).
-        Notice: method setstate() is not implemented in base class BaseRandom.
-        So,  it  must be implemented in classes inheriting BaseLCG and it must
-        initialize attribute self._state.
         """
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
+        """This is the core of the pseudo-random generator.
+        """
+        # evaluates next internal state
+        self._a += self._state
+        self._weyl += self._s
+        self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff
+        # returns the xored-shifted output value
+        return self._state ^ (self._a >> 48)
+
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> StatesListAndState:
+    def getstate(self) -> Tuple[int]:
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For  CWG,  this  state is defined by a list of control values 
-        (a, weyl and s - or a list of 4 coeffs) and an internal state 
-        value,  which  are used in methods 'next() and 'setstate() of 
-        every inheriting class.
-
-        All inheriting classes MUST IMPLEMENT this method.
         """
-        raise NotImplementedError()
+        return (self._a, self._weyl, self._s, self._state)
+ 
 
-
-#=============================================================================
-class SplitMix:
-    """The splitting and mixing algorithm used to intiialize CWGs states.
-    """
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: int) -> None:
-        """Constructor.
-        """
-        self.state = _seed & 0xffff_ffff_ffff_ffff
+    def setstate(self, _state: SeedStateType) -> None:
+        """Restores the internal state of the generator.
         
-    #-------------------------------------------------------------------------
-    def __call__(self, _mask: int = 0xffff_ffff_ffff_ffff) -> int:
-        """The shuffle algorithm.
+        _state should have been obtained from a previous call 
+        to  getstate(),  and setstate() restores the internal 
+        state of the generator to what it  was  at  the  time 
+        setstate() was called.
         """
-        self.state += 0x9e37_79b9_7f4a_7c15
-        self.state &= 0xffff_ffff_ffff_ffff
+        if isinstance( _state, int ):
+            # passed initial seed is an integer, just uses it
+            splitMix = SplitMix( _state )
+            self._a = self._weyl = 0
+            self._state = splitMix();
+            self._s = (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1;   
+            
+        elif isinstance( _state, float ):
+            # transforms passed initial seed from float to integer
+            if _state < 0.0 :
+                _state = -_state
+            if _state >= 1.0:
+                self.setstate( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
+            else:
+                self.setstate( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
+                
+        else:
+            try:
+                self._a     = _state[0] & 0xffff_ffff_ffff_ffff
+                self._weyl  = _state[1] & 0xffff_ffff_ffff_ffff
+                self._s     = (_state[2] & 0xffff_ffff_ffff_ffff) | 1  # notice: s must be odd
+                self._state = _state[3] & 0xffff_ffff_ffff_ffff
 
-        z = self.state & _mask
-        z = ((z ^ (z >> 30)) * 0xbf58476d1ce4e5b9) & _mask
-        z = ((z ^ (z >> 27)) * 0x94d049bb133111eb) & _mask
+            except:
+                # uses local time as initial seed
+                init_rand = FastRand32()
+                self.setstate( init_rand.next() | (init_rand.next() << 32) )
 
-        return z ^ (z >> 31)
-   
 
-#=====   end of module   basecwg.py   ========================================
+#=====   end of module   baselcg.py   ========================================

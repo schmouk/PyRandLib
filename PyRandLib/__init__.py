@@ -6,11 +6,13 @@ Please see files README.md and LICENSE.
 Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 """
 
+from .basecwg        import BaseCWG
 from .baselcg        import BaseLCG
 from .baselfib64     import BaseLFib64
 from .basemrg        import BaseMRG
 from .baserandom     import BaseRandom
 from .basewell       import BaseWELL
+from .cwg64          import Cwg64
 from .fastrand32     import FastRand32
 from .fastrand63     import FastRand63
 from .lfib78         import LFib78
