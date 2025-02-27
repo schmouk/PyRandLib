@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -34,7 +34,7 @@ class BaseCWG( BaseRandom ):
     Copyright (c) 2025 Philippe Schmouker
 
     CWG models are chaotic generators that are combined with Weyl sequences to 
-    eliminate  the  risk of short cycles.  They have a large period, a uniform 
+    eliminate  the risk of short cycles.  They have a large period,  a uniform 
     distribution,  and the ability to generate multiple independent streams by 
     changing  their  internal  parameters  (Weyl  increment).  CWGs  owe their 
     exceptional  quality  to  the  arithmetical  dynamics   of  noninvertible,
@@ -42,13 +42,20 @@ class BaseCWG( BaseRandom ):
     There is no jump function, but each  odd  number  of  the  Weyl  increment 
     initiates  a  new  unique  period,  which  enables quick initialization of 
     independent streams. (extract from [8], see README.md)
+
+    The internal implementation of the CWG algorithm varies according  to  its
+    implemented  version.  See  implementation  classes  to  get  their formal 
+    description.
     
-    See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator with very  low 
-    computation  time  but shorter period and worse randomness characteristics
-    than for FastRand63.
-    See FastRand63 for a 2^63 (i.e. about 9.2e+18)  period  LC-Generator  with  
-    low  computation  time  also,  longer  period  and quite better randomness 
-    characteristics than for FastRand32.
+    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
+    with very low computation time, medium period,  64- bits output values and 
+    very good randomness characteristics.
+    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
+    with very low computation time,  medium period,  64-bits output values and
+    very good randomness characteristics.
+    See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
+    with very low computation time, medium period,  64- bits output values and 
+    very good randomness characteristics.
 
     Furthermore this class is callable:
       rand = BaseLCG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
