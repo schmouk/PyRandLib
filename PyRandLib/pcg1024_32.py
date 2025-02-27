@@ -136,6 +136,7 @@ class Pcg1024_32( Pcg64_32 ):
         # then xor's it with the next 32-bits value evaluated with the internal state
         return super().next() ^ extendedValue
 
+
     #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
@@ -209,8 +210,11 @@ class Pcg1024_32( Pcg64_32 ):
     #-------------------------------------------------------------------------
     def _extendedstep(self, value: int, i: int) -> bool:
         """Evaluates new extended state indexed value in the extended state table.
+
+        Returns True when the evaluated extended value is set to zero on all bits
+        but its two lowest ones - these two bits never change with MCGs.
         """
-        state = (0xacb8_6d69 * (value ^ (value >> 22))) & 0xffff_ffff   ##self._invxrs( value, 32, 22 )
+        state = (0xacb8_6d69 * (value ^ (value >> 22))) & 0xffff_ffff
         state = self._invxrs( state, 32, 4 + (state >> 28) & 0x0f )
         state = (0x108e_f2d9 * state + 2 * (i + 1)) & 0xffff_ffff
 

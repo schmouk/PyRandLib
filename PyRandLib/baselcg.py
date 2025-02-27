@@ -95,8 +95,8 @@ class BaseLCG( BaseRandom ):
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For LCG,  the state is defined with  a  single  integer,  'self._value',
-        which  has  to  be  used  in  methods 'random() and 'setstate() of every
+        For LCG,  the state is defined with a single  integer,  'self._state',
+        which  has  to  be  used  in  methods 'next() and 'setstate() of every
         inheriting class.
         """
         return self._state

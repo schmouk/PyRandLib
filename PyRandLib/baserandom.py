@@ -249,8 +249,12 @@ class BaseRandom( Random ):
     def __init__(self, _seed: SeedStateType = None) -> None:
         """Constructor.
         
-        Should _seed be None or not an integer then the local 
-        time is used (with its shuffled value) as a seed.
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+
+        Notice: the Python built-in base class random.Random  internally 
+        calls method setstate() which MUST be overridden in classes that 
+        inherit from class BaseRandom.
         """
         super().__init__( _seed )
 
