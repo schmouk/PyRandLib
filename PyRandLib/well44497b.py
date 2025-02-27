@@ -28,6 +28,7 @@ class Well44497b( BaseWELL ):
     """
     Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
     Long-period Linear generator with a large period (2^44497, i.e. 1.51e+13466).
+
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker
@@ -83,12 +84,12 @@ class Well44497b( BaseWELL ):
     have  been implemented in PyRandLib,  as provided in paper "TestU01, ..." and when 
     available.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Well512a         | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937c (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937c generator provided with library PyRandLib implements the
     Well19937a  algorithm  augmented  with  an associated tempering algorithm.
@@ -102,17 +103,15 @@ class Well44497b( BaseWELL ):
     * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-        
+
     #-------------------------------------------------------------------------
     # 'protected' constant
     _STATE_SIZE = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
-            
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         i = self._index
         if i >= 2:
@@ -131,7 +130,6 @@ class Well44497b( BaseWELL ):
         self._state[i_1] = z0 ^ self._M3_pos(z1, 20) ^ self._M6(z2, 9, 14, 5, self._a7) ^ z3
         self._index = i_1
 
-        return self._tempering(z3, 0x93dd1400, 0xfa118000) * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
+        return self._tempering(z3, 0x93dd1400, 0xfa118000)
 
-
-#=====   end of module   well512a.py   =======================================
+#=====   end of module   Well44497b.py   =====================================

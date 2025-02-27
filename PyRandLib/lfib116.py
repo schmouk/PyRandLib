@@ -29,6 +29,7 @@ class LFib116( BaseLFib64 ):
     """
     Pseudo-random numbers generator  -  Definition of a fast 64-bits Lagged  Fibonacci 
     Generator with quite short period (8.3e+34).
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker
@@ -91,12 +92,12 @@ class LFib116( BaseLFib64 ):
     been implemented in PyRandLib,  as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | LFib78           | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFib116          | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFib668          | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFib1340         | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | LFib78          | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFib116         | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFib668         | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib1340        | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -108,16 +109,14 @@ class LFib116( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 55 # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
-            
- 
+    _STATE_SIZE = 55  # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
-        # evaluates indexes in suite for the i-24 and i-55 -th values
+        # evaluates indexes in suite for the i-5 and i-17 -th values
         k24 = self._index-24
         if k24 < 0:
             k24 += LFib116._STATE_SIZE
@@ -128,9 +127,7 @@ class LFib116( BaseLFib64 ):
         
         # next index
         self._index = (self._index+1) % LFib116._STATE_SIZE
-        
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 5.421_010_862_427_522_170_037_3e-20  # / 18_446_744_073_709_551_616.0
 
+        return myValue
  
 #=====   end of module   lfib116.py   ========================================
