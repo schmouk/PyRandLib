@@ -13,6 +13,7 @@ from .basemrg        import BaseMRG
 from .baserandom     import BaseRandom
 from .basewell       import BaseWELL
 from .cwg64          import Cwg64
+from .cwg128_64      import Cwg128_64
 from .fastrand32     import FastRand32
 from .fastrand63     import FastRand63
 from .lfib78         import LFib78

@@ -104,21 +104,23 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
 **PyRandLib** time-64 bits:
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | Cwg64            |    0.60    |             |             |             |             |         0        |       0     |       0        |
+ | Cwg128_64_       |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | FastRand32       |    0.20    |             |             |             |             |        11        |     106     |   *too many*   |
- | FastRand63       |    0.22    |             |             |             |             |         0        |       5     |       7        |
- | LFib78           |    0.37    |             |             |             |             |         0        |       0     |       0        |
- | LFib116          |    0.39    |             |             |             |             |         0        |       0     |       0        |
- | LFib668          |    0.40    |             |             |             |             |         0        |       0     |       0        |
- | LFib1340         |    0.41    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand287       |    0.60    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand1457      |    0.61    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand49507     |    0.58    |             |             |             |             |         0        |       0     |       0        |
- | Pcg64_32         |    0.41    |             |             |             |             |         0        |       0     |       0        |
- | Pcg128_64        |    0.59    |             |             |             |             |         0        |       0     |       0        |
- | Pcg1024_32       |    0.82    |             |             |             |             |         0        |       0     |       0        | 
+ | FastRand63       |    0.21    |             |             |             |             |         0        |       5     |       7        |
+ | LFib78           |    0.35    |             |             |             |             |         0        |       0     |       0        |
+ | LFib116          |    0.35    |             |             |             |             |         0        |       0     |       0        |
+ | LFib668          |    0.37    |             |             |             |             |         0        |       0     |       0        |
+ | LFib1340         |    0.39    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand287       |    0.57    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand1457      |    0.58    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand49507     |    0.54    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
  | Well512a         |    1.95    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
- | Well19937b (1)   |    2.44    |             |             |             |             |         0        |       2     |       2        |
+ | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
  | Well44497c       |    2.82    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  
 (1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.  

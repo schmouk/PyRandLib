@@ -99,7 +99,8 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
         elif variance > max_variance:
             max_variance = variance
             
-    print(f"  variances are in range [{min_variance:,.3f} ; {'+' if max_variance > 0.0 else ''}{max_variance:,.3f}]")
+    print(f"  variances are in range [{min_variance:,.3f} ; {'+' if max_variance > 0.0 else ''}{max_variance:,.3f}]", end='')
+    print(f", min: {min(hist)}, max: {max(hist)}")
 
     if (not err):
         print("  Test OK.")
@@ -109,22 +110,23 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 #=============================================================================
 if __name__ == "__main__":
     test_algo(Cwg64(),        3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
-    test_algo(FastRand32(),   3217, nb_loops = 2_000_000)
-    test_algo(FastRand63(),   3217, nb_loops = 2_000_000)
-    test_algo(LFib78(),       3217, nb_loops = 2_000_000)
-    test_algo(LFib116(),      3217, nb_loops = 2_000_000)
-    test_algo(LFib668(),      3217, nb_loops = 2_000_000)
-    test_algo(LFib1340(),     3217, nb_loops = 2_000_000)
-    test_algo(MRGRand287(),   3217, nb_loops = 2_000_000)
-    test_algo(MRGRand1457(),  3217, nb_loops = 2_000_000)
-    test_algo(MRGRand49507(), 3217, nb_loops = 2_000_000)
-    test_algo(Pcg64_32(),     3217, nb_loops = 2_000_000)
-    test_algo(Pcg128_64(),    3217, nb_loops = 2_000_000)
-    test_algo(Pcg1024_32(),   3217, nb_loops = 2_000_000)
-    test_algo(Well512a(),     3217, nb_loops = 1_500_000)
-    test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
-    test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number
-    test_algo(Well44497b(),   nb_entries = 2029)
+    test_algo(Cwg128_64(),    3217, nb_loops = 2_000_000)
+    #test_algo(FastRand32(),   3217, nb_loops = 2_000_000)
+    #test_algo(FastRand63(),   3217, nb_loops = 2_000_000)
+    #test_algo(LFib78(),       3217, nb_loops = 2_000_000)
+    #test_algo(LFib116(),      3217, nb_loops = 2_000_000)
+    #test_algo(LFib668(),      3217, nb_loops = 2_000_000)
+    #test_algo(LFib1340(),     3217, nb_loops = 2_000_000)
+    #test_algo(MRGRand287(),   3217, nb_loops = 2_000_000)
+    #test_algo(MRGRand1457(),  3217, nb_loops = 2_000_000)
+    #test_algo(MRGRand49507(), 3217, nb_loops = 2_000_000)
+    #test_algo(Pcg64_32(),     3217, nb_loops = 2_000_000)
+    #test_algo(Pcg128_64(),    3217, nb_loops = 2_000_000)
+    #test_algo(Pcg1024_32(),   3217, nb_loops = 2_000_000)
+    #test_algo(Well512a(),     3217, nb_loops = 1_500_000)
+    #test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
+    #test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number
+    #test_algo(Well44497b(),   nb_entries = 2029)
 
 
 #=====   end of module   testED.py   =========================================

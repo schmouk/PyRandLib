@@ -29,11 +29,11 @@ from .annotation_types import SeedStateType
 
 
 #=============================================================================
-class Cwg64( BaseCWG ):
+class Cwg128_64( BaseCWG ):
     """
     Pseudo-random numbers generator - Collatz-Weyl pseudo-random Generators
-    dedicated  to 64-bits calculations and 64-bits output values with small 
-    period (min 2^70, i.e. 1.18e+21) but short computation  time.  All  CWG
+    dedicated to 128-bits calculations and 64-bits output values with small 
+    period (min 2^71, i.e. 2.36e+21) but short computation  time.  All  CWG 
     algorithms  offer  multi  streams  features,  by simply using different
     initial settings for control value 's' - see below.
     
@@ -44,7 +44,7 @@ class Cwg64( BaseCWG ):
     This CWG model evaluates pseudo-random numbers suites x(i) as a  simple
     mathematical function of 
     
-        x(i+1) = (x(i) >> 1) * ((a += x(i)) | 1) ^ (weyl += s) 
+        x(i+1) = (x(i) | 1) * ((a += x(i)) >> 1) ^ (weyl += s) 
 
     and returns as the output value the xored shifted: a >> 48 ^ x(i+1)
 
@@ -52,15 +52,15 @@ class Cwg64( BaseCWG ):
     PRNG.  's' must be initally odd.  'a', 'weyl' and initial state 'x' may be 
     initialized each with any 64-bits value.
     
-    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
-    with very low computation time,  medium period,  64-bits output values and
+    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
+    with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
     See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = CWG64()
+      rand = CWG128_64()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
@@ -117,9 +117,9 @@ class Cwg64( BaseCWG ):
         # evaluates next internal state
         self._a = (self._a + self._state) & 0xffff_ffff_ffff_ffff
         self._weyl = (self._weyl + self._s) & 0xffff_ffff_ffff_ffff
-        self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff
+        self._state = (((self._state | 1) * (self._a >> 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
         # returns the xored-shifted output value
-        return self._state ^ (self._a >> 48)
+        return (self._state ^ (self._a >> 48)) & 0xffff_ffff_ffff_ffff
 
  
     #-------------------------------------------------------------------------
@@ -144,8 +144,8 @@ class Cwg64( BaseCWG ):
             # passed initial seed is an integer, just uses it
             splitMix = SplitMix( _state )
             self._a = self._weyl = 0
-            self._state = splitMix()
-            self._s = (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1
+            self._state = (splitMix() << 64) | splitMix()
+            self._s = (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1;   
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
@@ -161,12 +161,12 @@ class Cwg64( BaseCWG ):
                 self._a     = _state[0] & 0xffff_ffff_ffff_ffff
                 self._weyl  = _state[1] & 0xffff_ffff_ffff_ffff
                 self._s     = (_state[2] & 0xffff_ffff_ffff_ffff) | 1  # notice: s must be odd
-                self._state = _state[3] & 0xffff_ffff_ffff_ffff
+                self._state = _state[3] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
 
             except:
                 # uses local time as initial seed
                 init_rand = FastRand32()
-                self.setstate( init_rand.next() | (init_rand.next() << 32) )
+                self.setstate( init_rand.next() | (init_rand.next() << 32) | (init_rand.next() << 64) | (init_rand.next() << 96) )
 
 
 #=====   end of module   cwg64.py   ==========================================

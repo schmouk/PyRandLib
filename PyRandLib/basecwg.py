@@ -48,8 +48,8 @@ class BaseCWG( BaseRandom ):
     description.
     
     See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
-    with very low computation time, medium period,  64- bits output values and 
-    very good randomness characteristics.
+    with low computation time, medium period,  64- bits output values and very
+    good randomness characteristics.
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
