@@ -177,19 +177,22 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
 Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features:
 
 1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
-In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b.
+In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b which all generate output values coded on 32-bits.
 
-1. The PCG (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
-**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
+1. The PCG algorithm (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
+**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128-64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
 
-1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
+1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated rendomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of well specified one of the four integers.  
+2. In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 which generate output values coded on resp. 64-,  64- and 128- bits .
+
+3. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
 
-1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+2. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
-1. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
+3. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
 
 1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
@@ -223,13 +226,60 @@ Notice: Since PyRandLib 2.0, class `BaseRandom` implements the new method `next(
 Since version 2.0 of PyRandLib also, the newly implemented method `getrandbits()` overrides the same method of Python built-in base class `random.Random`.
 
 
+
+### Cwg64  -  minimum 2^70 period
+
+**Cwg64** implements the full 64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^70 (i.e. about 1.18e+21), short computation time and a four 64-bits integers internal state (x, a, weyl, s). The internal state is defined by 64-bits control values x, a, weyl and s.
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
+    output(i) = a(i) >> 48 ^ x(i)
+
+See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.  
+See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
+
+
+### Cwg128_64  -  minimum 2^71 period
+
+**Cwg128_64** implements the mixed 128/64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128- and 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^71 (i.e. about 2.36e+21), short computation time and a three 64-bits (a, weyl, s) plus one 128-bits integers internal state (x). The internal state is defined by 64-bits control values x, a, weyl and s.
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i+1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) | 1) * (a(i) >> 1)) ^ (weyl(i))
+    output(i) = a(i) >> 48 ^ x(i)
+
+See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
+See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
+
+
+
+### Cwg128  -  minimum 2^135 period
+
+**Cwg128** implements the full 128 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128-bits, the output generated value is coded on 128-bits also. It provides a medium period which is at minimum 2^135 (i.e. about 4.36e+40), short computation time and a four 128-bits integers internal state (x, a, weyl, s). The internal state is defined by 64-bits control values x, a, weyl and s.
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
+    output(i) = a(i) >> 96 ^ x(i)
+
+See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
+See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.
+
+
+
 ### FastRand32  -  2^32 periodicity
 
 **FastRand32** implements a Linear Congruential Generator dedicated to 32-bits calculations with very short period (about 4.3e+09) but very short 
 time computation.
 
-LCG models evaluate pseudo-random numbers suites *x(i)*  as  a  simple 
-mathematical function of *x(i-1)*:
+LCG models evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
     x(i) = ( a * x(i-1) + c ) mod m 
    
@@ -237,14 +287,13 @@ The implementation of **FastRand32** is based on  (*a*=69069, *c*=1)  since thes
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use such pseudo-random numbers generators for serious simulation applications.
 
-See FastRand63 for a 2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time and *better* randomness characteristics.
+See FastRand63 for a 2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time and *better* randomness characteristics. 
 
 
 
 ### FastRand63  -  2^63 periodicity
 
-**FastRand63** implements a Linear Congruential Generator dedicated to  63-bits calculations with a short period (about 9.2e+18) and very short 
-time computation.
+**FastRand63** implements a Linear Congruential Generator dedicated to  63-bits calculations with a short period (about 9.2e+18) and very short time computation.
 
 LCG model  evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
@@ -254,15 +303,13 @@ The implementation of this LCG 63-bits model is based on (*a*=921974142649997144
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use this pseudo-random numbers generatorsfor serious simulation applications, even if FastRandom63 fails on very far less tests than does FastRandom32.
 
-See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25%
-lower computation time.
+See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25% lower computation time.
 
 
 
 ### LFibRand78  -  2^78 periodicity
 
-**LFibRand78** implements a fast 64-bits Lagged Fibonacci generator (LFib).
-Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
+**LFibRand78** implements a fast 64-bits Lagged Fibonacci generator (LFib). Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
 
     x(i) = ( x(i-r) op (x(i-k) ) mod m
 
@@ -278,11 +325,9 @@ The implementation of  **LFibRand78** is based on a Lagged Fibonacci generator (
 
     x(i) = ( x(i-5) + x(i-17) ) mod 2^64
 
-It offers a period of about 2^78 - i.e. 3.0e+23 - with low computation time
-due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers 32-bits coded).
+It offers a period of about 2^78 - i.e. 3.0e+23 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers 32-bits coded).
 
-Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator 
-'+'. We've implemented in **PyRandLib** the original operator '+'.
+Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib** the original operator '+'.
 
 
 
