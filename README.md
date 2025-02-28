@@ -105,7 +105,7 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
  | Cwg64            |    0.60    |             |             |             |             |         0        |       0     |       0        |
- | Cwg128_64_       |    0.60    |             |             |             |             |         0        |       0     |       0        |
+ | Cwg128_64        |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | Cwg128           |    0.63    |             |             |             |             |         0        |       0     |       0        |
  | FastRand32       |    0.20    |             |             |             |             |        11        |     106     |   *too many*   |
  | FastRand63       |    0.21    |             |             |             |             |         0        |       5     |       7        |
@@ -182,7 +182,7 @@ In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well10
 1. The PCG algorithm (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
 **PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128-64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
 
-1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated rendomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of well specified one of the four integers.  
+1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated randomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of well specified one of the four integers.  
 2. In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 which generate output values coded on resp. 64-,  64- and 128- bits .
 
 3. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
@@ -229,14 +229,14 @@ Since version 2.0 of PyRandLib also, the newly implemented method `getrandbits()
 
 ### Cwg64  -  minimum 2^70 period
 
-**Cwg64** implements the full 64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^70 (i.e. about 1.18e+21), short computation time and a four 64-bits integers internal state (x, a, weyl, s). The internal state is defined by 64-bits control values x, a, weyl and s.
+**Cwg64** implements the full 64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^70 (i.e. about 1.18e+21), short computation time and a four 64-bits integers internal state (x, a, weyl, s).
 
 This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
 
     a(i)      = a(i-1) + x(i-1)
     weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
     x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
-    output(i) = a(i) >> 48 ^ x(i)
+    output(i) = (a(i) >> 48) ^ x(i)
 
 See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.  
 See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
@@ -244,14 +244,14 @@ See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits inte
 
 ### Cwg128_64  -  minimum 2^71 period
 
-**Cwg128_64** implements the mixed 128/64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128- and 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^71 (i.e. about 2.36e+21), short computation time and a three 64-bits (a, weyl, s) plus one 128-bits integers internal state (x). The internal state is defined by 64-bits control values x, a, weyl and s.
+**Cwg128_64** implements the mixed 128/64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128- and 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^71 (i.e. about 2.36e+21), short computation time and a three 64-bits (a, weyl, s) plus one 128-bits integer internal state (x). 
 
 This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
 
     a(i)      = a(i-1) + x(i-1)
     weyl(i)   = weyl(i+1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
     x(i)      = ((x(i-1) | 1) * (a(i) >> 1)) ^ (weyl(i))
-    output(i) = a(i) >> 48 ^ x(i)
+    output(i) = (a(i) >> 48) ^ x(i)
 
 See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
 See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
@@ -260,14 +260,14 @@ See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits inte
 
 ### Cwg128  -  minimum 2^135 period
 
-**Cwg128** implements the full 128 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128-bits, the output generated value is coded on 128-bits also. It provides a medium period which is at minimum 2^135 (i.e. about 4.36e+40), short computation time and a four 128-bits integers internal state (x, a, weyl, s). The internal state is defined by 64-bits control values x, a, weyl and s.
+**Cwg128** implements the full 128 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128-bits, the output generated value is coded on 128-bits also. It provides a medium period which is at minimum 2^135 (i.e. about 4.36e+40), short computation time and a four 128-bits integers internal state (x, a, weyl, s).
 
 This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
 
     a(i)      = a(i-1) + x(i-1)
     weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
     x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
-    output(i) = a(i) >> 96 ^ x(i)
+    output(i) = (a(i) >> 96) ^ x(i)
 
 See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
 See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.
