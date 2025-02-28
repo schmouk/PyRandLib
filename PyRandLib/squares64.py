@@ -26,7 +26,7 @@ from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
-class Squares32( BaseSquares ):
+class Squares64( BaseSquares ):
     """
     Pseudo-random numbers generator - Squares pseudo-random Generators 
     dedicated  to  64-bits calculations and 32-bits output values with 
@@ -71,6 +71,22 @@ class Squares32( BaseSquares ):
     should definitively pass.
     """
     
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
@@ -89,8 +105,17 @@ class Squares32( BaseSquares ):
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
 
-        Return a 32-bits value.
+        Returns a 64-bits value.
         """
+        '''
+        uint64_t t, x, y, z;
+        y = x = ctr * key; z = y + key;
+        x = x*x + y; x = (x>>32) | (x<<32); /* round 1 */
+        x = x*x + z; x = (x>>32) | (x<<32); /* round 2 */
+        x = x*x + y; x = (x>>32) | (x<<32); /* round 3 */
+        t = x = x*x + z; x = (x>>32) | (x<<32); /* round 4 */
+        return t ^ ((x*x + y) >> 32); /* round 5 */
+        '''
         self._counter += 1
         self._counter &= 0xffff_ffff_ffff_ffff 
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
@@ -105,6 +130,9 @@ class Squares32( BaseSquares ):
         x = (x * x + y) & 0xffff_ffff_ffff_ffff
         x = (x >> 32) | ((x & 0xffff_ffff) << 32)
         # round 4
-        return ((x * x + z) & 0xffff_ffff_ffff_ffff) >> 32
+        t = x = (x * x + z) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 5
+        return t ^ (((x * x + y) >> 32) & 0xffff_ffff)
 
-#=====   end of module   squares32.py   ======================================
+#=====   end of module   squares64.py   ======================================

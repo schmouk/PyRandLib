@@ -64,6 +64,8 @@ if __name__ == "__main__":
     #test_perf("Pcg64_32"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
     #test_perf("Pcg128_64"   , 0x3ca5_8796_1f2e_b45a_3ca5_8796_1f2e_b45a, 100_000, N)
     #test_perf("Pcg1024_32"  , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    #test_perf("Squares32"   , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    #test_perf("Squares64"   , 0x3ca5_8796_1f2e_b45a, 100_000, N)
     #test_perf("Well512a"    , 0x3ca5_8796          , 100_000, N)
     #test_perf("Well1024a"   , 0x3ca5_8796          , 100_000, N)
     #test_perf("Well19937c"  , 0x3ca5_8796          , 100_000, N)

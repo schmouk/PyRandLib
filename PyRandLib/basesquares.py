@@ -85,21 +85,42 @@ class BaseSquares( BaseRandom ):
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
-
+ 
     #-------------------------------------------------------------------------
     def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
-        
-        This object can be passed to setstate() to restore the state.
-        For  CWG,  this  state is defined by a list of control values 
-        (a, weyl and s - or a list of 4 coeffs) and an internal state 
-        value,  which  are used in methods 'next() and 'setstate() of 
-        every inheriting class.
-
-        All inheriting classes MUST IMPLEMENT this method.
         """
-        raise NotImplementedError()
-    
+        return (self._counter, self._key)
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: SeedStateType) -> None:
+        """Restores or sets the internal state of the generator.
+        """
+        if isinstance( _state, int ):
+            # passed initial seed is an integer, just uses it
+            self._counter = 0
+            self._key = self._initKey( _state )
+            
+        elif isinstance( _state, float ):
+            # transforms passed initial seed from float to integer
+            self._counter = 0
+            if _state < 0.0 :
+                _state = -_state
+            if _state >= 1.0:
+                self._key = self._initKey( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
+            else:
+                self._key = self._initKey( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
+                
+        else:
+            try:
+                self._counter = _state[0] & 0xffff_ffff_ffff_ffff
+                self._key     = _state[1] & 0xffff_ffff_ffff_ffff
+            except:
+                # uses local time as initial seed
+                self._counter = 0
+                self._key     = self._initKey()
+
 
     #-------------------------------------------------------------------------
     def _initKey(self, _seed: int = None) -> int:
