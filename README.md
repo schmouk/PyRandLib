@@ -746,3 +746,10 @@ see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-r
 Published at arXiv, December 2023 (11 pages)  
 Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024,  
 see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043).
+
+
+**[9]** Bernard Widynski. March 2022.  
+*Squares: A Fast Counter-Based RNG*.  
+Published at arXiv, March 2022 (5 pages)  
+Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022
+see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).

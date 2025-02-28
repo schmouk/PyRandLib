@@ -26,52 +26,43 @@ from .annotation_types import SeedStateType, StatesListAndState
 
 
 #=============================================================================
-class BaseCWG( BaseRandom ):
-    """Definition of the base class for all Collatz-Weyl pseudo-random Generators.
+class BaseSquares( BaseRandom ):
+    """Definition of the base class for the Squares counter-based pseudo-random Generator.
     
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    CWG models are chaotic generators that are combined with Weyl sequences to 
-    eliminate  the risk of short cycles.  They have a large period,  a uniform 
-    distribution,  and the ability to generate multiple independent streams by 
-    changing  their  internal  parameters  (Weyl  increment).  CWGs  owe their 
-    exceptional  quality  to  the  arithmetical  dynamics   of  noninvertible,
-    generalized, Collatz mappings based on the wellknown Collatz conjecture. 
-    There is no jump function, but each  odd  number  of  the  Weyl  increment 
-    initiates  a  new  unique  period,  which  enables quick initialization of 
-    independent streams (this text is extracted from [8], see README.md).
+    Squares models are based on an incremented counter and a key.  The 
+    algorithm squares a combination of the counter and the key values, 
+    and exchanges the upper and lower bits  of  the  combination,  the 
+    whole  repeated  a number of times (4 to 5 rounds).  Output values 
+    are provided on 32-bits or on 64-bits according to the model.  See 
+    [9] in README.md.
 
-    The internal implementation of the CWG algorithm varies according  to  its
-    implemented  version.  See  implementation  classes  to  get  their formal 
-    description.
-    
-    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
-    with low computation time, medium period,  64- bits output values and very
-    good randomness characteristics.
-    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
-    with very low computation time,  medium period,  64-bits output values and
+    See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  32-bits output values and 
     very good randomness characteristics.
-    See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
-    with very low computation time, medium period,  64- bits output values and 
+
+    See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  64-bits output values and 
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = BaseCWG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = BaseSquares()# Caution: this is just used as illustrative. This base class cannot be instantiated
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
-    We give you here below a copy of the table of tests for the CWGs that have 
-    been implemented in PyRandLib, as presented in paper [8] - see file README.md.
+    We give you here below a copy of the table of tests for the Squares 
+    that have been implemented in PyRandLib,  as presented in paper [9]
+    - see file README.md.
 
- | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | PyRandLib class | [9] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Cwg64           | CWG64              |   8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |_
- | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Squares32       | squares32          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Squares64       | squares64          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |_
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -110,28 +101,4 @@ class BaseCWG( BaseRandom ):
         raise NotImplementedError()
 
 
-#=============================================================================
-class SplitMix:
-    """The splitting and mixing algorithm used to intiialize CWGs states.
-    """
-    #-------------------------------------------------------------------------
-    def __init__(self, _seed: int) -> None:
-        """Constructor.
-        """
-        self.state = _seed & 0xffff_ffff_ffff_ffff
-        
-    #-------------------------------------------------------------------------
-    def __call__(self, _mask: int = 0xffff_ffff_ffff_ffff) -> int:
-        """The shuffle algorithm.
-        """
-        self.state += 0x9e37_79b9_7f4a_7c15
-        self.state &= 0xffff_ffff_ffff_ffff
-
-        z = self.state & _mask
-        z = ((z ^ (z >> 30)) * 0xbf58476d1ce4e5b9) & _mask
-        z = ((z ^ (z >> 27)) * 0x94d049bb133111eb) & _mask
-
-        return z ^ (z >> 31)
-   
-
-#=====   end of module   basecwg.py   ========================================
+#=====   end of module   basesquares.py   ====================================
