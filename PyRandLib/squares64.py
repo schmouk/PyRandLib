@@ -107,16 +107,6 @@ class Squares64( BaseSquares ):
 
         Returns a 64-bits value.
         """
-        '''
-        uint64_t t, x, y, z;
-        y = x = ctr * key; z = y + key;
-        x = x*x + y; x = (x>>32) | (x<<32); /* round 1 */
-        x = x*x + z; x = (x>>32) | (x<<32); /* round 2 */
-        x = x*x + y; x = (x>>32) | (x<<32); /* round 3 */
-        t = x = x*x + z; x = (x>>32) | (x<<32); /* round 4 */
-        return t ^ ((x*x + y) >> 32); /* round 5 */
-        '''
-        self._counter += 1
         self._counter &= 0xffff_ffff_ffff_ffff 
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
         z = (y + self._key) & 0xffff_ffff_ffff_ffff
