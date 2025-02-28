@@ -63,8 +63,11 @@ In [1], every known PRNG at the time of the editing has been tested according to
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- | PyRabndLib class | TU01 generator name                | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | PyRabndLib class | TU01 generator name (1)            | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128           | *CWG128*                           |    16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |    3.20     |     0.67     |         11       |     106     |   *too many*   |
  | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |    4.20     |     0.75     |          0       |       5     |       7        |
  | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |    n.a.     |     1.1      |          0       |       0     |       0        |
@@ -74,16 +77,17 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
  | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
  | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Pcg64_32         | not available                      |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg128_64        | not available                      |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg1024_32       | not available                      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
+ | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
  | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
  | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
-(1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
+(1)*or generator original name in related paper*
+(2)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
 
 
@@ -100,21 +104,24 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
 **PyRandLib** time-64 bits:
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | Cwg64            |    0.60    |             |             |             |             |         0        |       0     |       0        |
+ | Cwg128_64        |    0.60    |             |             |             |             |         0        |       0     |       0        |
+ | Cwg128           |    0.63    |             |             |             |             |         0        |       0     |       0        |
  | FastRand32       |    0.20    |             |             |             |             |        11        |     106     |   *too many*   |
- | FastRand63       |    0.22    |             |             |             |             |         0        |       5     |       7        |
- | LFib78           |    0.37    |             |             |             |             |         0        |       0     |       0        |
- | LFib116          |    0.39    |             |             |             |             |         0        |       0     |       0        |
- | LFib668          |    0.40    |             |             |             |             |         0        |       0     |       0        |
- | LFib1340         |    0.41    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand287       |    0.60    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand1457      |    0.61    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand49507     |    0.58    |             |             |             |             |         0        |       0     |       0        |
- | Pcg64_32         |    0.41    |             |             |             |             |         0        |       0     |       0        |
- | Pcg128_64        |    0.59    |             |             |             |             |         0        |       0     |       0        |
- | Pcg1024_32       |    0.82    |             |             |             |             |         0        |       0     |       0        | 
+ | FastRand63       |    0.21    |             |             |             |             |         0        |       5     |       7        |
+ | LFib78           |    0.35    |             |             |             |             |         0        |       0     |       0        |
+ | LFib116          |    0.35    |             |             |             |             |         0        |       0     |       0        |
+ | LFib668          |    0.37    |             |             |             |             |         0        |       0     |       0        |
+ | LFib1340         |    0.39    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand287       |    0.57    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand1457      |    0.58    |             |             |             |             |         0        |       0     |       0        |
+ | MRGRand49507     |    0.54    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
+ | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
  | Well512a         |    1.95    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
- | Well19937b (1)   |    2.44    |             |             |             |             |         0        |       2     |       2        |
+ | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
  | Well44497c       |    2.82    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  
 (1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.  
@@ -170,19 +177,22 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
 Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features:
 
 1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
-In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b.
+In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b which all generate output values coded on 32-bits.
 
-1. The PCG (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
-**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
+1. The PCG algorithm (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and clearly explained in technical report [7]. It offers jumping, hard to discover internal state and multi-streams featured. It passes all crush and big crush tests of TestU01.  
+**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128-64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
 
-1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
+1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated randomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of well specified one of the four integers.  
+2. In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 which generate output values coded on resp. 64-,  64- and 128- bits .
+
+3. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
 
-1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+2. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
-1. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
+3. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
 
 1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
@@ -216,13 +226,60 @@ Notice: Since PyRandLib 2.0, class `BaseRandom` implements the new method `next(
 Since version 2.0 of PyRandLib also, the newly implemented method `getrandbits()` overrides the same method of Python built-in base class `random.Random`.
 
 
+
+### Cwg64  -  minimum 2^70 period
+
+**Cwg64** implements the full 64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^70 (i.e. about 1.18e+21), short computation time and a four 64-bits integers internal state (x, a, weyl, s).
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
+    output(i) = (a(i) >> 48) ^ x(i)
+
+See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.  
+See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
+
+
+### Cwg128_64  -  minimum 2^71 period
+
+**Cwg128_64** implements the mixed 128/64 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128- and 64-bits, the output generated value is coded on 64-bits also. It provides a medium period which is at minimum 2^71 (i.e. about 2.36e+21), short computation time and a three 64-bits (a, weyl, s) plus one 128-bits integer internal state (x). 
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i+1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) | 1) * (a(i) >> 1)) ^ (weyl(i))
+    output(i) = (a(i) >> 48) ^ x(i)
+
+See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
+See Cwg128 for a  (minimum) 2^135 (i.e. about 4.36e+40) and a four 128-bits integers internal state.
+
+
+
+### Cwg128  -  minimum 2^135 period
+
+**Cwg128** implements the full 128 bits version of the Collatz-Weyl Generator algorithm: computations are done on 128-bits, the output generated value is coded on 128-bits also. It provides a medium period which is at minimum 2^135 (i.e. about 4.36e+40), short computation time and a four 128-bits integers internal state (x, a, weyl, s).
+
+This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as the combination of the next instructions applied to *state(i-1)*:
+
+    a(i)      = a(i-1) + x(i-1)
+    weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
+    x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
+    output(i) = (a(i) >> 96) ^ x(i)
+
+See Cwg64 for a (minimum) 2^70 period (i.e. about 1.18e+21) and four 64-bits integers internal state.  
+See Cwg128_64 for a (minimum) 2^71 period (i.e. about 2.36e+21) and one 128-bits plus three 64-bits integers internal state.
+
+
+
 ### FastRand32  -  2^32 periodicity
 
 **FastRand32** implements a Linear Congruential Generator dedicated to 32-bits calculations with very short period (about 4.3e+09) but very short 
 time computation.
 
-LCG models evaluate pseudo-random numbers suites *x(i)*  as  a  simple 
-mathematical function of *x(i-1)*:
+LCG models evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
     x(i) = ( a * x(i-1) + c ) mod m 
    
@@ -230,14 +287,13 @@ The implementation of **FastRand32** is based on  (*a*=69069, *c*=1)  since thes
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use such pseudo-random numbers generators for serious simulation applications.
 
-See FastRand63 for a 2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time and *better* randomness characteristics.
+See FastRand63 for a 2^63 (i.e. about 9.2e+18) period LC-Generator with low computation time and *better* randomness characteristics. 
 
 
 
 ### FastRand63  -  2^63 periodicity
 
-**FastRand63** implements a Linear Congruential Generator dedicated to  63-bits calculations with a short period (about 9.2e+18) and very short 
-time computation.
+**FastRand63** implements a Linear Congruential Generator dedicated to  63-bits calculations with a short period (about 9.2e+18) and very short time computation.
 
 LCG model  evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
@@ -247,15 +303,13 @@ The implementation of this LCG 63-bits model is based on (*a*=921974142649997144
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use this pseudo-random numbers generatorsfor serious simulation applications, even if FastRandom63 fails on very far less tests than does FastRandom32.
 
-See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25%
-lower computation time.
+See FastRand32 for a 2^32 period (i.e. about 4.3e+09) LC-Generator with 25% lower computation time.
 
 
 
 ### LFibRand78  -  2^78 periodicity
 
-**LFibRand78** implements a fast 64-bits Lagged Fibonacci generator (LFib).
-Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
+**LFibRand78** implements a fast 64-bits Lagged Fibonacci generator (LFib). Lagged Fibonacci generators *LFib( m, r, k, op)* use the recurrence
 
     x(i) = ( x(i-r) op (x(i-k) ) mod m
 
@@ -271,11 +325,9 @@ The implementation of  **LFibRand78** is based on a Lagged Fibonacci generator (
 
     x(i) = ( x(i-5) + x(i-17) ) mod 2^64
 
-It offers a period of about 2^78 - i.e. 3.0e+23 - with low computation time
-due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers 32-bits coded).
+It offers a period of about 2^78 - i.e. 3.0e+23 - with low computation time due to the use of a 2^64 modulo (less than twice the computation time of LCGs) and low memory consumption (17 integers 32-bits coded).
 
-Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator 
-'+'. We've implemented in **PyRandLib** the original operator '+'.
+Please notice that the TestUO1 article states that the operator should be '*' while George Marsaglia in its original article [4] used the operator '+'. We've implemented in **PyRandLib** the original operator '+'.
 
 
 
@@ -687,3 +739,17 @@ Finally: Harvey Mudd College Computer Science Department Technical Report, HMC-C
     xurl = "https://www.cs.hmc.edu/tr/hmc-cs-2014-0905.pdf",
 }  
 see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
+
+
+**[8]** Tomasz R. Dziala. 2023.  
+*Collatz-Weyl Generators: High Quality and High Throughput Parameterized Pseudorandom Number Generators*.  
+Published at arXiv, December 2023 (11 pages)  
+Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024,  
+see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043).
+
+
+**[9]** Bernard Widynski. March 2022.  
+*Squares: A Fast Counter-Based RNG*.  
+Published at arXiv, March 2022 (5 pages)  
+Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022
+see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).

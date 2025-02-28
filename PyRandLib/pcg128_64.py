@@ -161,7 +161,7 @@ class Pcg128_64( BasePCG ):
             if _state < 0.0 :
                 _state = -_state
             if _state >= 1.0:
-                self._state = int( _state + 0.5 ) & 0xffff_ffff_ffff_ffffffff_ffff_ffff_ffff
+                self._state = int( _state + 0.5 ) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
             else:
                 self._state = int( _state * 0x1_0000_0000_0000_0000_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
                 

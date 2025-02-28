@@ -1,0 +1,175 @@
+"""
+Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+
+Permission is hereby granted,  free of charge,  to any person obtaining a copy
+of this software and associated documentation files (the "Software"),  to deal
+in the Software without restriction, including  without  limitation the rights
+to use,  copy,  modify,  merge,  publish,  distribute, sublicense, and/or sell
+copies of the Software,  and  to  permit  persons  to  whom  the  Software  is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS",  WITHOUT WARRANTY OF ANY  KIND,  EXPRESS  OR
+IMPLIED,  INCLUDING  BUT  NOT  LIMITED  TO  THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT  SHALL  THE
+AUTHORS  OR  COPYRIGHT  HOLDERS  BE  LIABLE  FOR  ANY CLAIM,  DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT,  TORT OR OTHERWISE, ARISING FROM,
+OUT  OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
+#=============================================================================
+from typing import Tuple
+
+from .basecwg          import BaseCWG, SplitMix
+from .fastrand32       import FastRand32
+from .annotation_types import SeedStateType
+
+
+#=============================================================================
+class Cwg128( BaseCWG ):
+    """
+    Pseudo-random numbers generator  -  Collatz-Weyl pseudo-random  Generators
+    dedicated  to  128-bits calculations and 128-bits output values with large
+    period (min 2^135, i.e. 4.36e+40) but  short  computation  time.  All  CWG 
+    algorithms offer multi streams features, by simply using different initial 
+    settings for control value 's' - see below.
+    
+    This module is part of library PyRandLib.
+
+    Copyright (c) 2025 Philippe Schmouker
+
+    This CWG model evaluates pseudo-random numbers suites  x(i)  as  a  simple
+    mathematical function of 
+    
+        x(i+1) = (x(i) >> 1) * ((a += x(i)) | 1) ^ (weyl += s) 
+
+    and returns as the output value the xored shifted: a >> 96 ^ x(i+1)
+
+    where a, weyl and s are the control values and x the internal state of the
+    PRNG.  's' must be initally odd.  'a', 'weyl' and initial state 'x' may be 
+    initialized each with any 64-bits value.
+
+    Notice: in the original paper,  four control value c[0] to c[3] are  used. 
+    It appears that these value are used just are 's' for c[0],  'x' for c[1],
+    'a' for c[2] and 'weyl' for c[3] in the other versions of the algorithm.
+    
+    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
+    with very low computation time, medium period,  64- bits output values and 
+    very good randomness characteristics.
+    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
+    with very low computation time,  medium period,  64-bits output values and
+    very good randomness characteristics.
+
+    Furthermore this class is callable:
+      rand = Cwg128()
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
+
+    Reminder:
+    We give you here below a copy of the table of tests for the LCGs that have 
+    been implemented in PyRandLib, as presented in paper [8] - see file README.md.
+
+ | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Cwg64           | CWG64              |   8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |_
+ | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
+
+    * _small crush_ is a small set of simple tests that quickly tests some  of
+    the expected characteristics for a pretty good PRG;
+    * _crush_ is a bigger set of tests that test more deeply  expected  random 
+    characteristics;
+    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    should definitively pass.
+    """
+    
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 2.938_735_877_055_718_769_921_8e-39  # i.e. 1.0 / (1 << 128)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 128
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seedState: SeedStateType = None) -> None:
+        """Constructor. 
+        
+        Should _seedState be None then the local time is used as a seed  (with 
+        its shuffled value).
+        """
+        super().__init__( _seedState )  # this internally calls 'setstate()'  which
+                                        # MUST be implemented in inheriting classes
+
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
+        """This is the core of the pseudo-random generator.
+        """
+        # evaluates next internal state
+        self._a = (self._a + self._state) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+        self._weyl = (self._weyl + self._s) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+        self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+        # returns the xored-shifted output value
+        return self._state ^ (self._a >> 96)
+
+ 
+    #-------------------------------------------------------------------------
+    def getstate(self) -> Tuple[int]:
+        """Returns an object capturing the current internal state of the generator.
+        
+        This object can be passed to setstate() to restore the state.
+        """
+        return (self._a, self._weyl, self._s, self._state)
+ 
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: SeedStateType) -> None:
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call 
+        to  getstate(),  and setstate() restores the internal 
+        state of the generator to what it  was  at  the  time 
+        setstate() was called.
+        """
+        if isinstance( _state, int ):
+            # passed initial seed is an integer, just uses it
+            splitMix = SplitMix( _state )
+            self._a = self._weyl = 0
+            self._state = (splitMix() << 64) | splitMix()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
+            self._s = (splitMix() << 64) | (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1
+            
+        elif isinstance( _state, float ):
+            # transforms passed initial seed from float to integer
+            if _state < 0.0 :
+                _state = -_state
+            if _state >= 1.0:
+                self.setstate( int(_state + 0.5) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff )
+            else:
+                self.setstate( int(_state * 0x1_0000_0000_0000_0000_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff )
+                
+        else:
+            try:
+                self._a     = _state[0] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+                self._weyl  = _state[1] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+                self._s     = (_state[2] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff) | 1  # notice: s must be odd
+                self._state = _state[3] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+
+            except:
+                # uses local time as initial seed
+                init_rand = FastRand32()
+                self.setstate( init_rand.next() | (init_rand.next() << 32) | (init_rand.next() << 64) | (init_rand.next() << 96) )
+
+#=====   end of module   cwg128.py   =========================================
