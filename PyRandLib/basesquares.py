@@ -85,7 +85,7 @@ class BaseSquares( BaseRandom ):
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
- 
+
     #-------------------------------------------------------------------------
     def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
@@ -99,6 +99,14 @@ class BaseSquares( BaseRandom ):
         All inheriting classes MUST IMPLEMENT this method.
         """
         raise NotImplementedError()
+    
+
+    #-------------------------------------------------------------------------
+    def _initKey(self, _seed: int = None) -> int:
+        """Initalizes the attribute _key according to the original recommendations - see [9].
+        """
+        #TODO: implement this
+        return 0xa589f_cb13_d7e6_34cb
 
 
 #=====   end of module   basesquares.py   ====================================

@@ -330,7 +330,7 @@ class BaseRandom( Random ):
     def __call__(self, _max : Union[Numerical,
                                     Tuple[Numerical],
                                     List[Numerical]] = 1.0,
-                       times: int                    = 1   ) -> Union[Numerical | List[Numerical]]:
+                       times: int                    = 1   ) -> Union[Numerical, List[Numerical]]:
         """This class's instances are callable.
         
         The returned value is uniformly contained within the 

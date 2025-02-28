@@ -22,7 +22,6 @@ SOFTWARE.
 
 #=============================================================================
 from .basesquares      import BaseSquares
-from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
 
 
@@ -151,9 +150,9 @@ class Squares32( BaseSquares ):
             if _state < 0.0 :
                 _state = -_state
             if _state >= 1.0:
-                self._key = self._initKey( FastRand32(int(_state + 0.5) & 0xffff_ffff_ffff_ffff) )
+                self._key = self._initKey( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
             else:
-                self._key = self._initKey( FastRand32(int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) )
+                self._key = self._initKey( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
                 
         else:
             try:
@@ -162,6 +161,6 @@ class Squares32( BaseSquares ):
             except:
                 # uses local time as initial seed
                 self._counter = 0
-                self._key     = self._initKey( FastRand32() )
+                self._key     = self._initKey()
 
 #=====   end of module   squares32.py   ======================================
