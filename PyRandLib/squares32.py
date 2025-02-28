@@ -21,35 +21,35 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom       import BaseRandom
+from .basesquares      import BaseSquares
+from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
-class BaseSquares( BaseRandom ):
-    """Definition of the base class for the Squares counter-based pseudo-random Generator.
-    
+class Squares32( BaseSquares ):
+    """
+    Pseudo-random numbers generator - Squares pseudo-random Generators 
+    dedicated  to  64-bits calculations and 32-bits output values with 
+    small period (min 2^64, i.e. 1.84e+19) but short computation time. 
+    All  Squares  algorithms  offer multi streams features,  by simply 
+    using different initial settings for control value 'key'.
+
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    Squares models are based on an incremented counter and a key.  The 
-    algorithm squares a combination of the counter and the key values, 
-    and exchanges the upper and lower bits  of  the  combination,  the 
-    whole  repeated  a number of times (4 to 5 rounds).  Output values 
-    are provided on 32-bits or on 64-bits according to the model.  See 
-    [9] in README.md.
-
-    See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
-    low  computation  time,  medium period,  32-bits output values and 
-    very good randomness characteristics.
+    This Squares models is based on a  four  rounds  of  squaring  and 
+    exchanging of upper and lower bits of the successive combinations.
+    Output values are provided on 32-bits or on 64-bits  according  to 
+    the model. See [9] in README.md.
 
     See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
     low  computation  time,  medium period,  64-bits output values and 
     very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = BaseSquares()# Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = Squares32()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
@@ -85,6 +85,36 @@ class BaseSquares( BaseRandom ):
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
+        """This is the core of the pseudo-random generator.
+        """
+        '''
+        inline static uint32_t squares32(uint64_t ctr, uint64_t key) {
+            uint64_t x, y, z;
+            y = x = ctr * key; z = y + key;
+            x = x*x + y; x = (x>>32) | (x<<32); /* round 1 */
+            x = x*x + z; x = (x>>32) | (x<<32); /* round 2 */
+            x = x*x + y; x = (x>>32) | (x<<32); /* round 3 */
+            return (x*x + z) >> 32; /* round 4 */
+        '''
+        self._counter += 1
+        self._counter &= 0xffff_ffff_ffff_ffff 
+        y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
+        z = (y + self._key) & 0xffff_ffff_ffff_ffff
+        # round 1
+        x = (x * x + y) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 2
+        x = (x * x + z) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 3
+        x = (x * x + y) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 4
+        return ((x * x + z) & 0xffff_ffff_ffff_ffff) >> 32
+
  
     #-------------------------------------------------------------------------
     def getstate(self) -> StatesList:
@@ -98,7 +128,40 @@ class BaseSquares( BaseRandom ):
 
         All inheriting classes MUST IMPLEMENT this method.
         """
-        raise NotImplementedError()
+        return (self._counter, self._key)
 
 
-#=====   end of module   basesquares.py   ====================================
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: SeedStateType) -> None:
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call 
+        to  getstate(),  and setstate() restores the internal 
+        state of the generator to what it  was  at  the  time 
+        setstate() was called.
+        """
+        if isinstance( _state, int ):
+            # passed initial seed is an integer, just uses it
+            self._counter = 0
+            self._key = self._initKey( _state )
+            
+        elif isinstance( _state, float ):
+            # transforms passed initial seed from float to integer
+            self._counter = 0
+            if _state < 0.0 :
+                _state = -_state
+            if _state >= 1.0:
+                self._key = self._initKey( FastRand32(int(_state + 0.5) & 0xffff_ffff_ffff_ffff) )
+            else:
+                self._key = self._initKey( FastRand32(int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) )
+                
+        else:
+            try:
+                self._counter = _state[0] & 0xffff_ffff_ffff_ffff
+                self._key     = _state[1] & 0xffff_ffff_ffff_ffff
+            except:
+                # uses local time as initial seed
+                self._counter = 0
+                self._key     = self._initKey( FastRand32() )
+
+#=====   end of module   squares32.py   ======================================
