@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -22,51 +22,47 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical
+from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
-class BaseLCG( BaseRandom ):
-    """Definition of the base class for all LCG pseudo-random generators.
+class BaseSquares( BaseRandom ):
+    """Definition of the base class for the Squares counter-based pseudo-random Generator.
     
     This module is part of library PyRandLib.
 
-    Copyright (c) 2016-2025 Philippe Schmouker
+    Copyright (c) 2025 Philippe Schmouker
 
-    LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
-    atical function of 
-    
-        x(i-1): x(i) = (a*x(i-1) + c) mod m 
-     
-    Results are nevertheless considered to be poor as stated in the evaluation
-    done  by  Pierre  L'Ecuyer  and Richard Simard (Universite de Montreal) in
-    'TestU01: A C Library for Empirical Testing of Random Number Generators  -
-    ACM Transactions on Mathematical Software,  vol.33  n.4,  pp.22-40, August 
-    2007'.  It is not recommended to use such pseudo-random numbers generators 
-    for serious simulation applications.
+    Squares models are based on an incremented counter and a key.  The 
+    algorithm squares a combination of the counter and the key values, 
+    and exchanges the upper and lower bits  of  the  combination,  the 
+    whole  repeated  a number of times (4 to 5 rounds).  Output values 
+    are provided on 32-bits or on 64-bits according to the model.  See 
+    [9] in README.md.
 
-    See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator with very  low 
-    computation  time  but shorter period and worse randomness characteristics
-    than for FastRand63.
-    See FastRand63 for a 2^63 (i.e. about 9.2e+18)  period  LC-Generator  with  
-    low  computation  time  also,  longer  period  and quite better randomness 
-    characteristics than for FastRand32.
+    See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  32-bits output values and 
+    very good randomness characteristics.
+
+    See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  64-bits output values and 
+    very good randomness characteristics.
 
     Furthermore this class is callable:
-      rand = BaseLCG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = BaseSquares()# Caution: this is just used as illustrative. This base class cannot be instantiated
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
-    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
-    file README.md.
+    We give you here below a copy of the table of tests for the Squares 
+    that have been implemented in PyRandLib,  as presented in paper [9]
+    - see file README.md.
 
- | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRandLib class | [9] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Squares32       | squares32          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Squares64       | squares64          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |_
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -77,7 +73,7 @@ class BaseLCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -88,17 +84,21 @@ class BaseLCG( BaseRandom ):
         """
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
-            
+
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> int:
+    def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For LCG,  the state is defined with a single  integer,  'self._state',
-        which  has  to  be  used  in  methods 'next() and 'setstate() of every
-        inheriting class.
+        For  CWG,  this  state is defined by a list of control values 
+        (a, weyl and s - or a list of 4 coeffs) and an internal state 
+        value,  which  are used in methods 'next() and 'setstate() of 
+        every inheriting class.
+
+        All inheriting classes MUST IMPLEMENT this method.
         """
-        return self._state
- 
-#=====   end of module   baselcg.py   ========================================
+        raise NotImplementedError()
+
+
+#=====   end of module   basesquares.py   ====================================
