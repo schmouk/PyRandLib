@@ -291,7 +291,7 @@ class BaseRandom( Random ):
         if k > self._OUT_BITS:
             raise (ValueError, f"the returned bits count must be at most {self._OUT_BITS}")
         
-        return 0 if k == 0 else next() >> (self._OUT_BITS - k)
+        return 0 if k == 0 else self.next() >> (self._OUT_BITS - k)
 
 
     #-------------------------------------------------------------------------

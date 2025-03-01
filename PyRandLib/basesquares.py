@@ -22,6 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
+from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
 
 
@@ -126,8 +127,36 @@ class BaseSquares( BaseRandom ):
     def _initKey(self, _seed: int = None) -> int:
         """Initalizes the attribute _key according to the original recommendations - see [9].
         """
-        #TODO: implement this
-        return 0xa589f_cb13_d7e6_34cb
+        hexDigits = [ i for i in range(1, 16) ]
+        key = 0
+
+        intRand = FastRand32(_seed)
+
+        # 8 high hexa digits - all different
+        n = 15
+        while n >= 8:
+            k = int(n * intRand.random())
+            h = hexDigits[ k ]
+            key <<= 4
+            key += h
+            n -= 1
+            if k < n:
+                hexDigits[ k ] = hexDigits[ n ]
+                hexDigits[ n ] = h
+
+        # 8 low hexa digits - all different
+        n = 15
+        while n >= 8:
+            k = int(n * intRand.random())
+            h = hexDigits[ k ]
+            key <<= 4
+            key += h
+            n -= 1
+            if k < n:
+                hexDigits[ k ] = hexDigits[ n ]
+                hexDigits[ n ] = h
+
+        return key
 
 
 #=====   end of module   basesquares.py   ====================================

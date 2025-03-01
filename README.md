@@ -80,13 +80,15 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
+ | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
  | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
-(1)*or generator original name in related paper*
+(1)*or the generator original name in the related paper*
 (2)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
 
@@ -119,6 +121,8 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
  | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
  | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
+ | Squares32        |    1.23    |             |             |             |             |         0        |       0     |       0        |
+ | Squares64        |    1.49    |             |             |             |             |         0        |       0     |       0        |
  | Well512a         |    1.95    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
