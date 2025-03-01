@@ -291,7 +291,7 @@ class BaseRandom( Random ):
         if k > self._OUT_BITS:
             raise (ValueError, f"the returned bits count must be at most {self._OUT_BITS}")
         
-        return 0 if k == 0 else next() >> (self._OUT_BITS - k)
+        return 0 if k == 0 else self.next() >> (self._OUT_BITS - k)
 
 
     #-------------------------------------------------------------------------
@@ -330,7 +330,7 @@ class BaseRandom( Random ):
     def __call__(self, _max : Union[Numerical,
                                     Tuple[Numerical],
                                     List[Numerical]] = 1.0,
-                       times: int                    = 1   ) -> Union[Numerical | List[Numerical]]:
+                       times: int                    = 1   ) -> Union[Numerical, List[Numerical]]:
         """This class's instances are callable.
         
         The returned value is uniformly contained within the 

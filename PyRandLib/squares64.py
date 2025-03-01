@@ -21,39 +21,37 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
+from .basesquares      import BaseSquares
 from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
-class BaseSquares( BaseRandom ):
-    """Definition of the base class for the Squares counter-based pseudo-random Generator.
-    
+class Squares64( BaseSquares ):
+    """
+    Pseudo-random numbers generator - Squares pseudo-random Generators 
+    dedicated  to  64-bits calculations and 32-bits output values with 
+    small period (min 2^64, i.e. 1.84e+19) but short computation time. 
+    All  Squares  algorithms  offer multi streams features,  by simply 
+    using different initial settings for control value 'key'.
+
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    Squares models are based on an incremented counter and a key.  The 
-    algorithm squares a combination of the counter and the key values, 
-    and exchanges the upper and lower bits  of  the  combination,  the 
-    whole  repeated  a number of times (4 to 5 rounds).  Output values 
-    are provided on 32-bits or on 64-bits according to the model.  See 
-    [9] in README.md.
+    This Squares models is based on a  four  rounds  of  squaring  and 
+    exchanging of upper and lower bits of the successive combinations.
+    Output values are provided on 32-bits or on 64-bits  according  to 
+    the model. See [9] in README.md.
+    Caution: this 64-bits output values version  should  not  pass the 
+    birthday  test,  which  is  a randmoness issue,  while this is not 
+    mentionned in the original paper (see [9] in file README.md).
 
     See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
     low  computation  time,  medium period,  32-bits output values and 
     very good randomness characteristics.
 
-    See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
-    low  computation  time,  medium period,  64-bits output values and 
-    very good randomness characteristics. Caution: the 64-bits version
-    should  not  pass the birthday test,  which is a randmoness issue, 
-    while this is not mentionned in the original  paper  (see  [9]  in
-    file README.md).
-
     Furthermore this class is callable:
-      rand = BaseSquares()# Caution: this is just used as illustrative. This base class cannot be instantiated
+      rand = Squares32()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
@@ -76,6 +74,22 @@ class BaseSquares( BaseRandom ):
     should definitively pass.
     """
     
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
@@ -89,77 +103,30 @@ class BaseSquares( BaseRandom ):
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
- 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> StatesList:
-        """Returns an object capturing the current internal state of the generator.
-        """
-        return (self._counter, self._key)
-
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType) -> None:
-        """Restores or sets the internal state of the generator.
+    def next(self) -> int:
+        """This is the core of the pseudo-random generator.
+
+        Returns a 64-bits value.
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            self._counter = 0
-            self._key = self._initKey( _state )
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            self._counter = 0
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._key = self._initKey( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
-            else:
-                self._key = self._initKey( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
-                
-        else:
-            try:
-                self._counter = _state[0] & 0xffff_ffff_ffff_ffff
-                self._key     = (_state[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
-            except:
-                # uses local time as initial seed
-                self._counter = 0
-                self._key     = self._initKey()
+        self._counter +=1
+        self._counter &= 0xffff_ffff_ffff_ffff 
+        y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
+        z = (y + self._key) & 0xffff_ffff_ffff_ffff
+        # round 1
+        x = (x * x + y) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 2
+        x = (x * x + z) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 3
+        x = (x * x + y) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 4
+        t = x = (x * x + z) & 0xffff_ffff_ffff_ffff
+        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
+        # round 5
+        return t ^ (((x * x + y) >> 32) & 0xffff_ffff)
 
-
-    #-------------------------------------------------------------------------
-    def _initKey(self, _seed: int = None) -> int:
-        """Initalizes the attribute _key according to the original recommendations - see [9].
-        """
-        hexDigits = [ i for i in range(1, 16) ]
-        key = 0
-
-        intRand = FastRand32(_seed)
-
-        # 8 high hexa digits - all different
-        n = 15
-        while n >= 8:
-            k = int(n * intRand.random())
-            h = hexDigits[ k ]
-            key <<= 4
-            key += h
-            n -= 1
-            if k < n:
-                hexDigits[ k ] = hexDigits[ n ]
-                hexDigits[ n ] = h
-
-        # 8 low hexa digits - all different
-        n = 15
-        while n >= 8:
-            k = int(n * intRand.random())
-            h = hexDigits[ k ]
-            key <<= 4
-            key += h
-            n -= 1
-            if k < n:
-                hexDigits[ k ] = hexDigits[ n ]
-                hexDigits[ n ] = h
-
-        return key | 1  # Notice: key must be odd
-
-
-#=====   end of module   basesquares.py   ====================================
+#=====   end of module   squares64.py   ======================================

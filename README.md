@@ -80,13 +80,15 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
+ | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
  | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
 
-(1)*or generator original name in related paper*
+(1)*or the generator original name in the related paper*
 (2)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
 
@@ -119,6 +121,8 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
  | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
  | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
+ | Squares32        |    1.23    |             |             |             |             |         0        |       0     |       0        |
+ | Squares64        |    1.49    |             |             |             |             |         0        |       0     |       0        |
  | Well512a         |    1.95    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
@@ -183,9 +187,12 @@ In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well10
 **PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128-64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
 
 1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated randomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of well specified one of the four integers.  
-2. In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 which generate output values coded on resp. 64-,  64- and 128- bits .
+In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 which generate output values coded on resp. 64-,  64- and 128- bits .
 
-3. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
+1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
+In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented, which provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
+   
+1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
@@ -431,7 +438,7 @@ The underlying algorithm acts as an LCG associated with a final permutation on b
 **Pcg128_64** implements a fast 128-bits state and 64-bits output Permutated Congruential Generator with a medium period (2^128, i.e. 3.40e+38) with low computation time and very small memory space consumption (4 integers 32-bits coded).
 
 The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is very hard to be reverted and predicted.  
-**PyRandLib** implements for ths the *PCG XSL RR 128/64 (LCG)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+**PyRandLib** implements for this the *PCG XSL RR 128/64 (LCG)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
 
 
 
@@ -439,8 +446,23 @@ The underlying algorithm acts as an LCG associated with a final permutation on b
 
 **Pcg1024_32** implements a fast 64-bits based state and 32-bits output Permutated Congruential Generator with a very large period (2^32,830, i.e. 6.53e+9882) with low computation time and large memory space consumption (1,026 integers 32-bits coded).
 
-The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value, and an array of 32-bits independant MCG (multiplied congruential geenrators) used to create huge chaos. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is very hard to be reverted and predicted.  
-**PyRandLib** implements for ths the *PCG XSH RS 64/32 (EXT 1024)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+The underlying algorithm acts as an LCG associated with a final permutation on bits as its final step before outputing next random value, and an array of 32-bits independant MCG (multiplied congruential generators) used to create huge chaos. It is known to succesfully pass all TestU01 tests. It provides multi streams and jump ahead features and is very hard to be reverted and predicted.  
+**PyRandLib** implements for this the *PCG XSH RS 64/32 (EXT 1024)* version of the PCG algorithm, as explained in [7] and coded in c++ on www.pcg-random.org.
+
+
+
+### Squares32  -  2^64 periodicity
+
+**Squares32** implements a fast counter-based pseudo-random numbers generator which outputs 32-bits random values. The core of the algorithm evaluates and squares 64-bits intermadiate values then exchanges their higher and lower bits on a four rounds operations. It uses a 64-bits counter and a 64-bits key. It provides multi-streams feature via different values of key and gets robust randomness characteristics. The counter starts counting at 0. Once returning to 0 modulo 2^64 the whole period of the algorithm will have been exhausted. Values for keys have to be cautiously chosen: the **PyRandLib** implementation of the manner to do it as recommended in [9] is of our own but stricly respects the original recommendation.  
+**PyRandLib** Squares32 class implements the *squares32* version of the algorithm as described in [9]. 
+
+
+
+### Squares64  -  2^64 periodicity
+
+**Squares64** implements a fast counter-based pseudo-random numbers generator which outputs 64-bits random values. The core of the algorithm evaluates and squares 64-bits intermadiate values then exchanges their higher and lower bits on a five rounds operations. It uses a 64-bits counter and a 64-bits key. It provides multi-streams feature via different values of key and gets robust randomness characteristics. The counter starts counting at 0. Once returning to 0 modulo 2^64 the whole period of the algorithm will have been exhausted. Values for keys have to be cautiously chosen: the **PyRandLib** implementation of the manner to do it as recommended in [9] is of our own but stricly respects the original recommendation.  
+Notice: this version of the algorithm should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].  
+**PyRandLib** Squares64 class implements the *squares64* version of the algorithm as described in [9]. 
 
 
 

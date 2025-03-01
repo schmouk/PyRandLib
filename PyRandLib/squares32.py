@@ -22,7 +22,6 @@ SOFTWARE.
 
 #=============================================================================
 from .basesquares      import BaseSquares
-from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
 
 
@@ -89,16 +88,9 @@ class Squares32( BaseSquares ):
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
+
+        Return a 32-bits value.
         """
-        '''
-        inline static uint32_t squares32(uint64_t ctr, uint64_t key) {
-            uint64_t x, y, z;
-            y = x = ctr * key; z = y + key;
-            x = x*x + y; x = (x>>32) | (x<<32); /* round 1 */
-            x = x*x + z; x = (x>>32) | (x<<32); /* round 2 */
-            x = x*x + y; x = (x>>32) | (x<<32); /* round 3 */
-            return (x*x + z) >> 32; /* round 4 */
-        '''
         self._counter += 1
         self._counter &= 0xffff_ffff_ffff_ffff 
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
@@ -114,54 +106,5 @@ class Squares32( BaseSquares ):
         x = (x >> 32) | ((x & 0xffff_ffff) << 32)
         # round 4
         return ((x * x + z) & 0xffff_ffff_ffff_ffff) >> 32
-
- 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> StatesList:
-        """Returns an object capturing the current internal state of the generator.
-        
-        This object can be passed to setstate() to restore the state.
-        For  CWG,  this  state is defined by a list of control values 
-        (a, weyl and s - or a list of 4 coeffs) and an internal state 
-        value,  which  are used in methods 'next() and 'setstate() of 
-        every inheriting class.
-
-        All inheriting classes MUST IMPLEMENT this method.
-        """
-        return (self._counter, self._key)
-
-
-    #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType) -> None:
-        """Restores the internal state of the generator.
-        
-        _state should have been obtained from a previous call 
-        to  getstate(),  and setstate() restores the internal 
-        state of the generator to what it  was  at  the  time 
-        setstate() was called.
-        """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            self._counter = 0
-            self._key = self._initKey( _state )
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            self._counter = 0
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._key = self._initKey( FastRand32(int(_state + 0.5) & 0xffff_ffff_ffff_ffff) )
-            else:
-                self._key = self._initKey( FastRand32(int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff) )
-                
-        else:
-            try:
-                self._counter = _state[0] & 0xffff_ffff_ffff_ffff
-                self._key     = _state[1] & 0xffff_ffff_ffff_ffff
-            except:
-                # uses local time as initial seed
-                self._counter = 0
-                self._key     = self._initKey( FastRand32() )
 
 #=====   end of module   squares32.py   ======================================
