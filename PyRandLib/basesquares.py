@@ -47,7 +47,10 @@ class BaseSquares( BaseRandom ):
 
     See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
     low  computation  time,  medium period,  64-bits output values and 
-    very good randomness characteristics.
+    very good randomness characteristics. Caution: the 64-bits version
+    should  not  pass the birthday test,  which is a randmoness issue, 
+    while this is not mentionned in the original  paper  (see  [9]  in
+    file README.md).
 
     Furthermore this class is callable:
       rand = BaseSquares()# Caution: this is just used as illustrative. This base class cannot be instantiated
@@ -116,7 +119,7 @@ class BaseSquares( BaseRandom ):
         else:
             try:
                 self._counter = _state[0] & 0xffff_ffff_ffff_ffff
-                self._key     = _state[1] & 0xffff_ffff_ffff_ffff
+                self._key     = (_state[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
             except:
                 # uses local time as initial seed
                 self._counter = 0
@@ -156,7 +159,7 @@ class BaseSquares( BaseRandom ):
                 hexDigits[ k ] = hexDigits[ n ]
                 hexDigits[ n ] = h
 
-        return key
+        return key | 1  # Notice: key must be odd
 
 
 #=====   end of module   basesquares.py   ====================================
