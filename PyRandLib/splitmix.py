@@ -76,10 +76,10 @@ class SplitMix64:
         if _seed is not None:
             self._state = _seed & 0xffff_ffff_ffff_ffff
 
-        self.state += 0x9e37_79b9_7f4a_7c15  # this is the 'Golden' Gamma value: int( ((1+math.sqrt(5))/2) * 2**64) & 0xffff_ffff_ffff_ffff
-        self.state &= 0xffff_ffff_ffff_ffff
+        self._state += 0x9e37_79b9_7f4a_7c15  # this is the 'Golden' Gamma value: int( ((1+math.sqrt(5))/2) * 2**64) & 0xffff_ffff_ffff_ffff
+        self._state &= 0xffff_ffff_ffff_ffff
 
-        z = self.state
+        z = self._state
         z = ((z ^ (z >> 30)) * 0xbf58476d1ce4e5b9) & 0xffff_ffff_ffff_ffff
         z = ((z ^ (z >> 27)) * 0x94d049bb133111eb) & 0xffff_ffff_ffff_ffff
 

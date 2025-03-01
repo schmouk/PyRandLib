@@ -22,8 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
 from .annotation_types import Numerical, SeedStateType, StateType
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -137,11 +137,11 @@ class BaseMRG( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate()
                 
             elif count == 1:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate( _seedState[0] )
                 
             else:
@@ -152,7 +152,7 @@ class BaseMRG( BaseRandom ):
                     self._initstate( _seedState[0] )
                 
         except:
-            self._initindex( 0 )
+            self._index = 0
             self._initstate( _seedState )
                        
  
@@ -176,8 +176,8 @@ class BaseMRG( BaseRandom ):
         current local time value is used as initial seed value.
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
-        myRand = FastRand32( _initialSeed )
-        self._state = [ int(myRand(self._MODULO+1)) for _ in range(self._STATE_SIZE) ]
+        initRand = SplitMix64( _initialSeed )
+        self._state = [ initRand() & self._MODULO for _ in range(self._STATE_SIZE) ]
 
  
 #=====   end of module   basemrg.py   ========================================

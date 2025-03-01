@@ -21,10 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-import time
-
 from .baselcg          import BaseLCG
 from .annotation_types import Numerical
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -113,25 +112,11 @@ class FastRand32( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            self._state = _state & 0xffff_ffff
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._state = int( _state + 0.5 ) & 0xffff_ffff
-            else:
-                self._state = int( _state * 0x1_0000_0000) & 0xffff_ffff
-                
+        if isinstance(_state, int) or isinstance(_state, float):
+            initRand = SplitMix32( _state )
+            self._state = initRand()
         else:
-            # uses local time as initial seed
-            t = int( time.time() * 1000.0 )
-            self._state = ( ((t & 0xff00_0000) >> 24) +
-                            ((t & 0x00ff_0000) >>  8) +
-                            ((t & 0x0000_ff00) <<  8) +
-                            ((t & 0x0000_00ff) << 24)   )
+            initRand = SplitMix32()
+            self._state = initRand()
 
 #=====   end of module   fastrand32.py   =====================================

@@ -22,8 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -151,11 +151,11 @@ class BaseWELL( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate()
                 
             elif count == 1:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate( _seedState[0] )
                 
             else:
@@ -166,7 +166,7 @@ class BaseWELL( BaseRandom ):
                     self._initstate( _seedState[0] )
                 
         except:
-            self._initindex( 0 )
+            self._index = 0
             self._initstate( _seedState )
                        
  
@@ -190,8 +190,8 @@ class BaseWELL( BaseRandom ):
         current local time value is used as initial seed value.
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
-        myRand = FastRand32( _initialSeed )
-        self._state = [ myRand.next() for _ in range(self._STATE_SIZE) ]
+        initRand = SplitMix32( _initialSeed )
+        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]
 
 
     #-------------------------------------------------------------------------

@@ -108,30 +108,6 @@ class BaseCWG( BaseRandom ):
         All inheriting classes MUST IMPLEMENT this method.
         """
         raise NotImplementedError()
-
-
-#=============================================================================
-class SplitMix:
-    """The splitting and mixing algorithm used to intiialize CWGs states.
-    """
-    #-------------------------------------------------------------------------
-    def __init__(self, _seed: int) -> None:
-        """Constructor.
-        """
-        self.state = _seed & 0xffff_ffff_ffff_ffff
-        
-    #-------------------------------------------------------------------------
-    def __call__(self, _mask: int = 0xffff_ffff_ffff_ffff) -> int:
-        """The shuffle algorithm.
-        """
-        self.state += 0x9e37_79b9_7f4a_7c15
-        self.state &= 0xffff_ffff_ffff_ffff
-
-        z = self.state & _mask
-        z = ((z ^ (z >> 30)) * 0xbf58476d1ce4e5b9) & _mask
-        z = ((z ^ (z >> 27)) * 0x94d049bb133111eb) & _mask
-
-        return z ^ (z >> 31)
    
 
 #=====   end of module   basecwg.py   ========================================

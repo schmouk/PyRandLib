@@ -22,9 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
-
+from .splitmix         import SplitMix32
 
 #=============================================================================
 class BaseSquares( BaseRandom ):
@@ -133,12 +132,12 @@ class BaseSquares( BaseRandom ):
         hexDigits = [ i for i in range(1, 16) ]
         key = 0
 
-        intRand = FastRand32(_seed)
+        initRand = SplitMix32( _seed )
 
         # 8 high hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * intRand.random())
+            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
             h = hexDigits[ k ]
             key <<= 4
             key += h
@@ -150,7 +149,7 @@ class BaseSquares( BaseRandom ):
         # 8 low hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * intRand.random())
+            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
             h = hexDigits[ k ]
             key <<= 4
             key += h

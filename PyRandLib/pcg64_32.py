@@ -22,8 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .basepcg          import BasePCG
-from .fastrand32       import FastRand32
 from .annotation_types import Numerical
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -149,7 +149,7 @@ class Pcg64_32( BasePCG ):
                 
         else:
             # uses local time as initial seed
-            init_rand = FastRand32()
-            self._state = init_rand.next() | (init_rand.next() << 32 )
+            initRand = SplitMix64()
+            self._state = initRand()
 
 #=====   end of module   pcg64_32.py   =======================================

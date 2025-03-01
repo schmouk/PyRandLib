@@ -24,8 +24,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -125,7 +125,7 @@ class BaseLFib64( BaseRandom ):
         initial seed.
         """
         super().__init__( _seedState )
-            # this  call  creates  the  two  attributes
+            # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
 
@@ -161,11 +161,11 @@ class BaseLFib64( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate()
                 
             elif count == 1:
-                self._initindex( 0 )
+                self._index = 0
                 self._initstate( _seedState[0] )
                 
             else:
@@ -176,7 +176,7 @@ class BaseLFib64( BaseRandom ):
                     self._initstate( _seedState[0] )
                 
         except:
-            self._initindex( 0 )
+            self._index = 0
             self._initstate( _seedState )
 
 
@@ -191,7 +191,7 @@ class BaseLFib64( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: Numerical = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -199,8 +199,9 @@ class BaseLFib64( BaseRandom ):
         [0.0, 1.0).  Should it be None or anything  else  then  the
         current local time value is used as initial seed value.
         """
-        myRand = FastRand32( _initialSeed )
-        self._state = [ (int(myRand(0x1_0000_0000)) << 32) + int(myRand(0x1_0000_0000)) for _ in range(self._STATE_SIZE) ]        
+        initRand = SplitMix64( _initialSeed )
+        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]        
+
 
 #=====   end of module   baselfib64.py   =====================================
 

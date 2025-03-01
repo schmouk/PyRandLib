@@ -23,7 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .annotation_types import Numerical, SeedStateType, StateType
 from .pcg64_32         import Pcg64_32
-from .well1024a        import Well1024a
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -236,8 +236,8 @@ class Pcg1024_32( Pcg64_32 ):
         current local time value is used as initial seed value.
         """
         # feeds the list according to an initial seed.
-        myRand = Well1024a( _initialSeed )
-        self._extendedState = [ myRand.next() for _ in range(self._EXTENDED_STATE_SIZE) ]
+        initRand = SplitMix32( _initialSeed )
+        self._extendedState = [ initRand() for _ in range(self._EXTENDED_STATE_SIZE) ]
         
 
     #-------------------------------------------------------------------------

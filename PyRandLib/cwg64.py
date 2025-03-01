@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import Tuple
 
-from .basecwg          import BaseCWG, SplitMix
-from .fastrand32       import FastRand32
+from .basecwg          import BaseCWG
 from .annotation_types import SeedStateType
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -132,29 +132,20 @@ class Cwg64( BaseCWG ):
  
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType) -> None:
+    def setstate(self, _state: SeedStateType = None) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
-        setstate() was called.
+        setstate() was called. If None, the local system time
+        is used instead.
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            splitMix = SplitMix( _state )
+        if _state is None or isinstance(_state, int) or isinstance(_state, float):
+            initRand = SplitMix64( _state )
             self._a = self._weyl = 0
-            self._state = splitMix()
-            self._s = (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self.setstate( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
-            else:
-                self.setstate( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
+            self._s = initRand() | 1;                      # Notice: must be odd
+            self._state = (initRand() << 64) | initRand()  # Notice: coded on 128 bits
                 
         else:
             try:
@@ -165,8 +156,7 @@ class Cwg64( BaseCWG ):
 
             except:
                 # uses local time as initial seed
-                init_rand = FastRand32()
-                self.setstate( init_rand.next() | (init_rand.next() << 32) )
+                self.setstate()
 
 
 #=====   end of module   cwg64.py   ==========================================

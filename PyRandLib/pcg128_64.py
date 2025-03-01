@@ -22,8 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .basepcg          import BasePCG
-from .fastrand32       import FastRand32
 from .annotation_types import Numerical
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -118,6 +118,9 @@ class Pcg128_64( BasePCG ):
     """
 
 
+    _MODULO_128 : int = (1 << 128) - 1
+
+
     #-------------------------------------------------------------------------
     def __init__(self, _seed: Numerical = None) -> None:
         """Constructor.
@@ -134,7 +137,7 @@ class Pcg128_64( BasePCG ):
         """
         # evaluates next internal state
         current_state = self._state
-        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * current_state + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * current_state + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & self._MODULO_128
         # the permutated output is then computed
         random_rotation = current_state >> 122  # random right rotation is set with the 6 upper bits of internal state
         current_state ^= current_state >> 64    # fixed shift XOR is then evaluated
@@ -154,20 +157,20 @@ class Pcg128_64( BasePCG ):
         """
         if isinstance( _state, int ):
             # passed initial seed is an integer, just uses it
-            self._state = _state & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+            self._state = _state & self._MODULO_128
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
             if _state < 0.0 :
                 _state = -_state
             if _state >= 1.0:
-                self._state = int( _state + 0.5 ) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+                self._state = int( _state + 0.5 ) & self._MODULO_128
             else:
-                self._state = int( _state * 0x1_0000_0000_0000_0000_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+                self._state = int( _state * (self._MODULO_128 + 1)) & self._MODULO_128
                 
         else:
             # uses local time as initial seed
-            init_rand = FastRand32()
-            self._state = init_rand.next() | (init_rand.next() << 32) | (init_rand.next() << 64) | (init_rand.next() << 96)
+            initRand = SplitMix64()
+            self._state = (initRand() << 64) | initRand()
 
 #=====   end of module   pcg128_64.py   ======================================
