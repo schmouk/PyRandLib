@@ -42,9 +42,12 @@ class Squares64( BaseSquares ):
     exchanging of upper and lower bits of the successive combinations.
     Output values are provided on 32-bits or on 64-bits  according  to 
     the model. See [9] in README.md.
+    Caution: this 64-bits output values version  should  not  pass the 
+    birthday  test,  which  is  a randmoness issue,  while this is not 
+    mentionned in the original paper (see [9] in file README.md).
 
-    See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
-    low  computation  time,  medium period,  64-bits output values and 
+    See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  32-bits output values and 
     very good randomness characteristics.
 
     Furthermore this class is callable:
