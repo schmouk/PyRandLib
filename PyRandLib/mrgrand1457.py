@@ -29,6 +29,7 @@ class MRGRand1457( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 31-bits Multiple Recursive
     Generator with long period (3.98e+438).
+
     This module is part of library PyRandLib.
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
@@ -82,11 +83,11 @@ class MRGRand1457( BaseMRG ):
     We give you here below a copy of the table of tests for the MRGs  that  have  been
     implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | MRGRand287       | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | MRGRand287      | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457     | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507    | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -99,16 +100,32 @@ class MRGRand1457( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 47         # this 'DX-47-3' MRG is based on a suite containing 47 integers
+    _STATE_SIZE = 47            # this 'DX-47-3' MRG is based on a suite containing 47 integers
     _MODULO     = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
 
- 
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    _NORMALIZE: float = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 31
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
+        # The DX-47-3 version uses the recurrence
+        #   x(i) = (2^26+2^19) * (x(i-1) + x(i-24) + x(i-47)) mod (2^31-1)
+
         # evaluates indexes in suite for the i-1, i-24 (and i-47) -th values
         k1  = self._index-1
         if k1 < 0:
@@ -119,14 +136,13 @@ class MRGRand1457( BaseMRG ):
             k24 += MRGRand1457._STATE_SIZE
         
         # then evaluates current value
-        myValue = (67633152 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
+        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
         self._state[self._index] = myValue
         
         # next index
         self._index = (self._index + 1) % MRGRand1457._STATE_SIZE
-        
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 4.656_612_873_077_039_257_8e-10  # / 2_147_483_648.0
 
+        # then returns the integer generated value
+        return  myValue
 
 #=====   end of module   mrgrand1457.py   ====================================

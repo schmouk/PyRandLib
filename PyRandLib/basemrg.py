@@ -23,7 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .baserandom       import BaseRandom
 from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================
@@ -60,10 +60,10 @@ class BaseMRG( BaseRandom ):
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
-      rand = BaseMRG()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseMRG()    # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attributes  '_STATE_SIZE'  and  '_MODULO'. 
     See MRGRand287 for an example.
@@ -73,11 +73,11 @@ class BaseMRG( BaseRandom ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | MRGRand287       | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | MRGRand287      | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457     | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507    | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRG;
@@ -87,19 +87,18 @@ class BaseMRG( BaseRandom ):
     should definitively pass.
     """
     
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor.
         
-        _seedState is either a valid state, an integer, a float or None.
+        _seedState is either a valid state, an integer, a float or  None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index  value 
+        self._STATE_SIZE integers and an index in this list (index  value 
         being  then  in range(0,self._STATE_SIZE)).  Should _seedState be 
-        a  sole  integer  or  float  then  it is used as initial seed for 
-        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
-        integers.  Should _seedState  be anything else (e.g. None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        a sole integer or float then it is used as initial seed  for  the 
+        random filling of the internal list of self._STATE_SIZE integers. 
+        Should _seedState be anything else (e.g. None) then the shuffling 
+        of the local current time value is used as such an initial seed.
         """
         super().__init__( _seedState )
             # this  call  creates  the  two  attributes
@@ -107,41 +106,30 @@ class BaseMRG( BaseRandom ):
             # since it internally calls self.setstate().
             
  
-    #------------------------------------------------------------------------=
-    def random(self) -> float:
-        """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
-        Inheriting classes HAVE TO IMPLEMENT this method - see MRGRand287
-        for an example.
-        """
-        raise NotImplementedError()
-            
- 
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
-        This  object  can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE integers and an 
-        index in this list (index value being then in range(0,self._STATE_SIZE).
+        This object can be passed to setstate() to restore the state. It is a
+        tuple  containing a list of self._STATE_SIZE integers and an index in 
+        this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state[:], self._index)
             
  
-    #------------------------------------------------------------------------=
+    #-------------------------------------------------------------------------
     def setstate(self, _seedState: StateType) -> None:
         """Restores the internal state of the generator.
 
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate() was called.
-        About valid state:  this is a tuple containing  a   list   of  
-        self._STATE_SIZE  integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)).  Should 
+        generator to what it was at the time setstate()  was  called.
+        About valid state:  this is a  tuple  containing  a  list  of 
+        self._STATE_SIZE integers (31-bits) and an index in this list 
+        (index value being then in range(0,self._STATE_SIZE)). Should 
         _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of  
-        self._STATE_SIZE integers.  Should _seedState be anything else
+        initial seed for the random filling of the internal  list  of 
+        self._STATE_SIZE integers. Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
@@ -149,24 +137,27 @@ class BaseMRG( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._initindex( 0 )
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._initindex( 0 )
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._initindex( 0 )
+            self._initstate( _seedState )
                        
  
-    #------------------------------------------------------------------------=
-    def _initIndex(self, _index: int) -> None:
+    #-------------------------------------------------------------------------
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -175,8 +166,8 @@ class BaseMRG( BaseRandom ):
             self._index = 0
                        
  
-    #------------------------------------------------------------------------=
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    #-------------------------------------------------------------------------
+    def _initstate(self, _initialSeed: Numerical = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial

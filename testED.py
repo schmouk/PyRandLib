@@ -57,35 +57,50 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     """
     algo_name = rnd_algo.__class__.__name__
     print('-'*(len(algo_name)+1), algo_name, '-'*(len(algo_name)+1), sep='\n')
-    print (nb_loops, "loops,", nb_entries, "entries in histogram,", "expected mean:", nb_loops // nb_entries)
 
     hist = [0]*nb_entries
 
     expected_max_diff_mean_median = (nb_loops / nb_entries) * 0.002    # i.e. difference should be less than 0.2 % of expected mean
     expected_max_stdev = 1.04 * sqrt(nb_loops / nb_entries)            # i.e. +4 % max over expected stdandard deviation
-    expected_max_variance = 4.5                                        # this is the absolute value of the expected max
+    expected_max_variance = 4.5                                        # this is the absolute value of the expected max on local variance
+
+    if expected_max_diff_mean_median < 0.5:
+        expected_max_diff_mean_median= 0.5
 
     for _ in range(nb_loops):
         n = int(rnd_algo() * nb_entries)
         hist[n] += 1
-    
+
+    # uncomment next line if you want to print the content of the histograms
+    print(hist, '\n')
+
+    print (f"{nb_loops:,d} loops, {nb_entries:,d} entries in histogram, expected mean: {round(nb_loops / nb_entries):,d}")
     mn, md, st = mean(hist), median(hist), stdev(hist)
-    print(f"  mean: {mn}, median: {md}, standard deviation: {st:.3f}")
+    print(f"  mean: {mn:,f}, median: {md:,f}, standard deviation: {st:,.3f}")
 
     err = False
 
     if (abs(md - mn) > expected_max_diff_mean_median):
         err = True
-        print(f"  incoherence btw. mean and median values, difference expected to be less than {expected_max_diff_mean_median:.1f}")
+        print(f"  incoherence btw. mean and median values, difference expected to be less than {expected_max_diff_mean_median:,.1f}")
     if (st > expected_max_stdev):
         err = True
-        print(f"  standard deviation is out of range, should be less than {expected_max_stdev:.3f}")
+        print(f"  standard deviation is out of range, should be less than {expected_max_stdev:_.3f}")
+
+    min_variance = max_variance = 0.0
 
     for i in range(nb_entries):
         variance = (hist[i] - mn) / st
         if abs(variance) > expected_max_variance:
-            print(f"  entry {i}: hist = {hist[i]}, variance = {variance} seems too large")
+            print(f"  entry {i:,d}: hist = {hist[i]:,d}, variance = {variance:,.4f} seems too large")
             err = True
+        if variance < min_variance:
+            min_variance = variance
+        elif variance > max_variance:
+            max_variance = variance
+            
+    print(f"  variances are in range [{min_variance:,.3f} ; {'+' if max_variance > 0.0 else ''}{max_variance:,.3f}]", end='')
+    print(f", min: {min(hist)}, max: {max(hist)}")
 
     if (not err):
         print("  Test OK.")
@@ -94,19 +109,27 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
 #=============================================================================
 if __name__ == "__main__":
-    test_algo(FastRand32(),   nb_loops = 2_000_000)
-    test_algo(FastRand63(),   nb_loops = 2_000_000)
-    test_algo(LFib78(),       nb_loops = 2_000_000)
-    test_algo(LFib116(),      nb_loops = 2_000_000)
-    test_algo(LFib668(),      nb_loops = 2_000_000)
-    test_algo(LFib1340(),     nb_loops = 2_000_000)
-    test_algo(MRGRand287(),   nb_loops = 2_000_000)
-    test_algo(MRGRand1457(),  nb_loops = 2_000_000)
-    test_algo(MRGRand49507(), nb_loops = 2_000_000)
-    test_algo(Well512a(),     nb_loops = 1_500_000)
-    test_algo(Well1024a(),    nb_loops = 1_500_000)
-    test_algo(Well19937c(),   nb_entries = 2000)
-    test_algo(Well44497b(),   nb_entries = 2000)
+    test_algo(Cwg64(),        3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
+    test_algo(Cwg128_64(),    3217, nb_loops = 2_000_000)
+    test_algo(Cwg128(),       3217, nb_loops = 2_000_000)
+    test_algo(FastRand32(),   3217, nb_loops = 2_000_000)
+    test_algo(FastRand63(),   3217, nb_loops = 2_000_000)
+    test_algo(LFib78(),       3217, nb_loops = 2_000_000)
+    test_algo(LFib116(),      3217, nb_loops = 2_000_000)
+    test_algo(LFib668(),      3217, nb_loops = 2_000_000)
+    test_algo(LFib1340(),     3217, nb_loops = 2_000_000)
+    test_algo(MRGRand287(),   3217, nb_loops = 2_000_000)
+    test_algo(MRGRand1457(),  3217, nb_loops = 2_000_000)
+    test_algo(MRGRand49507(), 3217, nb_loops = 2_000_000)
+    test_algo(Pcg64_32(),     3217, nb_loops = 2_000_000)
+    test_algo(Pcg128_64(),    3217, nb_loops = 2_000_000)
+    test_algo(Pcg1024_32(),   3217, nb_loops = 2_000_000)
+    test_algo(Squares32(),     3217, nb_loops = 2_000_000)
+    test_algo(Squares64(),     3217, nb_loops = 2_000_000)
+    test_algo(Well512a(),     3217, nb_loops = 1_500_000)
+    test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
+    test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number
+    test_algo(Well44497b(),   nb_entries = 2029)
 
 
 #=====   end of module   testED.py   =========================================
