@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
-from typing import Any, List, Tuple, Union
+from typing import List, Tuple, Union
 
 from .annotation_types import Numerical, SeedStateType, StateType
 

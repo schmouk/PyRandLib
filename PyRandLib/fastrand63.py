@@ -138,6 +138,7 @@ class FastRand63( BaseLCG ):
                 self._state = int(_state * 0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
         
         else:
+            # uses local time as initial seed
             t = int(time.time() * 1000.0)
             self._state = t & 0xffff_ffff
             self._state |= (t & 0xff00_0000) <<  8

@@ -191,15 +191,17 @@ In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 
 
 1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
 In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented, which provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
-   
+
+1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random poorness.
+
 1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
 
-2. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
-3. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
+1. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
 
 1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
