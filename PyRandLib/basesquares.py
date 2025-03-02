@@ -22,9 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
 from .annotation_types import SeedStateType, StatesList
-
+from .splitmix         import SplitMix32
 
 #=============================================================================
 class BaseSquares( BaseRandom ):
@@ -69,10 +68,10 @@ class BaseSquares( BaseRandom ):
  | Squares64       | squares64          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |_
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
     
@@ -133,12 +132,12 @@ class BaseSquares( BaseRandom ):
         hexDigits = [ i for i in range(1, 16) ]
         key = 0
 
-        intRand = FastRand32(_seed)
+        initRand = SplitMix32( _seed )
 
         # 8 high hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * intRand.random())
+            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
             h = hexDigits[ k ]
             key <<= 4
             key += h
@@ -150,7 +149,7 @@ class BaseSquares( BaseRandom ):
         # 8 low hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * intRand.random())
+            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
             h = hexDigits[ k ]
             key <<= 4
             key += h

@@ -74,10 +74,10 @@ class BaseCWG( BaseRandom ):
  | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
     
@@ -108,30 +108,6 @@ class BaseCWG( BaseRandom ):
         All inheriting classes MUST IMPLEMENT this method.
         """
         raise NotImplementedError()
-
-
-#=============================================================================
-class SplitMix:
-    """The splitting and mixing algorithm used to intiialize CWGs states.
-    """
-    #-------------------------------------------------------------------------
-    def __init__(self, _seed: int) -> None:
-        """Constructor.
-        """
-        self.state = _seed & 0xffff_ffff_ffff_ffff
-        
-    #-------------------------------------------------------------------------
-    def __call__(self, _mask: int = 0xffff_ffff_ffff_ffff) -> int:
-        """The shuffle algorithm.
-        """
-        self.state += 0x9e37_79b9_7f4a_7c15
-        self.state &= 0xffff_ffff_ffff_ffff
-
-        z = self.state & _mask
-        z = ((z ^ (z >> 30)) * 0xbf58476d1ce4e5b9) & _mask
-        z = ((z ^ (z >> 27)) * 0x94d049bb133111eb) & _mask
-
-        return z ^ (z >> 31)
    
 
 #=====   end of module   basecwg.py   ========================================

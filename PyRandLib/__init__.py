@@ -13,6 +13,7 @@ from .basemrg        import BaseMRG
 from .baserandom     import BaseRandom
 from .basesquares    import BaseSquares
 from .basewell       import BaseWELL
+from .basexoroshiro  import BaseXoroshiro
 from .cwg64          import Cwg64
 from .cwg128_64      import Cwg128_64
 from .cwg128         import Cwg128
@@ -34,3 +35,6 @@ from .well512a       import Well512a
 from .well1024a      import Well1024a
 from .well19937c     import Well19937c
 from .well44497b     import Well44497b
+from .xoroshiro256   import Xoroshiro256
+from .xoroshiro512   import Xoroshiro512
+from .xoroshiro1024  import Xoroshiro1024

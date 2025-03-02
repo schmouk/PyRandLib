@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import Tuple
 
-from .basecwg          import BaseCWG, SplitMix
-from .fastrand32       import FastRand32
+from .basecwg          import BaseCWG
 from .annotation_types import SeedStateType
+from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -70,7 +70,7 @@ class Cwg128( BaseCWG ):
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
+    We give you here below a copy of the table of tests for  the  CWGs  that  have 
     been implemented in PyRandLib, as presented in paper [8] - see file README.md.
 
  | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
@@ -80,10 +80,10 @@ class Cwg128( BaseCWG ):
  | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
     
@@ -103,6 +103,9 @@ class Cwg128( BaseCWG ):
     """
 
 
+    _MODULO: int = (1 << 128) - 1
+
+
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor. 
@@ -119,9 +122,9 @@ class Cwg128( BaseCWG ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates next internal state
-        self._a = (self._a + self._state) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
-        self._weyl = (self._weyl + self._s) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
-        self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+        self._a = (self._a + self._state) & self._MODULO
+        self._weyl = (self._weyl + self._s) & self._MODULO
+        self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & self._MODULO
         # returns the xored-shifted output value
         return self._state ^ (self._a >> 96)
 
@@ -136,40 +139,30 @@ class Cwg128( BaseCWG ):
  
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType) -> None:
+    def setstate(self, _state: SeedStateType = None) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
-        setstate() was called.
+        setstate() was called. If None, the local system time
+        is used instead.
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            splitMix = SplitMix( _state )
+        if _state is None or isinstance(_state, int) or isinstance(_state, float):
+            initRand = SplitMix64( _state )
             self._a = self._weyl = 0
-            self._state = (splitMix() << 64) | splitMix()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
-            self._s = (splitMix() << 64) | (splitMix(0x7fff_ffff_ffff_ffff) << 1) | 1
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self.setstate( int(_state + 0.5) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff )
-            else:
-                self.setstate( int(_state * 0x1_0000_0000_0000_0000_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff )
-                
+            self._state = (initRand() << 64) | initRand()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
+            self._s = (initRand() << 64) | initRand() | 1   # Notice: s must be odd
+                            
         else:
             try:
-                self._a     = _state[0] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
-                self._weyl  = _state[1] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
-                self._s     = (_state[2] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff) | 1  # notice: s must be odd
-                self._state = _state[3] & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
+                self._a     =  _state[0] & self._MODULO
+                self._weyl  =  _state[1] & self._MODULO
+                self._s     = (_state[2] & self._MODULO) | 1  # Notice: s must be odd
+                self._state =  _state[3] & self._MODULO
 
             except:
                 # uses local time as initial seed
-                init_rand = FastRand32()
-                self.setstate( init_rand.next() | (init_rand.next() << 32) | (init_rand.next() << 64) | (init_rand.next() << 96) )
+                self.setstate()
 
 #=====   end of module   cwg128.py   =========================================

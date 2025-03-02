@@ -43,7 +43,7 @@ The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] -  is th
 implements this PRNG. It is also implemented in C++ and Java standard 
 libraries for instance.
 
-It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRG.
+It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRNG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRG.
 
 
 
@@ -87,6 +87,9 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
  | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |     6 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
+ | Xiroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |    n.a.     |     0.84     |          0       |       0     |       0        |
+ | Xiroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |    n.a.     |     0.99     |          0       |       0     |       0        |
+ | Xiroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |    n.a.     |     1.17     |          0       |       0     |       0        |
 
 (1)*or the generator original name in the related paper*
 (2)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
@@ -127,7 +130,10 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
  | Well44497c       |    2.82    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
- 
+ | Xiroshiro256     |            |             |             |             |             |         0        |       0     |       0        |
+ | Xiroshiro512     |            |             |             |             |             |         0        |       0     |       0        |
+ | Xiroshiro1024    |            |             |             |             |             |         0        |       0     |       0        |
+
 (1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.  
 (*missing values in empty columns are to come*)
 
@@ -191,15 +197,19 @@ In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 
 
 1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
 In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented, which provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
-   
+
+1. The xiroshiro algorithm ("Scrambled Linear Pseudorandom Number Generators", see [10], 2018) is now implemented in **PyRandLib**, in its *mult-mult* form for the output scrambler. This algorithm is fast, uses 64-bits integers as its internal state and outputs 64-bits values. It uses few memory space (4, 8 or 16 64-bits integers for resp. the 256-, 512- and 1024- versions that are implemented in **PyRandLib**. Notice: the 256 version of the algorithm is know to show close repeats flaws, with a bad Hamming weight near zero. *xoroshiro512* seems to best fit this property, according to the tables proposed by the authors in [10].
+
+1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random poorness.
+
 1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
 1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *times evaluation* table.
 
-2. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
 
-3. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
+1. All developments are now done under a newly created branch named `dev`. This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` only happen when creating new releases.  
 So, if you want to see what is currently going on for next release, just check-out branch `dev`.
 
 1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
@@ -506,6 +516,33 @@ Meanwhile, it might not be able to pass a very few of the *crush* and *big-crush
 
 
 
+### Xoroshiro256  - 2^256 periodicity
+
+**Xoroshiro256** implements version *xoroshiro256*** of the Scrambled Linear Pseudorandom Number Generators algorithm proposed by David Blackman and Sebastiano Vigna in[10]. This xoroshiro linear transformation updates cyclically two words of a 4 integers state array. The base xoroshiro linear transformation is obtained combining a rotation, a shift, and again a rotation. It also applies a double multiplication as the scrambler model before outputing values. Internal state and output values are coded on 64 bits.
+
+It offers a medium period of value 2^256 - i.e. 1.16e+77 - with short computation time and 4 integers 64-bits coded memory consumption.  
+It escapes the zeroland at a fast pace (about 10 loops) and offers jump-ahead feature. Notice: the 256 version of the algorithm has shown close repeats flaws, with a bad Hamming weight near zero - see [https://www.pcg-random.org/posts/xoshiro-repeat-flaws.html](https://www.pcg-random.org/posts/xoshiro-repeat-flaws.html).
+
+
+
+### Xoroshiro512  - 2^512 periodicity
+
+**Xoroshiro512** implements version *xoroshiro512*** of the Scrambled Linear Pseudorandom Number Generators algorithm proposed by David Blackman and Sebastiano Vigna in[10]. This xoroshiro linear transformation updates cyclically two words of a 8 integers state array. The base xoroshiro linear transformation is obtained combining a rotation, a shift, and again a rotation. It also applies a double multiplication as the scrambler model before outputing values. Internal state and output values are coded on 64 bits.
+
+It offers a medium period of value 2^512 - i.e. 1.34e+154 - with short computation time and 4 integers 64-bits coded memory consumption.  
+It escapes the zeroland at a fast pace (about 30 loops) and offers jump-ahead feature.
+
+
+
+### Xoroshiro1024  - 2^1024 periodicity
+
+**Xoroshiro512** implements version *xoroshiro1024*** of the Scrambled Linear Pseudorandom Number Generators algorithm proposed by David Blackman and Sebastiano Vigna in[10]. This xoroshiro linear transformation updates cyclically two words of a 16 integers state array and a 4 bits index. The base xoroshiro linear transformation is obtained combining a rotation, a shift, and again a rotation. It also applies a double multiplication as the scrambler model before outputing values. Internal state and output values are coded on 64 bits.
+
+It offers a medium period of value 2^1024 - i.e. 1.80e+308 - with short computation time and 4 integers 64-bits coded memory consumption.  
+It escapes the zeroland at a fast pace (about 100 loops) and offers jump-ahead feature.
+
+
+
 ## Inherited Distribution and Generic Functions
 (some of next explanation may be free to exact copy of Python 3.6 documentation. See [https://docs.python.org/3.6/library/random.html?highlight=random#module-random](https://docs.python.org/3.6/library/random.html?highlight=random#module-random))
 
@@ -775,3 +812,10 @@ see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043).
 Published at arXiv, March 2022 (5 pages)  
 Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022
 see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).
+
+
+**[10]** David Blackman, Sebastiano Vigna. 2018.
+*Scrambled Linear Pseudorandom Number Generators*.
+Published in arXiv, March 2022 (32 pages)
+Last reference: arXiv:1805.01407v3 [cs.DS] 28 Mar 2022
+see [https://arxiv.org/pdf/1805.01407](https://arxiv.org/pdf/1805.01407).

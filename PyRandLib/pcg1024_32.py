@@ -23,7 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .annotation_types import Numerical, SeedStateType, StateType
 from .pcg64_32         import Pcg64_32
-from .well1024a        import Well1024a
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -103,10 +103,10 @@ class Pcg1024_32( Pcg64_32 ):
  | Pcg1024_32      | PCG XSH RS 64/32 (EXT 1024) | 1,026 x 4-bytes | 2^32,830 |     0.78     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
 
@@ -236,8 +236,8 @@ class Pcg1024_32( Pcg64_32 ):
         current local time value is used as initial seed value.
         """
         # feeds the list according to an initial seed.
-        myRand = Well1024a( _initialSeed )
-        self._extendedState = [ myRand.next() for _ in range(self._EXTENDED_STATE_SIZE) ]
+        initRand = SplitMix32( _initialSeed )
+        self._extendedState = [ initRand() for _ in range(self._EXTENDED_STATE_SIZE) ]
         
 
     #-------------------------------------------------------------------------
