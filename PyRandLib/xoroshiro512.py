@@ -34,7 +34,7 @@ class Xoroshiro512( BaseXoroshiro ):
     
     Pseudo-random numbers generator  -  implements  the  xoroshiro512**  pseudo-random 
     generator,  the  four 64-bits integers state array version of the Scrambled Linear 
-    Pseudorandom Number Generators.  It provides 64-bits pseudo random values, a  long 
+    Pseudorandom Number Generators. It provides 64-bits pseudo random values, a medium 
     period  2^512 (i.e. about 1.34e+154),  jump ahead feature,  very short escape from 
     zeroland (30 iterations only) and passes TestU01 tests.
 
@@ -66,9 +66,9 @@ class Xoroshiro512( BaseXoroshiro ):
 
  | PyRandLib class | initial xoroshiro algo name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | --------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Xiroshiro256    | xiroshiro256**              |    16 x 4-bytes | 2^256   |    n.a.     |     0.84     |          0       |       0     |       0        |
- | Xiroshiro512    | xiroshiro512**              |    32 x 4-bytes | 2^512   |    n.a.     |     0.99     |          0       |       0     |       0        |
- | Xiroshiro1024   | xiroshiro1024**             |    64 x 4-bytes | 2^1,024 |    n.a.     |     1.17     |          0       |       0     |       0        |
+ | Xoroshiro256    | xoroshiro256**              |    16 x 4-bytes | 2^256   |    n.a.     |     0.84     |          0       |       0     |       0        |
+ | Xoroshiro512    | xoroshiro512**              |    32 x 4-bytes | 2^512   |    n.a.     |     0.99     |          0       |       0     |       0        |
+ | Xoroshiro1024   | xoroshiro1024**             |    64 x 4-bytes | 2^1,024 |    n.a.     |     1.17     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;

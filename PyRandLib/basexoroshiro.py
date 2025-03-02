@@ -53,10 +53,10 @@ class BaseXoroshiro( BaseRandom ):
     The implemented algorithms shortly escape from the zeroland (10 to 100  calls  are 
     enough  to  get  equiprobability  of bits 0 and 1 on 4 successive calls).  The 256 
     version of the algorithm has nevertheless shown close repeats flaws,  with  a  bad 
-    Hamming weight near zero. Xiroshiro512 seems to best fit this property.
+    Hamming weight near zero. Xoroshiro512 seems to best fit this property.
     (see https://www.pcg-random.org/posts/xoshiro-repeat-flaws.html).
     
-    See Xiroshiro256, Xiroshiro512, Xiroshiro1024 for long  period  generators  (resp. 
+    See Xoroshiro256, Xoroshiro512, Xoroshiro1024 for long  period  generators  (resp. 
     2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
     periods),  64-bits precision calculations and short memory consumption  (resp.  8, 
     16 and 32 integers coded on 64 bits.
@@ -79,9 +79,9 @@ class BaseXoroshiro( BaseRandom ):
 
  | PyRandLib class | initial xoroshiro algo name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | --------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Xiroshiro256    | xiroshiro256**              |    16 x 4-bytes | 2^256   |    n.a.     |     0.84     |          0       |       0     |       0        |
- | Xiroshiro512    | xiroshiro512**              |    32 x 4-bytes | 2^512   |    n.a.     |     0.99     |          0       |       0     |       0        |
- | Xiroshiro1024   | xiroshiro1024**             |    64 x 4-bytes | 2^1,024 |    n.a.     |     1.17     |          0       |       0     |       0        |
+ | Xoroshiro256    | xoroshiro256**              |    16 x 4-bytes | 2^256   |    n.a.     |     0.84     |          0       |       0     |       0        |
+ | Xoroshiro512    | xoroshiro512**              |    32 x 4-bytes | 2^512   |    n.a.     |     0.99     |          0       |       0     |       0        |
+ | Xoroshiro1024   | xoroshiro1024**             |    64 x 4-bytes | 2^1,024 |    n.a.     |     1.17     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;
