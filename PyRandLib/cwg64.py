@@ -76,10 +76,10 @@ class Cwg64( BaseCWG ):
  | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
     

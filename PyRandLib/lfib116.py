@@ -100,10 +100,10 @@ class LFib116( BaseLFib64 ):
  | LFib1340        | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
 

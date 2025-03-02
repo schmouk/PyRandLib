@@ -97,10 +97,10 @@ class Well44497b( BaseWELL ):
     its pseudo-randomness quality, as measured by TestU01.
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
 
