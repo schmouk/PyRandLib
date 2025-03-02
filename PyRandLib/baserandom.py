@@ -361,5 +361,20 @@ class BaseRandom( Random ):
                 ret = [ self.__call__(times=1) ]
         
         return ret[0] if len(ret) == 1 else ret
+    
+
+    #-------------------------------------------------------------------------
+    @classmethod
+    def _rotleft(cls, _value: int, _rotCount: int) -> int:
+        """Returns the value of a left rotating by _rotCount bits
+
+        Useful for some inheriting classes.
+        """
+        assert( 0 <=_rotCount <= 64 )
+        loMask = (1 << (64 - _rotCount)) - 1
+        hiMask = ((1 << 64) - 1) ^ loMask
+        hiBits = (_value & hiMask) >> (64 - _rotCount)
+        return ((_value & loMask) << _rotCount) | hiBits
+
 
 #=====   end of module   baserandom.py   =====================================

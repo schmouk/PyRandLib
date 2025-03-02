@@ -66,7 +66,7 @@ class Cwg128_64( BaseCWG ):
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LCGs that have 
+    We give you here below a copy of the table of tests for  the  CWGs  that  have 
     been implemented in PyRandLib, as presented in paper [8] - see file README.md.
 
  | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
