@@ -178,5 +178,5 @@ class Xoroshiro256( BaseXoroshiro ):
         self._s3 = initRand()
 
 
-#=====   end of module   basexiroshiro.py   ==================================
+#=====   end of module   xoroshiro256.py   ===================================
 

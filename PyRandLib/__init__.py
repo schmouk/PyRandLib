@@ -37,3 +37,4 @@ from .well19937c     import Well19937c
 from .well44497b     import Well44497b
 from .xoroshiro256   import Xoroshiro256
 from .xoroshiro512   import Xoroshiro512
+from .xoroshiro1024  import Xoroshiro1024

@@ -124,12 +124,16 @@ if __name__ == "__main__":
     test_algo(Pcg64_32(),     3217, nb_loops = 2_000_000)
     test_algo(Pcg128_64(),    3217, nb_loops = 2_000_000)
     test_algo(Pcg1024_32(),   3217, nb_loops = 2_000_000)
-    test_algo(Squares32(),     3217, nb_loops = 2_000_000)
-    test_algo(Squares64(),     3217, nb_loops = 2_000_000)
+    test_algo(Squares32(),    3217, nb_loops = 2_000_000)
+    test_algo(Squares64(),    3217, nb_loops = 2_000_000)
     test_algo(Well512a(),     3217, nb_loops = 1_500_000)
     test_algo(Well1024a(),    3217, nb_loops = 1_500_000)
     test_algo(Well19937c(),   nb_entries = 2029)            # notice: 2029 is a prime number
     test_algo(Well44497b(),   nb_entries = 2029)
+    test_algo(Xoroshiro256(), 3217, nb_loops = 2_000_000)
+    test_algo(Xoroshiro512(), 3217, nb_loops = 2_000_000)
+    test_algo(Xoroshiro1024(), 3217, nb_loops = 2_000_000)
+    
 
 
 #=====   end of module   testED.py   =========================================
