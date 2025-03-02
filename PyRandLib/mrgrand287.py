@@ -29,6 +29,7 @@ class MRGRand287( BaseMRG ):
     """
     Pseudo-random numbers generator  - Definition of a fast 32-bits Multiple Recursive
     Generator with a long period (2.49e+86).
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker
@@ -97,31 +98,29 @@ class MRGRand287( BaseMRG ):
     We give you here below a copy of the table of tests for the MRGs  that  have  been
     implemented in PyRandLib, as provided in paper "TestU01, ..." - see file README.md.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | MRGRand287       | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | MRGRand287      | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | MRGRand1457     | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | MRGRand49507    | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
-    
+
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 256           # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO     = 4_294_967_295 # i.e. 0xffff_ffff, or (1<<32)-1, the modulo for DX-47-3 MRG
-            
- 
+    _STATE_SIZE = 256  # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
+    _MODULO     = 0xffff_ffff
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         # The Marsa-LIBF4 version uses the recurrence
         #    x(i) = (x(i-55) + x(i-119) + x(i-179) + x(i-256)) mod 2^32
@@ -140,14 +139,13 @@ class MRGRand287( BaseMRG ):
             k179 += MRGRand287._STATE_SIZE
         
         # then evaluates current value
-        myValue = (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) % 4_294_967_295
+        myValue = (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) & 0xffff_ffff
         self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % self._STATE_SIZE
         
-        # then returns float value within [0.0, 1.0)
-        return  myValue * 2.328_306_436_538_696_289_062_5e-10  # / 4_294_967_296.0
+        # then returns the integer generated value
+        return  myValue
 
- 
 #=====   end of module   mrgrand287.py   ==================================
