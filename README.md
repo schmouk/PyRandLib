@@ -43,7 +43,7 @@ The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] -  is th
 implements this PRNG. It is also implemented in C++ and Java standard 
 libraries for instance.
 
-It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRG.
+It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRNG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRG.
 
 
 
@@ -777,3 +777,10 @@ see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043).
 Published at arXiv, March 2022 (5 pages)  
 Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022
 see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).
+
+
+**[10]** David Blackman, Sebastiano Vigna. 2018.
+*Scrambled Linear Pseudorandom Number Generators*.
+Published in arXiv, March 2022 (32 pages)
+Last reference: arXiv:1805.01407v3 [cs.DS] 28 Mar 2022
+see [https://arxiv.org/pdf/1805.01407](https://arxiv.org/pdf/1805.01407).
