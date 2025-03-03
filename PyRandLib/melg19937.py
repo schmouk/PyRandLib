@@ -81,7 +81,7 @@ class Melg19937( BaseMELG ):
  | PyRandLib class | [11] generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | Melg607         | melg607-64          |    21 x 4-bytes | 2^607   |    n.a.     |      n.a.    |        n.a.      |     n.a.    |     n.a.       |
- | Melg19937       | melg19937-64        |   626 x 4-bytes | 2^19937 |    n.a.     |     4.21     |          0       |       0     |       0        |
+ | Melg19937       | melg19937-64        |   625 x 4-bytes | 2^19937 |    n.a.     |     4.21     |          0       |       0     |       0        |
  | Melg44497       | melg44497-64        | 1,393 x 4-bytes | 2^44497 |    n.a.     |      n.a.    |        n.a.      |     n.a.    |     n.a.       |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
