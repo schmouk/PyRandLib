@@ -28,7 +28,7 @@ from .splitmix         import SplitMix64
 
 #=============================================================================
 class BaseMELG( BaseRandom ):
-    """Definition of the base class for all WELL pseudo-random generators.
+    """Definition of the base class for all MELG pseudo-random generators.
     
     This module is part of library PyRandLib.
     
@@ -36,13 +36,12 @@ class BaseMELG( BaseRandom ):
 
     Maximally  Equidistributed  Long-period  Linear  Generators  (MELG)   use   linear 
     recurrence  based  on  state  transitions  with double feedbacks and linear output 
-    transformations with several memory references.
+    transformations with several memory references. See reference [11] in README.md.
     
     MELGs offer large to very large periods with best known results in the  evaluation 
     of their randomness.  They ensure a maximally equidistributed generation of pseudo 
     random numbers.  They pass all TestU01 tests and newer ones but are the slowest to
     compute ones in the base of PRNGs that have been implemented in PyRandLib.
-    See reference [11] in README.md.
 
     Notice: while the WELL algorithm use 32-bits integers as their internal state  and 
     output pseudo-random 32-bits integers also, the MELG algorithm is full 64-bits.
@@ -50,13 +49,13 @@ class BaseMELG( BaseRandom ):
     See Melg607 for a large period MELG-Generator (2^607, i.e. 5.31e+182)  with medium
     computation  time  and  the  equivalent  of  21  32-bits  integers  memory  little 
     consumption. This is the shortest period version proposed in paper [11].
-    See Melg19937 for an even larger period MELG-Generator (2^19937,  i.e. 4.32e+6001),
+    See Melg19937 for an even larger period MELG-Generator (2^19,937, i.e. 4.32e+6001),
     same computation time and equivalent of 626 integers memory consumption.
-    See Melg44497 for a very large  period  (2^44497,  i.e. 15.1e+13466)  with  similar 
+    See Melg44497 for a very large period (2^44,497,  i.e. 15.1e+13,466)  with  similar 
     computation  time  but  use  of even more memory space (equivalent of 1,393 32-bits
     integers). This is the longest period version proposed in paper [11].
     
-    Please notice that this class and all its  inheriting  sub-classes  are  callable.
+    Please notice that this class and all its inheriting sub-classes are callable.
     Example:
     
       rand = BaseMELG()   # Caution: this is just used as illustrative. This base class cannot be instantiated
@@ -64,12 +63,12 @@ class BaseMELG( BaseRandom ):
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
-    Inheriting classes have to define class attributes '_STATE_SIZE'. See Melg607  for 
+    Inheriting classes have to define class attributes  '_STATE_SIZE'. See Melg607  for 
     an example.
 
     Reminder:
-    We give you here below a copy of the table of tests for the MELG  algorithms  that 
-    have  been implemented in PyRandLib, as provided in paper [11] and when available.
+    We give you here below a copy of the table of tests for the  MELG  algorithms  that 
+    have  been  implemented in PyRandLib, as provided in paper [11] and when available.
 
  | PyRandLib class | [11] generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -89,14 +88,14 @@ class BaseMELG( BaseRandom ):
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor.
         
-        _seedState is either a valid state, an integer, a float or  None.
-        About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and an index in this list (index  value 
-        being  then  in range(0,self._STATE_SIZE)).  Should _seedState be 
-        a sole integer or float then it is used as initial seed  for  the 
-        random filling of the internal list of self._STATE_SIZE integers. 
-        Should _seedState be anything else (e.g. None) then the shuffling 
-        of the local current time value is used as such an initial seed.
+        _seedState is either a valid state,  an integer,  a float or  None.
+        About   valid  state:   this  is  a  tuple  containing  a  list  of  
+        self._STATE_SIZE 64-bits integers,  an index in this  list  and  an 
+        additional  64-bits integer as a state extension. Should _seedState 
+        be a sole integer or float then it is used as initial seed for  the 
+        random filling of the internal state of the PRNG. Should _seedState 
+        be anything else (e.g. None)  then  the   shuffling  of  the  local 
+        current time value is used as such an initial seed.
 
         """
         super().__init__( _seedState )
@@ -109,9 +108,9 @@ class BaseMELG( BaseRandom ):
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
-        This object can be passed to setstate() to restore the state. It is a
-        tuple  containing a list of self._STATE_SIZE integers and an index in 
-        this list (index value being then in range(0,self._STATE_SIZE).
+        This object can be passed to setstate() to restore the state.  It is a
+        tuple containing a list of self._STATE_SIZE 64-bits integers, an index 
+        in this list and an additional 64-bits integer as a state extension.
         """
         return (self._state[:], self._index, self._extState)
             
