@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Tuple, Union
 
 from .basexoroshiro    import BaseXoroshiro
-from .annotation_types import Numerical, SeedStateType, StatesListAndState
+from .annotation_types import Numerical, SeedStateType, StatesListAndExt
 from .splitmix         import SplitMix64
 
 
