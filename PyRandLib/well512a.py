@@ -26,16 +26,16 @@ from .basewell import BaseWELL
 #=============================================================================
 class Well512a( BaseWELL ):
     """
-    Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
+    Pseudo-random numbers generator. Definition of a fast 32-bits Well-Equidistributed 
     Long-period Linear generator with a large period (2^512, i.e. 1.34e+154).
 
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated Long-period Linear Generators (WELL) use linear recurrence based 
-    on  primitive  characteristic  polynomials associated with left- and right- shifts 
-    and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equidistributed Long-period Linear Generators (WELL)  use  linear  recurrence 
+    based  on  primitive  characteristic  polynomials associated with left- and right- 
+    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 
@@ -47,7 +47,7 @@ class Well512a( BaseWELL ):
     zeroland.
 
     Notice: the algorithm in its Well512a version has been  coded  here  as  a  direct 
-    implementation  of  its  descriptions in the initial paper:  "Improved Long-Period
+    implementation  of  its  description  in the initial paper:  "Improved Long-Period
     Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
     L'ECUYER (Université de Montréal) and Makoto MATSUMOTO (Hiroshima University),  in
     ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1-16.

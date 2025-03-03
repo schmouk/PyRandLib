@@ -5,7 +5,7 @@ Many best in class pseudo random generators grouped into one simple library.
 
 ## License
 PyRandLib is distributed under the MIT license for its largest use.  
-If you decide to use this library,  please add the copyright notice to your software as stated in the LICENSE file.
+If you decide to use this library, please add the copyright notice to your software as stated in the LICENSE file.
 
 ```
 Copyright (c) 2016-2025 Philippe Schmouker, <ph.schmouker (at) gmail.com>
@@ -74,9 +74,12 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |    n.a.     |     1.0      |          0       |       0     |       0        |
  | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |    n.a.     |     0.9      |          0       |       0     |       0        |
  | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- | MRGRand287       | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457      | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507     | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Melg607          | *Melg607-64*                       |    21 x 4-bytes | 2^607    |    n.a      |     n.a.     |          0       |       0     |       0        |
+ | Melg19937        | *Melg19937-64*                     |   625 x 4-bytes | 2^19,937 |    n.a      |     n.a.     |          0       |       0     |       0        |
+ | Melg44497        | *Melg44497-64*                     | 1,392 x 4-bytes | 2^44,497 |    n.a      |     n.a.     |          0       |       0     |       0        |
+ | Mrg287           | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
+ | Mrg1457          | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Mrg49507         | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
  | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
@@ -118,9 +121,12 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | LFib116          |    0.35    |             |             |             |             |         0        |       0     |       0        |
  | LFib668          |    0.37    |             |             |             |             |         0        |       0     |       0        |
  | LFib1340         |    0.39    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand287       |    0.57    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand1457      |    0.58    |             |             |             |             |         0        |       0     |       0        |
- | MRGRand49507     |    0.54    |             |             |             |             |         0        |       0     |       0        |
+ | Melg607          |    1.00    |             |             |             |             |         0        |       0     |       0        |
+ | Melg19937        |    1.07    |             |             |             |             |         0        |       0     |       0        |
+ | Melg44497        |    1.03    |             |             |             |             |         0        |       0     |       0        |
+ | Mrg287           |    0.57    |             |             |             |             |         0        |       0     |       0        |
+ | Mrg1457          |    0.58    |             |             |             |             |         0        |       0     |       0        |
+ | Mrg49507         |    0.54    |             |             |             |             |         0        |       0     |       0        |
  | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
  | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
  | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
@@ -130,9 +136,9 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
  | Well44497c       |    2.82    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
- | Xiroshiro256     |            |             |             |             |             |         0        |       0     |       0        |
- | Xiroshiro512     |            |             |             |             |             |         0        |       0     |       0        |
- | Xiroshiro1024    |            |             |             |             |             |         0        |       0     |       0        |
+ | Xiroshiro256     |    1.65    |             |             |             |             |         0        |       0     |       0        |
+ | Xiroshiro512     |    2.01    |             |             |             |             |         0        |       0     |       0        |
+ | Xiroshiro1024    |    1.99    |             |             |             |             |         0        |       0     |       0        |
 
 (1)The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.  
 (*missing values in empty columns are to come*)
@@ -199,6 +205,9 @@ In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 
 In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented, which provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
 
 1. The xiroshiro algorithm ("Scrambled Linear Pseudorandom Number Generators", see [10], 2018) is now implemented in **PyRandLib**, in its *mult-mult* form for the output scrambler. This algorithm is fast, uses 64-bits integers as its internal state and outputs 64-bits values. It uses few memory space (4, 8 or 16 64-bits integers for resp. the 256-, 512- and 1024- versions that are implemented in **PyRandLib**. Notice: the 256 version of the algorithm is know to show close repeats flaws, with a bad Hamming weight near zero. *xoroshiro512* seems to best fit this property, according to the tables proposed by the authors in [10].
+
+1. The MELG algorithm ("Maximally Equidistributed Long-period Linear Generators", see [11], 2018) is now implemented in **PyRandLib**. It can be considered as an extension of the WELL algorithm, with a miximization of the equidistribution of generated values, making computations on 64-bits integers and outputing 64-bits values.  
+**PyRandLib** implements its versions numbered 627-64, 19937-64 and 44497-64 related to the power of 2 of their periods: Melg627, Melg19937 and Melg44497.
 
 1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random poorness.
 
@@ -384,9 +393,33 @@ Please notice that the TestUO1 article states that the operator should be '*' wh
 
 
 
-### MRGRand287  -  2^287 periodicity
+### Melg627 --  2^627 periodicity
 
-**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers 32-bits coded memory consumption.
+**Melg627** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a large period (2^627, i.e. 5.31e+182) and low computation time. The internal state of this PRNG is equivalent to 21 integers 32-bits coded.
+
+The base MELG algorithm offers large to very large periods with the best known results in the evaluation of their randomness. It escapes the zeroland at a fast pace. Its specializations are set with parameters that ensures the maximized equidistribution. It might be valuable to use these rather than the WELL algorithm derivations
+
+
+
+### Melg19937 --  2^19937 periodicity
+
+**Melg19937** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a large period (2^19,937, i.e. 4.32e+6001) and low computation time. The internal state of this PRNG is equivalent to 625 integers 32-bits coded.
+
+The base MELG algorithm offers large to very large periods with the best known results in the evaluation of their randomness. It escapes the zeroland at a fast pace. Its specializations are set with parameters that ensures the maximized equidistribution. It might be valuable to use these rather than the WELL algorithm derivations
+
+
+
+### Melg44497 --  2^44497 periodicity
+
+**Melg44497** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a very large period (2^44,497,  i.e. 15.1e+13,466) and low computation time. The internal state of this PRNG is equivalent to 1.393 integers 32-bits coded.
+
+The base MELG algorithm offers large to very large periods with the best known results in the evaluation of their randomness. It escapes the zeroland at a fast pace. Its specializations are set with parameters that ensures the maximized equidistribution. It might be valuable to use these rather than the WELL algorithm derivations
+
+
+
+### Mrg287  -  2^287 periodicity
+
+**Mrg287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers 32-bits coded memory consumption.
 
 Multiple Recursive Generators (MRGs) use recurrence to evaluate pseudo-random numbers suites. For 2 to more different values of *k*, recurrence is of the form:
 
@@ -408,15 +441,15 @@ where op is an operation that can be
     
 With the + or - operation, such generators are true MRGs. They offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard in their paper.
 
-The Marsa-LIBF4 version, i.e. **MRGRand287** implementation, uses the recurrence:
+The Marsa-LIBF4 version, i.e. **Mrg287** implementation, uses the recurrence:
 
     x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
 
 
 
-### MRGRand1457  -  2^1,457 periodicity
+### Mrg1457  -  2^1,457 periodicity
 
-**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
+**Mrg1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
    
 The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
 
@@ -424,9 +457,9 @@ The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random 
 
 
 
-### MRGRand49507  -  2^49,507 periodicity
+### Mrg49507  -  2^49,507 periodicity
 
-**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRNGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers 32-bits coded).
+**Mrg49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRNGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for Mrg287) but use of much more memory space (1,597 integers 32-bits coded).
      
 The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
 
@@ -762,24 +795,24 @@ eprint = {http://amstat.tandfonline.com/doi/pdf/10.1080/00031305.2000.10474528}
 
 **[3]** Lih-Yuan Deng. 2005.  
 *Efficient and portable multiple recursive generators of large order*.  
-ACM Transactions on Modeling and Computer. Simulation 15:1.
+In ACM Transactions on Modeling and Computer Simulation, Jan. 2005, Vol. 15 Issue 1, pp. 1-13.  
+DOI: https://doi.org/10.1145/1044322.1044323
 
 
 **[4]** Georges Marsaglia. 1985.  
 *A current view of random number generators*.  
 In Computer Science and Statistics, Sixteenth Symposium on the Interface.  
-Elsevier Science Publishers, North-Holland, Amsterdam, 1985, The Netherlands. pp. 3–10.
+Elsevier Science Publishers, North-Holland, Amsterdam, 1985, The Netherlands, pp. 3–10.
 
 
 **[5]** Makoto Matsumoto and Takuji Nishimura. 1998.  
 *Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator.*  
-In ACM Transactions on Modeling and Computer Simulation (TOMACS) - Special issue on uniform random number generation.  
-Vol.8 N.1, Jan. 1998, pp. 3-30.  
+In ACM Transactions on Modeling and Computer Simulation (TOMACS) - Special issue on uniform random number generation. Vol.8 N.1, Jan. 1998, pp. 3-30.  
 
 
 **[6]** François Panneton and Pierre L'Ecuyer (Université de Montréal) and Makoto Matsumoto (Hiroshima University). 2006.  
 *Improved Long-Period Generators Based on Linear Recurrences Modulo 2*.  
-In ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.  
+In ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, pp. 1–16.  
 see [https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf](https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
 
 
@@ -802,20 +835,28 @@ see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-r
 
 **[8]** Tomasz R. Dziala. 2023.  
 *Collatz-Weyl Generators: High Quality and High Throughput Parameterized Pseudorandom Number Generators*.  
-Published at arXiv, December 2023 (11 pages)  
-Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024,  
-see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043).
+Published at arXiv, December 2023 (11 pages),  
+Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024, see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043)  
+DOI: https://doi.org/10.48550/arXiv.2312.17043
 
 
 **[9]** Bernard Widynski. March 2022.  
 *Squares: A Fast Counter-Based RNG*.  
 Published at arXiv, March 2022 (5 pages)  
-Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022
-see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).
+Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022, see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).  
+DOI: https://doi.org/10.48550/arXiv.2004.06278
 
 
-**[10]** David Blackman, Sebastiano Vigna. 2018.
-*Scrambled Linear Pseudorandom Number Generators*.
-Published in arXiv, March 2022 (32 pages)
-Last reference: arXiv:1805.01407v3 [cs.DS] 28 Mar 2022
-see [https://arxiv.org/pdf/1805.01407](https://arxiv.org/pdf/1805.01407).
+**[10]** David Blackman, Sebastiano Vigna. 2018.  
+*Scrambled Linear Pseudorandom Number Generators*.  
+Published in arXiv, March 2022 (32 pages)  
+Last reference: arXiv:1805.01407v3 [cs.DS] 28 Mar 2022, see [https://arxiv.org/pdf/1805.01407](https://arxiv.org/pdf/1805.01407).  
+DOI: https://doi.org/10.48550/arXiv.1805.01407
+
+
+**[11]** Shin Harase, Takamitsu Kimoto, 2018.  
+*Implementing 64-bit Maximally Equidistributed F2-Linear Generators with Mersenne Prime Period*.  
+In ACM Transactions on Mathematical Software, Volume 44, Issue 3, April 2018, Article No. 30 (11 Pages)  
+Also published in arXiv, March 2022 (11 pages)  
+Last reference: arXiv:1505.06582v6 [cs.DS] 20 Nov 2017, see [https://arxiv.org/pdf/1505.06582](https://arxiv.org/pdf/1505.06582).  
+DOI: https://doi.org/10.1145/3159444, https://doi.org/10.48550/arXiv.1505.06582

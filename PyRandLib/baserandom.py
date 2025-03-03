@@ -45,12 +45,12 @@ class BaseRandom( Random ):
     precision  (64-bits  calculations) but memory consumption (resp. 17,  55,  607 and
     1279 32-bits integers).
 
-    See MRGRand287 for a short period  MR-Generator (2^287,  i.e. 2.49e+86)  with  low
+    See Mrg287 fo r a  short  period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 32-bits integers memory consumption.
-    See MRGRand1457 for a  longer  period  MR-Generator  (2^1457,  i.e. 4.0e+438)  and 
-    longer  computation  time  (2^31-1  modulus  calculations)  but  less memory space 
-    consumption (32-bits 47 integers).
-    See MRGRand49507 for a far  larger  period  (2^49507,  i.e. 1.2e+14903)  with  low 
+    See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
+    computation  time  (2^31-1 modulus calculations) but less memory space consumption 
+    (32-bits 47 integers).
+    See  Mrg49507  for  a  far  larger  period  (2^49507,  i.e. 1.2e+14903)  with  low 
     computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
     32-bits integers).
 
@@ -365,15 +365,15 @@ class BaseRandom( Random ):
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _rotleft(cls, _value: int, _rotCount: int) -> int:
+    def _rotleft(cls, _value: int, _rotCount: int, _bitsCount: int = 64) -> int:
         """Returns the value of a left rotating by _rotCount bits
 
         Useful for some inheriting classes.
         """
-        assert( 0 <=_rotCount <= 64 )
-        loMask = (1 << (64 - _rotCount)) - 1
-        hiMask = ((1 << 64) - 1) ^ loMask
-        hiBits = (_value & hiMask) >> (64 - _rotCount)
+        #assert 1 <=_rotCount <= _bitsCount 
+        loMask = (1 << (_bitsCount - _rotCount)) - 1
+        hiMask = ((1 << _bitsCount) - 1) ^ loMask
+        hiBits = (_value & hiMask) >> (_bitsCount - _rotCount)
         return ((_value & loMask) << _rotCount) | hiBits
 
 

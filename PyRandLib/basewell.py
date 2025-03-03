@@ -34,9 +34,9 @@ class BaseWELL( BaseRandom ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated Long-period Linear Generators (WELL) use linear recurrence based 
-    on  primitive  characteristic  polynomials associated with left- and right- shifts 
-    and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equidistributed Long-period Linear Generators (WELL)  use  linear  recurrence 
+    based  on  primitive  characteristic  polynomials associated with left- and right- 
+    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 

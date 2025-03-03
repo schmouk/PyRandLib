@@ -58,9 +58,12 @@ if __name__ == "__main__":
     test_perf("LFib116"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
     test_perf("LFib668"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
     test_perf("LFib1340"     , 0x3ca5_8796_1f2e_b45a, 100_000, N)
-    test_perf("MRGRand287"   , 0x3ca5_8796          , 100_000, N)
-    test_perf("MRGRand1457"  , 0x3ca5_8796          , 100_000, N)
-    test_perf("MRGRand49507" , 0x3ca5_8796          , 100_000, N)
+    test_perf("Melg607"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Melg19937"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Melg44497"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Mrg287"       , 0x3ca5_8796          , 100_000, N)
+    test_perf("Mrg1457"      , 0x3ca5_8796          , 100_000, N)
+    test_perf("Mrg49507"     , 0x3ca5_8796          , 100_000, N)
     test_perf("Pcg64_32"     , 0x3ca5_8796_1f2e_b45a, 100_000, N)
     test_perf("Pcg128_64"    , 0x3ca5_8796_1f2e_b45a_3ca5_8796_1f2e_b45a, 100_000, N)
     test_perf("Pcg1024_32"   , 0x3ca5_8796_1f2e_b45a, 100_000, N)
@@ -70,8 +73,9 @@ if __name__ == "__main__":
     test_perf("Well1024a"    , 0x3ca5_8796          , 100_000, N)
     test_perf("Well19937c"   , 0x3ca5_8796          , 100_000, N)
     test_perf("Well44497b"   , 0x3ca5_8796          , 100_000, N)
-    test_perf("Xoroshiro256" , 0x3ca5_8796          , 100_000, N)
-    test_perf("Xoroshiro512" , 0x3ca5_8796          , 100_000, N)
+    test_perf("Xoroshiro256" , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Xoroshiro512" , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Xoroshiro1024", 0x3ca5_8796_1f2e_b45a, 100_000, N)
     
 
 #=====   end of module   testCPUPerfs.py   ===================================
