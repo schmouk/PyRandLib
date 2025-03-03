@@ -9,6 +9,7 @@ Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
 from .basecwg        import BaseCWG
 from .baselcg        import BaseLCG
 from .baselfib64     import BaseLFib64
+from .basemelg       import BaseMELG
 from .basemrg        import BaseMRG
 from .baserandom     import BaseRandom
 from .basesquares    import BaseSquares
@@ -23,6 +24,7 @@ from .lfib78         import LFib78
 from .lfib116        import LFib116
 from .lfib668        import LFib668
 from .lfib1340       import LFib1340
+from .melg607        import Melg607
 from .mrgrand287     import MRGRand287
 from .mrgrand1457    import MRGRand1457
 from .mrgrand49507   import MRGRand49507

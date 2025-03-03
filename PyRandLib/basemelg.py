@@ -83,6 +83,21 @@ class BaseMELG( BaseRandom ):
     * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
+
+
+    #-------------------------------------------------------------------------
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
     
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None) -> None:
@@ -112,7 +127,7 @@ class BaseMELG( BaseRandom ):
         tuple containing a list of self._STATE_SIZE 64-bits integers, an index 
         in this list and an additional 64-bits integer as a state extension.
         """
-        return (self._state[:], self._index, self._extState)
+        return (self._state[:], self._index)
             
  
     #-------------------------------------------------------------------------
@@ -133,12 +148,10 @@ class BaseMELG( BaseRandom ):
             if count == 0:
                 self._index = 0
                 self._initstate()
-                self._initext()
                 
             elif count == 1:
                 self._index = 0
                 self._initstate( _seedState[0] )
-                self._initext()
             
             elif count == 2:
                 self._initindex( _seedState[1] )
@@ -146,7 +159,6 @@ class BaseMELG( BaseRandom ):
                     self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
                 else:
                     self._initstate( _seedState[0] )
-                self._initext()
 
             else:
                 self._initindex( _seedState[1] )
@@ -154,28 +166,10 @@ class BaseMELG( BaseRandom ):
                     self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
                 else:
                     self._initstate( _seedState[0] )
-                self._initext( _seedState[2] )
                 
         except:
             self._index = 0
             self._initstate( _seedState )
-            self._initext()
-
- 
-    #-------------------------------------------------------------------------
-    def _initext(self, _ext: int = None) -> None:
-        """Inits the internal state extension.
-
-        Notice: if _ext is None, this method MUST NOT be called before 
-                attributes _index and _state have been initialized.
-        """
-        try:
-            self._extState = int( _ext )  # Notice: raises exception if _ext is None
-        except:
-            lastState = self._state[-1]
-            self._extState = (0x5851_f42d_4c95_7f2d * (lastState ^ (lastState >> 62)) + self._index)
-        
-        self._extState &= 0xffff_ffff_ffff_ffff
 
  
     #-------------------------------------------------------------------------

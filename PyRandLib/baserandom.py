@@ -372,7 +372,7 @@ class BaseRandom( Random ):
         """
         #assert 1 <=_rotCount <= _bitsCount 
         loMask = (1 << (_bitsCount - _rotCount)) - 1
-        hiMask = ((1 << _bitsCount - 1) ^ loMask
+        hiMask = ((1 << _bitsCount) - 1) ^ loMask
         hiBits = (_value & hiMask) >> (_bitsCount - _rotCount)
         return ((_value & loMask) << _rotCount) | hiBits
 
