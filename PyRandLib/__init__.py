@@ -26,6 +26,7 @@ from .lfib668        import LFib668
 from .lfib1340       import LFib1340
 from .melg607        import Melg607
 from .melg19937      import Melg19937
+from .melg44497      import Melg44497
 from .mrgrand287     import MRGRand287
 from .mrgrand1457    import MRGRand1457
 from .mrgrand49507   import MRGRand49507

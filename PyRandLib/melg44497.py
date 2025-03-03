@@ -25,7 +25,7 @@ from .basemelg         import BaseMELG
 
 
 #=============================================================================
-class Melg607( BaseMELG ):
+class Melg44497( BaseMELG ):
     """Pseudo-random numbers generator. Definition of a 64-bits Maximally Equidistrib-
     uted Long-period Linear generator with a large period (2^607, i.e. 5.31e+182).
     
@@ -52,20 +52,20 @@ class Melg607( BaseMELG ):
     in the text while it should be a bit-or operation as explaind in  plain  text.  We
     correct in in the code here.
        
+    See Melg607 for a large period MELG-Generator (2^607, i.e. 5.31e+182)  with medium
+    computation  time  and  the  equivalent  of  21  32-bits  integers  memory  little 
+    consumption.
     See Melg19937 for an even larger period MELG-Generator (2^19937, i.e. 4.32e+6001),
     same computation time and equivalent of 626 integers memory consumption.
-    See Melg44497 for a very large period (2^44,497, i.e. 15.1e+13,466)  with  similar 
-    computation  time  but  use of even more memory space (equivalent of 1,393 32-bits
-    integers). This is the longest period version proposed in paper [11].
     
     Furthermore, this class is callable:
-      rand = Melg607()
+      rand = Melg444907()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Notice that for simulating the roll of a dice you should program:
-      diceRoll = Melg607()
+      diceRoll = Melg444907()
       print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Such a programming is an accelerated while still robust emulation of the inherited 
@@ -93,8 +93,8 @@ class Melg607( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE = 10                      # the internal state of this PRNG is set on ten 64-bits integers  N=10
-    _A_COND = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
+    _STATE_SIZE = 696
+    _A_COND = (0, 0x4fa9_ca36_f293_c9a9)
 
 
     #-------------------------------------------------------------------------
@@ -104,17 +104,17 @@ class Melg607( BaseMELG ):
         Notice: the output value is coded on 64-bits.
         """
         i = self._index
-        i_1 = (i + 1) % 9
+        i_1 = (i + 1) % 695
         self._index = i_1
 
-        s9 = self._state[9]
+        s695 = self._state[695]
 
-        x = (self._state[i] & 0xffff_ffff_8000_0000) | (self._state[i_1] & 0x0000_0000_7fff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
-        s9 = ((x >> 1) ^ self._A_COND[x & 0x01]) ^ self._state[(i+5) % 9] ^ (s9 ^ ((s9 << 13) & 0xffff_ffff_ffff_ffff))  # M=5, s1=13
-        self._state[9] = s9
+        x = (self._state[i] & 0xffff_8000_0000_0000) | (self._state[i_1] & 0x0000_7fff_ffff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
+        s695 = ((x >> 1) ^ self._A_COND[x & 0x01]) ^ self._state[(i+373) % 695] ^ (s695 ^ ((s695 << 37) & 0xffff_ffff_ffff_ffff))
+        self._state[695] = s695
 
-        si = self._state[i] = x ^ (s9 ^ (s9 >> 35))  # s2=35
-        return (si ^ ((si << 30) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 3) % 9]) & 0x66ed_c62a_6bf8_c826)  # s3=30, L=3, b = 0x66ed...
+        si = self._state[i] = x ^ (s695 ^ (s695 >> 14))
+        return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)
         
 
 #=====   end of module   melg607.py   ========================================
