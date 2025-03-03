@@ -48,12 +48,12 @@ class BaseMRG( BaseRandom ):
     vol.33 n.4, pp.22-40, August 2007".  It is recommended to use  such  pseudo-random
     numbers generators rather than LCG ones for serious simulation applications.
        
-    See MRGRand287 for a short period  MR-Generator (2^287,  i.e. 2.49e+86)  with  low
+    See Mrg287 for  a  shor t period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 integers memory consumption.
-    See MRGRand1457 for a  longer  period  MR-Generator  (2^1457,  i.e. 4.0e+438)  and 
-    longer  computation  time  (2^31-1  modulus  calculations)  but  less memory space 
-    consumption (47 integers).
-    See MRGRand49507 for a far longer period  (2^49507,  i.e. 1.2e+14903)  with  lower 
+    See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
+    computation  time  (2^31-1 modulus calculations) but less memory space consumption 
+    (47 integers).
+    See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (32-bits  modulus)  but  use  of  more  memory space (1597 
     integers).
     
@@ -66,7 +66,7 @@ class BaseMRG( BaseRandom ):
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attributes  '_STATE_SIZE'  and  '_MODULO'. 
-    See MRGRand287 for an example.
+    See Mrg287 for an example.
 
     Reminder:
     We give you here below a copy of the table of tests for the MRGs that have 
@@ -75,9 +75,9 @@ class BaseMRG( BaseRandom ):
 
  | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | MRGRand287      | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
- | MRGRand1457     | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | MRGRand49507    | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Mrg287          | Marsa-LFIB4         |   256 x 4-bytes | 2^287   |    3.40     |     0.8      |          0       |       0     |       0        |
+ | Mrg1457         | DX-47-3             |    47 x 4-bytes | 2^1457  |    n.a.     |     1.4      |          0       |       0     |       0        |
+ | Mrg49507        | DX-1597-2-7         | 1,597 x 4-bytes | 2^49507 |    n.a.     |     1.4      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;

@@ -417,9 +417,9 @@ The base MELG algorithm offers large to very large periods with the best known r
 
 
 
-### MRGRand287  -  2^287 periodicity
+### Mrg287  -  2^287 periodicity
 
-**MRGRand287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers 32-bits coded memory consumption.
+**Mrg287** implements a fast 32-bits Multiple Recursive Generator (MRG) with a long period  (2^287, i.e. 2.49e+86) and low computation time (about twice the computation time of above LCGs) but 256 integers 32-bits coded memory consumption.
 
 Multiple Recursive Generators (MRGs) use recurrence to evaluate pseudo-random numbers suites. For 2 to more different values of *k*, recurrence is of the form:
 
@@ -441,15 +441,15 @@ where op is an operation that can be
     
 With the + or - operation, such generators are true MRGs. They offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard in their paper.
 
-The Marsa-LIBF4 version, i.e. **MRGRand287** implementation, uses the recurrence:
+The Marsa-LIBF4 version, i.e. **Mrg287** implementation, uses the recurrence:
 
     x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
 
 
 
-### MRGRand1457  -  2^1,457 periodicity
+### Mrg1457  -  2^1,457 periodicity
 
-**MRGRand1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
+**Mrg1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
    
 The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
 
@@ -457,9 +457,9 @@ The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random 
 
 
 
-### MRGRand49507  -  2^49,507 periodicity
+### Mrg49507  -  2^49,507 periodicity
 
-**MRGRand49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRNGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for MRGRand287) but use of much more memory space (1,597 integers 32-bits coded).
+**Mrg49507** implements a fast 31-bits Multiple Recursive Generator with the longer period of all of the PRNGs that are implemented in **PyRandLib** (2^49,507, i.e. 1.2e+14,903) with low computation time also (same as for Mrg287) but use of much more memory space (1,597 integers 32-bits coded).
      
 The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG proposed by Deng, see [3]. It uses the recurrence:
 
