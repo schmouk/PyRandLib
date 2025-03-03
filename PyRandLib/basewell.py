@@ -22,8 +22,8 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .fastrand32       import FastRand32
-from .annotation_types import SeedStateType, StateType
+from .annotation_types import Numerical, SeedStateType, StateType
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -34,9 +34,9 @@ class BaseWELL( BaseRandom ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated Long-period Linear Generators (WELL) use linear recurrence based 
-    on  primitive  characteristic  polynomials associated with left- and right- shifts 
-    and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equidistributed Long-period Linear Generators (WELL)  use  linear  recurrence 
+    based  on  primitive  characteristic  polynomials associated with left- and right- 
+    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 
@@ -47,11 +47,12 @@ class BaseWELL( BaseRandom ):
     Furthermore, WELLs have proven their great ability  to  very  fastly  escape  from 
     zeroland.
 
-    Notice: the algorithm in its 4 different versions has been coded here as a  direct 
-    implementation  of  their  descriptions in the initial paper "Improved Long-Period
-    Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
-    L’ECUYER (Université de Montréal) and MAKOTO MATSUMOTO (Hiroshima University),  in
-    ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1–16.
+    Notice: the algorithm in the 4 different versions implemented here has been  coded 
+    here  as  a  direct  implementation  of  their  descriptions  in the initial paper 
+    "Improved Long-Period Generators Based on Linear Recurrences  Modulo 2",  François  
+    PANNETON  and  Pierre  L’ECUYER  (Université  de  Montréal)  and  Makoto MATSUMOTO 
+    (Hiroshima University),  in ACM Transactions on  Mathematical  Software,  Vol. 32, 
+    No. 1, March 2006, Pages 1–16.
     (see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
     So,  only minimalist optimization has been coded,  with  the  aim  at  easing  the 
     verification of its proper implementation.
@@ -68,10 +69,10 @@ class BaseWELL( BaseRandom ):
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
-      rand = BaseWell()
-      print( rand() )    # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )   # prints a pseudo-random value within [0.0, a)
-      print( rand(a,b) ) # prints a pseudo-random value within [a  , b)
+      rand = BaseWell()   # Caution: this is just used as illustrative. This base class cannot be instantiated
+      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
+      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
+      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
     
     Inheriting classes have to define class attributes '_STATE_SIZE'. See Well512a for 
     an example.
@@ -81,21 +82,21 @@ class BaseWELL( BaseRandom ):
     have  been implemented in PyRandLib,  as provided in paper "TestU01, ..." and when 
     available.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Well512a         | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937b (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497c      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937b generator provided with library PyRandLib implements the
     Well19937a algorithm augmented with an associated tempering algorithm.
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
     
@@ -103,40 +104,29 @@ class BaseWELL( BaseRandom ):
     def __init__(self, _seedState: SeedStateType = None) -> None:
         """Constructor.
         
-        _seedState is either a valid state, an integer, a float or None.
+        _seedState is either a valid state, an integer, a float or  None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index  value 
+        self._STATE_SIZE integers and an index in this list (index  value 
         being  then  in range(0,self._STATE_SIZE)).  Should _seedState be 
-        a  sole  integer  or  float  then  it is used as initial seed for 
-        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
-        integers.  Should _seedState  be anything else (e.g. None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        a sole integer or float then it is used as initial seed  for  the 
+        random filling of the internal list of self._STATE_SIZE integers. 
+        Should _seedState be anything else (e.g. None) then the shuffling 
+        of the local current time value is used as such an initial seed.
+
         """
         super().__init__( _seedState )
             # this  call  creates  the  two  attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
-            
- 
-    #-------------------------------------------------------------------------
-    def random(self) -> float:
-        """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
-        Inheriting classes HAVE TO IMPLEMENT this method - see Well1024a
-        for an example.
-        """
-        raise NotImplementedError()
-            
+
  
     #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
-        This  object  can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE integers and an index in this 
-        list (index value being then in range(0,self._STATE_SIZE).
+        This object can be passed to setstate() to restore the state. It is a
+        tuple  containing a list of self._STATE_SIZE integers and an index in 
+        this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state[:], self._index)
             
@@ -147,13 +137,13 @@ class BaseWELL( BaseRandom ):
 
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate() was called.
-        About valid state:  this is a tuple containing  a   list   of  
-        self._STATE_SIZE  integers (32-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)).  Should 
+        generator to what it was at the time setstate()  was  called.
+        About valid state:  this is a  tuple  containing  a  list  of 
+        self._STATE_SIZE integers (31-bits) and an index in this list 
+        (index value being then in range(0,self._STATE_SIZE)). Should 
         _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of  
-        self._STATE_SIZE integers.  Should _seedState be anything else
+        initial seed for the random filling of the internal  list  of 
+        self._STATE_SIZE integers. Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
         """
@@ -161,24 +151,27 @@ class BaseWELL( BaseRandom ):
             count = len( _seedState )
             
             if count == 0:
-                self._initIndex( 0 )
-                self._initState()
+                self._index = 0
+                self._initstate()
                 
             elif count == 1:
-                self._initIndex( 0 )
-                self._initState( _seedState[0] )
+                self._index = 0
+                self._initstate( _seedState[0] )
                 
             else:
-                self._initIndex( _seedState[1] )
-                self._state = _seedState[0][:]
+                self._initindex( _seedState[1] )
+                if (len(_seedState[0]) == self._STATE_SIZE):
+                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                else:
+                    self._initstate( _seedState[0] )
                 
         except:
-            self._initIndex( 0 )
-            self._initState( _seedState )
+            self._index = 0
+            self._initstate( _seedState )
                        
  
     #-------------------------------------------------------------------------
-    def _initIndex(self, _index: int) -> None:
+    def _initindex(self, _index: int) -> None:
         """Inits the internal index pointing to the internal list.
         """
         try:
@@ -188,7 +181,7 @@ class BaseWELL( BaseRandom ):
                        
  
     #-------------------------------------------------------------------------
-    def _initState(self, _initialSeed: StateType = None) -> None:
+    def _initstate(self, _initialSeed: StateType = None) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -197,8 +190,8 @@ class BaseWELL( BaseRandom ):
         current local time value is used as initial seed value.
         """
         # feeds the list according to an initial seed and the value+1 of the modulo.
-        myRand = FastRand32( _initialSeed )
-        self._state = [ int(myRand(0x1_0000_0000)) for _ in range(self._STATE_SIZE) ]
+        initRand = SplitMix32( _initialSeed )
+        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]
 
 
     #-------------------------------------------------------------------------
@@ -311,6 +304,6 @@ class BaseWELL( BaseRandom ):
     
     @property
     def _a7(self):
-        return 0xb729_fcec#
+        return 0xb729_fcec
     
 #=====   end of module   basewell.py   =======================================

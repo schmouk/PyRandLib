@@ -32,7 +32,7 @@ from PyRandLib import *
 def test_perf(prng_class_name: str, seed_value: int, n_loops: int, n_repeats: int):
     """Evaluates the CPU time spent evaluating a number in [0.0, 1.0)."""
     print("---", prng_class_name, "---")
-    perfs = repeat("rnd()",
+    perfs = repeat("rnd.next()",
                    setup=f"from PyRandLib import {prng_class_name}; rnd = {prng_class_name}({seed_value})",
                    repeat=n_repeats,
                    timer=perf_counter_ns,
@@ -49,19 +49,33 @@ if __name__ == "__main__":
 
     N = 15
 
-    test_perf("FastRand32"  , 0x3ca5_8796          , 2_000_000, N)
-    test_perf("FastRand63"  , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
-    test_perf("LFib78"      , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
-    test_perf("LFib116"     , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
-    test_perf("LFib668"     , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
-    test_perf("LFib1340"    , 0x3ca5_8796_1f2e_b45a, 2_000_000, N)
-    test_perf("MRGRand287"  , 0x3ca5_8796          , 2_000_000, N)
-    test_perf("MRGRand1457" , 0x3ca5_8796          , 2_000_000, N)
-    test_perf("MRGRand49507", 0x3ca5_8796          , 2_000_000, N)
-    test_perf("Well512a"    , 0x3ca5_8796          , 1_000_000, N)
-    test_perf("Well1024a"   , 0x3ca5_8796          , 1_000_000, N)
-    test_perf("Well19937c"  , 0x3ca5_8796          , 1_000_000, N)
-    test_perf("Well44497b"  , 0x3ca5_8796          , 1_000_000, N)
-
+    test_perf("Cwg64"        , 0x3ca5_8796          , 100_000, N)
+    test_perf("Cwg128_64"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Cwg128"       , 0x3ca5_8796_1f2e_b45a_3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("FastRand32"   , 0x3ca5_8796          , 100_000, N)
+    test_perf("FastRand63"   , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("LFib78"       , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("LFib116"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("LFib668"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("LFib1340"     , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Melg607"      , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Melg19937"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Melg44497"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Mrg287"       , 0x3ca5_8796          , 100_000, N)
+    test_perf("Mrg1457"      , 0x3ca5_8796          , 100_000, N)
+    test_perf("Mrg49507"     , 0x3ca5_8796          , 100_000, N)
+    test_perf("Pcg64_32"     , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Pcg128_64"    , 0x3ca5_8796_1f2e_b45a_3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Pcg1024_32"   , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Squares32"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Squares64"    , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Well512a"     , 0x3ca5_8796          , 100_000, N)
+    test_perf("Well1024a"    , 0x3ca5_8796          , 100_000, N)
+    test_perf("Well19937c"   , 0x3ca5_8796          , 100_000, N)
+    test_perf("Well44497b"   , 0x3ca5_8796          , 100_000, N)
+    test_perf("Xoroshiro256" , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Xoroshiro512" , 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    test_perf("Xoroshiro1024", 0x3ca5_8796_1f2e_b45a, 100_000, N)
+    
 
 #=====   end of module   testCPUPerfs.py   ===================================
