@@ -21,44 +21,57 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Tuple, Union
+from typing import Final, Union
 
-from .basexoroshiro    import BaseXoroshiro
-from .annotation_types import Numerical, SeedStateType, StatesListAndExt
+from .baserandom       import BaseRandom
+from .annotation_types import Numerical, StatesList, StateType
 from .splitmix         import SplitMix64
 
 
 #=============================================================================
-class Xoroshiro1024( BaseXoroshiro ):
+class BaseXoroshiro( BaseRandom ):
     """The base class for all xoroshiro PRNGs.
     
-    Pseudo-random numbers generator - implements  the  xoroshiro10214**  pseudo-random 
-    generator,  the  four 64-bits integers state array version of the Scrambled Linear 
-    Pseudorandom Number Generators. It provides 64-bits pseudo random values, a medium 
-    period 2^1,024 (i.e. about 1.80e+308),  jump ahead feature, very short escape from 
-    zeroland (100 iterations) and passes TestU01 tests.
+    Definitiion of the base class for all versions of the xoroshiro algorithm
+    implemented in PyRandLib.
 
     This module is part of library PyRandLib.
     
     Copyright (c) 2025 Philippe Schmouker
 
-    The base xoroshiro linear transformation  is  obtained  combining  a  rotation,  a 
-    shift,  and  again  a  rotation.  An  additional  scrambling  method  based on two 
-    multiplications is also computed for this version xoroshiro1024** of the algorithm.
-    
-    See Xoroshiro256 for a large 2^256 period (i.e. about  1.16e+77)  scramble  linear 
-    PRNG,  with  low  computation  time,  64-bits  output  values  and good randomness
-    characteristics.
-    See Xoroshiro512 for a large 2^512 period (i.e. about 1.34e+154)  scramble  linear 
-    PRNG,  with  low computation time,  64-bits output values and very good randomness
-    characteristics.
+    The xoroshiro algorithm is a version of the Scrambled Linear  Pseudorandom  Number
+    Generators.  The xoroshiro linear transformation updates cyclically two words of a 
+    larger state array. The base xoroshiro linear transformation is obtained combining 
+    a rotation, a shift, and again a rotation.
+    (extracted from the original paper, see [10] in file README.md)
 
-    Furthermore this class is callable:
-      rand = Xoroshiro1024()
+    An addition or a multiplication operation is internally applied also to the  state 
+    of  the  PRNGs.  Doubling the same operation has proven to enhance then randomness 
+    quality of the PRNG.  This is the model of the algorithms that  is  implemeted  in
+    PyRandLib.
+
+    The implemented algorithms shortly escape from the zeroland (10 to 100  calls  are 
+    enough  to  get  equiprobability  of bits 0 and 1 on 4 successive calls).  The 256 
+    version of the algorithm has nevertheless shown close repeats flaws,  with  a  bad 
+    Hamming weight near zero. Xoroshiro512 seems to best fit this property.
+    (see https://www.pcg-random.org/posts/xoshiro-repeat-flaws.html).
+    
+    See Xoroshiro256, Xoroshiro512, Xoroshiro1024 for long  period  generators  (resp. 
+    2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
+    periods),  64-bits precision calculations and short memory consumption  (resp.  8, 
+    16 and 32 integers coded on 64 bits.
+    
+    Please notice that this class and all its  inheriting  sub-classes  are  callable.
+    Example:
+    
+      rand = BaseXoroshiro() # Caution: this is just used as illustrative. This base class cannot be instantiated
       print( rand() )        # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )       # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) )    # prints a list of n pseudo-random values each within [0, a)
     
+    Inheriting classes have to define class attribute '_STATE_SIZE'. See Xoroshiro1024
+    for an example.
+
     Reminder:
     We give you here below a copy of the table of tests for the xoroshiros  that  have
     been  implemented  in PyRandLib,  as  described  by the authors of xoroshiro - see 
@@ -77,13 +90,28 @@ class Xoroshiro1024( BaseXoroshiro ):
     * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
-    #-------------------------------------------------------------------------
-    _STATE_SIZE : int = 16
-    _SIZE_MODULO: int = 0xf  # optimization here, to use operand &
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Union[Numerical, SeedStateType] = None) -> None:
+    _NORMALIZE: Final[float ]= 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: Final[int] = 64
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    _MODULO: Final[int] = (1 << 64) - 1
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seedState: Union[Numerical, StatesList] = None, /) -> None:
         """Constructor.
         
         _seedState is either a valid state, an integer,  a float or None.
@@ -103,45 +131,17 @@ class Xoroshiro1024( BaseXoroshiro ):
 
 
     #-------------------------------------------------------------------------
-    def next(self) -> int:
-        """This is the core of the pseudo-random generator. It returns the next pseudo random integer value generated by the inheriting generator.
-        """
-        '''
-        const int q = p;
-        const uint64_t s0 = s[p = (p + 1) & 15];
-        uint64_t s15 = s[q];
-        const uint64_t result_plus = s0 + s15;
-        const uint64_t result_plusplus = rotl(s0 + s15, R) + s15;
-        const uint64_t result_star = s0 * S;
-        const uint64_t result_starstar = rotl(s0 * S, R) * T;
-        s15 ^= s0;
-        s[q] = rotl(s0, A) ^ s15 ^ (s15 << B);
-        s[p] = rotl(s15, C);
-        '''
-        previousIndex = self._index
-        # advances the internal state of the PRNG
-        self._index += 1
-        self._index &= self._SIZE_MODULO
-        sLow  = self._state[ self._index ]
-        sHigh = self._state[ previousIndex ] ^ sLow
-        self._state[ previousIndex ] = self._rotleft( sLow, 25 ) ^ sHigh ^ ((sHigh << 27) & self._MODULO)
-        self._state[ self._index ]   = self._rotleft( sHigh, 36 )
-        # returns the output value
-        return (self._rotleft( sLow * 5, 7) * 9) & self._MODULO
-
-
-    #-------------------------------------------------------------------------
-    def getstate(self) -> Tuple[ int ]:
+    def getstate(self) -> list[int]:
         """Returns an object capturing the current internal state of the  generator.
         
         This object can be passed to setstate() to restore the state. 
         It is a tuple containing a list of self._STATE_SIZE integers.
         """
-        return (self._s0, self._s1, self._s2, self._s3)
+        return self._state[:]
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _seedState: SeedStateType = None) -> None:
+    def setstate(self, _seedState: Union[ Numerical, StatesList ] = None, /) -> None:
         """Restores the internal state of the generator.
         
         _seedState should have been obtained from a previous call  to 
@@ -158,37 +158,23 @@ class Xoroshiro1024( BaseXoroshiro ):
             count = len( _seedState )
             
             if count == 0:
-                self._index = 0
                 self._initstate()
                 
             elif count == 1:
-                self._index = 0
                 self._initstate( _seedState[0] )
                 
             else:
-                self._initindex( _seedState[1] )
                 if (len(_seedState[0]) == self._STATE_SIZE):
-                    self._state = _seedState[0][:]  # Notice: all entries MUST BE integers and not all zero
+                    self._state = _seedState[:]    # each entry in _seedState MUST be integer
                 else:
                     self._initstate( _seedState[0] )
                 
         except:
-            self._index = 0
             self._initstate( _seedState )
 
 
     #-------------------------------------------------------------------------
-    def _initindex(self, _index: int) -> None:
-        """Inits the internal index pointing to the internal list.
-        """
-        try:
-            self._index = int( _index ) & self._SIZE_MODULO
-        except:
-            self._index = 0
-
-
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None) -> None:
+    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
@@ -197,8 +183,8 @@ class Xoroshiro1024( BaseXoroshiro ):
         current local time value is used as initial seed value.
         """
         initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]
+        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]        
 
 
-#=====   end of module   xoroshiro1024.py   ==================================
+#=====   end of module   basexoroshiro.py   ==================================
 
