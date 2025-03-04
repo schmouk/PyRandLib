@@ -115,7 +115,7 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Cwg64            |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | Cwg128_64        |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | Cwg128           |    0.63    |             |             |             |             |         0        |       0     |       0        |
- | FastRand32       |    0.20    |             |             |             |             |        11        |     106     |   *too many*   |
+ | FastRand32       |    0.19    |             |             |             |             |        11        |     106     |   *too many*   |
  | FastRand63       |    0.21    |             |             |             |             |         0        |       5     |       7        |
  | LFib78           |    0.35    |             |             |             |             |         0        |       0     |       0        |
  | LFib116          |    0.35    |             |             |             |             |         0        |       0     |       0        |
