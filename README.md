@@ -190,7 +190,9 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
 
 
 ## New in release 2.0
-Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features:
+Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features. Finally, it is splitted in many subdirectories each dedicated to a specific version of Python: Python3.6, Python3.9, Python3.10, etc. In each of these directories, library  **yRandLib** code is fully copied and modified to take benefit of the improvements on new Python versions syntax and features. Download the one version of value for your application to get all **PyRandLib** stuff at its best for your needs.
+
+Major 2.0 novelties are listed below:
 
 1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
 In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b which all generate output values coded on 32-bits.
@@ -210,6 +212,8 @@ In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are impl
 **PyRandLib** implements its versions numbered 627-64, 19937-64 and 44497-64 related to the power of 2 of their periods: Melg627, Melg19937 and Melg44497.
 
 1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random poorness.
+
+1. Method `bytesrand()` has been added to the Python built-in class `random.Random` since Python 3.9. So, it is also available in **PyRandLib** but for **all** its Python versions: in Python 3.6 its implementation has been added into base class `BaseRandom`.
 
 1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
