@@ -21,8 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Tuple, Union
+from typing import Union
 
+from .baserandom       import BaseRandom
 from .basexoroshiro    import BaseXoroshiro
 from .annotation_types import Numerical, StatesList
 from .splitmix         import SplitMix64
@@ -77,6 +78,10 @@ class Xoroshiro512( BaseXoroshiro ):
     * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
+    
+    #-------------------------------------------------------------------------
+    _STATE_SIZE: int = 8
+
 
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: Union[Numerical, StatesList] = None) -> None:
@@ -112,20 +117,10 @@ class Xoroshiro512( BaseXoroshiro ):
         self._state[4] ^= self._state[5]
         self._state[0] ^= self._state[6]
         self._state[6] ^= self._state[7]
-        self._state[6] ^= (currentS1 << 11) & self._MODULO
-        self._state[7] = self._rotleft( self._state[7], 21 )
+        self._state[6] ^= (currentS1 << 11) & BaseXoroshiro._MODULO
+        self._state[7] = BaseRandom._rotleft( self._state[7], 21 )
         # returns the output value
-        return (self._rotleft( currentS1 * 5, 7) * 9) & self._MODULO
-
-
-    #-------------------------------------------------------------------------
-    def getstate(self) -> Tuple[ int ]:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This object can be passed to setstate() to restore the state. 
-        It is a tuple containing a list of self._STATE_SIZE integers.
-        """
-        return (self._s0, self._s1, self._s2, self._s3)
+        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO
 
 
     #-------------------------------------------------------------------------
@@ -144,7 +139,7 @@ class Xoroshiro512( BaseXoroshiro ):
         """
         try:
             count = len( _seedState )
-            
+
             if count == 0:
                 self._initstate()
                 
@@ -152,26 +147,13 @@ class Xoroshiro512( BaseXoroshiro ):
                 self._initstate( _seedState[0] )
                 
             else:
-                if (len(_seedState[0]) == self._STATE_SIZE):
+                if (len(_seedState[0]) == BaseXoroshiro._STATE_SIZE):
                     self._state = _seedState[:]    # Notice: all entries MUST BE integers and not all zero
                 else:
                     self._initstate( _seedState[0] )
                 
         except:
             self._initstate( _seedState )
-
-
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(8) ]
 
 
 #=====   end of module   xoroshiro512.py   ===================================

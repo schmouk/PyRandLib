@@ -109,7 +109,7 @@ class LFib116( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 55  # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
+    _STATE_SIZE: int = 55  # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
 
 
     #-------------------------------------------------------------------------
@@ -129,5 +129,6 @@ class LFib116( BaseLFib64 ):
         self._index = (self._index+1) % LFib116._STATE_SIZE
 
         return myValue
- 
+
+
 #=====   end of module   lfib116.py   ========================================

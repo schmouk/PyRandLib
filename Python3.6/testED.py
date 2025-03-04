@@ -109,7 +109,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
 #=============================================================================
 if __name__ == "__main__":
-    test_algo(Cwg64(),         3217, nb_loops = 2_000_000)   # notice: 3217 is a prime number
+    test_algo(Cwg64(),         3217, nb_loops = 2_000_000)  # notice: 3217 is a prime number
     test_algo(Cwg128_64(),     3217, nb_loops = 2_000_000)
     test_algo(Cwg128(),        3217, nb_loops = 2_000_000)
     test_algo(FastRand32(),    3217, nb_loops = 2_000_000)
@@ -131,12 +131,11 @@ if __name__ == "__main__":
     test_algo(Squares64(),     3217, nb_loops = 2_000_000)
     test_algo(Well512a(),      3217, nb_loops = 1_500_000)
     test_algo(Well1024a(),     3217, nb_loops = 1_500_000)
-    test_algo(Well19937c(),    2029)                         # notice: 2029 is a prime number
-    test_algo(Well44497b(),    2029)
+    test_algo(Well19937c(),    2029                      )  # notice: 2029 is a prime number
+    test_algo(Well44497b(),    2029                      )
     test_algo(Xoroshiro256(),  3217, nb_loops = 2_000_000)
     test_algo(Xoroshiro512(),  3217, nb_loops = 2_000_000)
     test_algo(Xoroshiro1024(), 3217, nb_loops = 2_000_000)
-    
 
 
 #=====   end of module   testED.py   =========================================

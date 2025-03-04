@@ -25,6 +25,7 @@ from .baserandom       import BaseRandom
 from .annotation_types import SeedStateType, StatesList
 from .splitmix         import SplitMix32
 
+
 #=============================================================================
 class BaseSquares( BaseRandom ):
     """Definition of the base class for the Squares counter-based pseudo-random Generator.

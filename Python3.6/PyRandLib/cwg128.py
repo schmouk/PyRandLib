@@ -86,7 +86,6 @@ class Cwg128( BaseCWG ):
     * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
-    
 
     #-------------------------------------------------------------------------
     _NORMALIZE: float = 2.938_735_877_055_718_769_921_8e-39  # i.e. 1.0 / (1 << 128)
@@ -102,8 +101,7 @@ class Cwg128( BaseCWG ):
     than 32 bits.
     """
 
-
-    _MODULO: int = (1 << 128) - 1
+    _MODULO: int = (1 << 128) - 1  # Notice: optimization on modulo computation
 
 
     #-------------------------------------------------------------------------
@@ -130,7 +128,7 @@ class Cwg128( BaseCWG ):
 
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> Tuple[int]:
+    def getstate(self) -> Tuple[ int ]:
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
@@ -164,5 +162,6 @@ class Cwg128( BaseCWG ):
             except:
                 # uses local time as initial seed
                 self.setstate()
+
 
 #=====   end of module   cwg128.py   =========================================

@@ -152,4 +152,5 @@ class Pcg64_32( BasePCG ):
             initRand = SplitMix64()
             self._state = initRand()
 
+
 #=====   end of module   pcg64_32.py   =======================================

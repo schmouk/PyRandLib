@@ -119,4 +119,5 @@ class FastRand32( BaseLCG ):
             initRand = SplitMix32()
             self._state = initRand()
 
+
 #=====   end of module   fastrand32.py   =====================================

@@ -23,6 +23,7 @@ SOFTWARE.
 #=============================================================================
 from .basewell import BaseWELL
 
+
 #=============================================================================
 class Well19937c( BaseWELL ):
     """
@@ -106,7 +107,7 @@ class Well19937c( BaseWELL ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 624  # this Well19937c PRNG internal state is based on a suite containing 624 integers (32-bits wide each)
+    _STATE_SIZE: int = 624  # this Well19937c PRNG internal state is based on a suite containing 624 integers (32-bits wide each)
 
 
     #-------------------------------------------------------------------------
@@ -131,5 +132,6 @@ class Well19937c( BaseWELL ):
         self._index = i_1
 
         return self._tempering(z3, 0xe46e1700, 0x9b868000)
+
 
 #=====   end of module   well19937c.py   =====================================

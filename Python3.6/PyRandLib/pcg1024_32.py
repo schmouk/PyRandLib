@@ -111,7 +111,7 @@ class Pcg1024_32( Pcg64_32 ):
     """
 
     #-------------------------------------------------------------------------
-    _EXTENDED_STATE_SIZE = 1024
+    _EXTENDED_STATE_SIZE: int = 1024
 
 
     #-------------------------------------------------------------------------
@@ -144,7 +144,7 @@ class Pcg1024_32( Pcg64_32 ):
         This object can be passed to setstate() to restore the state.
         It is a list that contains self._STATE_SIZE integers.
         """
-        return [ self._extendedState[:], self._state ]
+        return (self._extendedState[:], self._state)
 
 
     #-------------------------------------------------------------------------
@@ -176,7 +176,7 @@ class Pcg1024_32( Pcg64_32 ):
                 # each entry in _seedState[0] MUST be a 32-bits integer
                 # _seedState[1] MUST be a 64-bits integer
                 extendedCount = len( _seedState[0] )
-                if extendedCount == self._EXTENDED_STATE_SIZE:
+                if extendedCount == Pcg1024_32._EXTENDED_STATE_SIZE:
                     self._extendedState = _seedState[0][:]
                     self._state = _seedState[1]             
                 elif extendedCount > 0:
@@ -237,7 +237,7 @@ class Pcg1024_32( Pcg64_32 ):
         """
         # feeds the list according to an initial seed.
         initRand = SplitMix32( _initialSeed )
-        self._extendedState = [ initRand() for _ in range(self._EXTENDED_STATE_SIZE) ]
+        self._extendedState = [ initRand() for _ in range(Pcg1024_32._EXTENDED_STATE_SIZE) ]
         
 
     #-------------------------------------------------------------------------
