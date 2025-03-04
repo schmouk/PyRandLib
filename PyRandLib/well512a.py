@@ -107,7 +107,7 @@ class Well512a( BaseWELL ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
+    _STATE_SIZE: int = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
 
 
     #-------------------------------------------------------------------------

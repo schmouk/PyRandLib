@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical, SeedStateType, StateType
+from .annotation_types import SeedStateType, StateType
 from .splitmix         import SplitMix32
 
 
@@ -232,7 +232,7 @@ class BaseWELL( BaseRandom ):
     @classmethod
     def _M4(cls, x: int, a: int) -> int:
         #assert 0 <= a <= 0xffff_ffff
-        return x >> 1 ^ a if x & 0x8000_0000 else x >> 1
+        return (x >> 1) ^ a if x & 0x8000_0000 else x >> 1
 
     #-------------------------------------------------------------------------
     @classmethod
@@ -270,12 +270,10 @@ class BaseWELL( BaseRandom ):
         #assert 0 <= b <= 0xffff_ffff
         #assert 0 <= c <= 0xffff_ffff
         #assert 0 <= w <= 32
-        # z = ((z << (32 - w)) & 0xffff_ffff) >> (32 - w)
-            # notice: the generic algorithm truncs x on w-bits. All of the implemented
-            # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
-        z = x
-        z = z ^ (((z << 7) & 0xffff_ffff) & b)
-        return z ^ (((z << 15) & 0xffff_ffff) & c)
+        # notice: the generic algorithm truncs x on w-bits. All of the implemented
+        # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
+        x = x ^ (((x << 7) & 0xffff_ffff) & b)
+        return x ^ (((x << 15) & 0xffff_ffff) & c)
 
     #-------------------------------------------------------------------------
     @property

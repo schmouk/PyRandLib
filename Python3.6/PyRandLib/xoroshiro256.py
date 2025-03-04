@@ -23,6 +23,7 @@ SOFTWARE.
 #=============================================================================
 from typing import Tuple, Union
 
+from .baserandom       import BaseRandom
 from .basexoroshiro    import BaseXoroshiro
 from .annotation_types import Numerical, StatesList
 from .splitmix         import SplitMix64
@@ -113,10 +114,10 @@ class Xoroshiro256( BaseXoroshiro ):
         self._s3 ^= self._s1
         self._s1 ^= self._s2
         self._s0 ^= self._s3
-        self._s2 ^= (currentS1 << 17) & self._MODULO
-        self._s3 = self._rotleft( self._s3, 45 )
+        self._s2 ^= (currentS1 << 17) & BaseXoroshiro._MODULO
+        self._s3 = BaseRandom._rotleft( self._s3, 45 )
         # returns the output value
-        return (self._rotleft( currentS1 * 5, 7) * 9) & self._MODULO
+        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO
 
 
     #-------------------------------------------------------------------------

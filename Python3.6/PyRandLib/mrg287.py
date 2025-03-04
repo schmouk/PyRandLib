@@ -113,9 +113,9 @@ class Mrg287( BaseMRG ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE = 256  # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO     = 0xffff_ffff
+    # 'protected' constants
+    _STATE_SIZE: int = 256  # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
+    _MODULO    : int = 0xffff_ffff
 
 
     #-------------------------------------------------------------------------
@@ -148,4 +148,5 @@ class Mrg287( BaseMRG ):
         # then returns the integer generated value
         return  myValue
 
-#=====   end of module   mrgrand287.py   ==================================
+
+#=====   end of module   mrg287.py   ======================================

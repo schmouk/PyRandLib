@@ -100,8 +100,8 @@ class Mrg1457( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 47            # this 'DX-47-3' MRG is based on a suite containing 47 integers
-    _MODULO     = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
+    _STATE_SIZE: int = 47            # this 'DX-47-3' MRG is based on a suite containing 47 integers
+    _MODULO    : int = 2_147_483_647 # i.e. 0x7fff_ffff, or (1<<31)-1, the modulo for DX-47-3 MRG
 
 
     #-------------------------------------------------------------------------

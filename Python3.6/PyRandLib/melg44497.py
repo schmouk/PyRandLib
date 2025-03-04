@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemelg         import BaseMELG
+from .basemelg import BaseMELG
 
 
 #=============================================================================
@@ -93,7 +93,7 @@ class Melg44497( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE = 696
+    _STATE_SIZE: int = 696
     _A_COND = (0, 0x4fa9_ca36_f293_c9a9)
 
 
@@ -117,4 +117,4 @@ class Melg44497( BaseMELG ):
         return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)
         
 
-#=====   end of module   melg607.py   ========================================
+#=====   end of module   melg44977.py   ======================================

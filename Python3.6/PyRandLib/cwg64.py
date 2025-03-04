@@ -83,7 +83,6 @@ class Cwg64( BaseCWG ):
     should definitively pass.
     """
     
-
     #-------------------------------------------------------------------------
     _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting

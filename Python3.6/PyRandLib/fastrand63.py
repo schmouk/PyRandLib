@@ -90,7 +90,6 @@ class FastRand63( BaseLCG ):
     should definitively pass.
     """
 
-
     #-------------------------------------------------------------------------
     _NORMALIZE: float = 1.084_202_172_485_504_434_007_453e-19  # i.e. 1.0 / (1 << 63)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting

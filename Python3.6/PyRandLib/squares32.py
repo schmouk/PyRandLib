@@ -91,8 +91,7 @@ class Squares32( BaseSquares ):
 
         Return a 32-bits value.
         """
-        self._counter += 1
-        self._counter &= 0xffff_ffff_ffff_ffff 
+        self._counter = (self._counter + 1) & 0xffff_ffff_ffff_ffff 
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
         z = (y + self._key) & 0xffff_ffff_ffff_ffff
         # round 1
@@ -106,5 +105,6 @@ class Squares32( BaseSquares ):
         x = (x >> 32) | ((x & 0xffff_ffff) << 32)
         # round 4
         return ((x * x + z) & 0xffff_ffff_ffff_ffff) >> 32
+
 
 #=====   end of module   squares32.py   ======================================

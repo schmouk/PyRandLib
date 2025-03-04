@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemelg         import BaseMELG
+from .basemelg import BaseMELG
 
 
 #=============================================================================
@@ -93,7 +93,7 @@ class Melg607( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE = 10                      # the internal state of this PRNG is set on ten 64-bits integers  N=10
+    _STATE_SIZE: int = 10                      # the internal state of this PRNG is set on ten 64-bits integers  N=10
     _A_COND = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
 
 

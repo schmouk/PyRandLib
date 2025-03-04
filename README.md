@@ -115,23 +115,23 @@ Up to now, it has only been run with a Python 3.9.13 (64-bits) virtual environme
  | Cwg64            |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | Cwg128_64        |    0.60    |             |             |             |             |         0        |       0     |       0        |
  | Cwg128           |    0.63    |             |             |             |             |         0        |       0     |       0        |
- | FastRand32       |    0.20    |             |             |             |             |        11        |     106     |   *too many*   |
+ | FastRand32       |    0.19    |             |             |             |             |        11        |     106     |   *too many*   |
  | FastRand63       |    0.21    |             |             |             |             |         0        |       5     |       7        |
  | LFib78           |    0.35    |             |             |             |             |         0        |       0     |       0        |
  | LFib116          |    0.35    |             |             |             |             |         0        |       0     |       0        |
  | LFib668          |    0.37    |             |             |             |             |         0        |       0     |       0        |
  | LFib1340         |    0.39    |             |             |             |             |         0        |       0     |       0        |
  | Melg607          |    1.00    |             |             |             |             |         0        |       0     |       0        |
- | Melg19937        |    1.07    |             |             |             |             |         0        |       0     |       0        |
- | Melg44497        |    1.03    |             |             |             |             |         0        |       0     |       0        |
+ | Melg19937        |    1.04    |             |             |             |             |         0        |       0     |       0        |
+ | Melg44497        |    1.02    |             |             |             |             |         0        |       0     |       0        |
  | Mrg287           |    0.57    |             |             |             |             |         0        |       0     |       0        |
  | Mrg1457          |    0.58    |             |             |             |             |         0        |       0     |       0        |
  | Mrg49507         |    0.54    |             |             |             |             |         0        |       0     |       0        |
  | Pcg64_32         |    0.39    |             |             |             |             |         0        |       0     |       0        |
  | Pcg128_64        |    0.57    |             |             |             |             |         0        |       0     |       0        |
  | Pcg1024_32       |    0.80    |             |             |             |             |         0        |       0     |       0        | 
- | Squares32        |    1.23    |             |             |             |             |         0        |       0     |       0        |
- | Squares64        |    1.49    |             |             |             |             |         0        |       0     |       0        |
+ | Squares32        |    1.18    |             |             |             |             |         0        |       0     |       0        |
+ | Squares64        |    1.48    |             |             |             |             |         0        |       0     |       0        |
  | Well512a         |    1.95    |             |             |             |             |       n.a.       |     n.a.    |     n.a.       |
  | Well1024a        |    1.80    |             |             |             |             |         0        |       4     |       4        |
  | Well19937b (1)   |    2.43    |             |             |             |             |         0        |       2     |       2        |
@@ -190,7 +190,9 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
 
 
 ## New in release 2.0
-Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features:
+Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features. Finally, it is splitted in many subdirectories each dedicated to a specific version of Python: Python3.6, Python3.9, Python3.10, etc. In each of these directories, library  **yRandLib** code is fully copied and modified to take benefit of the improvements on new Python versions syntax and features. Download the one version of value for your application to get all **PyRandLib** stuff at its best for your needs.
+
+Major 2.0 novelties are listed below:
 
 1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
 In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b which all generate output values coded on 32-bits.
@@ -210,6 +212,8 @@ In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are impl
 **PyRandLib** implements its versions numbered 627-64, 19937-64 and 44497-64 related to the power of 2 of their periods: Melg627, Melg19937 and Melg44497.
 
 1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random poorness.
+
+1. Method `bytesrand()` has been added to the Python built-in class `random.Random` since Python 3.9. So, it is also available in **PyRandLib** but for **all** its Python versions: in Python 3.6 its implementation has been added into base class `BaseRandom`.
 
 1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.

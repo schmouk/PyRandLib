@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import Final
+
 from .basesquares      import BaseSquares
 from .annotation_types import SeedStateType, StatesList
 
@@ -76,14 +78,14 @@ class Squares64( BaseSquares ):
     
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: int = 64
+    _OUT_BITS: Final[int] = 64
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -110,8 +112,8 @@ class Squares64( BaseSquares ):
 
         Returns a 64-bits value.
         """
-        self._counter +=1
-        self._counter &= 0xffff_ffff_ffff_ffff 
+        self._counter = (self._counter + 1) & 0xffff_ffff_ffff_ffff
+
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
         z = (y + self._key) & 0xffff_ffff_ffff_ffff
         # round 1
@@ -128,5 +130,6 @@ class Squares64( BaseSquares ):
         x = (x >> 32) | ((x & 0xffff_ffff) << 32)
         # round 5
         return t ^ (((x * x + y) >> 32) & 0xffff_ffff)
+
 
 #=====   end of module   squares64.py   ======================================

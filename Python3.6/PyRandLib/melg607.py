@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemelg         import BaseMELG
+from .basemelg import BaseMELG
 
 
 #=============================================================================
@@ -93,8 +93,8 @@ class Melg607( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE = 10                      # the internal state of this PRNG is set on ten 64-bits integers  N=10
-    _A_COND = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
+    _STATE_SIZE: int = 10
+    _A_COND = (0, 0x81f1_fd68_0123_48bc)  # Notice: this tuple will avoid an 'if' in method 'next()'
 
 
     #-------------------------------------------------------------------------
@@ -110,11 +110,11 @@ class Melg607( BaseMELG ):
         s9 = self._state[9]
 
         x = (self._state[i] & 0xffff_ffff_8000_0000) | (self._state[i_1] & 0x0000_0000_7fff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
-        s9 = ((x >> 1) ^ self._A_COND[x & 0x01]) ^ self._state[(i+5) % 9] ^ (s9 ^ ((s9 << 13) & 0xffff_ffff_ffff_ffff))  # M=5, s1=13
+        s9 = ((x >> 1) ^ self._A_COND[x & 0x01]) ^ self._state[(i+5) % 9] ^ (s9 ^ ((s9 << 13) & 0xffff_ffff_ffff_ffff))
         self._state[9] = s9
 
-        si = self._state[i] = x ^ (s9 ^ (s9 >> 35))  # s2=35
-        return (si ^ ((si << 30) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 3) % 9]) & 0x66ed_c62a_6bf8_c826)  # s3=30, L=3, b = 0x66ed...
-        
+        si = self._state[i] = x ^ (s9 ^ (s9 >> 35))
+        return (si ^ ((si << 30) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 3) % 9]) & 0x66ed_c62a_6bf8_c826)
+
 
 #=====   end of module   melg607.py   ========================================

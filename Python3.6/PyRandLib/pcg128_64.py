@@ -102,7 +102,6 @@ class Pcg128_64( BasePCG ):
     should definitively pass.
     """
     
-
     #-------------------------------------------------------------------------
     _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
@@ -117,8 +116,7 @@ class Pcg128_64( BasePCG ):
     than 32 bits.
     """
 
-
-    _MODULO_128 : int = (1 << 128) - 1
+    _MODULO_128 : int = (1 << 128) - 1  # notice: optimization on modulo calculations
 
 
     #-------------------------------------------------------------------------
@@ -128,7 +126,7 @@ class Pcg128_64( BasePCG ):
         Should _seed be None or not a numerical then the local 
         time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attribute self._state and sets it
+        super().__init__( _seed )  # this call creates attribute self._state and sets it
 
 
     #-------------------------------------------------------------------------
@@ -137,7 +135,7 @@ class Pcg128_64( BasePCG ):
         """
         # evaluates next internal state
         current_state = self._state
-        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * current_state + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & self._MODULO_128
+        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * current_state + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & Pcg128_64._MODULO_128
         # the permutated output is then computed
         random_rotation = current_state >> 122  # random right rotation is set with the 6 upper bits of internal state
         current_state ^= current_state >> 64    # fixed shift XOR is then evaluated
@@ -157,20 +155,21 @@ class Pcg128_64( BasePCG ):
         """
         if isinstance( _state, int ):
             # passed initial seed is an integer, just uses it
-            self._state = _state & self._MODULO_128
+            self._state = _state & Pcg128_64._MODULO_128
             
         elif isinstance( _state, float ):
             # transforms passed initial seed from float to integer
             if _state < 0.0 :
                 _state = -_state
             if _state >= 1.0:
-                self._state = int( _state + 0.5 ) & self._MODULO_128
+                self._state = int( _state + 0.5 ) & Pcg128_64._MODULO_128
             else:
-                self._state = int( _state * (self._MODULO_128 + 1)) & self._MODULO_128
+                self._state = int( _state * (Pcg128_64._MODULO_128 + 1)) & Pcg128_64._MODULO_128
                 
         else:
             # uses local time as initial seed
             initRand = SplitMix64()
             self._state = (initRand() << 64) | initRand()
+
 
 #=====   end of module   pcg128_64.py   ======================================

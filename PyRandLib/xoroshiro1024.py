@@ -78,8 +78,9 @@ class Xoroshiro1024( BaseXoroshiro ):
     should definitively pass.
     """
     #-------------------------------------------------------------------------
-    _STATE_SIZE = 16
-    _SIZE_MODULO = 0xf
+    _STATE_SIZE : int = 16
+    _SIZE_MODULO: int = 0xf  # optimization here, to use operand &
+
 
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: Union[Numerical, SeedStateType] = None) -> None:

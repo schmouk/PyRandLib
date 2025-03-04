@@ -100,8 +100,8 @@ class Mrg49507( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
-    _MODULO     = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
+    _STATE_SIZE: int = 1597       # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
+    _MODULO    : int = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
 
 
     #-------------------------------------------------------------------------

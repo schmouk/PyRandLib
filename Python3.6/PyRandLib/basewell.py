@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical, SeedStateType, StateType
+from .annotation_types import SeedStateType, StateType
 from .splitmix         import SplitMix32
 
 
@@ -232,7 +232,7 @@ class BaseWELL( BaseRandom ):
     @classmethod
     def _M4(cls, x: int, a: int) -> int:
         #assert 0 <= a <= 0xffff_ffff
-        return x >> 1 ^ a if x & 0x8000_0000 else x >> 1
+        return (x >> 1) ^ a if x & 0x8000_0000 else x >> 1
 
     #-------------------------------------------------------------------------
     @classmethod
@@ -256,7 +256,7 @@ class BaseWELL( BaseRandom ):
         #assert 0 <= s < 32
         #assert 0 <= a <= 0xffff_ffff
         y = (((x << q) & 0xffff_ffff) ^ (x >> (32 - q))) & cls._d(s)
-        return y ^ a if x & (1 << t) else y
+        return (y ^ a) if (x & (1<<t)) else y
     
     #-------------------------------------------------------------------------
     @classmethod
@@ -269,41 +269,20 @@ class BaseWELL( BaseRandom ):
     def _tempering(cls, x: int, b: int, c: int) -> int:
         #assert 0 <= b <= 0xffff_ffff
         #assert 0 <= c <= 0xffff_ffff
-        #assert 0 <= w <= 32
-        # z = ((z << (32 - w)) & 0xffff_ffff) >> (32 - w)
-            # notice: the generic algorithm truncs x on w-bits. All of the implemented
-            # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
-        z = x
-        z = z ^ (((z << 7) & 0xffff_ffff) & b)
-        return z ^ (((z << 15) & 0xffff_ffff) & c)
+        # notice: the generic algorithm truncs x on w-bits. All of the implemented
+        # ones in PyRandLib are set on 32-bits. So, no truncation takes place here 
+        x = x ^ (((x << 7) & 0xffff_ffff) & b)
+        return x ^ (((x << 15) & 0xffff_ffff) & c)
 
     #-------------------------------------------------------------------------
-    @property
-    def _a1(self):
-        return 0xda44_2d24
-    
-    @property
-    def _a2(self):
-        return 0xd3e4_3ffd
-    
-    @property
-    def _a3(self):
-        return 0x8bdc_b91e
-    
-    @property
-    def _a4(self):
-        return 0x86a9_d87e
-    
-    @property
-    def _a5(self):
-        return 0xa8c2_96d1
-    
-    @property
-    def _a6(self):
-        return 0x5d6b_45cc
-    
-    @property
-    def _a7(self):
-        return 0xb729_fcec
+    # definition of algorithm constants
+    _a1: int = 0xda44_2d24
+    _a2: int = 0xd3e4_3ffd
+    _a3: int = 0x8bdc_b91e
+    _a4: int = 0x86a9_d87e
+    _a5: int = 0xa8c2_96d1
+    _a6: int = 0x5d6b_45cc
+    _a7: int = 0xb729_fcec
+
     
 #=====   end of module   basewell.py   =======================================

@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemelg         import BaseMELG
+from .basemelg import BaseMELG
 
 
 #=============================================================================
@@ -94,7 +94,7 @@ class Melg19937( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE = 312
+    _STATE_SIZE: int = 312
     _A_COND = (0, 0x5c32_e06d_f730_fc42)  # this tuple will avoid an 'if' in method 'next()'
 
 
