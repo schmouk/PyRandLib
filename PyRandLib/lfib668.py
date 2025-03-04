@@ -109,7 +109,7 @@ class LFib668( BaseLFib64 ):
 
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
+    _STATE_SIZE: int = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
 
 
     #-------------------------------------------------------------------------

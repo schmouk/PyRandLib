@@ -27,7 +27,7 @@ from .annotation_types import Numerical
 
 #=============================================================================
 class BasePCG( BaseRandom ):
-    """Definition of the base class for all PCG pseudo-random generators.
+    """Definition of the base class for all Permuted Congruential Generator pseudo-random generators.
     
     This module is part of library PyRandLib.
 

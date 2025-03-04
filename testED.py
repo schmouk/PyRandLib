@@ -72,7 +72,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
         hist[n] += 1
 
     # uncomment next line if you want to print the content of the histograms
-    print(hist, '\n')
+    #print(hist, '\n')
 
     print (f"{nb_loops:,d} loops, {nb_entries:,d} entries in histogram, expected mean: {round(nb_loops / nb_entries):,d}")
     mn, md, st = mean(hist), median(hist), stdev(hist)
