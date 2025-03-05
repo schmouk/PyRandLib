@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .baserandom       import BaseRandom
 from .annotation_types import SeedStateType, StateType
@@ -122,6 +122,7 @@ class BaseMELG( BaseRandom ):
 
  
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
@@ -133,6 +134,7 @@ class BaseMELG( BaseRandom ):
             
  
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _seedState: StateType, /) -> None:
         """Restores the internal state of the generator.
 

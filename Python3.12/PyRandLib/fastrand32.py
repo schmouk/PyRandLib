@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import override
+
 from .baselcg          import BaseLCG
 from .annotation_types import Numerical
 from .splitmix         import SplitMix32
@@ -96,6 +98,7 @@ class FastRand32( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -104,6 +107,7 @@ class FastRand32( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: Numerical, /) -> None:
         """Restores the internal state of the generator.
         

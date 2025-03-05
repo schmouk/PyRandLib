@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .basewell import BaseWELL
 
@@ -113,6 +113,7 @@ class Well19937c( BaseWELL ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """

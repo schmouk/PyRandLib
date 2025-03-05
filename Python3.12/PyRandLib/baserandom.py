@@ -22,6 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
+from typing import override
 
 from .annotation_types import Numerical, SeedStateType, StateType
 
@@ -281,6 +282,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def random(self) -> float:
         """Returns the next pseudo-random floating-point number in interval [0.0, 1.0).
         
@@ -292,6 +294,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def getrandbits(self, k: int, /) -> int:
         """Returns k bits from the internal state of the generator.
 
@@ -304,6 +307,7 @@ class BaseRandom( Random ):
         
 
     #-------------------------------------------------------------------------
+    @override
     def randbytes(self, n: int, /) -> bytes:
         """Generates n random bytes.
 
@@ -315,6 +319,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the generator.
         
@@ -325,6 +330,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: StateType, /) -> None:
         """Restores the internal state of the generator.
         
@@ -337,6 +343,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def seed(self, _seed: SeedStateType = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         """

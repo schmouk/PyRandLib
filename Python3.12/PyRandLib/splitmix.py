@@ -22,6 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 import time
+from typing import override
 
 from .annotation_types import Numerical
 
@@ -105,6 +106,7 @@ class SplitMix63( SplitMix64 ):
         super().__init__( _seed )
     
     #-------------------------------------------------------------------------
+    @override
     def __call__(self, _seed: int = None, /) -> int:
         """The split-mix algorithm.
         """
@@ -131,6 +133,7 @@ class SplitMix32( SplitMix64 ):
         super().__init__( _seed )
     
     #-------------------------------------------------------------------------
+    @override
     def __call__(self, _seed: int = None, /) -> int:
         """The split-mix algorithm.
         """

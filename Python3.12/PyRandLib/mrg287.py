@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .basemrg import BaseMRG
 
@@ -121,6 +121,7 @@ class Mrg287( BaseMRG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """

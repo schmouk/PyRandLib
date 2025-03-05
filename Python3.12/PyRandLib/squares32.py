@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import override
+
 from .basesquares      import BaseSquares
 from .annotation_types import SeedStateType, StatesList
 
@@ -86,6 +88,7 @@ class Squares32( BaseSquares ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
 

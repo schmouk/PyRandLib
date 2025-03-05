@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .basecwg          import BaseCWG
 from .annotation_types import SeedStateType
@@ -111,6 +111,7 @@ class Cwg64( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -123,6 +124,7 @@ class Cwg64( BaseCWG ):
  
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: SeedStateType = None, /) -> None:
         """Restores the internal state of the generator.
         

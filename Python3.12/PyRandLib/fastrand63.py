@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .baselcg          import BaseLCG
 from .annotation_types import Numerical
@@ -109,6 +109,7 @@ class FastRand63( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -116,6 +117,7 @@ class FastRand63( BaseLCG ):
         return self._state
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: Numerical, /) -> None:
         """Restores the internal state of the generator.
         

@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .annotation_types import Numerical, SeedStateType, StateType
 from .pcg64_32         import Pcg64_32
@@ -128,6 +128,7 @@ class Pcg1024_32( Pcg64_32 ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -141,6 +142,7 @@ class Pcg1024_32( Pcg64_32 ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the  generator.
         
@@ -151,6 +153,7 @@ class Pcg1024_32( Pcg64_32 ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _seedState: SeedStateType, /) -> None:
         """Restores the internal state of the generator.
         

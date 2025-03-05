@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import override
+
 from .basepcg          import BasePCG
 from .annotation_types import Numerical
 from .splitmix         import SplitMix64
@@ -113,6 +115,7 @@ class Pcg64_32( BasePCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """

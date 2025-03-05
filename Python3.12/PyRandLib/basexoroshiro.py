@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .baserandom       import BaseRandom
 from .annotation_types import Numerical, StatesList, StateType
@@ -131,6 +131,7 @@ class BaseXoroshiro( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> list[int]:
         """Returns an object capturing the current internal state of the  generator.
         
@@ -141,6 +142,7 @@ class BaseXoroshiro( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _seedState: Numerical | StatesList = None, /) -> None:
         """Restores the internal state of the generator.
         

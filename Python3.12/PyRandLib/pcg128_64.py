@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .basepcg          import BasePCG
 from .annotation_types import Numerical
@@ -133,6 +133,7 @@ class Pcg128_64( BasePCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -145,6 +146,7 @@ class Pcg128_64( BasePCG ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: Numerical, /) -> None:
         """Restores the internal state of the generator.
         

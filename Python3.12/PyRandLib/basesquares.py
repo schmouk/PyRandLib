@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import override
+
 from .baserandom       import BaseRandom
 from .annotation_types import SeedStateType, StatesList
 from .splitmix         import SplitMix32
@@ -91,6 +93,7 @@ class BaseSquares( BaseRandom ):
 
  
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
         """
@@ -98,6 +101,7 @@ class BaseSquares( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def setstate(self, _state: SeedStateType, /) -> None:
         """Restores or sets the internal state of the generator.
         """

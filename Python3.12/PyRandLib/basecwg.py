@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import override
+
 from .baserandom       import BaseRandom
 from .annotation_types import SeedStateType, StatesListAndExt
 
@@ -96,6 +98,7 @@ class BaseCWG( BaseRandom ):
 
  
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StatesListAndExt:
         """Returns an object capturing the current internal state of the generator.
         
