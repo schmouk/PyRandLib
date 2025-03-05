@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,9 +23,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baselcg          import BaseLCG
-from .annotation_types import Numerical
-from .splitmix         import SplitMix32
+import time
+
+from .baselcg import BaseLCG
+from .types   import Numerical
 
 
 #=============================================================================
@@ -32,10 +35,9 @@ class FastRand32( BaseLCG ):
     Pseudo-random numbers generator - Linear Congruential Generator dedicated  
     to  32-bits  calculations with very short period (about 4.3e+09) but very 
     short time computation.
-
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2025 Philippe Schmouker
+    Copyright (c) 2016-2021 Philippe Schmouker
 
     LCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
     atical function of 
@@ -59,51 +61,58 @@ class FastRand32( BaseLCG ):
       
     Furthermore this class is callable:
       rand = FastRand32()
-      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
-      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
+      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
       diceRoll = FastRand32()
-      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      print( int(diceRoll(1, 7)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+
+    Such a programming is an accelerated while still robust emulation of  the 
+    inherited methods:
+      - random.Random.randint(self,1,6) and 
+      - random.Random.randrange(self,1,7,1)
 
     Reminder:
     We give you here below a copy of the table of tests for the LCGs that have 
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRNG;
+    the expected characteristics for a pretty good PRG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics
-    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
+    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
-
-    #-------------------------------------------------------------------------
+    
+    #------------------------------------------------------------------------=
     def __init__(self, _seed: Numerical = None) -> None:
         """Constructor.
         
         Should _seed be None or not a numerical then the local 
         time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attribute self._state and sets it
-
-
-    #-------------------------------------------------------------------------
-    def next(self) -> int:
+        super().__init__( _seed ) # this call creates attribute self._value and sets it
+            
+ 
+    #------------------------------------------------------------------------=
+    def random(self) -> float:
         """This is the core of the pseudo-random generator.
+        
+        Returned values are within [0.0, 1.0).
         """
-        self._state = (0x1_0dcd * self._state + 1) & 0xffff_ffff
-        return self._state
-
-
-    #-------------------------------------------------------------------------
+        self._value = (69069 * self._value + 1) & 0xffff_ffff
+        return self._value / 4_294_967_296.0
+            
+ 
+    #------------------------------------------------------------------------=
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
         
@@ -112,11 +121,25 @@ class FastRand32( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance(_state, int) or isinstance(_state, float):
-            initRand = SplitMix32( _state )
-            self._state = initRand()
+        if isinstance( _state, int ):
+            # passed initial seed is an integer, just uses it
+            self._value = _state & 0xffff_ffff
+            
+        elif isinstance( _state, float ):
+            # transforms passed initial seed from float to integer
+            if _state < 0.0 :
+                _state = -_state
+            if _state >= 1.0:
+                self._value = int( _state + 0.5 ) & 0xffff_ffff
+            else:
+                self._value = int( _state * 0x1_0000_0000) & 0xffff_ffff
+                
         else:
-            initRand = SplitMix32()
-            self._state = initRand()
+            # uses local time as initial seed
+            t = int( time.time() * 1000.0 )
+            self._value = ( ((t & 0xff00_0000) >> 24) +
+                            ((t & 0x00ff_0000) >>  8) +
+                            ((t & 0x0000_ff00) <<  8) +
+                            ((t & 0x0000_00ff) << 24)   )
 
 #=====   end of module   fastrand32.py   =====================================

@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2022 Philippe Schmouker, schmouk (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -29,10 +31,9 @@ class LFib668( BaseLFib64 ):
     """
     Pseudo-random numbers generator  -  Definition of a fast 64-bits Lagged  Fibonacci 
     Generator with quite short period (1.2e+201).
-
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2025 Philippe Schmouker
+    Copyright (c) 2017-2021 Philippe Schmouker
 
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
@@ -74,13 +75,14 @@ class LFib668( BaseLFib64 ):
     Example:
     
       rand = LFib668()
-      print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
-      print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
-      print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
+      print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
+      print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
+      print( rand(a,b) ) # prints a uniform pseudo-random value within [a  , b)
 
     Notice that for simulating the roll of a dice you should program:
+
       diceRoll = LFib668()
-      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
+      print(int(diceRoll(1, 7))) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
 
     Such a programming is an accelerated while still robust emulation of  the 
     inherited methods:
@@ -88,46 +90,50 @@ class LFib668( BaseLFib64 ):
       - random.Random.randrange(self,1,7,1)
 
     Reminder:
-    We give you here below a copy of the table of tests for the LFibs that have 
-    been implemented in PyRandLib,  as provided in paper "TestU01, ..."  -  see
+    We give you here below a copy of the table of tests for the LCGs that have 
+    been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRandLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | --------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | LFib78          | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFib116         | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFib668         | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFib1340        | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | PyRabndLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | LFibRand78       | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFibRand116      | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFibRand668      | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFibRand1340     | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRNG;
+    the expected characteristics for a pretty good PRG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
+    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
     should definitively pass.
     """
 
-    #-------------------------------------------------------------------------
+    #------------------------------------------------------------------------=
     # 'protected' constant
-    _STATE_SIZE: int = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
-
-
-    #-------------------------------------------------------------------------
-    def next(self) -> int:
+    _LIST_SIZE = 607 # this 'LFib(2^64, 607, 273, +)' generator is based on a suite containing 607 integers        
+            
+ 
+    #------------------------------------------------------------------------=
+    def random(self) -> float:
         """This is the core of the pseudo-random generator.
+        
+        Returned values are within [0.0, 1.0).
         """
         # evaluates indexes in suite for the i-273 and i-607 -th values
         k273 = self._index-273
         if k273 < 0:
-            k273 += LFib668._STATE_SIZE
+            k273 += LFib668._LIST_SIZE
         
         # then evaluates current value
-        myValue = (self._state[k273] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
-        self._state[self._index] = myValue
+        myValue = (self._list[k273] + self._list[self._index]) & 18_446_744_073_709_551_615
+        self._list[self._index] = myValue
         
         # next index
-        self._index = (self._index+1) % LFib668._STATE_SIZE
+        self._index = (self._index+1) % LFib668._LIST_SIZE
         
-        return myValue
+        # then returns float value within [0.0, 1.0)
+        return  myValue / 18_446_744_073_709_551_616.0
 
+ 
 #=====   end of module   lfib668.py   =======================================
