@@ -21,13 +21,11 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Tuple, Union
-
-Numerical        = Union[ int, float ]
-StatesList       = Union[ tuple[int], list[int] ]
-StatesListAndExt = Tuple[ StatesList, int ]
-StateType        = Union[ StatesList, StatesListAndExt ]
-SeedStateType    = Union[ Numerical, StateType ]
+Numerical        = int | float
+StatesList       = tuple[int] | list[int]
+StatesListAndExt = tuple[StatesList, int]
+StateType        = StatesList | StatesListAndExt
+SeedStateType    = Numerical | StateType
 
 
 #=====   end of   PyRandLib.annotation_types   ===============================

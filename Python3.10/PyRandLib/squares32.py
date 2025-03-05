@@ -26,7 +26,7 @@ from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
-class Squares64( BaseSquares ):
+class Squares32( BaseSquares ):
     """
     Pseudo-random numbers generator - Squares pseudo-random Generators 
     dedicated  to  64-bits calculations and 32-bits output values with 
@@ -42,12 +42,9 @@ class Squares64( BaseSquares ):
     exchanging of upper and lower bits of the successive combinations.
     Output values are provided on 32-bits or on 64-bits  according  to 
     the model. See [9] in README.md.
-    Caution: this 64-bits output values version  should  not  pass the 
-    birthday  test,  which  is  a randmoness issue,  while this is not 
-    mentionned in the original paper (see [9] in file README.md).
 
-    See Squares32 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
-    low  computation  time,  medium period,  32-bits output values and 
+    See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
+    low  computation  time,  medium period,  64-bits output values and 
     very good randomness characteristics.
 
     Furthermore this class is callable:
@@ -74,22 +71,6 @@ class Squares64( BaseSquares ):
     should definitively pass.
     """
     
-
-    #-------------------------------------------------------------------------
-    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
-    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
-    classes  if  returned random integer values are coded on anything else 
-    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
-    pseudo-random number for them to be normalized in interval [0.0, 1.0).
-    """
-
-    _OUT_BITS: int = 64
-    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
-    classes  if returned random integer values are coded on anything else 
-    than 32 bits.
-    """
-
-
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: SeedStateType = None, /) -> None:
         """Constructor. 
@@ -108,10 +89,10 @@ class Squares64( BaseSquares ):
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
 
-        Returns a 64-bits value.
+        Return a 32-bits value.
         """
         self._counter = (self._counter + 1) & 0xffff_ffff_ffff_ffff
-        
+
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
         z = (y + self._key) & 0xffff_ffff_ffff_ffff
         # round 1
@@ -124,10 +105,7 @@ class Squares64( BaseSquares ):
         x = (x * x + y) & 0xffff_ffff_ffff_ffff
         x = (x >> 32) | ((x & 0xffff_ffff) << 32)
         # round 4
-        t = x = (x * x + z) & 0xffff_ffff_ffff_ffff
-        x = (x >> 32) | ((x & 0xffff_ffff) << 32)
-        # round 5
-        return t ^ (((x * x + y) >> 32) & 0xffff_ffff)
+        return ((x * x + z) & 0xffff_ffff_ffff_ffff) >> 32
 
 
-#=====   end of module   squares64.py   ======================================
+#=====   end of module   squares32.py   ======================================

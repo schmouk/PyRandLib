@@ -120,7 +120,7 @@ class Cwg128_64( BaseCWG ):
         self._state = (((self._state | 1) * (self._a >> 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
         # returns the xored-shifted output value
         return (self._state ^ (self._a >> 48)) & 0xffff_ffff_ffff_ffff
-
+ 
 
     #-------------------------------------------------------------------------
     def setstate(self, _state: SeedStateType = None, /) -> None:

@@ -113,6 +113,6 @@ class BasePCG( BaseRandom ):
         inheriting class.
         """
         return self._state
-
+ 
 
 #=====   end of module   basepcg.py   ========================================

@@ -107,7 +107,7 @@ class BaseCWG( BaseRandom ):
 
         All inheriting classes MUST IMPLEMENT this method.
         """
-        raise NotImplementedError()
+        return (self._a, self._weyl, self._s, self._state)
    
 
 #=====   end of module   basecwg.py   ========================================
