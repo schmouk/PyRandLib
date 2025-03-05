@@ -124,6 +124,11 @@ class BaseRandom( Random ):
      |      
      |      Not thread-safe without a lock around calls.
      |  
+     |  
+     |  getrandbits(self, k)
+     |      Returns a non-negative Python integer with k random bits.
+     |      Changed since version 3.9: This method now accepts zero for k.
+     |  
      |
      |  getstate(self)
      |      Return internal state; can be passed to setstate() later.
@@ -145,6 +150,13 @@ class BaseRandom( Random ):
      |
      |  paretovariate(self, alpha)
      |      Pareto distribution.  alpha is the shape parameter.
+     |  
+     |
+     |  randbytes(self, n)
+     |      Generate n random bytes.
+     |      This method should not be used for generating security tokens.
+     |      Notice: this method has been added in Python 3.9. It is implemented
+     |      in PyRandLib for former versions of the language also.
      |  
      |
      |  randint(self, a, b)
@@ -278,7 +290,7 @@ class BaseRandom( Random ):
         coded on anything else than 32 bits.
         """
         return self.next() * self._NORMALIZE
-
+    
 
     #-------------------------------------------------------------------------
     def getrandbits(self, k: int) -> int:
@@ -286,12 +298,21 @@ class BaseRandom( Random ):
 
         k must be a positive value greater or equal to  zero.
         """
-        if k < 0:
-            raise (ValueError, "the returned bits count must not be negative")
-        if k > self._OUT_BITS:
-            raise (ValueError, f"the returned bits count must be at most {self._OUT_BITS}")
+        assert k >= 0, "the returned bits count must not be negative"
+        assert k < self._OUT_BITS, f"the returned bits count must be less than {self._OUT_BITS}"
         
         return 0 if k == 0 else self.next() >> (self._OUT_BITS - k)
+    
+
+    #-------------------------------------------------------------------------
+    def randbytes(self, n: int) -> bytes:
+        """Generates n random bytes.
+
+        This method should not be used for generating security tokens.
+        (use Python built-in secrets.token_bytes() instead)
+        """
+        assert n >= 0  # and self._OUT_BITS >= 8
+        return bytes([self.next() >> (self._OUT_BITS - 8) for _ in range(n)])
 
 
     #-------------------------------------------------------------------------
