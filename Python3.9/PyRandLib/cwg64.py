@@ -120,15 +120,6 @@ class Cwg64( BaseCWG ):
         self._state = (((self._state >> 1) * (self._a | 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff
         # returns the xored-shifted output value
         return self._state ^ (self._a >> 48)
-
- 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> tuple[int]:
-        """Returns an object capturing the current internal state of the generator.
-        
-        This object can be passed to setstate() to restore the state.
-        """
-        return (self._a, self._weyl, self._s, self._state)
  
 
     #-------------------------------------------------------------------------

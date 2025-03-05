@@ -22,7 +22,6 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
-from typing import Union
 
 from .annotation_types import Numerical, SeedStateType, StateType
 
@@ -348,11 +347,9 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def __call__(self, _max : Union[Numerical,
-                                    tuple[Numerical],
-                                    list[Numerical]] = 1.0,
+    def __call__(self, _max : Numerical | tuple[Numerical] | list[Numerical] = 1.0,
                        /,
-                       times: int                    = 1   ) -> Union[Numerical, list[Numerical]]:
+                       times: int                                            = 1   ) -> Numerical | list[Numerical]:
         """This class's instances are callable.
         
         The returned value is uniformly contained within the 

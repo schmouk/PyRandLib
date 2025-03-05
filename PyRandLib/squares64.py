@@ -110,8 +110,8 @@ class Squares64( BaseSquares ):
 
         Returns a 64-bits value.
         """
-        self._counter +=1
-        self._counter &= 0xffff_ffff_ffff_ffff 
+        self._counter = (self._counter + 1) & 0xffff_ffff_ffff_ffff 
+ 
         y = x = (self._counter * self._key) & 0xffff_ffff_ffff_ffff
         z = (y + self._key) & 0xffff_ffff_ffff_ffff
         # round 1
