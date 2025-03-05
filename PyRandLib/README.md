@@ -1,4 +1,4 @@
-# PyRandLib  [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)
+# PyRandLib [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)
 Many best in class pseudo random generators grouped into one simple library.
 
 
@@ -41,9 +41,9 @@ as  evaluated  by  Pierre L'Ecuyer  and Richard Simard in their famous paper
 reader will take benefit reading L'Ecuyer & Simard's paper.
 
 Each of the Pseudo  Random  Generator (PRG) implemented in PyRandLib is self 
-documented.  Names  of  classes  directly  refer  to  the  kind  of PRG they 
-implement augmented with some number characterizing their  periodicity.  All 
-of their randomness characteristics are explained in every related module.
+documented.  Names of classes directly refer to the kind of PRG they implem-
+ent augmented with some number  characterizing  their  periodicity.  All  of 
+their randomness characteristics are explained in every related module.
 
 
 ### Why not Mersenne twister?
@@ -55,11 +55,11 @@ libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001).  Unfortunately, 
 this PRG is a little bit long to compute (up to 3 times than LCGs,  60% more 
-than  LFibs  and  a  little  bit  less  than  MRGs,  see  below  at  section 
-'Architecture  overview').  Moreover,  it  fails four of the hardest TestU01 
-tests.  You can still use it as your preferred PRG but PyRandLib  implements 
-many  other  PRGs which  are  either  far  faster  or far better in terms of 
-generated pseudo-randomness than the Mersenne twister PRG.
+than LFibs and a little bit less than MRGs, see below at section 'Architect-
+ure overview').  Moreover, it fails 4 of the hardest TestU01 tests.  You can 
+still use it as your preferred PRG but PyRandLib implements many other  PRGs
+which  are  either  far  faster  or far better in terms of generated pseudo-
+randomness than the Mersenne twister PRG.
 
 
 
@@ -88,7 +88,7 @@ should definitively pass.
 
 We give you here below a copy of the resulting table for the PRGs that  have
 been  implemented  in  PyRandLib  plus the Mersenne twister one which is not
-implemented in PyRandLib, as provided in [1].
+implemented in PyRabdLib, as provided in [1].
 
  | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -141,7 +141,7 @@ implementation  code  can  be  found  in  class `BaseRandom`,  in  module
     print( rand(5) )
     
     # prints a float random value ranging in [0.0, 20.0]
-    print( rand(20.0) )
+    print( rand(20.0) 
     
     # prints a list of 10 integer values each ranging in [0, 5]
     print( rand(5, 10) )
@@ -160,7 +160,7 @@ implementation  code  can  be  found  in  class `BaseRandom`,  in  module
     print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
 		   
 
-
+    
 ## Architecture overview
 Each of the implemented PRG is described in an independent module. The  name
 of the module is directly related to the name of the related class.
@@ -172,7 +172,12 @@ of the module is directly related to the name of the related class.
 **PyRandLib**.  It inherits from the Python built-in class random.Random. It 
 aims at providing simple common behavior for all PRG classes of the library, 
 the  most  noticeable  one  being the 'callable' nature of every implemented 
-PRGs.
+PRGs. For instance:
+
+    rand = BaseRandom()
+    print( rand() )    # prints a uniform pseudo-random value within [0.0, 1.0)
+    print( rand(a) )   # prints a uniform pseudo-random value within [0.0, a)
+    print( rand(a,b) ) # prints a uniform pseudo-random value within [a, b)
 
 Inheriting from the  Python  built-in  class  random.Random,  **BaseRandom**
 provides  access  to  many  useful  distribution  functions  as described in 
@@ -188,8 +193,6 @@ Furthermore, every inheriting class may override methods:
 
 This lets inheriting classes implement the PRGs related core methods.
 
-Notice:  starting at PyRandLib 1.2.0 a new signature is available with  this
-base class. See previous section 'New in release 1.2' for full explanations.
 
 
 ### FastRand32  -  2^32 periodicity
@@ -382,7 +385,7 @@ Please notice that the TestUO1 article states that the operator  should  be
 
 
 
-### LFibRand1340
+### LFibRand1340  -  2^1340 periodicity
 
 **LFibRand1340** implements an LFib 64-bits generator  proposed  by  George
 Marsaglia in [4]. This PRG uses the recurrence
