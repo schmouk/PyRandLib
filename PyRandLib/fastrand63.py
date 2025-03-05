@@ -21,10 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-import time
-
 from .baselcg          import BaseLCG
 from .annotation_types import Numerical
+from .splitmix         import SplitMix63
 
 
 #=============================================================================
@@ -33,6 +32,7 @@ class FastRand63( BaseLCG ):
     Pseudo-random numbers generator - Linear Congruential Generator dedicated  
     to  63-bits calculations with very short period (about 9.2e+18) and short
     time computation.
+
     This module is part of library PyRandLib.
     
     Copyright (c) 2016-2025 Philippe Schmouker
@@ -77,29 +77,43 @@ class FastRand63( BaseLCG ):
     been implemented in PyRandLib, as provided in paper "TestU01, ..."  -  see
     file README.md.
 
- | PyRabndLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
+ | PyRandLib class | TU01 generator name                | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ---------------------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | FastRand32      | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32    |    3.20     |     0.67     |         11       |     106     |   *too many*   |
+ | FastRand63      | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63    |    4.20     |     0.75     |          0       |       5     |       7        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
- 
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    _NORMALIZE: float = 1.084_202_172_485_504_434_007_453e-19  # i.e. 1.0 / (1 << 63)
+    """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
+    classes  if  returned random integer values are coded on anything else 
+    than 32 bits.  It is THE multiplier constant value to  be  applied  to  
+    pseudo-random number for them to be normalized in interval [0.0, 1.0).
+    """
+
+    _OUT_BITS: int = 63
+    """The value of this class attribute MUST BE OVERRIDDEN in inheriting
+    classes  if returned random integer values are coded on anything else 
+    than 32 bits.
+    """
+
+
+    #-------------------------------------------------------------------------
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
-        self._value = (9_219_741_426_499_971_445 * self._value + 1) & 0x7fff_ffff_ffff_ffff
-        return self._value * 1.084_202_172_485_504_434_007_453e-19  # / 9_223_372_036_854_775_808.0
-            
- 
+        self._state = (0x7ff3_19fa_a77b_e975 * self._state + 1) & 0x7fff_ffff_ffff_ffff
+        return self._state
+
+
     #-------------------------------------------------------------------------
     def setstate(self, _state: Numerical) -> None:
         """Restores the internal state of the generator.
@@ -109,25 +123,12 @@ class FastRand63( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance( _state, int ):
-            self._value = _state & 0x7fff_ffff_ffff_ffff
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            if _state < 0.0 :
-                _state = -_state
-            
-            if _state >= 1.0:
-                self._value = int(_state + 0.5) & 0x7fff_ffff_ffff_ffff
-            else:
-                self._value = int(_state * 0x8000_0000_0000_0000) & 0x7fff_ffff_ffff_ffff
-        
+        if isinstance(_state, int) or isinstance(_state, float):
+            initRand = SplitMix63( _state )
+            self._state = initRand()
         else:
-            t = int(time.time() * 1000.0)
-            self._value = t & 0xffff_ffff
-            self._value += (t & 0xff00_0000) <<  8
-            self._value += (t & 0x00ff_0000) << 24
-            self._value += (t & 0x0000_ff00) << 40
-            self._value += (t & 0x0000_00fe) << 63
+            initRand = SplitMix63()
+            self._state = initRand()
+
 
 #=====   end of module   fastrand63.py   =====================================
