@@ -461,7 +461,7 @@ The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random 
 
     x(i) = (2^26+2^19) * ( x(i-1) + x(i-24) + x(i-47) ) mod (2^31-1)
 
-See Mrg for an explanation of the MRG original algorithm.
+See Mrg287 above description for an explanation of the MRG original algorithm.
 
 
 
@@ -473,7 +473,7 @@ The implementation of this MRG 31-bits model is based on the 'DX-1597-2-7' MRG p
 
     x(i) = (-2^25-2^7) * ( x(i-7) + x(i-1597) ) mod (2^31-1)
 
-See Mrg for an explanation of the MRG original algorithm.
+See Mrg287 above description for an explanation of the MRG original algorithm.
 
 
 
