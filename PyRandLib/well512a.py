@@ -26,15 +26,16 @@ from .basewell import BaseWELL
 #=============================================================================
 class Well512a( BaseWELL ):
     """
-    Pseudo-random numbers generator - Definition of a fast  32-bits  Well-Equilibrated 
+    Pseudo-random numbers generator. Definition of a fast 32-bits Well-Equidistributed 
     Long-period Linear generator with a large period (2^512, i.e. 1.34e+154).
+
     This module is part of library PyRandLib.
         
     Copyright (c) 2025 Philippe Schmouker
 
-    Well-Equilibrated Long-period Linear Generators (WELL) use linear recurrence based 
-    on  primitive  characteristic  polynomials associated with left- and right- shifts 
-    and xor operations to fastly evaluate pseudo-random numbers suites.
+    Well-Equidistributed Long-period Linear Generators (WELL)  use  linear  recurrence 
+    based  on  primitive  characteristic  polynomials associated with left- and right- 
+    shifts and xor operations to fastly evaluate pseudo-random numbers suites.
     
     WELLs offer large to very large periods with best known results in the  evaluation 
     of their randomness,  as stated in the evaluation  done  by  Pierre  L'Ecuyer  and 
@@ -46,7 +47,7 @@ class Well512a( BaseWELL ):
     zeroland.
 
     Notice: the algorithm in its Well512a version has been  coded  here  as  a  direct 
-    implementation  of  its  descriptions in the initial paper:  "Improved Long-Period
+    implementation  of  its  description  in the initial paper:  "Improved Long-Period
     Generators Based on Linear Recurrences Modulo 2",  François  PANNETON  and  Pierre 
     L'ECUYER (Université de Montréal) and Makoto MATSUMOTO (Hiroshima University),  in
     ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, Pages 1-16.
@@ -84,12 +85,12 @@ class Well512a( BaseWELL ):
     have  been implemented in PyRandLib,  as provided in paper "TestU01, ..." and when 
     available.
 
- | PyRabndLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Well512a         | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937c (1)   | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b       | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | PyRandLib class | TU01 generator name | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
+ | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
+ | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
+ | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937c generator provided with library PyRandLib implements the
     Well19937a  algorithm  augmented  with  an associated tempering algorithm.
@@ -97,23 +98,21 @@ class Well512a( BaseWELL ):
     its pseudo-randomness quality, as measured by TestU01.
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
-    the expected characteristics for a pretty good PRG;
+    the expected characteristics for a pretty good PRNG;
     * _crush_ is a bigger set of tests that test more deeply  expected  random 
     characteristics;
-    * _big crush_ is the ultimate set of difficult tests  that  any  GOOD  PRG 
+    * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
-        
+
     #-------------------------------------------------------------------------
     # 'protected' constant
-    _STATE_SIZE = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
-            
- 
+    _STATE_SIZE: int = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
+
+
     #-------------------------------------------------------------------------
-    def random(self) -> float:
+    def next(self) -> int:
         """This is the core of the pseudo-random generator.
-        
-        Returned values are within [0.0, 1.0).
         """
         i = self._index
         i_1 = (i - 1) & 0xf
@@ -131,7 +130,6 @@ class Well512a( BaseWELL ):
         self._state[i_1] = self._M3_neg(z0, 2) ^ self._M3_neg(z1, 18) ^ self._M2_neg(z2, 28) ^ self._M5_neg(z3, 5, self._a1)
 
         self._index = i_1
-        return z3 * 2.328_306_436_538_696_289_062_5e-10   # / 4_294_967_296.0
-
+        return z3
 
 #=====   end of module   well512a.py   =======================================
