@@ -215,6 +215,10 @@ In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are impl
 
 1. Method `bytesrand()` has been added to the Python built-in class `random.Random` since Python 3.9. So, it is also available in **PyRandLib** but for **all** its Python versions: in Python 3.6 its implementation has been added into base class `BaseRandom`.
 
+1. Method `random.binomialvariate()`has been added to the Python built-in class `random.Random` since Python 3.12. So, it is also available in **PyRandLib** but for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its implementation has been added into base class `BaseRandom`.
+
+1. Since Python 3.12, a default value is now specified (i.e. 1.0) for parameter `lambd` in method `random.Random.expovariate()`. So, it is also specified now in **PyRandLib** for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its definition has been added into base class `BaseRandom`.
+
 1. A short script `testED.py` is now avalibale at root directory. It checks the equi-distribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
 It is now **highly recommended** to not use previous releases (aka. 1.x) of **PyRandLib**.
 
@@ -594,6 +598,17 @@ Conditions on the parameters are alpha > 0 and beta > 0.
 Returned values range between 0 and 1.
 
 
+**binomialvariate**(self, n=1, p=0.5)
+
+Binomial distribution. Return the number of successes for n independent trials with the probability of success in each trial being p:
+
+Mathematically equivalent to:
+
+    sum(random() < p for i in range(n))
+
+The number of trials n should be a non-negative integer. The probability of success p should be between 0.0 <= p <= 1.0. The result is an integer in the range 0 <= X <= n. This built-in, method has been added since Python 3.12. **PyRandLIb** implements it also for all former versions of Python: -3.6, -3.9, -3.10, and -3.11.
+
+
 **choice**(self, seq)
 
 Chooses a random element from a non-empty sequence. 'seq' has to be non empty.
@@ -614,12 +629,13 @@ The `weights` or `cum_weights` can use any numeric type that interoperates with 
 Notice: `choices` has been provided since Python 3.6. It should be implemented for older versions.
 
 
-**expovariate**(self, lambd)
+**expovariate**(self, lambd=1.0)
 
 Exponential distribution.
 
 `lambd` is 1.0 divided by the desired mean. It should be nonzero. (The parameter should be called "lambda", but this is a reserved word in Python).  
-Returned values range from 0 to positive infinity if `lambd` is positive, and from negative infinity to 0 if `lambd` is negative.
+Returned values range from 0 to positive infinity if `lambd` is positive, and from negative infinity to 0 if `lambd` is negative.  
+Since Python 3.12, the parameter `lambd` gets a default value in this built-in method. **PyRandLib** defines then this method for all former versions of Pyhton : -3.6, -3.9, -3.10 and -3.11.
 
 
 **gammavariate**(self, alpha, beta)

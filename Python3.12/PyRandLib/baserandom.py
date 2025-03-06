@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
-from typing import List, Tuple, Union
+from typing import override
 
 from .annotation_types import Numerical, SeedStateType, StateType
 
@@ -99,13 +99,11 @@ class BaseRandom( Random ):
      |  choice(self, seq)
      |      Choose a random element from a non-empty sequence.
      |  
-     |  
+     |
      |  binomialvariate**(self, n=1, p=0.5)
      |      Binomial distribution. Return the number of successes for n 
      |      independent trials with the probability of success in each 
      |      trial being p.
-     |      Notice: added since Python 3.12, implemented in PyRandLib
-     |              for all previous versions of Python.
      |      n >= 0, 0.0 <= p <= 1.0,
      |      the result is an integer in the range 0 <= X <= n.
      |  
@@ -138,7 +136,7 @@ class BaseRandom( Random ):
      |  getrandbits(self, k)
      |      Returns a non-negative Python integer with k random bits.
      |      Changed since version 3.9: This method now accepts zero for k.
-     | 
+     |  
      |
      |  getstate(self)
      |      Return internal state; can be passed to setstate() later.
@@ -167,7 +165,7 @@ class BaseRandom( Random ):
      |      This method should not be used for generating security tokens.
      |      Notice: this method has been added in Python 3.9. It is implemented
      |      in PyRandLib for former versions of the language also.
-     |
+     |  
      |
      |  randint(self, a, b)
      |      Return random integer in range [a, b], including both end points.
@@ -268,7 +266,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -292,6 +290,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
+    @override
     def random(self) -> float:
         """Returns the next pseudo-random floating-point number in interval [0.0, 1.0).
         
@@ -303,51 +302,32 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def binomialvariate(self, n: int = 1, p: float = 0.5) -> int:
-        """Binomial distribution. Returns the number of successes for n>=0 independent trials.
-        
-        The probability of success in each trial is p, 0.0 <= p <= 1.0.
-        Built-in method available since Python 3.12, implemented in PyRandLib
-        for all  former versions of Python.
-        """       
-        return sum( self.random() < p for _ in range(n) )
-
-
-    #-------------------------------------------------------------------------
-    def expovariate(self, lambd: float = 1.0) -> float:
-        """Exponential distribution.
-
-        Since Python 3.12,  a default value is assigned to the parameter of 
-        this bult-in method. So, it is define this way in PyRandLib for all 
-        former versions of Python.
-        """
-        return super().expovariate(lambd)
-
-
-    #-------------------------------------------------------------------------
-    def getrandbits(self, k: int) -> int:
+    @override
+    def getrandbits(self, k: int, /) -> int:
         """Returns k bits from the internal state of the generator.
 
         k must be a positive value greater or equal to  zero.
         """
         assert k >= 0, "the returned bits count must not be negative"
         assert k < self._OUT_BITS, f"the returned bits count must be less than {self._OUT_BITS}"
-        
+
         return 0 if k == 0 else self.next() >> (self._OUT_BITS - k)
-    
+        
 
     #-------------------------------------------------------------------------
-    def randbytes(self, n: int) -> bytes:
+    @override
+    def randbytes(self, n: int, /) -> bytes:
         """Generates n random bytes.
 
         This method should not be used for generating security tokens.
         (use Python built-in secrets.token_bytes() instead)
         """
         assert n >= 0  # and self._OUT_BITS >= 8
-        return bytes( [self.next() >> (self._OUT_BITS - 8) for _ in range(n)] )
+        return bytes([self.next() >> (self._OUT_BITS - 8) for _ in range(n)])
 
 
     #-------------------------------------------------------------------------
+    @override
     def getstate(self) -> StateType:
         """Returns an object capturing the current internal state of the generator.
         
@@ -358,7 +338,8 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType) -> None:
+    @override
+    def setstate(self, _state: StateType, /) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call to getstate(),
@@ -370,7 +351,8 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: SeedStateType = None) -> None:
+    @override
+    def seed(self, _seed: SeedStateType = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         """
         try:
@@ -380,10 +362,9 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def __call__(self, _max : Union[Numerical,
-                                    Tuple[Numerical],
-                                    List[Numerical]] = 1.0,
-                       times: int                    = 1   ) -> Union[Numerical, List[Numerical]]:
+    def __call__(self, _max : Numerical | tuple[Numerical] | list[Numerical] = 1.0,
+                       /,
+                       times: int                                            = 1   ) -> Numerical | list[Numerical]:
         """This class's instances are callable.
         
         The returned value is uniformly contained within the 
@@ -418,16 +399,14 @@ class BaseRandom( Random ):
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _rotleft(cls, _value: int, _rotCount: int, _bitsCount: int = 64) -> int:
+    def _rotleft(cls, _value: int, _rotCount: int, _bitsCount: int = 64, /) -> int:
         """Returns the value of a left rotating by _rotCount bits
 
         Useful for some inheriting classes.
         """
         #assert 1 <=_rotCount <= _bitsCount 
-        loMask = (1 << (_bitsCount - _rotCount)) - 1
-        hiMask = ((1 << _bitsCount) - 1) ^ loMask
-        hiBits = (_value & hiMask) >> (_bitsCount - _rotCount)
-        return ((_value & loMask) << _rotCount) | hiBits
+        hiMask = ((1 << _bitsCount) - 1) ^ (loMask := (1 << (_bitsCount - _rotCount)) - 1)
+        return ((_value & loMask) << _rotCount) | ((_value & hiMask) >> (_bitsCount - _rotCount))
 
 
 #=====   end of module   baserandom.py   =====================================
