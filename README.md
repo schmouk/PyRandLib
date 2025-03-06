@@ -606,7 +606,7 @@ Mathematically equivalent to:
 
     sum(random() < p for i in range(n))
 
-The number of trials n should be a non-negative integer. The probability of success p should be between 0.0 <= p <= 1.0. The result is an integer in the range 0 <= X <= n.
+The number of trials n should be a non-negative integer. The probability of success p should be between 0.0 <= p <= 1.0. The result is an integer in the range 0 <= X <= n. This built-in, method has been added since Python 3.12. **PyRandLIb** implements it also for all former versions of Python: -3.6, -3.9, -3.10, and -3.11.
 
 
 **choice**(self, seq)
@@ -635,6 +635,7 @@ Exponential distribution.
 
 `lambd` is 1.0 divided by the desired mean. It should be nonzero. (The parameter should be called "lambda", but this is a reserved word in Python).  
 Returned values range from 0 to positive infinity if `lambd` is positive, and from negative infinity to 0 if `lambd` is negative.  
+Since Python 3.12, the parameter `lambd` gets a default value in this built-in method. **PyRandLib** defines then this method for all former versions of Pyhton : -3.6, -3.9, -3.10 and -3.11.
 
 
 **gammavariate**(self, alpha, beta)
