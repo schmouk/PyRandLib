@@ -100,7 +100,15 @@ class BaseRandom( Random ):
      |      Choose a random element from a non-empty sequence.
      |  
      |
-     |  expovariate(self, lambd)
+     |  binomialvariate**(self, n=1, p=0.5)
+     |      Binomial distribution. Return the number of successes for n 
+     |      independent trials with the probability of success in each 
+     |      trial being p.
+     |      n >= 0, 0.0 <= p <= 1.0,
+     |      the result is an integer in the range 0 <= X <= n.
+     |  
+     |
+     |  expovariate(self, lambd=1.0)
      |      Exponential distribution.
      |      
      |      lambd is 1.0 divided by the desired mean.  It should be

@@ -99,8 +99,18 @@ class BaseRandom( Random ):
      |  choice(self, seq)
      |      Choose a random element from a non-empty sequence.
      |  
+     |  
+     |  binomialvariate**(self, n=1, p=0.5)
+     |      Binomial distribution. Return the number of successes for n 
+     |      independent trials with the probability of success in each 
+     |      trial being p.
+     |      Notice: added since Python 3.12, implemented in PyRandLib
+     |              for all previous versions of Python.
+     |      n >= 0, 0.0 <= p <= 1.0,
+     |      the result is an integer in the range 0 <= X <= n.
+     |  
      |
-     |  expovariate(self, lambd)
+     |  expovariate(self, lambd=1.0)
      |      Exponential distribution.
      |      
      |      lambd is 1.0 divided by the desired mean.  It should be
@@ -290,6 +300,28 @@ class BaseRandom( Random ):
         coded on anything else than 32 bits.
         """
         return self.next() * self._NORMALIZE
+
+
+    #-------------------------------------------------------------------------
+    def binomialvariate(self, n: int = 1, p: float = 0.5) -> int:
+        """Binomial distribution. Returns the number of successes for n>=0 independent trials.
+        
+        The probability of success in each trial is p, 0.0 <= p <= 1.0.
+        Built-in method available since Python 3.12, implemented in PyRandLib
+        for all  former versions of Python.
+        """       
+        return sum( self.random() < p for _ in range(n) )
+
+
+    #-------------------------------------------------------------------------
+    def expovariate(self, lambd: float = 1.0) -> float:
+        """Exponential distribution.
+
+        Since Python 3.12,  a default value is assigned to the parameter of 
+        this bult-in method. So, it is define this way in PyRandLib for all 
+        former versions of Python.
+        """
+        return super().expovariate(lambd)
 
 
     #-------------------------------------------------------------------------
