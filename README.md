@@ -4,12 +4,11 @@ Many best in class pseudo random generators grouped into one simple library.
 
 
 ## License
-PyRandLib is distributed under the MIT license for its largest use.
-If you decide to use this library,  please add the copyright notice to  your
-software as stated in the LICENSE file.
+PyRandLib is distributed under the MIT license for its largest use.  
+If you decide to use this library, please add the copyright notice to your software as stated in the LICENSE file.
 
 ```
-Copyright (c) 2016-2022 Philippe Schmouker, <ph.schmouker (at) gmail.com>
+Copyright (c) 2016-2025 Philippe Schmouker, <ph.schmouker (at) gmail.com>
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -32,7 +31,6 @@ SOFTWARE.
 
 
 
-
 ## Intro
 This library implements some of the best-in-class pseudo  random  generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper.
 
@@ -43,9 +41,8 @@ Latest version of **PyRandLib** is version **2.0**, released by March 2025. It p
 
 ### Why not Mersenne twister?
 
-The Mersenne twister PRG proposed by Matsumoto and Nishimura - see [5] -  is
-the  most  widely  used  PRG.  The  Random  class of module random in Python 
-implements this PRG.  It is  also  implemented  in  C++  and  Java  standard 
+The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] -  is the most widely used one. The Random class of module random in Python 
+implements this PRNG. It is also implemented in C++ and Java standard 
 libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRNG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRNG.
@@ -62,18 +59,13 @@ Notice: distribution version to be installed via pip or easy-install in cmd tool
 
 
 ## Randomness evaluation
-In [1], every known PRG at the time of the editing has been tested according
-to three different sets of tests:
-* _small crush_ is a small set of simple tests that quickly  tests  some  of
-the expected characteristics for a pretty good PRG;
-* _crush_ is a bigger set of tests that test  more  deeply  expected  random 
-characteristics;
-* _big crush_ is the ultimate set of  difficult  tests  that  any  GOOD  PRG 
-should definitively pass.
+In [1], every known PRNG at the time of the editing has been tested according to three different sets of tests:
+* **_small crush_** is a small set of simple tests that quickly tests  some of the expected characteristics for a pretty good PRNG;
+* **_crush_** is a bigger set of tests that test  more  deeply expected  random characteristics;
+* **_big crush_** is the ultimate set of difficult tests that any **good**  PRNG should definitively pass.
 
-We give you here below a copy of the resulting table for the PRGs that  have
-been  implemented  in  PyRandLib  plus the Mersenne twister one which is not
-implemented in PyRandLib, as provided in [1].
+We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
+We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
  | PyRabndLib class | TU01 generator name (1)            | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------------------------------- | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
@@ -161,18 +153,12 @@ The Python versions used for these evaluations in their related virtual environm
 (*missing values in empty columns are to come*)
 
 ## Implementation
-Current implementation of PyRandLib uses Python 3.x with no Cython  version.  
-It  has  been  tested  with  Python 3.8 but should run with all of Python 3.
+Current implementation of **PyRandLib** uses Python 3.x with no Cython  version.  
+It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
-Note 1: PyRandLib version 1.1 and below should work  with  all  versions  of
-Python 3.  In  version 1.2, we have added underscores in numerical constants
-for the better readability of the code.  This feature has been introduced in
-Python 3.6.  If  you  want to use PyRandLib version 1.2 or above with Python
-3.5 or below,  removing these underscores should be sufficient to  have  the
-library running correctly. 
+Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to  have the library running correctly. 
 
-Note 2:  no version or PyRandLib will ever be provided for Python 2 which is 
-a no more maintained version of the Python language.
+Note 2: no version or **PyRandLib** will ever be provided for Python 2 which is a no more maintained version of the Python language.
 
 Note 3: since release **2.0** of **PyRandLib** directories have been created that are each dedicated to a version of Python : 3.6, 3.9, 3.10, etc. Each of these directories contains the sub-directory `PyRandLib\` with a specific implementation of the library, optimized for the version of Python it relates to.
 
@@ -180,33 +166,31 @@ Note 4: a Cython version of **PyRandLib** will be delivered in a next major rele
 
 
 ## New in release 1.2
-This is available starting at version 1.2 of PyRandLib.  The  call  operator
-(i.e., '()')  gets  a  new signature which is still backward compatible with
-previous versions of this library. Its new use is described here below.  The
-implementation  code  can  be  found  in  class `BaseRandom`,  in  module
-`baserandom.py`.
+This is available starting at version 1.2 of **PyRandLib**.
+
+The call  operator (i.e., '()') gets a new signature which is still backward compatible with previous versions of this library. Its new use is described here below. The implementation code can be found in class `BaseRandom`, in module `baserandom.py`.
 
     from fastrand63 import FastRand63
     
     rand = FastRand63()
     
-    # prints a float random value ranging in [0.0, 1.0]
+    # prints a float random value ranging in [0.0, 1.0)
     print( rand() )
     
-    # prints an integer random value ranging in [0, 5]
+    # prints an integer random value ranging in [0, 5)
     print( rand(5) )
     
-    # prints a float random value ranging in [0.0, 20.0]
+    # prints a float random value ranging in [0.0, 20.0)
     print( rand(20.0) )
     
-    # prints a list of 10 integer values each ranging in [0, 5]
+    # prints a list of 10 integer values each ranging in [0, 5)
     print( rand(5, 10) )
     
-    # prints a list of 10 float values each ranging in [0.0, 1.0]
+    # prints a list of 10 float values each ranging in [0.0, 1.0)
     print( rand(times=10) )
     
     # prints a list of 4 random values ranging respectively in
-    #    [0, 5], [0.0, 50.0], [0.0, 500.0] and [0, 5000]
+    #    [0, 5), [0.0, 50.0), [0.0, 500.0) and [0, 5000)
     print( rand(5, 50.0, 500.0, 5000) )
     						
     # a more complex call which prints something like:
@@ -214,7 +198,7 @@ implementation  code  can  be  found  in  class `BaseRandom`,  in  module
     #     [2, 34.22526698212995, 242.54183578253426, 2204, [5, 3, 5, 4, 2, 0, 1, 3]], 
     #     [0, 17.77303802057933, 417.70662295909983,  559, [4, 1, 5, 0, 5, 3, 0, 5]] ] 
     print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
-		   
+
 
 ## New in release 2.0
 Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features. Finally, it is splitted in many subdirectories each dedicated to a specific version of Python: Python3.6, Python3.9, Python3.10, etc. In each of these directories, library  **PyRandLib** code is fully copied and modified to take benefit of the improvements on new Python versions syntax and features. Copy the one version of value for your application to get all **PyRandLib** stuff at its best for your needs.
@@ -260,23 +244,22 @@ So, if you want to see what is currently going on for next release of **PyRandLi
 
 
 ## Architecture overview
-Each of the implemented PRG is described in an independent module. The  name
-of the module is directly related to the name of the related class.
+Each of the implemented PRNG is described in an independent module. The  name of the module is directly related to the name of the related class.
 
 
-### BaseRandom  -  the base class for all PRGs
+### BaseRandom  -  the base class for all PRNGs
 
-**BaseRandom** is the base  class  for  every  implemented  PRG  in  library 
-**PyRandLib**.  It inherits from the Python built-in class random.Random. It 
-aims at providing simple common behavior for all PRG classes of the library, 
-the  most  noticeable  one  being the 'callable' nature of every implemented 
-PRGs.
+**BaseRandom** is the base class for every implemented PRNG in library **PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
 
-Inheriting from the  Python  built-in  class  random.Random,  **BaseRandom**
-provides  access  to  many  useful  distribution  functions  as described in 
-later section **Inherited Distribution Functions**.
+Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution Functions**.
 
-Furthermore, every inheriting class may override methods:
+Furthermore, every inheriting class MUST override the next three methods (if not, they each raise a `NotImplementedError` exception when called):
+
+* next(),
+* getstate() and
+* setstate()
+
+and may override the next three methods:
 
 * random(),
 * seed(),
@@ -329,18 +312,14 @@ This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as 
 
 ### FastRand32  -  2^32 periodicity
 
-**FastRand32** implements a  Linear  Congruential  Generator  dedicated  to  
-32-bits  calculations with very short period (about 4.3e+09) but very short 
+**FastRand32** implements a Linear Congruential Generator dedicated to 32-bits calculations with very short period (about 4.3e+09) but very short 
 time computation.
 
-LCG models  evaluate  pseudo-random  numbers  suites  *x(i)*  as  a  simple 
-mathematical function of *x(i-1)*:
+LCG models evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
     x(i) = ( a * x(i-1) + c ) mod m 
    
-The implementation of **FastRand32** is based on  (*a*=69069, *c*=1)  since 
-these  two  values  have  evaluated  to  be the 'best' ones for LCGs within
-TestU01 while m = 2^32.
+The implementation of **FastRand32** is based on  (*a*=69069, *c*=1)  since these two values have evaluated to be the 'best' ones for LCGs within TestU01 with m = 2^32.
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use such pseudo-random numbers generators for serious simulation applications.
 
@@ -348,18 +327,13 @@ Results are nevertheless considered to be poor as stated in the evaluation done 
 
 ### FastRand63  -  2^63 periodicity
 
-**FastRand63** implements a  Linear  Congruential  Generator  dedicated  to  
-63-bits  calculations  with  a short period  (about 9.2e+18) and very short 
-time computation.
+**FastRand63** implements a Linear Congruential Generator dedicated to  63-bits calculations with a short period (about 9.2e+18) and very short time computation.
 
-LCG  models  evaluate  pseudo-random  numbers  suites *x(i)*  as  a  simple 
-mathematical function of *x(i-1)*:
+LCG model  evaluate pseudo-random numbers suites *x(i)* as a simple mathematical function of *x(i-1)*:
 
     x(i) = ( a * x(i-1) + c ) mod m 
    
-The implementation of this LCG 63-bits model is based on (*a*=9219741426499971445, *c*=1) 
-since these two values have evaluated to be the 'best' ones for LCGs within
-TestU01 while *m* = 2^63.
+The implementation of this LCG 63-bits model is based on (*a*=9219741426499971445, *c*=1) since these two values have evaluated to be the *best* ones for LCGs within TestU01 while *m* = 2^63.
  
 Results are nevertheless considered to be poor as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard. Therefore, it is not recommended to use this pseudo-random numbers generatorsfor serious simulation applications, even if FastRandom63 fails on very far less tests than does FastRandom32.
 
@@ -376,14 +350,10 @@ where op is an operation that can be
     - (substraction),
     * (multiplication),
     ^(bitwise exclusive-or).
-    
-With the + or - operation, such generators are true MRGs.  They offer  very 
-large periods  with  the  best  known  results  in  the evaluation of their 
-randomness,  as evaluated by Pierre L'Ecuyer and  Richard Simard  in  their 
-paper.
 
-The  Marsa-LIBF4  version,  i.e. **MRGRand287**  implementation,  uses  the 
-recurrence:
+With the + or - operation, such generators are MRGs. They offer very large periods  with the best known results in the evaluation of their randomness, as stated in the evaluation done by Pierre L'Ecuyer and Richard Simard while offering very low computation times.
+
+The implementation of  **LFibRand78** is based on a Lagged Fibonacci generator (LFib) which uses the recurrence:
 
     x(i) = ( x(i-5) + x(i-17) ) mod 2^64
 
@@ -393,7 +363,7 @@ Please notice that the TestU01 article states that the operator should be '*' wh
 
 
 
-### MRGRand1457  -  2^1457 periodicity
+### LFibRand116  -  2^116 periodicity
 
 **LFibRand116** implements an LFib 64-bits generator proposed by George Marsaglia in [4]. This PRNG uses the recurrence
 
@@ -474,14 +444,20 @@ where op is an operation that can be
     - (substraction),
     * (multiplication),
     ^(bitwise exclusive-or).
+    
+With the + or - operation, such generators are true MRGs. They offer very large periods with the best known results in the evaluation of their randomness, as evaluated by Pierre L'Ecuyer and Richard Simard in their paper.
 
-With the + or - operation, such generators are MRGs.  They offer very large
-periods  with the best known results in the evaluation of their randomness, 
-as stated in the evaluation  done  by  Pierre L'Ecuyer  and  Richard Simard
-while offering very low computation times.
+The Marsa-LIBF4 version, i.e. **Mrg287** implementation, uses the recurrence:
 
-The implementation of   **LFibRand78**  is  based  on  a  Lagged  Fibonacci 
-generator (LFib) which uses the recurrence:
+    x(i) = ( x(i-55) + x(i-119) + x(i-179) + x(i-256) ) mod 2^32
+
+
+
+### Mrg1457  -  2^1,457 periodicity
+
+**Mrg1457** implements a fast 31-bits Multiple Recursive Generator with a longer period than MRGRan287 (2^1457 vs. 2^287, i.e. 4.0e+438 vs. 2.5e+86) and 80 % more computation time but with much less memory space consumption (47 vs. 256 integers 32-bits coded).
+   
+The implementation of this MRG 31-bits model is based on  DX-47-3 pseudo-random generator proposed by Deng and Lin, see [2]. The DX-47-3 version uses the recurrence:
 
     x(i) = (2^26+2^19) * ( x(i-1) + x(i-24) + x(i-47) ) mod (2^31-1)
 
@@ -520,7 +496,7 @@ The underlying algorithm acts as an LCG associated with a bits permutation as it
 
 
 
-### LFibRand116  -  2^116 periodicity
+### Pcg1024_32  -  2^32,830 periodicity
 
 **Pcg1024_32** implements a fast 64-bits based state and 32-bits output Permutated Congruential Generator with a very large period (2^32,830, i.e. 6.53e+9,882) with low computation time and large memory space consumption (1,026 integers 32-bits coded).
 
@@ -620,7 +596,7 @@ Since the base class **BaseRandom** inherits from the built-in class `random.Ran
 **betavariate**(self, alpha, beta)  
 Beta distribution.
 
-Conditions on the parameters are alpha > 0 and beta > 0.
+Conditions on the parameters are alpha > 0 and beta > 0.  
 Returned values range between 0 and 1.
 
 
@@ -641,25 +617,15 @@ Chooses a random element from a non-empty sequence. 'seq' has to be non empty.
 **choices**(population, weights=None, *, cum_weights=None, k=1)  
 Returns a *k* sized list of elements chosen from the population, with replacement. If the population is empty, raises IndexError.
 
-If a weights sequence is specified,  selections are made according  to  the 
-relative weights.  Alternatively,  if a cum_weights sequence is given,  the 
-selections are made according to the cumulative weights  (perhaps  computed 
-using   itertools.accumulate()).   For   example,   the   relative  weights 
-[10, 5, 30, 5] are equivalent to the cumulative  weights  [10, 15, 45, 50]. 
-Internally, the relative weights are converted to cumulative weights before 
-making selections, so supplying the cumulative weights saves work.
+If a *weights* sequence is specified, selections are made according to  the relative weights. Alternatively, if a *cum_weights* sequence is given, the selections are made according to the cumulative weights (perhaps  computed using `itertools.accumulate()`).  
+For example, the relative weights `[10, 5, 30, 5]` are equivalent to the cumulative weights `[10, 15, 45, 50]`.  
+Internally, the relative weights are converted to cumulative weights before making selections, so supplying the cumulative weights saves work.
 
-If neither weights nor cum_weights are specified,  selections are made with 
-equal probability.  If a weights sequence is supplied,  it must be the same 
-length as the population sequence.  It  is  a  TypeError  to  specify  both 
-weights and cum_weights.
+If neither `weights` nor `cum_weights` are specified, selections are made with equal probability. If a `weights` sequence is supplied, it must be the same length as the population sequence. It is a `TypeError` to specify both `weights` and `cum_weights`.
 
-The weights or cum_weights can use any numeric type that interoperates with 
-the float values returned by random()  (that includes integers, floats, and 
-fractions but excludes decimals).
+The `weights` or `cum_weights` can use any numeric type that interoperates with the float values returned by random() (that includes integers, floats, and fractions but excludes decimals).
 
-Notice:  'choices'  has  been  provided  since  Python 3.6.  It  should  be 
-implemented for older versions.
+Notice: `choices` has been provided since Python 3.6. It should be implemented for older versions.
 
 
 **expovariate**(self, lambd=1.0)  
@@ -673,13 +639,13 @@ Since Python 3.12, the parameter `lambd` gets a default value in this built-in m
 **gammavariate**(self, alpha, beta)  
 Gamma distribution. Not the gamma function!
     
-Conditions on the parameters are alpha > 0 and beta > 0.
+Conditions on the parameters are `alpha` > 0 and `beta` > 0.
 
 
 **gauss**(self, mu, sigma)  
 Gaussian distribution.
 
-mu is the mean, and sigma is the standard deviation.
+mu is the mean, and sigma is the standard deviation.  
 This is slightly faster than the normalvariate() function.
 
 Not thread-safe without a lock around calls.
@@ -696,16 +662,14 @@ Returns internal state; can be passed to `setstate()` later.
 **lognormvariate**(self, mu, sigma)  
 Log normal distribution.
 
-If you take the natural logarithm of this distribution, you'll get a normal 
-distribution with mean mu and standard deviation sigma.
-mu can have any value, and sigma must be greater than zero.
+If you take the natural logarithm of this distribution, you'll get a normal distribution with mean `mu` and standard deviation `sigma`.  
+`mu` can have any value, and `sigma` must be greater than zero.
 
 
 **normalvariate**(self, mu, sigma)  
 Normal distribution.
 
-mu is the mean, and sigma is the standard deviation. See method gauss() for 
-a faster but not thread-safe equivalent.
+`mu` is the mean, and `sigma` is the standard deviation. See method `gauss()` for a faster but not thread-safe equivalent.
 
 
 **paretovariate**(self, alpha)  
@@ -720,38 +684,27 @@ Returns a random integer in range [a, b], including both end points.
 **randrange**(self, start, stop=None, step=1)  
 Returns a randomly selected element from range(start, stop, step). This is equivalent to `choice( range(start, stop, step) )` without building a range object.
 
-The positional argument pattern matches that of range().  Keyword arguments 
-should not be used because the function may use them in unexpected ways.
+The positional argument pattern matches that of `range()`. Keyword arguments should not be used because the function may use them in unexpected ways.
 
 
 **sample**(self, population, k)  
 Chooses `k` unique random elements from a population sequence or set.
 
-Returns a new list containing elements from the  population  while  leaving 
-the  original  population  unchanged.  The  resulting  list is in selection 
-order so that all sub-slices will also be valid random samples. This allows 
-raffle  winners  (the sample) to be partitioned into grand prize and second 
-place winners (the subslices).
+Returns a new list containing elements from the population while leaving the original population unchanged. The resulting list is in selection order so that all sub-slices will also be valid random samples. This allows raffle winners (the sample) to be partitioned into grand prize and second place winners (the subslices).
 
-Members of the population need not be hashable or unique. If the population 
-contains  repeats,  then  each  occurrence  is  a possible selection in the 
-sample.
+Members of the population need not be hashable or unique. If the population contains repeats, then each occurrence is a possible selection in the sample.
 
-To choose a sample in a range of integers, use range as an  argument.  This 
-is   especially  fast  and  space  efficient  for  sampling  from  a  large 
-population: sample(range(10000000), 60)
+To choose a sample in a range of integers, use range as an argument. This is especially fast and space efficient for sampling from a large population: `sample(range(10_000_000), 60)`.
 
 
 **seed**(self, a=None, version=2)  
 Initialize internal state from hashable object.
 
-None or no argument seeds from current time or  from  an  operating  system 
-specific randomness source if available.
+None or no argument seeds from current time, or from an operating system specific randomness source if available.
 
-For version 2 (the default), all of the bits are used  if  *a*  is  a  str,
-bytes, or bytearray.  For version 1, the hash() of *a* is used instead.
+For version 2 (the default), all of the bits are used if `a` is a str, bytes, or bytearray. For version 1, the hash() of `a` is used instead.
 
-If *a* is an int, all bits are used.
+If `a` is an int, all bits are used.
 
 
 **setstate**(self, state)  
@@ -761,30 +714,19 @@ Restores internal state from object returned by `getstate()`.
 **shuffle**(self, x, random=None)  
 Shuffle the sequence x in place. Returns None.
 
-The optional argument random is a 0-argument function  returning  a  random 
-float in [0.0, 1.0); by default, this is the function random().
+The optional argument `random` is a 0-argument function returning a  random float in [0.0, 1.0); by default, this is the function random().
 
-To shuffle an immutable sequence  and  return  a  new  shuffled  list,  use 
-sample(x, k=len(x)) instead.
+To shuffle an immutable sequence and return a new shuffled list, use `sample(x, k=len(x))` instead.
 
-Note that even for small len(x),  the total number of permutations of x can 
-quickly grow larger than the period of most random number generators.  This 
-implies that most permutations of a long sequence can never  be  generated. 
-For  example,  a sequence of length 2080 is the largest that can fit within 
-the period of the Mersenne Twister random number generator.
+Note that even for small `len(x)`, the total number of permutations of `x` can quickly grow larger than the period of most random number generators.  This implies that most permutations of a long sequence can never be  generated. For example, a sequence of length 2080 is the largest that can fit within the period of the Mersenne Twister random number generator.
 
 
 **triangular**(self, low=0.0, high=1.0, mode=None)  
 Triangular distribution.
 
-Continuous distribution bounded by given lower and upper limits, and having 
-a  given mode value in-between.  Returns a random floating point number *N* 
-such that low <= *N* <= high and with  the  specified  mode  between  those 
-bounds.  The low and high bounds default to zero and one. The mode argument 
-defaults  to  the  midpoint  between  the  bounds,   giving   a   symmetric 
-distribution.
+Continuous distribution bounded by given lower and upper limits, and having a given mode value in-between. Returns a random floating point number *N* such that `low` <= *N* <= `high` and with the specified mode  between those bounds. The `low` and `high` bounds default to zero and one. The mode argument defaults to the midpoint between the bounds, giving a symmetric distribution.
 
-http://en.wikipedia.org/wiki/Triangular_distribution
+see [http://en.wikipedia.org/wiki/Triangular_distribution](http://en.wikipedia.org/wiki/Triangular_distribution)
 
 
 **uniform**(self, a, b)  
@@ -794,25 +736,22 @@ Gets a random number in the range [`a`, `b`) or [`a`, `b`] depending on rounding
 **vonmisesvariate**(self, mu, kappa)  
 Circular data distribution.
 
-mu is the mean angle, expressed in radians between 0 and 2*pi, and kappa is 
-the  concentration parameter,  which must be greater than or equal to zero. 
-If kappa is equal to zero,  this distribution reduces to a  uniform  random 
-angle over the range 0 to 2*pi.
+`mu` is the mean angle, expressed in radians between `0` and `2*pi`, and `kappa` is the  concentration parameter, which must be greater than or equal to zero. If `kappa` is equal to zero, this distribution reduces to a uniform random angle over the range `0` to `2*pi`.
 
 
 **weibullvariate**(self, alpha, beta)  
 Weibull distribution.
 
-alpha is the scale parameter and beta is the shape parameter.
+`alpha` is the scale parameter and `beta` is the shape parameter.
 
 
 
 ## References
 
-**[1]** Pierre L'Ecuyer and Richard Simard. 2007. 
-*TestU01: A C library for empirical testing of random number generators*. 
-ACM Transaction on Mathematical Software, Vol.33 N.4, Article 22 (August 2007), 40 pages. DOI: http://dx.doi.org/10.1145/1268776.1268777
-
+**[1]** Pierre L'Ecuyer and Richard Simard. 2007.  
+*TestU01: A C library for empirical testing of random number generators*.  
+In ACM Transaction on Mathematical Software, Vol.33 N.4, Article 22 (August 2007), 40 pages.  
+DOI: http://dx.doi.org/10.1145/1268776.1268777  
 BibTex:
 @article{L'Ecuyer:2007:TCL:1268776.1268777,
  author = {L'Ecuyer, Pierre and Simard, Richard},
@@ -836,10 +775,9 @@ BibTex:
 }  
 
 
-**[2]** Lih-Yuan Deng  &  Dennis K. J. Lin. 2000. 
-*Random number generation for the new century*. 
+**[2]** Lih-Yuan Deng & Dennis K. J. Lin. 2000.  
+*Random number generation for the new century*.  
 The American Statistician Vol.54, N.2, pp. 145–150.
-
 BibTex:
 @article{doi:10.1080/00031305.2000.10474528,
 author = { Lih-Yuan   Deng  and  Dennis K. J.   Lin },
@@ -850,23 +788,75 @@ number = {2},
 pages = {145-150},
 year = {2000},
 doi = {10.1080/00031305.2000.10474528},
-URL = {ttp://amstat.tandfonline.com/doi/abs/10.1080/00031305.2000.10474528},
+URL = {http://amstat.tandfonline.com/doi/abs/10.1080/00031305.2000.10474528},
 eprint = {http://amstat.tandfonline.com/doi/pdf/10.1080/00031305.2000.10474528}
 }
 
 
-**[3]** Lih-Yuan Deng. 2005.
-*Efficient and portable multiple recursive generators of large order*.
-ACM Transactions on Modeling and Computer. Simulation 15:1.
+**[3]** Lih-Yuan Deng. 2005.  
+*Efficient and portable multiple recursive generators of large order*.  
+In ACM Transactions on Modeling and Computer Simulation, Jan. 2005, Vol. 15 Issue 1, pp. 1-13.  
+DOI: https://doi.org/10.1145/1044322.1044323
 
 
-**[4]** Georges Marsaglia. 1985. 
-*A current view of random number generators*.
-In Computer Science and Statistics, Sixteenth Symposium on the Interface. Elsevier Science Publishers, North-Holland,
-Amsterdam, 1985, The Netherlands. pp. 3–10.
+**[4]** Georges Marsaglia. 1985.  
+*A current view of random number generators*.  
+In Computer Science and Statistics, Sixteenth Symposium on the Interface.  
+Elsevier Science Publishers, North-Holland, Amsterdam, 1985, The Netherlands, pp. 3–10.
 
 
-**[5]** Makoto Matsumoto and Takuji Nishimura. 1998. 
-*Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator.*
-In ACM Transactions on Modeling and Computer Simulation (TOMACS) - Special issue on uniform random number generation.  
-Vol.8 N.1, Jan. 1998, pp. 3-30.  
+**[5]** Makoto Matsumoto and Takuji Nishimura. 1998.  
+*Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator.*  
+In ACM Transactions on Modeling and Computer Simulation (TOMACS) - Special issue on uniform random number generation. Vol.8 N.1, Jan. 1998, pp. 3-30.  
+
+
+**[6]** François Panneton and Pierre L'Ecuyer (Université de Montréal) and Makoto Matsumoto (Hiroshima University). 2006.  
+*Improved Long-Period Generators Based on Linear Recurrences Modulo 2*.  
+In ACM Transactions on Mathematical Software, Vol. 32, No. 1, March 2006, pp. 1–16.  
+see [https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf](https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
+
+
+**[7]** Melissa E. O'Neill. 2014.  
+*PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation*.  
+Submitted to ACM Transactions on Mathematical Software (47 pages)  
+Finally: Harvey Mudd College Computer Science Department Technical Report, HMC-CS-2014-0905, Issued: September 5, 2014 (56 pages).  
+@techreport{oneill:pcg2014,
+    title = "PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation",
+    author = "Melissa E. O'Neill",
+    institution = "Harvey Mudd College",
+    address = "Claremont, CA",
+    number = "HMC-CS-2014-0905",
+    year = "2014",
+    month = Sep,
+    xurl = "https://www.cs.hmc.edu/tr/hmc-cs-2014-0905.pdf",
+}  
+see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
+
+
+**[8]** Tomasz R. Dziala. 2023.  
+*Collatz-Weyl Generators: High Quality and High Throughput Parameterized Pseudorandom Number Generators*.  
+Published at arXiv, December 2023 (11 pages),  
+Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024, see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043)  
+DOI: https://doi.org/10.48550/arXiv.2312.17043
+
+
+**[9]** Bernard Widynski. March 2022.  
+*Squares: A Fast Counter-Based RNG*.  
+Published at arXiv, March 2022 (5 pages)  
+Last reference: arXiv:2004.06278v7 [cs.DS] 13 Mar 2022, see [https://arxiv.org/pdf/2004.06278](https://arxiv.org/pdf/2004.06278).  
+DOI: https://doi.org/10.48550/arXiv.2004.06278
+
+
+**[10]** David Blackman, Sebastiano Vigna. 2018.  
+*Scrambled Linear Pseudorandom Number Generators*.  
+Published in arXiv, March 2022 (32 pages)  
+Last reference: arXiv:1805.01407v3 [cs.DS] 28 Mar 2022, see [https://arxiv.org/pdf/1805.01407](https://arxiv.org/pdf/1805.01407).  
+DOI: https://doi.org/10.48550/arXiv.1805.01407
+
+
+**[11]** Shin Harase, Takamitsu Kimoto, 2018.  
+*Implementing 64-bit Maximally Equidistributed F2-Linear Generators with Mersenne Prime Period*.  
+In ACM Transactions on Mathematical Software, Volume 44, Issue 3, April 2018, Article No. 30 (11 Pages)  
+Also published in arXiv, March 2022 (11 pages)  
+Last reference: arXiv:1505.06582v6 [cs.DS] 20 Nov 2017, see [https://arxiv.org/pdf/1505.06582](https://arxiv.org/pdf/1505.06582).  
+DOI: https://doi.org/10.1145/3159444, https://doi.org/10.48550/arXiv.1505.06582
