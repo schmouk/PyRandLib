@@ -594,28 +594,28 @@ Since the base class **BaseRandom** inherits from the built-in class `random.Ran
 **betavariate**(self, alpha, beta)  
 Beta distribution.
 
-Conditions on the parameters are alpha > 0 and beta > 0.  
+Conditions on the parameters are `alpha > 0` and `beta > 0`.  
 Returned values range between 0 and 1.
 
 
 **binomialvariate**(self, n=1, p=0.5)  
-Binomial distribution. Return the number of successes for n independent trials with the probability of success in each trial being p:
+Binomial distribution. Return the number of successes for `n` independent trials with the probability of success in each trial being `p`:
 
 Mathematically equivalent to:
 
     sum(random() < p for i in range(n))
 
-The number of trials n should be a non-negative integer. The probability of success p should be between 0.0 <= p <= 1.0. The result is an integer in the range 0 <= X <= n. This built-in, method has been added since Python 3.12. **PyRandLIb** implements it also for all former versions of Python: -3.6, -3.9, -3.10, and -3.11.
+The number of trials `n` should be a non-negative integer. The probability of success `p` should be between `0.0 <= p <= 1.0`. The result is an integer in the range `0 <= X <= n`. This built-in method has been added since Python 3.12. **PyRandLIb** implements it also for all former versions of Python: -3.6, -3.9, -3.10, and -3.11.
 
 
 **choice**(self, seq)  
-Chooses a random element from a non-empty sequence. 'seq' has to be non empty.
+Chooses a random element from a non-empty sequence. `seq` has to be non empty.
 
 
 **choices**(population, weights=None, *, cum_weights=None, k=1)  
-Returns a *k* sized list of elements chosen from the population, with replacement. If the population is empty, raises IndexError.
+Returns a `k` sized list of elements chosen from the population, with replacement. If the population is empty, raises `IndexError`.
 
-If a *weights* sequence is specified, selections are made according to  the relative weights. Alternatively, if a *cum_weights* sequence is given, the selections are made according to the cumulative weights (perhaps  computed using `itertools.accumulate()`).  
+If a `weights` sequence is specified, selections are made according to  the relative weights. Alternatively, if a `cum_weights` sequence is given, the selections are made according to the cumulative weights (perhaps  computed using `itertools.accumulate()`).  
 For example, the relative weights `[10, 5, 30, 5]` are equivalent to the cumulative weights `[10, 15, 45, 50]`.  
 Internally, the relative weights are converted to cumulative weights before making selections, so supplying the cumulative weights saves work.
 
@@ -631,7 +631,7 @@ Exponential distribution.
 
 `lambd` is 1.0 divided by the desired mean. It should be nonzero. (The parameter should be called "lambda", but this is a reserved word in Python).  
 Returned values range from 0 to positive infinity if `lambd` is positive, and from negative infinity to 0 if `lambd` is negative.  
-Since Python 3.12, the parameter `lambd` gets a default value in this built-in method. **PyRandLib** defines then this method for all former versions of Pyhton : -3.6, -3.9, -3.10 and -3.11.
+Since Python 3.12, the parameter `lambd` gets a default value in this built-in method. **PyRandLib** defines then this method for all former versions of Python : -3.6, -3.9, -3.10 and -3.11.
 
 
 **gammavariate**(self, alpha, beta)  
@@ -643,8 +643,8 @@ Conditions on the parameters are `alpha` > 0 and `beta` > 0.
 **gauss**(self, mu, sigma)  
 Gaussian distribution.
 
-mu is the mean, and sigma is the standard deviation.  
-This is slightly faster than the normalvariate() function.
+`mu` is the mean, and `sigma` is the standard deviation.  
+This is slightly faster than the `normalvariate()` function.
 
 Not thread-safe without a lock around calls.
 
@@ -675,7 +675,7 @@ Pareto distribution. `alpha` is the shape parameter.
 
 
 **randint**(self, a, b)  
-Returns a random integer in range [a, b], including both end points.
+Returns a random integer in range `[a, b]`, including both end points.
 
 
 **randrange**(self, stop)  
@@ -710,9 +710,9 @@ Restores internal state from object returned by `getstate()`.
 
 
 **shuffle**(self, x, random=None)  
-Shuffle the sequence x in place. Returns None.
+Shuffle the sequence `x` in place. Returns None.
 
-The optional argument `random` is a 0-argument function returning a  random float in [0.0, 1.0); by default, this is the function random().
+The optional argument `random` is a 0-argument function returning a random float in `[0.0, 1.0)`; by default, this is the function random().
 
 To shuffle an immutable sequence and return a new shuffled list, use `sample(x, k=len(x))` instead.
 
@@ -728,7 +728,7 @@ see [http://en.wikipedia.org/wiki/Triangular_distribution](http://en.wikipedia.o
 
 
 **uniform**(self, a, b)  
-Gets a random number in the range [`a`, `b`) or [`a`, `b`] depending on rounding.
+Gets a random number in the range `[a, b)` or `[a, b]` depending on rounding.
 
 
 **vonmisesvariate**(self, mu, kappa)  
