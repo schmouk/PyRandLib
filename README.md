@@ -41,9 +41,7 @@ Latest version of **PyRandLib** is version **2.0**, released by March 2025. It p
 
 ### Why not Mersenne twister?
 
-The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] -  is the most widely used one. The Random class of module random in Python 
-implements this PRNG. It is also implemented in C++ and Java standard 
-libraries for instance.
+The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] - is the most widely used one. The Random class of module random in Python implements this PRNG. It is also implemented in C++ and Java standard libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRNG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRNG.
 
