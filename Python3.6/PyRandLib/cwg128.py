@@ -140,8 +140,8 @@ class Cwg128( BaseCWG ):
         if _state is None or isinstance(_state, int) or isinstance(_state, float):
             initRand = SplitMix64( _state )
             self._a = self._weyl = 0
-            self._state = (initRand() << 64) | initRand()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
             self._s = (initRand() << 64) | initRand() | 1   # Notice: s must be odd
+            self._state = (initRand() << 64) | initRand()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
                             
         else:
             try:
