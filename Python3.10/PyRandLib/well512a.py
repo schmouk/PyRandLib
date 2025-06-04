@@ -117,10 +117,7 @@ class Well512a( BaseWELL ):
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        i = self._index
-        i_1 = (i - 1) & 0xf
-
-        z0 = self._state[i_1]
+        z0 = self._state[(i_1 :=((i := self._index) - 1) & 0xf)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
         z1 = self._M3_neg(self._state[i], 16) ^ self._M3_neg(self._state[(i + 13) & 0x0f], 15)
