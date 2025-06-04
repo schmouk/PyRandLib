@@ -35,7 +35,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     Copyright (c) 2025 Philippe Schmouker
 
     The Pseudo-Random Numbers Generators implemented in library PyRandLib have
-    been chosen as being the best in class ones about their randmoness quality
+    been chosen as being the best in class ones about their randomness quality
     - as evaluated with test program  TestU01  (Pierre  L'Ecuyer  and  Richard 
     Simard  (Université  de  Montréal) in 'TestU01:  A C Library for Empirical 
     Testing of Random Number Generators  -  ACM  Transactions  on Mathematical 

@@ -213,7 +213,7 @@ In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well10
 In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 that  generate output values coded on resp. 64-, 64- and 128- bits .
 
 1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
-In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented. They provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
+In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented. They provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randomness issue, while this is not mentionned in the original paper [9].
 
 1. The xoroshiro algorithm ("Scrambled Linear Pseudorandom Number Generators", see [10], 2018) is now implemented in **PyRandLib**, in its *mult-mult* form for the output scrambler. This algorithm is fast, uses 64-bits integers as its internal state and outputs 64-bits values. It uses few memory space (4, 8 or 16 64-bits integers for resp. its 256-, 512- and 1024- versions that are implemented in **PyRandLib**. Notice: the 256 version of the algorithm is know to show close repeats flaws, with a bad Hamming weight near zero. *xoroshiro512* seems to best fit this property, according to the tables proposed by the authors in [10].
 
@@ -513,7 +513,7 @@ The underlying algorithm acts as an LCG associated with a bits permutation as it
 ### Squares64  -  2^64 periodicity
 
 **Squares64** implements a fast counter-based pseudo-random numbers generator which outputs 64-bits random values. The core of the algorithm evaluates and squares 64-bits intermadiate values then exchanges their higher and lower bits on a five rounds operations. It uses a 64-bits counter and a 64-bits key. It provides multi-streams feature via different values of key and gets robust randomness characteristics. The counter starts counting at 0. Once returning to 0 modulo 2^64 the whole period of the algorithm will have been exhausted. Values for keys have to be cautiously chosen: the **PyRandLib** implementation of the manner to do it as recommended in [9] is of our own but stricly respects the original recommendation.  
-Notice: this version of the algorithm should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].  
+Notice: this version of the algorithm should not pass the birthday test, which is a randomness issue, while this is not mentionned in the original paper [9].  
 **PyRandLib** Squares64 class implements the *squares64* version of the algorithm as described in [9]. 
 
 
