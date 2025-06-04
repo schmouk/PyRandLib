@@ -129,13 +129,13 @@ class Well19937c( BaseWELL ):
 
         z0 = (self._state[i_1] & 0x0000_0001) ^ (self._state[i_2] & 0xffff_fffe)
         z1 = BaseWELL._M3_neg(self._state[i], 25) ^ BaseWELL._M3_pos(self._state[(i + 70) % 624], 27)
-        z2 = BaseWELL._M2_pos(self._state[(i + 179) % 624], 19) ^ BaseWELL._M3_pos(self._state[(i + 449) % 624], 1)
+        z2 = BaseWELL._M2_pos(self._state[(i + 179) % 624], 9) ^ BaseWELL._M3_pos(self._state[(i + 449) % 624], 1)
 
         self._state[i] = (z3 := z1 ^ z2)
         self._state[i_1] = z0 ^ BaseWELL._M3_neg(z1, 9) ^ BaseWELL._M2_neg(z2, 21) ^ BaseWELL._M3_pos(z3, 21)
 
         self._index = i_1
-        return BaseWELL._tempering(z3, 0xe46e1700, 0x9b868000)
+        return BaseWELL._tempering(z3, 0xe46e_1700, 0x9b86_8000)
 
 
 #=====   end of module   well19937c.py   =====================================
