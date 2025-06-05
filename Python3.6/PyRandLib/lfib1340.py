@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baselfib64 import BaseLFib64
+from .baselfib64       import BaseLFib64
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -32,7 +33,7 @@ class LFib1340( BaseLFib64 ):
 
     This module is part of library PyRandLib.
     
-    Copyright (c) 2017-2025 Philippe Schmouker
+    Copyright (c) 2016-2025 Philippe Schmouker
 
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
@@ -109,8 +110,14 @@ class LFib1340( BaseLFib64 ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'LFib(2^64, 1279 # this 'LFib(2^64, 1279, 861, +)' generator is based on a suite containing 1279 integers
+        super().__init__( 1279, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -118,16 +125,15 @@ class LFib1340( BaseLFib64 ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates indexes in suite for the i-861 and i-1279 -th values
-        k861 = self._index-861
-        if k861 < 0:
-            k861 += LFib1340._STATE_SIZE
+        
+        if (k861 := self._index-861) < 0:
+            k861 += self._STATE_SIZE  # notice: attribute _STATE_STATE is set in base class
         
         # then evaluates current value
-        myValue = (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
-        self._state[self._index] = myValue
+        self._state[self._index] = (myValue := (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)
         
         # next index
-        self._index = (self._index+1) % LFib1340._STATE_SIZE
+        self._index = (self._index+1) % self._STATE_SIZE
         
         return myValue
 

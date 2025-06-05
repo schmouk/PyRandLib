@@ -21,9 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, override
+from typing import override
 
-from .baselfib64 import BaseLFib64
+from .baselfib64       import BaseLFib64
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -109,8 +110,14 @@ class LFib78( BaseLFib64 ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 17 # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
+        super().__init__( 17, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -121,13 +128,13 @@ class LFib78( BaseLFib64 ):
         # evaluates indexes in suite for the i-5 and i-17 -th values
         
         if (k5 := self._index - 5) < 0:
-            k5 += LFib78._STATE_SIZE
+            k5 += self._STATE_SIZE  # notice: attribute _STATE_STATE is set in base class
         
         # then evaluates current value
         self._state[self._index] = (myValue := (self._state[k5] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)
         
         # next index
-        self._index = (self._index + 1) % LFib78._STATE_SIZE
+        self._index = (self._index + 1) % self._STATE_SIZE
 
         return myValue
 

@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baselfib64 import BaseLFib64
+from .baselfib64       import BaseLFib64
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -108,25 +109,29 @@ class LFib116( BaseLFib64 ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 55  # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
+    def __init__(self, _seed: SeedStateType = None,) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'LFib(2^64, 55, 24, +)' generator is based on a suite containing 55 integers
+        super().__init__( 55, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        # evaluates indexes in suite for the i-5 and i-17 -th values
-        k24 = self._index-24
-        if k24 < 0:
-            k24 += LFib116._STATE_SIZE
+        # evaluates indexes in suite for the i-24 and i-55 -th values
+        if (k24 := self._index-24) < 0:
+            k24 += self._STATE_SIZE  # notice: attribute _STATE_STATE is set in base class
         
         # then evaluates current value
-        myValue = (self._state[k24] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
-        self._state[self._index] = myValue
+        self._state[self._index] = (myValue := (self._state[k24] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)
         
         # next index
-        self._index = (self._index+1) % LFib116._STATE_SIZE
+        self._index = (self._index+1) % self._STATE_SIZE
 
         return myValue
 
