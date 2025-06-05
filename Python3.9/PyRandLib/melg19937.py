@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
 from .basemelg import BaseMELG
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -96,8 +95,18 @@ class Melg19937( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE: Final[int] = 312
     _A_COND = (0, 0x5c32_e06d_f730_fc42)  # this tuple will avoid an 'if' in method 'next()'
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # the internal state of this PRNG is set on 312 64-bits integers
+        super().__init__( 312, _seed )
 
 
     #-------------------------------------------------------------------------

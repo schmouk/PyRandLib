@@ -23,13 +23,13 @@ SOFTWARE.
 #=============================================================================
 from typing import Final
 
-from .baserandom       import BaseRandom
-from .annotation_types import SeedStateType, StateType
+from .listindexstate   import ListIndexState
+from .annotation_types import SeedStateType
 from .splitmix         import SplitMix64
 
 
 #=============================================================================
-class BaseMELG( BaseRandom ):
+class BaseMELG( ListIndexState ):
     """Definition of the base class for all MELG pseudo-random generators.
     
     This module is part of library PyRandLib.
@@ -86,7 +86,6 @@ class BaseMELG( BaseRandom ):
     should definitively pass.
     """
 
-
     #-------------------------------------------------------------------------
     _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
@@ -102,9 +101,10 @@ class BaseMELG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: SeedStateType = None, /) -> None:
         """Constructor.
         
+        _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state,  an integer,  a float or  None.
         About   valid  state:   this  is  a  tuple  containing  a  list  of  
         self._STATE_SIZE 64-bits integers,  an index in this  list  and  an 
@@ -115,86 +115,10 @@ class BaseMELG( BaseRandom ):
         current time value is used as such an initial seed.
 
         """
-        super().__init__( _seedState )
+        super().__init__( SplitMix64, _stateSize, _seedState )
             # this  call  creates  the  two  attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
-
- 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> StateType:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This object can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE 64-bits integers, an index 
-        in this list and an additional 64-bits integer as a state extension.
-        """
-        return (self._state[:], self._index)
-            
- 
-    #-------------------------------------------------------------------------
-    def setstate(self, _seedState: StateType, /) -> None:
-        """Restores the internal state of the generator.
-
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        Should  _seedstate not contain a list of self._STATE_SIZE 64-
-        bits integers,  a value for attribute self._index and a value 
-        for  attribute self._extState,  this method tries its best to 
-        initialize all these values.
-        """
-        try:
-            match len( _seedState ):            
-                case 0:
-                    self._index = 0
-                    self._initstate()
-                
-                case 1:
-                    self._index = 0
-                    self._initstate( _seedState[0] )
-            
-                case 2:
-                    self._initindex( _seedState[1] )
-                    if (len(_seedState[0]) == self._STATE_SIZE):
-                        self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
-                    else:
-                        self._initstate( _seedState[0] )
-
-                case _:
-                    self._initindex( _seedState[1] )
-                    if (len(_seedState[0]) == self._STATE_SIZE):
-                        self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
-                    else:
-                        self._initstate( _seedState[0] )
-                
-        except:
-            self._index = 0
-            self._initstate( _seedState )
-
- 
-    #-------------------------------------------------------------------------
-    def _initindex(self, _index: int, /) -> None:
-        """Inits the internal index pointing to the internal list.
-        """
-        try:
-            self._index = int( _index ) % self._STATE_SIZE
-        except:
-            self._index = 0
-                       
- 
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: StateType = None, /) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        # feeds the list according to an initial seed and the value+1 of the modulo.
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]
 
 
 #=====   end of module   basemelg.py   =======================================

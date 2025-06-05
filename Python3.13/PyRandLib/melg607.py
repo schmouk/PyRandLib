@@ -21,9 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, override
+from typing import override
 
 from .basemelg import BaseMELG
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -95,8 +96,18 @@ class Melg607( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE: Final[int] = 10          # the internal state of this PRNG is set on ten 64-bits integers  N=10
-    _A_COND = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
+    _A_COND: list[int] = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()'
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # the internal state of this PRNG is set on ten 64-bits integers
+        super().__init__( 10, _seed )
 
 
     #-------------------------------------------------------------------------

@@ -22,6 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .basemelg import BaseMELG
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -93,8 +94,18 @@ class Melg44497( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE: int = 696
     _A_COND = (0, 0x4fa9_ca36_f293_c9a9)
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # the internal state of this PRNG is set on 696 64-bits integers
+        super().__init__( 696, _seed )
 
 
     #-------------------------------------------------------------------------
