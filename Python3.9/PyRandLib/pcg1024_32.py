@@ -32,7 +32,7 @@ from .splitmix         import SplitMix32
 class Pcg1024_32( Pcg64_32 ):
     """
     Pseudo-random  numbers  generator  -  Permutated  Congruential  Generator 
-    extended   by  1,024  equistributed  generators,   dedicated  to  64-bits 
+    extended  by  1,024  equidistributed  generators,  dedicated  to  64-bits 
     calculations and 32-bits output with very large period (about 6.53e+9882) 
     but  very short time computation.  This version of the PCG algorithm gets
     the largest memory consumption: 1,026 x 4-bytes. The PCG algorithm offers 
