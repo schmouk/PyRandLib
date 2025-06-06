@@ -65,7 +65,7 @@ class BaseWELL( ListIndexState ):
     computation time and 32 integers memory consumption.
     See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497c for a very large period (2^44497,  i.e. 15.1e+13466)  with  similar 
+    See Well44497b for a very large period (2^44497,  i.e. 15.1e+13466)  with  similar 
     computation time but use of even more memory space (1,391 integers).
     
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
@@ -88,10 +88,10 @@ class BaseWELL( ListIndexState ):
  | --------------- | ------------------- | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
-    (1)The Well19937b generator provided with library PyRandLib implements the
+    (1)The Well19937c generator provided with library PyRandLib implements the
     Well19937a algorithm augmented with an associated tempering algorithm.
 
     * _small crush_ is a small set of simple tests that quickly tests some  of

@@ -89,15 +89,15 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well19937c (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
+ | Well44497b       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Mersenne twister | MT19937                            |   624 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
  | Xoroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |    n.a.     |     0.84     |          0       |       0     |       0        |
  | Xoroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |    n.a.     |     0.99     |          0       |       0     |       0        |
  | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |    n.a.     |     1.17     |          0       |       0     |       0        |
 
 (1) *or the generator original name in the related paper*  
-(2) The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
+(2) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
 
 
 
@@ -147,7 +147,7 @@ The Python versions used for these evaluations in their related virtual environm
  | Xoroshiro512     |    2.94    |    2.81     |    2.72     |    2.40     |    2.30     |        *0*       |      *0*    |      *0*       |
  | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |    2.12     |    2.06     |        *0*       |      *0*    |      *0*       |
 
-(1) The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with a *tempering* algorithm.  
+(1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with a *tempering* algorithm.  
 (*missing values in empty columns are to come*)
 
 ## Implementation
