@@ -26,7 +26,6 @@ from typing import Union
 from .baserandom       import BaseRandom
 from .basexoroshiro    import BaseXoroshiro
 from .annotation_types import Numerical, StatesList
-from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -78,10 +77,6 @@ class Xoroshiro512( BaseXoroshiro ):
     * _big crush_ is the ultimate set of difficult tests that  any  GOOD  PRNG 
     should definitively pass.
     """
-    
-    #-------------------------------------------------------------------------
-    _STATE_SIZE: int = 8
-
 
     #-------------------------------------------------------------------------
     def __init__(self, _seedState: Union[Numerical, StatesList] = None) -> None:
@@ -97,7 +92,8 @@ class Xoroshiro512( BaseXoroshiro ):
         the  shuffling of the local current time value is used as such an 
         initial seed.
         """
-        super().__init__( _seedState )
+        # this 'xoroshiro512**' generator is based on a suite containing 8 integers
+        super().__init__( 8, _seedState )
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
@@ -123,38 +119,4 @@ class Xoroshiro512( BaseXoroshiro ):
         return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO
 
 
-    #-------------------------------------------------------------------------
-    def setstate(self, _seedState: Union[ Numerical, StatesList ] = None) -> None:
-        """Restores the internal state of the generator.
-        
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About  valid  state:  this  is  a  list  of  self._STATE_SIZE 
-        integers (64-bits). Should _seedState be a  sole  integer  or 
-        float  then it is used as initial seed for the random filling 
-        of the internal list  of  self._STATE_SIZE  integers.  Should 
-        _seedState be anything else (e.g. None) then the shuffling of 
-        the local current time value is used as such an initial seed.
-        """
-        try:
-            count = len( _seedState )
-
-            if count == 0:
-                self._initstate()
-                
-            elif count == 1:
-                self._initstate( _seedState[0] )
-                
-            else:
-                if (len(_seedState[0]) == BaseXoroshiro._STATE_SIZE):
-                    self._state = _seedState[:]    # Notice: all entries MUST BE integers and not all zero
-                else:
-                    self._initstate( _seedState[0] )
-                
-        except:
-            self._initstate( _seedState )
-
-
 #=====   end of module   xoroshiro512.py   ===================================
-

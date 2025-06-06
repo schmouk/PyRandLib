@@ -23,13 +23,13 @@ SOFTWARE.
 #=============================================================================
 from typing import Final
 
-from .baserandom       import BaseRandom
-from .annotation_types import Numerical, StatesList, StateType
+from .listindexstate   import ListIndexState
+from .annotation_types import Numerical, StatesList
 from .splitmix         import SplitMix64
 
 
 #=============================================================================
-class BaseXoroshiro( BaseRandom ):
+class BaseXoroshiro( ListIndexState ):
     """The base class for all xoroshiro PRNGs.
     
     Definitiion of the base class for all versions of the xoroshiro algorithm
@@ -93,7 +93,7 @@ class BaseXoroshiro( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float ]= 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
@@ -106,14 +106,14 @@ class BaseXoroshiro( BaseRandom ):
     than 32 bits.
     """
 
-
     _MODULO: Final[int] = (1 << 64) - 1
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical | StatesList = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: Numerical | StatesList = None, /) -> None:
         """Constructor.
         
+        _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state, an integer,  a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
         self._STATE_SIZE integers and  an index in this list (index  value 
@@ -124,66 +124,10 @@ class BaseXoroshiro( BaseRandom ):
         the  shuffling of the local current time value is used as such an 
         initial seed.
         """
-        super().__init__( _seedState )
+        super().__init__( SplitMix64, _stateSize, _seedState )
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
 
 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> list[int]:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This object can be passed to setstate() to restore the state. 
-        It is a tuple containing a list of self._STATE_SIZE integers.
-        """
-        return self._state[:]
-
-
-    #-------------------------------------------------------------------------
-    def setstate(self, _seedState: Numerical | StatesList = None, /) -> None:
-        """Restores the internal state of the generator.
-        
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About  valid  state:  this  is  a  list  of  self._STATE_SIZE 
-        integers (64-bits). Should _seedState be a  sole  integer  or 
-        float  then it is used as initial seed for the random filling 
-        of the internal list  of  self._STATE_SIZE  integers.  Should 
-        _seedState be anything else (e.g. None) then the shuffling of 
-        the local current time value is used as such an initial seed.
-        """
-        try:
-            match len( _seedState ):
-                case 0:
-                    self._initstate()
-                
-                case 1:
-                    self._initstate( _seedState[0] )
-                
-                case _:
-                    if (len(_seedState[0]) == self._STATE_SIZE):
-                        self._state = _seedState[:]    # each entry in _seedState MUST be integer
-                    else:
-                        self._initstate( _seedState[0] )
-                
-        except:
-            self._initstate( _seedState )
-
-
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]        
-
-
 #=====   end of module   basexoroshiro.py   ==================================
-
