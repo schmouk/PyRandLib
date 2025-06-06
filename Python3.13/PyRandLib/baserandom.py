@@ -83,7 +83,7 @@ class BaseRandom( Random ):
     
     Please notice that for simulating the roll of a dice you should program:
       diceRoll = UFastRandom()
-      print( int( diceRoll(1, 7) ) ) # prints a uniform roll within {1, ..., 6}.
+      print( int(diceRoll.randint(1, 6)) ) # prints a uniform roll within set {1, 2, 3, 4, 5, 6}
     Such a programming is a simplified  while  still  robust  emulation  of  inherited
     methods random.Random.randint(self,1,6) and random.Random.randrange(self,1,7,1).
  
