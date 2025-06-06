@@ -21,8 +21,6 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
 from .basemelg import BaseMELG
 from .annotation_types import SeedStateType
 

@@ -127,7 +127,7 @@ class LFib1340( BaseLFib64 ):
         # evaluates indexes in suite for the i-861 and i-1279 -th values
         
         if (k861 := self._index-861) < 0:
-            k861 += self._STATE_SIZE  # notice: attribute _STATE_STATE is set in base class
+            k861 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
         self._state[self._index] = (myValue := (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)

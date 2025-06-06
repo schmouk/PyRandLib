@@ -128,7 +128,7 @@ class LFib78( BaseLFib64 ):
         # evaluates indexes in suite for the i-5 and i-17 -th values
         
         if (k5 := self._index - 5) < 0:
-            k5 += self._STATE_SIZE  # notice: attribute _STATE_STATE is set in base class
+            k5 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
         self._state[self._index] = (myValue := (self._state[k5] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)
