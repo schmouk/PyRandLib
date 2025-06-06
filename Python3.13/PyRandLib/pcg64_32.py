@@ -40,21 +40,21 @@ class Pcg64_32( BasePCG ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    PCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
-    atical function of 
-    
-        x(i) = (a * x(i-1) + c) mod m 
+    As LCGs do, PCG models evaluate pseudo-random numbers  suites  x(i)  as  a 
+    simple mathematical function of x(i-1):
+ 
+       x(i) = (a * x(i-1) + c) mod m
 
-    as are LCGs, but associated with a permutation of a subpart of the bits of 
-    the  internal  state  of  the PRNG.  The output of PCGs is this permutated 
-    subpart of its internal state,  leading to a very large enhancement of the 
+    PCGs associate to this recurrence a permutation of a subpart o f the  bits 
+    of  the internal state of the PRNG.  The output of PCGs is this permutated
+    subpart of its internal state,  leading to a very large enhancement of the
     randomness of these algorithms compared with the LCGs one.
-    
+ 
     These PRNGs have been tested with TestU01 and have shown to pass all tests
     (Pierre  L'Ecuyer and Richard Simard (Universite de Montreal) in 'TestU01: 
     A C Library for Empirical  Testing  of  Random  Number  Generators  -  ACM 
     Transactions on Mathematical Software, vol.33 n.4, pp.22-40, August 2007')
-  
+
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to

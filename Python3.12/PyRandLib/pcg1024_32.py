@@ -42,14 +42,14 @@ class Pcg1024_32( Pcg64_32 ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    PCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
-    atical function of 
-    
-        x(i) = (a * x(i-1) + c) mod m 
+    As LCGs do, PCG models evaluate pseudo-random numbers  suites  x(i)  as  a 
+    simple mathematical function of x(i-1):
+ 
+       x(i) = (a * x(i-1) + c) mod m
 
-    as are LCGs, but associated with a permutation of a subpart of the bits of 
-    the  internal  state  of  the PRNG.  The output of PCGs is this permutated 
-    subpart of its internal state,  leading to a very large enhancement of the 
+    PCGs associate to this recurrence a permutation of a subpart o f the  bits 
+    of  the internal state of the PRNG.  The output of PCGs is this permutated
+    subpart of its internal state,  leading to a very large enhancement of the
     randomness of these algorithms compared with the LCGs one.
     
     These PRNGs have been tested with TestU01 and have shown to pass all tests
