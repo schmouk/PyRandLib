@@ -138,7 +138,7 @@ class BaseSquares( BaseRandom ):
         # 8 high hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
+            k = int(n * initRand() * super()._NORMALIZE)
             h = hexDigits[ k ]
             key <<= 4
             key += h
@@ -150,7 +150,7 @@ class BaseSquares( BaseRandom ):
         # 8 low hexa digits - all different
         n = 15
         while n >= 8:
-            k = int(n * initRand() * self._NORMALIZE)  # Notice: _NORMALIZE is defined in base class
+            k = int(n * initRand() * super()._NORMALIZE)
             h = hexDigits[ k ]
             key <<= 4
             key += h
