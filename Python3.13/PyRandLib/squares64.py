@@ -40,7 +40,7 @@ class Squares64( BaseSquares ):
 
     Copyright (c) 2025 Philippe Schmouker
 
-    This Squares models is based on a  four  rounds  of  squaring  and 
+    This Squares models is based on a  five  rounds  of  squaring  and 
     exchanging of upper and lower bits of the successive combinations.
     Output values are provided on 32-bits or on 64-bits  according  to 
     the model. See [9] in README.md.

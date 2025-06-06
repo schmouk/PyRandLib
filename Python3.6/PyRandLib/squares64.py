@@ -21,8 +21,6 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
 from .basesquares      import BaseSquares
 from .annotation_types import SeedStateType, StatesList
 
@@ -40,7 +38,7 @@ class Squares64( BaseSquares ):
 
     Copyright (c) 2025 Philippe Schmouker
 
-    This Squares models is based on a  four  rounds  of  squaring  and 
+    This Squares models is based on a  five  rounds  of  squaring  and 
     exchanging of upper and lower bits of the successive combinations.
     Output values are provided on 32-bits or on 64-bits  according  to 
     the model. See [9] in README.md.
@@ -78,14 +76,14 @@ class Squares64( BaseSquares ):
     
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 64
+    _OUT_BITS: int = 64
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
