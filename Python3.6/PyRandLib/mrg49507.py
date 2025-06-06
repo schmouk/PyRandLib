@@ -21,7 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemrg import BaseMRG
+from .basemrg          import BaseMRG
+from .annotation_types import SeedStateType
+from .splitmix         import SplitMix31
 
 
 #=============================================================================
@@ -100,11 +102,6 @@ class Mrg49507( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE: int = 1597          # this 'DX-1597-2-7' MRG is based on a suite containing 1597 integers
-    _MODULO    : int = 2_147_483_647 # i.e. 0x7fffffff, or (1<<31)-1, the modulo for DX-1597-2-7 MRG
-
-
-    #-------------------------------------------------------------------------
     _NORMALIZE: float = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
@@ -120,22 +117,32 @@ class Mrg49507( BaseMRG ):
 
 
     #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this DX-1597-2-7 generator is based on a suite containing 47 integers
+        super().__init__( SplitMix31, 1597, _seed )
+
+
+    #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
         # evaluates indexes in suite for the i-7, i-1597 -th values
-        k7 = self._index-7
-        if k7 < 0:
-            k7 += Mrg49507._STATE_SIZE
+        if (k7 := self._index - 7) < 0:
+            k7 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
-        myValue = (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647
-        self._state[self._index] = myValue
+        self._state[self._index] = (myValue := (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647)
         
         # next index
-        self._index = (self._index+1) % Mrg49507._STATE_SIZE
+        self._index = (self._index+1) % self._STATE_SIZE
         
         # then returns the integer generated value
         return  myValue
 
-#=====   end of module   mrg49507.py   =======================================
+
+#=====   end of module   mrgrand49507.py   ===================================
