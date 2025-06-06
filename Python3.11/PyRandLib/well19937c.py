@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -108,8 +107,14 @@ class Well19937c( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 624  # this Well19937c PRNG internal state is based on a suite containing 624 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well19937c' generator is based on a suite containing 624 integers
+        super().__init__( 624, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -128,7 +133,7 @@ class Well19937c( BaseWELL ):
 
         z0 = (self._state[i_1] & 0x0000_0001) ^ (self._state[i_2] & 0xffff_fffe)
         z1 = BaseWELL._M3_neg(self._state[i], 25) ^ BaseWELL._M3_pos(self._state[(i + 70) % 624], 27)
-        z2 = BaseWELL._M2_pos(self._state[(i + 179) % 624], 19) ^ BaseWELL._M3_pos(self._state[(i + 449) % 624], 1)
+        z2 = BaseWELL._M2_pos(self._state[(i + 179) % 624], 9) ^ BaseWELL._M3_pos(self._state[(i + 449) % 624], 1)
 
         self._state[i] = (z3 := z1 ^ z2)
         self._state[i_1] = z0 ^ BaseWELL._M3_neg(z1, 9) ^ BaseWELL._M2_neg(z2, 21) ^ BaseWELL._M3_pos(z3, 21)

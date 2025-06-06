@@ -23,7 +23,8 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -108,8 +109,14 @@ class Well19937c( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 624  # this Well19937c PRNG internal state is based on a suite containing 624 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well19937c' generator is based on a suite containing 624 integers
+        super().__init__( 624, _seed )
 
 
     #-------------------------------------------------------------------------

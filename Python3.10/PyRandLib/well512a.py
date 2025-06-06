@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -109,15 +108,21 @@ class Well512a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well512a' generator is based on a suite containing 16 integers
+        super().__init__( 16, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        z0 = self._state[(i_1 :=((i := self._index) - 1) & 0xf)]
+        z0 = self._state[(i_1 := ((i := self._index) - 1) & 0xf)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
         z1 = self._M3_neg(self._state[i], 16) ^ self._M3_neg(self._state[(i + 13) & 0x0f], 15)

@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -106,28 +107,30 @@ class Well1024a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well1024a' generator is based on a suite containing 32 integers
+        super().__init__( 32, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        i = self._index
-        i_1 = (i - 1) & 0x1f
-
-        z0 = self._state[i_1]
+        z0 = self._state[(i_1 :=((i := self._index) - 1) & 0x1f)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
-        z1 = self._state[i] ^ self._M3_pos(self._state[(i + 3) & 0x1f], 8)
+        z1 = self._state[i] ^ BaseWELL._M3_pos(self._state[(i + 3) & 0x1f], 8)
             # notice: the transformation applied to self._state[i] for Well1024a
             # is the identity which leads to simplification also
-        z2 = self._M3_neg(self._state[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._state[(i + 10) & 0x1f], 14)
-        z3 = z1 ^ z2
+        z2 = BaseWELL._M3_neg(self._state[(i + 24) & 0x1f], 19) ^ BaseWELL._M3_neg(self._state[(i + 10) & 0x1f], 14)
         
-        self._state[i] = z3
-        self._state[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
+        self._state[i] = (z3 := z1 ^ z2)
+        self._state[i_1] = BaseWELL._M3_neg(z0, 11) ^ BaseWELL._M3_neg(z1, 7) ^ BaseWELL._M3_neg(z2, 13)
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well1024a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 

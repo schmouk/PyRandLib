@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -106,32 +107,36 @@ class Well44497b( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well44497b' generator is based on a suite containing 1391 integers
+        super().__init__( 1391, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        i = self._index
-        if i >= 2:
-            i_1, i_2 = i - 1, i - 2
+        if (i := self._index) >= 2:
+            i_1, i_2 = i-1, i-2
         elif i == 1:
             i_1, i_2 = 0, 1390
         else:
             i_1, i_2 = 1390, 1389
 
         z0 = (self._state[i_1] & 0x0001_ffff) ^ (self._state[i_2] & 0xfffe_0000)
-        z1 = self._M3_neg(self._state[i], 24) ^ self._M3_pos(self._state[(i + 23) % 1391], 30)
-        z2 = self._M3_neg(self._state[(i + 481) % 1391], 10) ^ self._M2_neg(self._state[(i + 229) % 1391], 26)
-        z3 = z1 ^ z2
+        z1 = BaseWELL._M3_neg(self._state[i], 24) ^ BaseWELL._M3_pos(self._state[(i + 23) % 1391], 30)
+        z2 = BaseWELL._M3_neg(self._state[(i + 481) % 1391], 10) ^ BaseWELL._M2_neg(self._state[(i + 229) % 1391], 26)
 
-        self._state[i] = z3
-        self._state[i_1] = z0 ^ self._M3_pos(z1, 20) ^ self._M6(z2, 9, 14, 5, self._a7) ^ z3
+        self._state[i] = (z3 := z1 ^ z2)
+        self._state[i_1] = z0 ^ BaseWELL._M3_pos(z1, 20) ^ BaseWELL._M6(z2, 9, 14, 5, BaseWELL._a7) ^ z3
+
         self._index = i_1
-
-        return self._tempering(z3, 0x93dd1400, 0xfa118000)
+        return BaseWELL._tempering(z3, 0x93dd_1400, 0xfa11_8000)
 
 
 #=====   end of module   Well44497b.py   =====================================

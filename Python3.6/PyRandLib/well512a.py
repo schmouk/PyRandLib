@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -107,28 +108,31 @@ class Well512a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 16  # this Well512a PRNG internal state is based on a suite containing 16 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well512a' generator is based on a suite containing 16 integers
+        super().__init__( 16, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        i = self._index
-        i_1 = (i - 1) & 0xf
-
-        z0 = self._state[i_1]
+        z0 = self._state[(i_1 := ((i := self._index) - 1) & 0xf)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
-        z1 = BaseWELL._M3_neg(self._state[i], 16) ^ BaseWELL._M3_neg(self._state[(i + 13) & 0x0f], 15)
-        z2 = BaseWELL._M3_pos(self._state[(i + 9) & 0x0f], 11)
+        z1 = self._M3_neg(self._state[i], 16) ^ self._M3_neg(self._state[(i + 13) & 0x0f], 15)
+        z2 = self._M3_pos(self._state[(i + 9) & 0x0f], 11)
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well512a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
         z3 = z1 ^ z2
 
         self._state[i] = z3
-        self._state[i_1] = BaseWELL._M3_neg(z0, 2) ^ BaseWELL._M3_neg(z1, 18) ^ BaseWELL._M2_neg(z2, 28) ^ BaseWELL._M5_neg(z3, 5, BaseWELL._a1)
+        self._state[i_1] = self._M3_neg(z0, 2) ^ self._M3_neg(z1, 18) ^ self._M2_neg(z2, 28) ^ self._M5_neg(z3, 5, self._a1)
 
         self._index = i_1
         return z3

@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -108,8 +107,14 @@ class Well1024a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None, /) -> None:
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well1024a' generator is based on a suite containing 32 integers
+        super().__init__( 32, _seed )
 
 
     #-------------------------------------------------------------------------
