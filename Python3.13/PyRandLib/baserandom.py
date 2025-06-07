@@ -35,37 +35,70 @@ class BaseRandom( Random ):
     
     Copyright (c) 2016-2025 Philippe Schmouker
 
-    See FastRand32 for a 2^32 (i.e. 4.29e+9) period LC-Generator and FastRand63 for  a  
-    2^63 (i.e. about 9.2e+18) period  LC-Generator with very low computation time with 
-    very low memory consumption (resp. 1 and 2 32-bits integers).
-           
-    See LFibRand78, LFibRand116, LFibRand668 and LFibRand1340 for  large  period  LFib
-    generators  (resp.  2^78,  2^116,  2^668  and 2^1340 periods,  i.e. resp. 3.0e+23,
-    8.3e+34, 1.2e+201 and 2.4e+403 periods) while same computation time and far higher
-    precision  (64-bits  calculations) but memory consumption (resp. 17,  55,  607 and
-    1279 32-bits integers).
+    See Cwg64 for a minimum 2^70 (i.e. about 1.18e+21) period  Collatz-Weyl  Generator 
+    with  low  computation time,  medium period,  64- bits output values and very good 
+    randomness characteristics.
+    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period C-W  Generator  with
+    with  very  low  computation time,  medium period,  64-bits output values and very 
+    good randomness characteristics.
+    See Cwg128 for a minimum 2^135  (i.e. about 4.36e+40)  period  C-W generator  with 
+    very  low  computation time,  medium period,  64- bits output values and very good 
+    randomness characteristics.
 
-    See Mrg287 fo r a  short  period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
-    computation time but 256 32-bits integers memory consumption.
+    See FastRand32 for a 2^32 (i.e. 4.29e+9) period Linear Congruential Generator  and 
+    FastRand63  for  a  2^63  (i.e. about 9.2e+18)  period  LC-Generator with very low 
+    computation time and very low memory consumption (resp. 1 and 2 32-bits integers).
+     
+    See LFibRand78, LFibRand116, LFibRand668 and LFibRand1340 for large period  Lagged
+    Fibonacci Generators  (resp.  2^78,  2^116,  2^668 and 2^1340 periods,  i.e. resp. 
+    3.0e+23, 8.3e+34, 1.2e+201 and 2.4e+403 periods) while same computation  time  and 
+    far higher precision (64-bits  calculations) but memory consumption (resp. 17, 55,
+    607 and 1279 32-bits integers).
+
+    See Melg607 for a  large  period  Maximally  Equidistributed  F2-Linear  Generator 
+    (2^607, i.e. 5.31e+182) with medium computation time and the equivalent of 21  32-
+    bits integers memory little consumption.
+    See Melg19937 for alarger period MELG-Generator (2^19,937, i.e. 4.32e+6001),  same 
+    computation time and equivalent of 625 integers memory consumption.
+    See Melg44497 for a very large period (2^44,497,  i.e. 8.55e+13,395) with  similar 
+    computation  time  but  use of even more memory space (equivalent of 1,393 32-bits
+    integers). This is the longest period version proposed in paper [11].
+
+    See Mrg287 for a short period Multiple Recursive Generator (2^287,  i.e. 2.49e+86)
+    with low computation time but 256 32-bits integers memory consumption.
     See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
     computation  time  (2^31-1 modulus calculations) but less memory space consumption 
     (32-bits 47 integers).
-    See  Mrg49507  for  a  far  larger  period  (2^49507,  i.e. 1.2e+14903)  with  low 
-    computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
+    See Mrg49507 for a far larger period MR-Generator (2^49507, i.e. 1.2e+14903)  with
+    low computation  time  too  (31-bits  modulus)  but us  of more memory space (1597 
     32-bits integers).
 
-    See Pcg64_32, Pcg128_64 and Pcg1024_32 for medium to very large periods,  very low 
-    computation time,  and for very low memory consumption for the two first (resp. 4, 
-    8 and 1,026 times 32-bits).  Associated periods are resp. 2^64, 2^128 and 2^32830, 
-    i.e. 1.84e+19, 3.40e+38 and 6.53e+9882. These PRNGs provide multi-streams and jump 
-    ahead features.  Since they all are exposing only a part of their internal  state, 
-    they are difficult to reverse and to predict.
+    See Pcg64_32, Pcg128_64 and Pcg1024_32 for Permuted Congruential  Generators  with 
+    medium to very large periods,  very low computation time,  and for very low memory 
+    consumption for the two first (resp. 4, 8 and  1,026  times  32-bits).  Associated 
+    periods are resp. 2^64, 2^128 and 2^32830, i.e. 1.84e+19, 3.40e+38 and 6.53e+9882.
+    These PRNGs provide multi-streams and jump ahead  features.  Since  they  all  are 
+    exposing  only  a part of their internal state,  they are difficult to reverse and 
+    to predict.
+
+    See Squares32 for a counter-based middle-square random number generator with  2^64
+    (i.e. about 1.84e+19) period, low computation time, 32-bits output values and very 
+    good randomness characteristics.
+    See Squares64 for a 2^64 (i.e. about 1.84e+19) period PRNG  with  low  computation
+    time,   medium   period,   64-bits   output   values   and  very  good  randomness 
+    characteristics. Caution: this 64-bits version should not pass the birthday  test,
+    which  is  a randomness issue, while this is not mentionned in the original paper.
 
     See Well512a, Well1024a, Well19937c and Well44479b for large to very large  period 
     generators (resp. 2^512, 2^1024, 2^19937 and 2^44479 periods, i.e. resp. 1.34e+154,
     2.68e+308,  4.32e+6001 and 1.51e+13466 periods),  a little bit longer  computation 
     times but very quick escaping from zeroland.  Memory consumption is resp. 32,  64, 
     624 and 1391 32-bits integers.
+
+    See Xoroshiro256, Xoroshiro512, Xoroshiro1024 for long  period  generators  (resp. 
+    2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
+    periods),  64-bits precision calculations and short memory consumption  (resp.  4, 
+    8 and 16 integers coded on 64 bits.
 
     Python built-in class random.Random is subclassed here to use  a  different  basic 
     generator of our own devising: in that case, overriden methods are:
