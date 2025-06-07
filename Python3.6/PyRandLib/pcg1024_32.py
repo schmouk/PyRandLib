@@ -121,7 +121,7 @@ class Pcg1024_32( Pcg64_32 ):
         Should _seed be None or not be of SeedStateType then the 
         local time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attributes self._state and self._extendedState and sets them
+        super().__init__( _seed ) # this call creates attributes self._state and self._externalState and sets them
 
 
     #-------------------------------------------------------------------------
@@ -131,7 +131,7 @@ class Pcg1024_32( Pcg64_32 ):
         # evaluates a to-be-xor'ed 32-bits value from current extended state
         if self._state & 0xffff_ffff == 0:
             self._advancetable()
-        extendedValue = self._extendedState[ self._state & 0x03ff ]
+        extendedValue = self._externalState[ self._state & 0x03ff ]
 
         # then xor's it with the next 32-bits value evaluated with the internal state
         return super().next() ^ extendedValue
@@ -144,7 +144,7 @@ class Pcg1024_32( Pcg64_32 ):
         This object can be passed to setstate() to restore the state.
         It is a list that contains self._STATE_SIZE integers.
         """
-        return (self._extendedState[:], self._state)
+        return (self._externalState[:], self._state)
 
 
     #-------------------------------------------------------------------------
@@ -177,13 +177,13 @@ class Pcg1024_32( Pcg64_32 ):
                 # _seedState[1] MUST be a 64-bits integer
                 extendedCount = len( _seedState[0] )
                 if extendedCount == Pcg1024_32._EXTENDED_STATE_SIZE:
-                    self._extendedState = _seedState[0][:]
+                    self._externalState = _seedState[0][:]
                     self._state = _seedState[1]             
                 elif extendedCount > 0:
                     extended = _seedState[0]
                     for s in _seedState[1:]:
                         extended ^= s
-                    self._initextendedstate( extended )
+                    self._initexternalstate( extended )
                     self._state = _seedState[1]
                 else:
                     self._initstate( _seedState[1] )
@@ -200,7 +200,7 @@ class Pcg1024_32( Pcg64_32 ):
         """Advances the extended states
         """
         carry = False
-        for i, s in enumerate( self._extendedState ):
+        for i, s in enumerate( self._externalState ):
             if carry:
                 carry = self._extendedstep(s, i)
             if self._extendedstep(s, i):  # notice: must be evaluated before carry is set
@@ -221,13 +221,13 @@ class Pcg1024_32( Pcg64_32 ):
         result = 0x108e_f2d9 * (state ^ (state >> (4 + (state >> 28))))
         result ^= result >> 22
 
-        self._extendedState[i] = result
+        self._externalState[i] = result
 
         return result == state & 0b11
 
 
     #-------------------------------------------------------------------------
-    def _initextendedstate(self, _initialSeed: Numerical = None) -> None:
+    def _initexternalstate(self, _initialSeed: Numerical = None) -> None:
         """Inits the extended list of values.
         
         Inits the extended list of values according to some initial
@@ -237,7 +237,7 @@ class Pcg1024_32( Pcg64_32 ):
         """
         # feeds the list according to an initial seed.
         initRand = SplitMix32( _initialSeed )
-        self._extendedState = [ initRand() for _ in range(Pcg1024_32._EXTENDED_STATE_SIZE) ]
+        self._externalState = [ initRand() for _ in range(Pcg1024_32._EXTENDED_STATE_SIZE) ]
         
 
     #-------------------------------------------------------------------------
@@ -255,7 +255,7 @@ class Pcg1024_32( Pcg64_32 ):
         state on one side and the extended state on the other side.
         """
         super().setstate( _initialSeed )        # uses Pcg64_32()
-        self._initextendedstate( _initialSeed ) # uses Well1024a()
+        self._initexternalstate( _initialSeed ) # uses Well1024a()
 
 
     #-------------------------------------------------------------------------
