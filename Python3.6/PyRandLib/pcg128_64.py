@@ -116,6 +116,8 @@ class Pcg128_64( BasePCG ):
     than 32 bits.
     """
 
+    _A: int = 0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645  # LCG mult. attribute
+    _C: int = 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F  # LCG add. attribute
     _MODULO_128 : int = (1 << 128) - 1  # notice: optimization on modulo calculations
 
 
@@ -134,14 +136,12 @@ class Pcg128_64( BasePCG ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates next internal state
-        current_state = self._state
-        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * current_state + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & Pcg128_64._MODULO_128
+        previous_state = self._state
+        self._state = (self._A * previous_state + self._C) & Pcg128_64._MODULO_128
         # the permutated output is then computed
-        random_rotation = current_state >> 122  # random right rotation is set with the 6 upper bits of internal state
-        current_state ^= current_state >> 64    # fixed shift XOR is then evaluated
-        value = current_state & 0xffff_ffff_ffff_ffff
-        rot_mask = (1 << random_rotation) - 1
-        return (value >> random_rotation) | ((value & rot_mask) << (64 - random_rotation))
+        random_rotation = previous_state >> 122  # random right rotation is set with the 6 upper bits of internal state
+        value = (previous_state ^ (previous_state >> 64)) & 0xffff_ffff_ffff_ffff
+        return (value >> random_rotation) | ((value & ((1 << random_rotation) - 1))) << (64 - random_rotation)
 
 
     #-------------------------------------------------------------------------

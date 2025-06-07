@@ -119,6 +119,8 @@ class Pcg128_64( BasePCG ):
     than 32 bits.
     """
 
+    _A: Final[int] = 0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645  # LCG mult. attribute
+    _C: Final[int] = 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F  # LCG add. attribute
     _MODULO_128 : Final[int] = (1 << 128) - 1  # optimization here to get modulo via operator &
 
 
@@ -137,10 +139,10 @@ class Pcg128_64( BasePCG ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates next internal state
-        self._state = (0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645 * (current_state := self._state) + 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F) & Pcg128_64._MODULO_128
+        self._state = (self._A * (previous_state := self._state) + self._C) & Pcg128_64._MODULO_128
         # the permutated output is then computed
-        random_rotation = current_state >> 122  # random right rotation is set with the 6 upper bits of internal state
-        value = (current_state ^ (current_state >> 64)) & 0xffff_ffff_ffff_ffff
+        random_rotation = previous_state >> 122  # random right rotation is set with the 6 upper bits of internal state
+        value = (previous_state ^ (previous_state >> 64)) & 0xffff_ffff_ffff_ffff
         return (value >> random_rotation) | ((value & ((1 << random_rotation) - 1))) << (64 - random_rotation)
 
 
