@@ -54,8 +54,8 @@ class Melg607( BaseMELG ):
     correct in in the code here.
        
     See Melg19937 for an even larger period MELG-Generator (2^19937, i.e. 4.32e+6001),
-    same computation time and equivalent of 626 integers memory consumption.
-    See Melg44497 for a very large period (2^44,497, i.e. 15.1e+13,466)  with  similar 
+    same computation time and equivalent of 625 integers memory consumption.
+    See Melg44497 for a very large period (2^44,497, i.e. 8.55e+13,395)  with  similar 
     computation  time  but  use of even more memory space (equivalent of 1,393 32-bits
     integers). This is the longest period version proposed in paper [11].
     

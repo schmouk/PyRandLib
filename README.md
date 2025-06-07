@@ -415,7 +415,7 @@ The base MELG algorithm mixes, xor's and shifts its internal state and offers la
 
 ### Melg44497 --  2^44497 periodicity
 
-**Melg44497** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a very large period (2^44,497,  i.e. 15.1e+13,466) and low computation time. The internal state of this PRNG is equivalent to 1.393 integers 32-bits coded.
+**Melg44497** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a very large period (2^44,497,  i.e. 8.55e+13,395) and low computation time. The internal state of this PRNG is equivalent to 1.393 integers 32-bits coded.
 
 The base MELG algorithm mixes, xor's and shifts its internal state and offers large to very large periods with the best known results in the evaluation of their randomness. It escapes the zeroland at a fast pace. Its specializations are set with parameters that ensures the maximized equidistribution. It might be valuable to use these rather than the WELL algorithm derivations
 
