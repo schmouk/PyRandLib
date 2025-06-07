@@ -65,39 +65,40 @@ In [1], every known PRNG at the time of the editing has been tested according to
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- | PyRabndLib class | TU01 generator name (1)            | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128           | *CWG128*                           |    16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |    4.20     |     0.75     |          0       |       5     |       7        |
- | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- | Melg607          | *Melg607-64*                       |    21 x 4-bytes | 2^607    |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Melg19937        | *Melg19937-64*                     |   625 x 4-bytes | 2^19,937 |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Melg44497        | *Melg44497-64*                     | 1,392 x 4-bytes | 2^44,497 |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Mrg287           | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
- | Mrg1457          | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Mrg49507         | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
- | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937c (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Mersenne twister | MT19937                            |   624 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
- | Xoroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |    n.a.     |     0.84     |          0       |       0     |       0        |
- | Xoroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |    n.a.     |     0.99     |          0       |       0     |       0        |
- | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |    n.a.     |     1.17     |          0       |       0     |       0        |
+ | CppRandLib class | TU01 generator name (1)            | Memory Usage    | Period   | SmallCrush fails | Crush fails | BigCrush fails | time-64 bits | time-32bits |
+ | ---------------- | ---------------------------------- | --------------- | -------- | ---------------- | ----------- | -------------- | ------------ | ----------- |
+ | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Cwg128           | *CWG128*                           |    16 x 4-bytes | >= 2^135 |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |         11       |     106     |   *too many*   |     0.67     |    3.20     |
+ | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |          0       |       5     |       7        |     0.75     |    4.20     |
+ | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |          0       |       0     |       0        |     1.1      |    n.a.     |
+ | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |          0       |       0     |       0        |     1.0      |    n.a.     |
+ | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |          0       |       0     |       0        |     0.9      |    n.a.     |
+ | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |          0       |       0     |       0        |     0.9      |    n.a.     |
+ | Melg607          | *Melg607-64*                       |    21 x 4-bytes | 2^607    |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Melg19937        | *Melg19937-64*                     |   625 x 4-bytes | 2^19,937 |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Melg44497        | *Melg44497-64*                     | 1,392 x 4-bytes | 2^44,497 |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Mrg287           | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |          0       |       0     |       0        |     0.8      |    3.40     |
+ | Mrg1457          | DX-47-3                            |    47 x 4-bytes | 2^1,457  |          0       |       0     |       0        |     1.4      |    n.a.     |
+ | Mrg49507         | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |          0       |       0     |       0        |     1.4      |    n.a.     |
+ | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |          0       |       0     |       0        |     n.a.     |    n.a.     | 
+ | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Well512a         | not available                      |    16 x 4-bytes | 2^512    |        n.a.      |     n.a.    |     n.a.       |     n.a.     |    n.a.     |
+ | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |          0       |       4     |       4        |     1.1      |    4.0      |
+ | Well19937c (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |          0       |       2     |       2        |     1.3      |    4.3      |
+ | Well44497b (3)   | not available                      | 1,391 x 4-bytes | 2^44,497 |        n.a.      |     n.a.    |     n.a.       |     n.a.     |    n.a.     |
+ | Mersenne Twister | MT19937                            |   624 x 4-bytes | 2^19,937 |          0       |       2     |       2        |     1.6      |    4.30     |
+ | Xoroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |          0       |       0     |       0        |     0.84     |    n.a.     |
+ | Xoroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |          0       |       0     |       0        |     0.99     |    n.a.     |
+ | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |          0       |       0     |       0        |     1.17     |    n.a.     |
 
-(1) *or the generator original name in the related paper*  
-(2) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
+(1) *or the generator original name in the related more recent paper*  
+(2) The Well19937c generator provided with library CppRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
+(3) The Well44497b generator provided with library CppRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
 
 
 
@@ -612,7 +613,7 @@ The number of trials `n` should be a non-negative integer. The probability of su
 Chooses a random element from a non-empty sequence. `seq` has to be non empty.
 
 
-**choices**(population, weights=None, *, cum_weights=None, k=1)  
+**choices**(self, population, weights=None, *, cum_weights=None, k=1)  
 Returns a `k` sized list of elements chosen from the population, with replacement. If the population is empty, raises `IndexError`.
 
 If a `weights` sequence is specified, selections are made according to  the relative weights. Alternatively, if a `cum_weights` sequence is given, the selections are made according to the cumulative weights (perhaps  computed using `itertools.accumulate()`).  
