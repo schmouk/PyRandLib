@@ -31,18 +31,18 @@ from .splitmix         import SplitMix64
 #=============================================================================
 class Cwg128_64( BaseCWG ):
     """
-    Pseudo-random numbers generator - Collatz-Weyl pseudo-random Generators
-    dedicated to 128-bits calculations and 64-bits output values with small 
-    period (min 2^71, i.e. 2.36e+21) but short computation  time.  All  CWG 
-    algorithms  offer  multi  streams  features,  by simply using different
-    initial settings for control value 's' - see below.
+    Pseudo-random numbers  generator  -  Collatz-Weyl  pseudorandom  Generator
+    dedicated  to  128-bits  calculations and 64-bits output values with small
+    period (min 2^71, i.e. 2.36e+21)  but  short  computation  time.  All  CWG
+    algorithms offer multi streams features, by simply using different initial
+    settings for control value 's' - see below.
     
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    This CWG model evaluates pseudo-random numbers suites x(i) as a  simple
-    mathematical function of 
+*   This CWG model evaluates pseudo-random numbers suites  x(i)  as  a  simple
+*   mathematical function of
     
         x(i+1) = (x(i) | 1) * ((a += x(i)) >> 1) ^ (weyl += s) 
 
@@ -53,13 +53,14 @@ class Cwg128_64( BaseCWG ):
     initialized each with any 64-bits value.
     
     See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
-    with very low computation time, medium period,  64- bits output values and 
+    with  very low computation time, medium period,  64 bits output values and 
     very good randomness characteristics.
+    
     See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
-    with very low computation time, medium period,  64- bits output values and 
+    with very low computation time, medium period,  128 bits output values and 
     very good randomness characteristics.
 
-    Furthermore this class is callable:
+        Furthermore this class is callable:
       rand = Cwg128_64()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
@@ -134,7 +135,14 @@ class Cwg128_64( BaseCWG ):
         setstate() was called. If None, the local system time
         is used instead.
         """
-        if _state is None or isinstance(_state, int) or isinstance(_state, float):
+        if isinstance(_state, int) and _state > 0xffff_ffff_ffff_ffff:
+            initRandLo = SplitMix64( _state & 0xffff_ffff_ffff_ffff )
+            initRandHi = SplitMix64( (_state >> 64) & 0xffff_ffff_ffff_ffff )
+            self._a = self._weyl = 0
+            self._s = initRandLo() | 1                          # Notice: s must be odd
+            self._state = (initRandHi() << 64) | initRandLo()   # Notice: coded on 128 bits
+            
+        elif _state is None or isinstance(_state, int) or isinstance(_state, float):
             initRand = SplitMix64( _state )
             self._a = self._weyl = 0
             self._s = initRand() | 1;                      # Notice: must be odd

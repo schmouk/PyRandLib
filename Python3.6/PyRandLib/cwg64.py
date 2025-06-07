@@ -31,17 +31,17 @@ from .splitmix         import SplitMix64
 #=============================================================================
 class Cwg64( BaseCWG ):
     """
-    Pseudo-random numbers generator - Collatz-Weyl pseudo-random Generators
-    dedicated  to 64-bits calculations and 64-bits output values with small 
-    period (min 2^70, i.e. 1.18e+21) but short computation  time.  All  CWG
-    algorithms  offer  multi  streams  features,  by simply using different
-    initial settings for control value 's' - see below.
+    Pseudo-random numbers  generator  -  Collatz-Weyl  pseudorandom  Generator
+    dedicated  to  64-bits  calculations  and 64-bits output values with small
+    period (min 2^70, i.e. 1.18e+21)  but  short  computation  time.  All  CWG
+    algorithms offer multi streams features, by simply using different initial
+    settings for control value 's' - see below.
     
     This module is part of library PyRandLib.
 
     Copyright (c) 2025 Philippe Schmouker
 
-    This CWG model evaluates pseudo-random numbers suites x(i) as a  simple
+    This CWG model evaluates pseudo-random numbers suites  x(i)  as  a  simple
     mathematical function of 
     
         x(i+1) = (x(i) >> 1) * ((a += x(i)) | 1) ^ (weyl += s) 
@@ -55,6 +55,7 @@ class Cwg64( BaseCWG ):
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
+
     See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.

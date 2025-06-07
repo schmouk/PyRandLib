@@ -59,6 +59,7 @@ class Cwg128( BaseCWG ):
     See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
+    
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
@@ -141,7 +142,14 @@ class Cwg128( BaseCWG ):
         setstate() was called. If None, the local system time
         is used instead.
         """
-        if _state is None or isinstance(_state, int) or isinstance(_state, float):
+        if isinstance(_state, int) and _state > 0xffff_ffff_ffff_ffff:
+            initRandLo = SplitMix64( _state & 0xffff_ffff_ffff_ffff )
+            initRandHi = SplitMix64( (_state >> 64) & 0xffff_ffff_ffff_ffff )
+            self._a = self._weyl = 0
+            self._s = (initRandHi() << 64) | initRandLo() | 1   # Notice: s must be odd
+            self._state = (initRandHi() << 64) | initRandLo()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
+            
+        elif _state is None or isinstance(_state, int) or isinstance(_state, float):
             initRand = SplitMix64( _state )
             self._a = self._weyl = 0
             self._s = (initRand() << 64) | initRand() | 1   # Notice: s must be odd
