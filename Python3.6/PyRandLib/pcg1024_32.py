@@ -253,6 +253,8 @@ class Pcg1024_32( Pcg64_32 ):
         correlation between current  state  and  any  value  of  the 
         extended  one,  we  use different PRNGs to seed the internal 
         state on one side and the extended state on the other side.
+        Raises exception ValueError if _initialSeed is a  float  and 
+        its value is out of range [0.0, 1.0].
         """
         super().setstate( _initialSeed )        # uses Pcg64_32()
         self._initexternalstate( _initialSeed ) # uses Well1024a()

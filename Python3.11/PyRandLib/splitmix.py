@@ -49,20 +49,19 @@ class SplitMix64:
     def __init__(self, _seed: Numerical = None, /) -> None:
         """Constructor.
 
-        Should _seed be None, the internal system local time is used as the initial seed
+        Should _seed be None, the internal system local time is used as the initial seed.
+        Raises exception ValueError if _state is a float and its value is out of range [0.0, 1.0].
         """
         if isinstance( _seed, int ):
             self.state = self.__call__( _seed )
 
         elif isinstance( _seed, float ):
-            # transforms passed initial seed from float to integer
-            if _seed < 0.0 :
-                _seed = -_seed
-            
-            if _seed >= 1.0:
-                self._state = self.__call__( round(_seed) )
+            if ( 0.0 <= _seed <= 1.0):
+                # transforms passed initial seed from float to integer
+                self._counter = 0
+                self._key = self.__call__( int(_seed * 0xffff_ffff_ffff_ffff) )
             else:
-                self._state = self.__call__( int(_seed * 0x1_0000_0000_0000_0000) )
+                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
 
         else:
             # uses system local time

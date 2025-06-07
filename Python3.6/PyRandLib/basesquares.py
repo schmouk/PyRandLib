@@ -100,6 +100,9 @@ class BaseSquares( BaseRandom ):
     #-------------------------------------------------------------------------
     def setstate(self, _state: SeedStateType) -> None:
         """Restores or sets the internal state of the generator.
+
+        Raises exception ValueError if _state is a float and its
+        value is out of range [0.0, 1.0].
         """
         if isinstance( _state, int ):
             # passed initial seed is an integer, just uses it
@@ -107,14 +110,12 @@ class BaseSquares( BaseRandom ):
             self._key = self._initKey( _state )
             
         elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            self._counter = 0
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._key = self._initKey( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
+            if ( 0.0 <= _state <= 1.0):
+                # transforms passed initial seed from float to integer
+                self._counter = 0
+                self._key = self._initKey( int(_state * 0xffff_ffff_ffff_ffff) )
             else:
-                self._key = self._initKey( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
+                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_state})")
                 
         else:
             try:

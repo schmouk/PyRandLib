@@ -168,6 +168,8 @@ class Pcg1024_32( Pcg64_32 ):
         self._STATE_SIZE integers. Should _seedState be anything else
         (e.g. None) then the shuffling  of  the  local  current  time
         value is used as such an initial seed.
+        Raises exception ValueError if _initialSeed is a  float  and 
+        its value is out of range [0.0, 1.0].
         """
         try:
             match len( _seedState ):

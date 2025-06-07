@@ -135,19 +135,20 @@ class Pcg64_32( BasePCG ):
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
         setstate() was called.
+        Raises exception ValueError if _state is a float  and 
+        its value is out of range [0.0, 1.0].
         """
         if isinstance( _state, int ):
             # passed initial seed is an integer, just uses it
             self._state = _state & 0xffff_ffff_ffff_ffff
             
         elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._state = int( _state + 0.5 ) & 0xffff_ffff_ffff_ffff
+            if ( 0.0 <= _state <= 1.0):
+                # transforms passed initial seed from float to integer
+                self._counter = 0
+                self._key = self.__call__( int(_state * 0xffff_ffff_ffff_ffff) )
             else:
-                self._state = int( _state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff
+                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_state})")
                 
         else:
             # uses local time as initial seed
