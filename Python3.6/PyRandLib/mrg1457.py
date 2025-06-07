@@ -140,7 +140,7 @@ class Mrg1457( BaseMRG ):
             k24 += self._STATE_SIZE
         
         # then evaluates current value
-        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
+        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index])) % 2_147_483_647
         self._state[self._index] = myValue
         
         # next index

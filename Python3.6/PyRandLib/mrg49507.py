@@ -136,7 +136,8 @@ class Mrg49507( BaseMRG ):
             k7 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
-        self._state[self._index] = (myValue := (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647)
+        myValue = ((-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647) & 0x7fff_ffff_ffff_ffff
+        self._state[self._index] = myValue
         
         # next index
         self._index = (self._index+1) % self._STATE_SIZE
