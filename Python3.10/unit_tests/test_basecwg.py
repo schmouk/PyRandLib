@@ -47,8 +47,8 @@ class TestBaseCwg:
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
-        with pytest.raises(TypeError):
-            b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+        b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+        assert b_cwg.gauss_next is None
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
