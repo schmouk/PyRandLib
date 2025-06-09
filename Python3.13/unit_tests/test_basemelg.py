@@ -39,72 +39,72 @@ class TestBaseMELG:
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         STATE_SIZE = 15
-        b_lfib = BaseMELG(STATE_SIZE)
-        assert b_lfib._STATE_SIZE == STATE_SIZE
-        assert b_lfib._initRandClass is SplitMix64
-        assert b_lfib.gauss_next is None
-        assert b_lfib._index == 0
-        assert len(b_lfib._state) == STATE_SIZE
-        assert all(s != 0 for s in b_lfib._state)
+        b_melg = BaseMELG(STATE_SIZE)
+        assert b_melg._STATE_SIZE == STATE_SIZE
+        assert b_melg._initRandClass is SplitMix64
+        assert b_melg.gauss_next is None
+        assert b_melg._index == 0
+        assert len(b_melg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_melg._state)
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
         STATE_SIZE = 17
-        b_lfib = BaseMELG(STATE_SIZE, 0X1234_5678_9abc_def0)
-        assert b_lfib._STATE_SIZE == STATE_SIZE
-        assert b_lfib._initRandClass is SplitMix64
-        assert b_lfib.gauss_next is None
-        assert b_lfib._index == 0
+        b_melg = BaseMELG(STATE_SIZE, 0X1234_5678_9abc_def0)
+        assert b_melg._STATE_SIZE == STATE_SIZE
+        assert b_melg._initRandClass is SplitMix64
+        assert b_melg.gauss_next is None
+        assert b_melg._index == 0
         with pytest.raises(AttributeError):
             # notice: _state is not set in this case
-            assert len(b_lfib._state) == STATE_SIZE
-            assert all(s != 0 for s in b_lfib._state)
+            assert len(b_melg._state) == STATE_SIZE
+            assert all(s != 0 for s in b_melg._state)
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
         STATE_SIZE = 17
-        b_lfib = BaseMELG(STATE_SIZE, 0.1)
-        assert b_lfib._STATE_SIZE == STATE_SIZE
-        assert b_lfib._initRandClass is SplitMix64
-        assert b_lfib.gauss_next is None
-        assert b_lfib._index == 0
+        b_melg = BaseMELG(STATE_SIZE, 0.1)
+        assert b_melg._STATE_SIZE == STATE_SIZE
+        assert b_melg._initRandClass is SplitMix64
+        assert b_melg.gauss_next is None
+        assert b_melg._index == 0
         with pytest.raises(AttributeError):
             # notice: _state is not set in this case
-            assert len(b_lfib._state) == STATE_SIZE
-            assert all(s != 0 for s in b_lfib._state)
+            assert len(b_melg._state) == STATE_SIZE
+            assert all(s != 0 for s in b_melg._state)
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         STATE_SIZE = 19
-        b_lfib = BaseMELG(STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))
-        assert b_lfib._STATE_SIZE == STATE_SIZE
-        assert b_lfib._initRandClass is SplitMix64
-        assert b_lfib.gauss_next is None
-        assert b_lfib._index == 0
-        assert len(b_lfib._state) == STATE_SIZE
-        assert all(s != 0 for s in b_lfib._state)
+        b_melg = BaseMELG(STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))
+        assert b_melg._STATE_SIZE == STATE_SIZE
+        assert b_melg._initRandClass is SplitMix64
+        assert b_melg.gauss_next is None
+        assert b_melg._index == 0
+        assert len(b_melg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_melg._state)
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
         STATE_SIZE = 21
-        b_lfib = BaseMELG(STATE_SIZE, [i+1 for i in range(STATE_SIZE)])
-        assert b_lfib._STATE_SIZE == STATE_SIZE
-        assert b_lfib._initRandClass is SplitMix64
-        assert b_lfib.gauss_next is None
-        assert b_lfib._index == 0
-        assert len(b_lfib._state) == STATE_SIZE
-        assert all(s != 0 for s in b_lfib._state)
+        b_melg = BaseMELG(STATE_SIZE, [i+1 for i in range(STATE_SIZE)])
+        assert b_melg._STATE_SIZE == STATE_SIZE
+        assert b_melg._initRandClass is SplitMix64
+        assert b_melg.gauss_next is None
+        assert b_melg._index == 0
+        assert len(b_melg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_melg._state)
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         STATE_SIZE = 23
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_lfib = BaseMELG(STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))
+            b_melg = BaseMELG(STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         STATE_SIZE = 25
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_lfib = BaseMELG( STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )
+            b_melg = BaseMELG( STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )
