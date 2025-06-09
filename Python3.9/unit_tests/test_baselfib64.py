@@ -32,7 +32,7 @@ class TestBaseLFib64:
     """Tests the base class BaseLFib64"""
     
     #-------------------------------------------------------------------------
-    def test_class_LFib64(self):
+    def test_class_BaseLFib64(self):
         assert BaseLFib64._NORMALIZE == 1.0 / (1 << 64)
         assert BaseLFib64._OUT_BITS == 64
     
