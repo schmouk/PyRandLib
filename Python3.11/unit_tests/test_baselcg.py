@@ -69,4 +69,4 @@ class TestBaseLcg:
     def test_getstate(self):
         b_lcg = BaseLCG()
         with pytest.raises(AttributeError):
-            a, weyl, s, state = b_lcg.getstate()
+            state = b_lcg.getstate()
