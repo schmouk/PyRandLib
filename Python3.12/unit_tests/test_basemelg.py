@@ -29,10 +29,10 @@ from PyRandLib.splitmix import SplitMix64
 
 #=============================================================================
 class TestBaseMELG:
-    """Tests the base class b_melg"""
+    """Tests the base class BaseMELG"""
     
     #-------------------------------------------------------------------------
-    def test_class_MELG(self):
+    def test_class_BaseMELG(self):
         assert BaseMELG._NORMALIZE == 1.0 / (1 << 64)
         assert BaseMELG._OUT_BITS == 64
     
