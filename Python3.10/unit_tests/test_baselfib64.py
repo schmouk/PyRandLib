@@ -56,10 +56,8 @@ class TestBaseLFib64:
             assert b_lfib._initRandClass is SplitMix64
             assert b_lfib.gauss_next is None
             assert b_lfib._index == 0
-            with pytest.raises(AttributeError):
-                # notice: _state is not set in this case
-                assert len(b_lfib._state) == STATE_SIZE
-                assert all(s != 0 for s in b_lfib._state)
+            assert len(b_lfib._state) == STATE_SIZE
+            assert all(s != 0 for s in b_lfib._state)
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -70,10 +68,8 @@ class TestBaseLFib64:
             assert b_lfib._initRandClass is SplitMix64
             assert b_lfib.gauss_next is None
             assert b_lfib._index == 0
-            with pytest.raises(AttributeError):
-                # notice: _state is not set in this case
-                assert len(b_lfib._state) == STATE_SIZE
-                assert all(s != 0 for s in b_lfib._state)
+            assert len(b_lfib._state) == STATE_SIZE
+            assert all(s != 0 for s in b_lfib._state)
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):

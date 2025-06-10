@@ -54,13 +54,12 @@ class SplitMix64:
         Raises exception ValueError if _state is a float and its value is out of range [0.0, 1.0].
         """
         if isinstance( _seed, int ):
-            self.state = _seed
+            self._state = _seed
 
         elif isinstance( _seed, float ):
             if ( 0.0 <= _seed <= 1.0):
                 # transforms passed initial seed from float to integer
-                self._counter = 0
-                self._key = int(_seed * 0xffff_ffff_ffff_ffff )
+                self._state = int(_seed * 0xffff_ffff_ffff_ffff )
             else:
                 raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
 

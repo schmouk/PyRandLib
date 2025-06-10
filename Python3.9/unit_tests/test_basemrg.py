@@ -33,6 +33,15 @@ class TestBaseMRG:
     
     
     #-------------------------------------------------------------------------
+    def test_init0(self):
+        b_mrg = BaseMRG(SplitMix31)
+        assert b_mrg._initRandClass is SplitMix31
+        assert b_mrg.gauss_next is None
+        assert b_mrg._index == 0
+        assert b_mrg._NORMALIZE == 1.0 / (1 << 32)  # should be (1 << 31), but not set after construction of base class BaseMRG
+        assert b_mrg._OUT_BITS == 32                # should be 31, but not set after construction of base class BaseMRG
+
+    #-------------------------------------------------------------------------
     def test_init_empty(self):
         STATE_SIZE = 15
         b_mrg = BaseMRG(SplitMix31, STATE_SIZE)
@@ -53,10 +62,8 @@ class TestBaseMRG:
         assert b_mrg._initRandClass is SplitMix32
         assert b_mrg.gauss_next is None
         assert b_mrg._index == 0
-        with pytest.raises(AttributeError):
-            # notice: _state is not set in this case
-            assert len(b_mrg._state) == STATE_SIZE
-            assert all(s != 0 for s in b_mrg._state)
+        assert len(b_mrg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_mrg._state)
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)
         assert b_mrg._OUT_BITS == 32
 
@@ -68,10 +75,8 @@ class TestBaseMRG:
         assert b_mrg._initRandClass is SplitMix31
         assert b_mrg.gauss_next is None
         assert b_mrg._index == 0
-        with pytest.raises(AttributeError):
-            # notice: _state is not set in this case
-            assert len(b_mrg._state) == STATE_SIZE
-            assert all(s != 0 for s in b_mrg._state)
+        assert len(b_mrg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_mrg._state)
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)  # should be (1 << 31), but not set after construction of base class BaseMRG
         assert b_mrg._OUT_BITS == 32                # should be 31, but not set after construction of base class BaseMRG
 

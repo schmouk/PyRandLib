@@ -55,10 +55,8 @@ class TestBaseMELG:
         assert b_melg._initRandClass is SplitMix64
         assert b_melg.gauss_next is None
         assert b_melg._index == 0
-        with pytest.raises(AttributeError):
-            # notice: _state is not set in this case
-            assert len(b_melg._state) == STATE_SIZE
-            assert all(s != 0 for s in b_melg._state)
+        assert len(b_melg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_melg._state)
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -68,10 +66,8 @@ class TestBaseMELG:
         assert b_melg._initRandClass is SplitMix64
         assert b_melg.gauss_next is None
         assert b_melg._index == 0
-        with pytest.raises(AttributeError):
-            # notice: _state is not set in this case
-            assert len(b_melg._state) == STATE_SIZE
-            assert all(s != 0 for s in b_melg._state)
+        assert len(b_melg._state) == STATE_SIZE
+        assert all(s != 0 for s in b_melg._state)
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):

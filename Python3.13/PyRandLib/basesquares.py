@@ -135,25 +135,35 @@ class BaseSquares( BaseRandom ):
     def _initKey(self, _seed: int = None, /) -> int:
         """Initalizes the attribute _key according to the original recommendations - see [9].
         """
+    
         hexDigits = [ i for i in range(1, 16) ]
         key = 0
 
         initRand = SplitMix32( _seed )
+        _NORMALIZE = 2.328_306_436_538_696_289_062_5e-10  # i.e. 1.0 / (1 << 32)
 
         # 8 high hexa digits - all different
         n = 15
         while n >= 8:
-            h = hexDigits[ (k := int(n * initRand() * super()._NORMALIZE)) ]
+            h = hexDigits[ (k := int(n * (initRand() * _NORMALIZE))) ]
             key <<= 4
             key += h
             if k < (n := n-1):
                 hexDigits[ k ] = hexDigits[ n ]
                 hexDigits[ n ] = h
 
-        # 8 low hexa digits - all different
-        n = 15
+        # 9th hexa digit - different from the 8th one
+        hexDigits[7], hexDigits[14] = hexDigits[14], hexDigits[7]
+        h = hexDigits[ (k := int(14 * (initRand() * _NORMALIZE))) ]
+        key <<= 4
+        key += h
+        hexDigits[ k ] = hexDigits[ 14 ]
+        hexDigits[ 14 ] = h
+
+        # 7 low hexa digits - all different
+        n = 14
         while n >= 8:
-            h = hexDigits[ (k := int(n * initRand() * super()._NORMALIZE)) ]
+            h = hexDigits[ (k := int(n * (initRand() * _NORMALIZE))) ]
             key <<= 4
             key += h
             if k < (n := n-1):
