@@ -171,31 +171,40 @@ class Pcg1024_32( Pcg64_32 ):
                 case 0:
                     self._initstate()
 
-                case 1:
-                    self._initstate( _seedState )
+                case Pcg1024_32._EXTENDED_STATE_SIZE:
+                    # sets the internal state
+                    super().setstate()
+                    # then sets the external state
+                    if not all(isinstance(s, int) for s in _seedState):  # each entry in _seedState MUST be integer
+                        raise ValueError("all values of external state must be integers")
+                    self._externalState = [s & 0xffff_ffff for s in _seedState]
 
                 case 2:
                     # each entry in _seedState[0] MUST be a 32-bits integer
-                    # _seedState[1] MUST be a 64-bits integer
                     extendedCount = len( _seedState[0] )
                     if extendedCount == Pcg1024_32._EXTENDED_STATE_SIZE:
-                        self._externalState = _seedState[0][:]
-                        self._state = _seedState[1]             
-                    elif extendedCount > 0:
-                        extended = _seedState[0]
-                        for s in _seedState[1:]:
-                            extended ^= s
-                        self._initexternalstate( extended )
-                        self._state = _seedState[1]
+                        # sets the internal state, MUST be a 64-bits integer
+                        if isinstance(_seedState[1], int):
+                            self._state = _seedState[1] & 0xffff_ffff_ffff_ffff
+                        else:
+                            raise ValueError(f"seed values for internal state must be integers (currently is {_seedState[1]})")
+                        # then sets the external state, MUST be 32-bits integers
+                        if all(isinstance(s, int) for s in _seedState[0]):
+                            self._externalState = [s & 0xffff_ffff for s in _seedState[0]]
+                        else:
+                            raise ValueError("all values of external state must be integers")
                     else:
                         self._initstate( _seedState[1] )
             
                 case _:
                     self._initstate()
-                
+                        
+        except ValueError as exc:
+            raise exc
+
         except:
             self._initstate( _seedState )
-
+            
 
     #-------------------------------------------------------------------------
     def _advancetable(self) -> None:
