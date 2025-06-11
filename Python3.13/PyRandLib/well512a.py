@@ -94,12 +94,15 @@ class Well512a( BaseWELL ):
  | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well44497b (2)  | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937c generator provided with library PyRandLib implements the
-    Well19937a  algorithm  augmented  with  an associated tempering algorithm.
+    Well19937a algorithm augmented with an associated tempering algorithm.
+    (2)The Well44497b generator provided with library PyRandLib implements the
+    Well44497a algorithm augmented with an associated *tempering* algorithm.
     This should very slightly slow down its CPU  performance  while  enhancing 
     its pseudo-randomness quality, as measured by TestU01.
+
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;
