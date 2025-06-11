@@ -94,7 +94,7 @@ class BaseCWG( BaseRandom ):
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
                                         # MUST be implemented in inheriting classes
 
- 
+
     #-------------------------------------------------------------------------
     def getstate(self) -> StatesListAndExt:
         """Returns an object capturing the current internal state of the generator.
@@ -108,6 +108,6 @@ class BaseCWG( BaseRandom ):
         All inheriting classes MUST IMPLEMENT this method.
         """
         return (self._a, self._weyl, self._s, self._state)
-   
+
 
 #=====   end of module   basecwg.py   ========================================

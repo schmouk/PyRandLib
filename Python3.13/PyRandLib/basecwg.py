@@ -111,6 +111,6 @@ class BaseCWG( BaseRandom ):
         All inheriting classes MUST IMPLEMENT this method.
         """
         return (self._a, self._weyl, self._s, self._state)
-   
+
 
 #=====   end of module   basecwg.py   ========================================
