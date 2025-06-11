@@ -92,21 +92,30 @@ class ListIndexState( BaseRandom ):
         value is used as such an initial seed.
         """
         try:
-            if (count := len( _seedState )) == 0:
+            count = len( _seedState )
+
+            if count == 0:
                 self._index = 0
                 self._initstate()
                 
-            elif count == 1:
+            elif count == self._STATE_SIZE:
                 self._index = 0
-                self._initstate( _seedState[0] )
+                if not all(isinstance(s, int) for s in _seedState):  # each entry in _seedState MUST be integer
+                    raise ValueError("all values of internal state must be integers")
+                self._state = list(_seedState[:])
                 
             else:
                 self._initindex( _seedState[1] )
                 if (len(_seedState[0]) == self._STATE_SIZE):
-                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
+                    if not all(isinstance(s, int) for s in _seedState[0]):  # each entry in _seedState MUST be integer
+                        raise ValueError(f"all values of internal state must be integers: {_seedState[0]}")
+                    self._state = list(_seedState[0][:])
                 else:
                     self._initstate( _seedState[0] )
-                
+                        
+        except ValueError as exc:
+            raise exc
+
         except:
             self._index = 0
             self._initstate( _seedState )

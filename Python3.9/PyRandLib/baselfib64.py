@@ -131,5 +131,10 @@ class BaseLFib64( ListIndexState ):
             # since it internally calls self.setstate().
 
 
+    #-------------------------------------------------------------------------
+    def setstate(self, _seedState: SeedStateType, /) -> None:
+        super().setstate(_seedState)
+
+
 #=====   end of module   baselfib64.py   =====================================
 

@@ -92,27 +92,32 @@ class ListIndexState( BaseRandom ):
         value is used as such an initial seed.
         """
         try:
-            count = len( _seedState )
+            match len( _seedState ):
+                case 0:
+                    self._index = 0
+                    self._initstate()
+                
+                case self._STATE_SIZE:
+                    self._index = 0
+                    if not all(isinstance(s, int) for s in _seedState):  # each entry in _seedState MUST be integer
+                        raise ValueError("all values of internal state must be integers")
+                    self._state = list(_seedState[:])
+                
+                case _:
+                    self._initindex( _seedState[1] )
+                    if (len(_seedState[0]) == self._STATE_SIZE):
+                        if not all(isinstance(s, int) for s in _seedState[0]):  # each entry in _seedState MUST be integer
+                            raise ValueError(f"all values of internal state must be integers: {_seedState[0]}")
+                        self._state = list(_seedState[0][:])
+                    else:
+                        self._initstate( _seedState[0] )
+        
+        except ValueError as exc:
+            raise exc
 
-            if count == 0:
-                self._index = 0
-                self._initstate()
-                
-            elif count == 1:
-                self._index = 0
-                self._initstate( _seedState[0] )
-                
-            else:
-                self._initindex( _seedState[1] )
-                if (len(_seedState[0]) == self._STATE_SIZE):
-                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
-                else:
-                    self._initstate( _seedState[0] )
-                
         except:
             self._index = 0
             self._initstate( _seedState )
-
 
     #-------------------------------------------------------------------------
     def _initindex(self, _index: int, /) -> None:
