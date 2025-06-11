@@ -65,7 +65,7 @@ In [1], every known PRNG at the time of the editing has been tested according to
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- | CppRandLib class | TU01 generator name (1)            | Memory Usage    | Period   | SmallCrush fails | Crush fails | BigCrush fails | time-64 bits | time-32bits |
+ | PyRandLib class  | TU01 generator name (1)            | Memory Usage    | Period   | SmallCrush fails | Crush fails | BigCrush fails | time-64 bits | time-32bits |
  | ---------------- | ---------------------------------- | --------------- | -------- | ---------------- | ----------- | -------------- | ------------ | ----------- |
  | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |          0       |       0     |       0        |     n.a.     |    n.a.     |
  | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |          0       |       0     |       0        |     n.a.     |    n.a.     |
@@ -97,8 +97,8 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
  | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |          0       |       0     |       0        |     1.17     |    n.a.     |
 
 (1) *or the generator original name in the related more recent paper*  
-(2) The Well19937c generator provided with library CppRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
-(3) The Well44497b generator provided with library CppRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
+(2) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
+(3) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
 
 
 
