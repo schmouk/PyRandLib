@@ -126,7 +126,7 @@ class FastRand63( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance(_state, int) or isinstance(_state, float):
+        if isinstance(_state, int | float):
             self._state = SplitMix63( _state )()
         else:
             self._state = SplitMix63()()
