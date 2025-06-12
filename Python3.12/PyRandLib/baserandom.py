@@ -373,7 +373,7 @@ class BaseRandom( Random ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StateType, /) -> None:
+    def setstate(self, _state: SeedStateType, /) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call to getstate(),

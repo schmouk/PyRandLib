@@ -122,4 +122,14 @@ class BaseMELG( ListIndexState ):
             # since it internally calls self.setstate().
 
 
+    #-------------------------------------------------------------------------
+    def seed(self, _seedState: SeedStateType, /) -> None:
+        self.setstate(_seedState)
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _seedState: SeedStateType, /) -> None:
+        super().setstate(_seedState)
+
+
 #=====   end of module   basemelg.py   =======================================

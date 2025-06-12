@@ -132,6 +132,11 @@ class BaseLFib64( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
+    def seed(self, _seedState: SeedStateType, /) -> None:
+        self.setstate(_seedState)
+
+
+    #-------------------------------------------------------------------------
     def setstate(self, _seedState: SeedStateType, /) -> None:
         super().setstate(_seedState)
 
