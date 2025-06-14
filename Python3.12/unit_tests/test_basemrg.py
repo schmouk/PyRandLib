@@ -31,7 +31,6 @@ from PyRandLib.splitmix import SplitMix31, SplitMix32
 class TestBaseMRG:
     """Tests the base class BaseMRG"""
     
-    
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         STATE_SIZE = 15

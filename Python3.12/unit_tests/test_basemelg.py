@@ -115,94 +115,57 @@ class TestBaseMELG:
         assert len(b_melg._state) == 5
         assert all(s != 0 for s in b_melg._state)
 
-        b_melg.seed(-1)
-        assert b_melg._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.seed((1, 2, 3, 4, 5))
+            assert b_melg._state == [1, 2, 3, 4, 5]
+            assert b_melg.gauss_next is None
+            assert b_melg._index == 0
 
-        b_melg.seed(28031)
-        assert b_melg._state == [0x2705aecd4f8c9690, 0x72100965d36abc80, 0x663e44c5f050c8fb, 0x975621c9151333a5, 0xc269b7b2092500b7]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.seed([11, 12, 13, 14, 15])
+            assert b_melg._state == [11, 12, 13, 14, 15]
+            assert b_melg.gauss_next is None
+            assert b_melg._index == 0
 
-        b_melg.seed(0xffff_ffff_ffff_ffff)
-        assert b_melg._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.seed([[31, 32, 33, 34, 35], 2])
+            assert b_melg._state == [31, 32, 33, 34, 35]
+            assert b_melg.gauss_next is None
+            assert b_melg._index == 2
 
-        b_melg.seed(0.187)
-        assert b_melg._state == [0x2b18160c0a9f05b4, 0xc8197d13a4d6d45f, 0xaca007e67e920ed1, 0xf0e779fe3279121f, 0xcd551efd3099f223]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
-
-        b_melg.seed(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
-        assert b_melg._state == [0xf75f04cbb5a1a1dd, 0xec779c3693f88501, 0xfed9eeb4936de39d, 0x6f9fb04b092bd30a, 0x260ffb0260bbbe5f]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
-
-        b_melg.seed((1, 2, 3, 4, 5))
-        assert b_melg._state == [1, 2, 3, 4, 5]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
-
-        b_melg.seed([11, 12, 13, 14, 15])
-        assert b_melg._state == [11, 12, 13, 14, 15]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
-
-        b_melg.seed([[31, 32, 33, 34, 35], 2])
-        assert b_melg._state == [31, 32, 33, 34, 35]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 2
-
-        b_melg.seed(((21, 22, 23, 24, 25), 3))
-        assert b_melg._state == [21, 22, 23, 24, 25]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 3
+        with pytest.raises(TypeError):
+            b_melg.seed(((21, 22, 23, 24, 25), 3))
+            assert b_melg._state == [21, 22, 23, 24, 25]
+            assert b_melg.gauss_next is None
+            assert b_melg._index == 3
 
         with pytest.raises(ValueError):
             b_melg.seed(8.87e+18)
         with pytest.raises(ValueError):
             b_melg.seed(-0.987)
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_melg.seed([[31, 32, 33, 34, 35.1], 1])
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_melg.seed((31, 32, 33, 34, 35.1))
 
     #-------------------------------------------------------------------------
     def test_setstate(self):
         b_melg = BaseMELG(5)
-        assert b_melg._STATE_SIZE == 5
-        assert b_melg._initRandClass is SplitMix64
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
-        assert len(b_melg._state) == 5
-        assert all(s != 0 for s in b_melg._state)
 
-        b_melg.setstate(-1)
-        assert b_melg._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.setstate(-1)
 
-        b_melg.setstate(28031)
-        assert b_melg._state == [0x2705aecd4f8c9690, 0x72100965d36abc80, 0x663e44c5f050c8fb, 0x975621c9151333a5, 0xc269b7b2092500b7]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.setstate(28031)
 
-        b_melg.setstate(0xffff_ffff_ffff_ffff)
-        assert b_melg._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.setstate(0xffff_ffff_ffff_ffff)
 
-        b_melg.setstate(0.187)
-        assert b_melg._state == [0x2b18160c0a9f05b4, 0xc8197d13a4d6d45f, 0xaca007e67e920ed1, 0xf0e779fe3279121f, 0xcd551efd3099f223]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.setstate(0.187)
 
-        b_melg.setstate(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
-        assert b_melg._state == [0xf75f04cbb5a1a1dd, 0xec779c3693f88501, 0xfed9eeb4936de39d, 0x6f9fb04b092bd30a, 0x260ffb0260bbbe5f]
-        assert b_melg.gauss_next is None
-        assert b_melg._index == 0
+        with pytest.raises(TypeError):
+            b_melg.setstate(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
 
         b_melg.setstate((1, 2, 3, 4, 5))
         assert b_melg._state == [1, 2, 3, 4, 5]
@@ -224,11 +187,26 @@ class TestBaseMELG:
         assert b_melg.gauss_next is None
         assert b_melg._index == 3
 
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_melg.setstate(8.87e+18)
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_melg.setstate(-0.987)
+
+        with pytest.raises(ValueError):
+            b_melg.setstate([31, 32, 33.5, 34, 35.1])
+        with pytest.raises(ValueError):
+            b_melg.setstate((31, 32.6, 33, 34, 35.1))
+            
+        with pytest.raises(ValueError):
+            b_melg.setstate([-31, 32, 33, 34, -35])
+        with pytest.raises(ValueError):
+            b_melg.setstate((31, -32, 33, 34, 35))
+
         with pytest.raises(ValueError):
             b_melg.setstate([[31, 32, 33, 34, 35.1], 1])
         with pytest.raises(ValueError):
-            b_melg.setstate((31, 32, 33, 34, 35.1))
+            b_melg.setstate(([31, 32, 33, 34.0, 35.1], 2))
+        with pytest.raises(ValueError):
+            b_melg.setstate([(31, 32, 33, 34, -35), 1])
+        with pytest.raises(ValueError):
+            b_melg.setstate(((31, 32, 33, -34, -35), 1))

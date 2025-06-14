@@ -106,6 +106,6 @@ class BaseMRG( ListIndexState ):
             # this  call  creates  the  two  attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
-            
+
  
 #=====   end of module   basemrg.py   ========================================

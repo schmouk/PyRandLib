@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import Final
+
 from .baserandom       import BaseRandom
 from .annotation_types import Numerical, SeedStateType, StateType
 
@@ -66,69 +68,94 @@ class ListIndexState( BaseRandom ):
 
     #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
-        """Returns an object capturing the current internal state of the  generator.
+        """Returns an object capturing the current internal state of the generator.
         
         This  object can be passed to setstate() to restore the state.  It is a
         tuple containing a list of self._STATE_SIZE integers and an 
         index in this list (index value being then in range(0,self._STATE_SIZE).
         """
-        return (self._state[:], self._index)
+        return (self._state, self._index)
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _seedState: StateType, /) -> None:
+    def seed(self, _seedState: Numerical, /) -> None:
+        """Initiates the internal state of this pseudo-random generator.
+        
+        Should _seedState be a sole integer or float then it is  used 
+        as  initial  seed for the random filling of the internal list 
+        of self._STATE_SIZE integers.  Should _seedState be None then 
+        the shuffling of the local current time value is used as such 
+        an initial seed.
+        """
+        if _seedState is None or isinstance(_seedState, int) or isinstance(_seedState, float):
+            self._index = 0
+            self._initstate( _seedState )
+        else:
+            raise TypeError( f"seed value must be None, an integer or a float (currently is of type {type(_seedState)})" )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType, /) -> None:
         """Restores the internal state of the generator.
         
         _seedState should have been obtained from a previous call  to 
         getstate(), and setstate() restores the internal state of the 
         generator to what it was at the time setstate()  was  called.
         About valid state:  this is a  tuple  containing  a  list  of 
-        self._STATE_SIZE integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)). Should 
-        _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of 
-        self._STATE_SIZE integers. Should _seedState be anything else
-        (e.g. None) then the shuffling  of  the  local  current  time
-        value is used as such an initial seed.
+        self._STATE_SIZE integers and an index in  this  list  (index 
+        value being then in range [0,self._STATE_SIZE)).
         """
-        try:
-            count = len( _seedState )
-
-            if count == 0:
-                self._index = 0
-                self._initstate()
-                
-            elif count == self._STATE_SIZE:
-                self._index = 0
-                if not all(isinstance(s, int) for s in _seedState):  # each entry in _seedState MUST be integer
-                    raise ValueError("all values of internal state must be integers")
-                self._state = list(_seedState[:])
-                
-            else:
-                self._initindex( _seedState[1] )
-                if (len(_seedState[0]) == self._STATE_SIZE):
-                    if not all(isinstance(s, int) for s in _seedState[0]):  # each entry in _seedState MUST be integer
-                        raise ValueError(f"all values of internal state must be integers: {_seedState[0]}")
-                    self._state = list(_seedState[0][:])
-                else:
-                    self._initstate( _seedState[0] )
-                        
-        except ValueError as exc:
-            raise exc
-
-        except:
+        if (_state is None):
             self._index = 0
-            self._initstate( _seedState )
+            self._initstate()
+
+        else:
+            try:
+                if not (isinstance( _state, list ) or isinstance( _state, tuple )):
+                    raise TypeError
+                
+                count = len( _state )
+
+                if count == 0:
+                    self._index = 0
+                    self._initstate()
+                    
+                elif count == self._STATE_SIZE:
+                    self._index = 0
+                    # each entry in _seedState MUST be a positive integer integer
+                    if not all(isinstance(s, int)  for s in _state):  
+                        raise ValueError(f"all values of internal state must be integers ({_state}")
+                    if any(s < 0 for s in _state):
+                        raise ValueError(f"no value in internal state may be negative ({_state}")
+                    self._state = list(_state)
+                    
+                else:
+                    self._initindex( _state[1] )
+                    if (len(_state[0]) == self._STATE_SIZE):
+                        # each entry in _seedState MUST be a positive integer
+                        if not all(isinstance(s, int) and s >= 0 for s in _state[0]):
+                            raise ValueError(f"all values of internal state must be integers: {_state[0]}")
+                        if any(s < 0 for s in _state[0]):
+                            raise ValueError(f"no value in internal state may be negative ({_state[0]})")
+                        self._state = list(_state[0][:])
+                    else:
+                        self._initstate( _state[0] )
+            
+            except ValueError:
+                raise
+
+            except:
+                raise TypeError( f"Incorrect type for internal state as argument of 'setstate()'. Should be tuple or list (currently is {type(_state)})" ) 
 
 
     #-------------------------------------------------------------------------
     def _initindex(self, _index: int, /) -> None:
         """Inits the internal index pointing to the internal list.
         """
-        try:
-            self._index = int( _index ) % self._STATE_SIZE
-        except:
-            self._index = 0
+        if isinstance(_index, int):
+            self._index = _index % self._STATE_SIZE
+        else:
+            raise TypeError( f"the internal state attribute 'index' must be of type integer (currently is {type(_index)})" )
 
 
     #-------------------------------------------------------------------------

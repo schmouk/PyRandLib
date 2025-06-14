@@ -47,22 +47,22 @@ class TestBaseCwg:
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(NotImplementedError):
             b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(NotImplementedError):
             b_cwg = BaseCWG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
-        with pytest.raises(TypeError):
-            b_cwg = BaseCWG( tuple((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+        with pytest.raises(NotImplementedError):
+            b_cwg = BaseCWG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(NotImplementedError):
             b_cwg = BaseCWG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))
                 
     #-------------------------------------------------------------------------

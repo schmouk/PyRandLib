@@ -45,7 +45,7 @@ class TestBaseMRG:
     def test_init_empty(self):
         STATE_SIZE = 15
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_mrg = BaseMRG(SplitMix31, STATE_SIZE)
             assert b_mrg._STATE_SIZE == STATE_SIZE
             assert b_mrg._initRandClass is SplitMix31
@@ -60,7 +60,7 @@ class TestBaseMRG:
     def test_init_int(self):
         STATE_SIZE = 17
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_mrg = BaseMRG(SplitMix32, STATE_SIZE, 0X1234_5678_9abc_def0)
             assert b_mrg._STATE_SIZE == STATE_SIZE
             assert b_mrg._initRandClass is SplitMix32
@@ -75,7 +75,7 @@ class TestBaseMRG:
     def test_init_float(self):
         STATE_SIZE = 17
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_mrg = BaseMRG(SplitMix31, STATE_SIZE, 0.1)
             assert b_mrg._STATE_SIZE == STATE_SIZE
             assert b_mrg._initRandClass is SplitMix31
@@ -90,7 +90,7 @@ class TestBaseMRG:
     def test_init_tuple(self):
         STATE_SIZE = 19
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_mrg = BaseMRG(SplitMix32, STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))
             assert b_mrg._STATE_SIZE == STATE_SIZE
             assert b_mrg._initRandClass is SplitMix32
@@ -105,7 +105,7 @@ class TestBaseMRG:
     def test_init_list(self):
         STATE_SIZE = 21
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_mrg = BaseMRG(SplitMix31, STATE_SIZE, [i+1 for i in range(STATE_SIZE)])
             assert b_mrg._STATE_SIZE == STATE_SIZE
             assert b_mrg._initRandClass is SplitMix31

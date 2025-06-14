@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Final, override
 
 from .listindexstate   import ListIndexState
-from .annotation_types import SeedStateType
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -51,8 +51,10 @@ class BaseMELG( ListIndexState ):
     See Melg607 for a large period MELG-Generator (2^607, i.e. 5.31e+182)  with medium
     computation  time  and  the  equivalent  of  21  32-bits  integers  memory  little 
     consumption. This is the shortest period version proposed in paper [11].
+
     See Melg19937 for an even larger period MELG-Generator (2^19,937, i.e. 4.32e+6001),
     same computation time and equivalent of 625 integers memory consumption.
+
     See Melg44497 for a very large period (2^44,497,  i.e. 8.55e+13,395)  with  similar 
     computation  time  but  use  of even more memory space (equivalent of 1,393 32-bits
     integers). This is the longest period version proposed in paper [11].
@@ -101,6 +103,7 @@ class BaseMELG( ListIndexState ):
     than 32 bits.
     """
     
+
     #-------------------------------------------------------------------------
     def __init__(self, _stateSize: int, _seedState: SeedStateType = None, /) -> None:
         """Constructor.
@@ -124,14 +127,14 @@ class BaseMELG( ListIndexState ):
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seedState: SeedStateType, /) -> None:
-        self.setstate(_seedState)
+    def seed(self, _seed: Numerical, /) -> None:
+        super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _seedState: SeedStateType, /) -> None:
-        super().setstate(_seedState)
+    def setstate(self, _state: StateType, /) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   basemelg.py   =======================================

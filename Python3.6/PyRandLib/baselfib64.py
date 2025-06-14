@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Final
 
 from .listindexstate   import ListIndexState
-from .annotation_types import SeedStateType
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -117,10 +117,10 @@ class BaseLFib64( ListIndexState ):
         _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state, an integer,  a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index  value 
-        being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
-        a sole integer or float then it  is  used  as  initial  seed  for 
-        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
+        self._STATE_SIZE  64-bits  integers  and  an  index  in this list 
+        (index value being  then  in range (0,self._STATE_SIZE)).  Should 
+        _seedState be a sole integer or float then it is used as  initial
+        seed for the random filling of the internal list of self._STATE_SIZE  
         integers.  Should _seedState be anything else  (e.g.  None)  then  
         the  shuffling of the local current time value is used as such an 
         initial seed.
@@ -132,14 +132,13 @@ class BaseLFib64( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seedState: SeedStateType, /) -> None:
-        self.setstate(_seedState)
+    def seed(self, _seed: Numerical) -> None:
+        super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _seedState: SeedStateType) -> None:
-        super().setstate(_seedState)
+    def setstate(self, _state: StateType) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   baselfib64.py   =====================================
-

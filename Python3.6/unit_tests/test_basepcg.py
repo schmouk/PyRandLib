@@ -21,15 +21,18 @@ SOFTWARE.
 """
 
 #=============================================================================
+import platform
 import pytest
 
 from PyRandLib.basepcg import BasePCG
 
 
 #=============================================================================
-class TestBasePCG:
+class TestBasePcg:
     """Tests the base class BasePCG"""
-    
+        
+    python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')
+
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_pcg = BasePCG()
@@ -47,23 +50,34 @@ class TestBasePCG:
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
-        b_pcg = BasePCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+        with pytest.raises(NotImplementedError):
+            b_pcg = BasePCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
             b_pcg = BasePCG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])
-                
+
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
-        with pytest.raises(TypeError):
-            b_pcg = BasePCG( tuple((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+        with pytest.raises(NotImplementedError):
+            b_pcg = BasePCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
             b_pcg = BasePCG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))
-                
+     
+    #-------------------------------------------------------------------------
+    def test_init_tuple_int_2(self):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
+            b_pcg = BasePCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )
+
+    #-------------------------------------------------------------------------
+    def test_init_list_int_2(self):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
+            b_pcg = BasePCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )
+
     #-------------------------------------------------------------------------
     def test_getstate(self):
         b_pcg = BasePCG()

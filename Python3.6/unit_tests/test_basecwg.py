@@ -21,6 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
+import platform
 import pytest
 
 from PyRandLib.basecwg import BaseCWG
@@ -30,6 +31,8 @@ from PyRandLib.basecwg import BaseCWG
 class TestBaseCwg:
     """Tests the base class BaseCWG"""
     
+    python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')
+
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_cwg = BaseCWG()
@@ -47,22 +50,22 @@ class TestBaseCwg:
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
-        b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
-        assert b_cwg.gauss_next is None
+        with pytest.raises(NotImplementedError):
+            b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
             b_cwg = BaseCWG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
-        with pytest.raises(TypeError):
-            b_cwg = BaseCWG( tuple((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+        with pytest.raises(NotImplementedError):
+            b_cwg = BaseCWG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
             b_cwg = BaseCWG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))
                 
     #-------------------------------------------------------------------------
