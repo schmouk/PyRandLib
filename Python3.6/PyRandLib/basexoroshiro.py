@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Union
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList
+from .annotation_types import Numerical, StatesList, StateType
 from .splitmix         import SplitMix64
 
 
@@ -128,6 +128,16 @@ class BaseXoroshiro( ListIndexState ):
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
+
+
+    #-------------------------------------------------------------------------
+    def seed(self, _seed: Numerical) -> None:
+        super().seed( _seed )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   basexoroshiro.py   ==================================

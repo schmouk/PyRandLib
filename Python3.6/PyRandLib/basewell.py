@@ -21,8 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import Final
+
 from .listindexstate   import ListIndexState
-from .annotation_types import SeedStateType
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix32
 
 
@@ -126,6 +128,16 @@ class BaseWELL( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
+    def seed(self, _seed: Numerical) -> None:
+        super().seed( _seed )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType) -> None:
+        super().setstate(_state)
+
+
+    #-------------------------------------------------------------------------
     @classmethod
     def _M0(cls, x: int = None) -> int:
         return 0
@@ -207,13 +219,13 @@ class BaseWELL( ListIndexState ):
 
     #-------------------------------------------------------------------------
     # definition of algorithm constants
-    _a1: int = 0xda44_2d24
-    _a2: int = 0xd3e4_3ffd
-    _a3: int = 0x8bdc_b91e
-    _a4: int = 0x86a9_d87e
-    _a5: int = 0xa8c2_96d1
-    _a6: int = 0x5d6b_45cc
-    _a7: int = 0xb729_fcec
+    _a1: Final[int] = 0xda44_2d24
+    _a2: Final[int] = 0xd3e4_3ffd
+    _a3: Final[int] = 0x8bdc_b91e
+    _a4: Final[int] = 0x86a9_d87e
+    _a5: Final[int] = 0xa8c2_96d1
+    _a6: Final[int] = 0x5d6b_45cc
+    _a7: Final[int] = 0xb729_fcec
     
 
 #=====   end of module   basewell.py   =======================================

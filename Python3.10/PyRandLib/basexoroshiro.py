@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Final
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -32,8 +32,8 @@ from .splitmix         import SplitMix64
 class BaseXoroshiro( ListIndexState ):
     """The base class for all xoroshiro PRNGs.
     
-    Definitiion of the base class for all versions of the xoroshiro algorithm
-    implemented in PyRandLib.
+    Definition of the base class for  all  Scrambled  Linear  pseudorandom  generators
+    based on 64-bits generated numbers.
 
     This module is part of library PyRandLib.
     
@@ -58,9 +58,9 @@ class BaseXoroshiro( ListIndexState ):
     
     See Xoroshiro256, Xoroshiro512, Xoroshiro1024 for long  period  generators  (resp. 
     2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
-    periods),  64-bits precision calculations and short memory consumption  (resp.  8, 
-    16 and 32 integers coded on 64 bits.
-    
+    periods),  64-bits precision calculations and short memory consumption  (resp.  4, 
+    8 and 16 integers coded on 64 bits.
+
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
@@ -128,6 +128,16 @@ class BaseXoroshiro( ListIndexState ):
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
+
+
+    #-------------------------------------------------------------------------
+    def seed(self, _seed: Numerical, /) -> None:
+        super().seed( _seed )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType, /) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   basexoroshiro.py   ==================================

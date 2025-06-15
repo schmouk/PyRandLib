@@ -21,10 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
+from typing import Final, override
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -128,6 +128,18 @@ class BaseXoroshiro( ListIndexState ):
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
+
+
+    #-------------------------------------------------------------------------
+    @override
+    def seed(self, _seed: Numerical, /) -> None:
+        super().seed( _seed )
+
+
+    #-------------------------------------------------------------------------
+    @override
+    def setstate(self, _state: StateType, /) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   basexoroshiro.py   ==================================

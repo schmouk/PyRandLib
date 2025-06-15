@@ -21,10 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, Union
+from typing import Final
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -60,7 +60,7 @@ class BaseXoroshiro( ListIndexState ):
     2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
     periods),  64-bits precision calculations and short memory consumption  (resp.  4, 
     8 and 16 integers coded on 64 bits.
-    
+
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
@@ -110,7 +110,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _stateSize: int, _seedState: Union[Numerical, StatesList] = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: Numerical | StatesList = None, /) -> None:
         """Constructor.
         
         _stateSize is the size of the internal state list of integers.
@@ -128,6 +128,16 @@ class BaseXoroshiro( ListIndexState ):
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
+
+
+    #-------------------------------------------------------------------------
+    def seed(self, _seed: Numerical, /) -> None:
+        super().seed( _seed )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType, /) -> None:
+        super().setstate(_state)
 
 
 #=====   end of module   basexoroshiro.py   ==================================
