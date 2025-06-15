@@ -86,13 +86,13 @@ class TestBaseSquares:
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_sqr = BaseSquares(tuple((21, 161,), 11))
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+            # notice: no 2 arguments accepted in tuple with base class random.Random constructor until Python 3.11
             b_sqr = BaseSquares(tuple([23, 163], 13))
 
     #-------------------------------------------------------------------------

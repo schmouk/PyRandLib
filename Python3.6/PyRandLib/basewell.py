@@ -175,7 +175,7 @@ class BaseWELL( ListIndexState ):
     @classmethod
     def _M4(cls, x: int, a: int) -> int:
         #assert 0 <= a <= 0xffff_ffff
-        return (x >> 1) ^ a if x & 0x8000_0000 else x >> 1
+        return ((x >> 1) ^ a) if (x & 0x8000_0000) else (x >> 1)
 
     #-------------------------------------------------------------------------
     @classmethod
