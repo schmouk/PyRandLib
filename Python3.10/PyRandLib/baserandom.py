@@ -311,23 +311,12 @@ class BaseRandom( Random ):
         calls method setstate() which MUST be overridden in classes that 
         inherit from class BaseRandom.
         """
-        try:
-            if _seedState is None or isinstance(_seedState, int | float):
-                if isinstance(_seedState, float) and not (0.0 <= _seedState <= 1.0):
-                    raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seedState})")
-                else:
-                    super().__init__( _seedState )
+        if _seedState is None or isinstance(_seedState, int | float):
+            if isinstance(_seedState, float) and not (0.0 <= _seedState <= 1.0):
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seedState})")
             else:
-                super().__init__()
-                self.setstate( _seedState )
-
-        except TypeError as exc:
-            raise exc
-
-        except NotImplementedError as exc:
-            raise exc
-        
-        except:
+                super().__init__( _seedState )
+        else:
             super().__init__()
             self.setstate( _seedState )
 
@@ -408,18 +397,6 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType, /) -> None:
-        """Restores the internal state of the generator.
-        
-        _state should have been obtained from a previous call to getstate().
-        'setstate()' restores the internal state of the generator to what it
-        was at the time getstate() was lastly called.
-        Inheriting classes MUST IMPLEMENT this method.
-        """
-        raise NotImplementedError()
-
-
-    #-------------------------------------------------------------------------
     def seed(self, _seed: Numerical = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         """
@@ -430,6 +407,18 @@ class BaseRandom( Random ):
                 super().seed( _seed )
         else:
             raise ValueError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType = None, /) -> None:
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call to getstate().
+        'setstate()' restores the internal state of the generator to what it
+        was at the time getstate() was lastly called.
+        Inheriting classes MUST IMPLEMENT this method.
+        """
+        raise NotImplementedError()
 
 
     #-------------------------------------------------------------------------

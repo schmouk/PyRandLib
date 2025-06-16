@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import SeedStateType, StatesList
+from .annotation_types import SeedStateType, Numerical, StatesList
 from .splitmix         import SplitMix32
 
 
@@ -98,52 +98,46 @@ class BaseSquares( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _state: SeedStateType, /) -> None:
+    def seed(self, _seed: SeedStateType = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         """
-        self.setstate(_state)
+        if _seed is None or isinstance(_seed, int | float):
+            self._counter = 0
+            if isinstance(_seed, float):
+                if ( 0.0 <= _seed <= 1.0):
+                    # transforms passed initial seed from float to integer
+                    self._key = self._initKey( int(_seed * 0xffff_ffff_ffff_ffff) )
+                else:
+                    raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
+            else:
+                # _seed is None or an int
+                self._key = self._initKey( _seed )
+        else:
+            raise TypeError( f"seed value must be None, an integer or a float (currently is of type {type(_seed)})" )
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _seedState: SeedStateType, /) -> None:
+    def setstate(self, _state: StatesList = None, /) -> None:
         """Restores or sets the internal state of the generator.
-
-        Raises exception ValueError if _state is a float and its
-        value is out of range [0.0, 1.0].
         """
-        try:
-            if isinstance( _seedState, int ):
-                # passed initial seed is an integer, just uses it
-                self._counter = 0
-                self._key = self._initKey( _seedState )
-                
-            elif isinstance( _seedState, float ):
-                if ( 0.0 <= _seedState <= 1.0):
-                    # transforms passed initial seed from float to integer
-                    self._counter = 0
-                    self._key = self._initKey( int(_seedState * 0xffff_ffff_ffff_ffff) )
+        if _state is None:
+            self._counter = 0
+            self._key = self._initKey()
+
+        elif not isinstance( _state, list | tuple ):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
+
+        else:
+            if len(_state) == 2:
+                # each entry in _seedState MUST be a positive or null integer
+                if not all(isinstance(s, int) and s >= 0 for s in _state):
+                    raise ValueError(f"all values of internal state must be single non negative integers: {_state}")
                 else:
-                    raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seedState})")
-            
-            elif len(_seedState) == 2:
-                if (all(isinstance(s, int) for s in _seedState)):
-                    self._counter = _seedState[0] & 0xffff_ffff_ffff_ffff
-                    self._key     = (_seedState[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
-                else:
-                    raise ValueError(f"all values of internal state must be integers: {_seedState}")
+                    self._counter = _state[0] & 0xffff_ffff_ffff_ffff
+                    self._key     = (_state[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
                 
             else:
-                # uses local time as initial seed
-                self._counter = 0
-                self._key     = self._initKey()
-
-        except ValueError as exc:
-            raise exc
-
-        except:
-                # uses local time as initial seed
-                self._counter = 0
-                self._key     = self._initKey()
+                raise ValueError(f"Incorrect size for initializing state (should be 2 integers, currently is {len(_state)})")
 
 
     #-------------------------------------------------------------------------

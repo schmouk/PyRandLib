@@ -80,7 +80,7 @@ class ListIndexState( BaseRandom ):
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seedState: Numerical, /) -> None:
+    def seed(self, _seedState: Numerical = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         
         Should _seedState be a sole integer or float then it is  used 
@@ -98,7 +98,7 @@ class ListIndexState( BaseRandom ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StateType, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:
         """Restores the internal state of the generator.
         
         _seedState should have been obtained from a previous call  to 
@@ -111,42 +111,34 @@ class ListIndexState( BaseRandom ):
         if (_state is None):
             self._index = 0
             self._initstate()
-        else:
-            try:
-                if not isinstance( _state, list | tuple ):
-                    raise TypeError
-                
-                match len( _state ):
-                    case 0:
-                        self._index = 0
-                        self._initstate()
-                    
-                    case self._STATE_SIZE:
-                        self._index = 0
-                        # each entry in _seedState MUST be a positive integer integer
-                        if not all(isinstance(s, int)  for s in _state):  
-                            raise ValueError(f"all values of internal state must be integers ({_state}")
-                        if any(s < 0 for s in _state):
-                            raise ValueError(f"no value in internal state may be negative ({_state}")
-                        self._state = list(_state)
-                    
-                    case _:
-                        self._initindex( _state[1] )
-                        if (len(_state[0]) == self._STATE_SIZE):
-                            # each entry in _seedState MUST be a positive integer
-                            if not all(isinstance(s, int) and s >= 0 for s in _state[0]):
-                                raise ValueError(f"all values of internal state must be integers: {_state[0]}")
-                            if any(s < 0 for s in _state[0]):
-                                raise ValueError(f"no value in internal state may be negative ({_state[0]})")
-                            self._state = list(_state[0][:])
-                        else:
-                            self._initstate( _state[0] )
-            
-            except ValueError:
-                raise
 
-            except:
-                raise TypeError( f"Incorrect type for internal state as argument of 'setstate()'. Should be tuple or list (currently is {type(_state)})" ) 
+        elif not isinstance( _state, list | tuple ):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
+        
+        else:
+            match len( _state ):
+                case 0:
+                    self._index = 0
+                    self._initstate()
+                
+                case self._STATE_SIZE:
+                    self._index = 0
+                    # each entry in _seedState MUST be a positive integer integer
+                    if not all(isinstance(s, int)  for s in _state):  
+                        raise ValueError(f"all values of internal state must be integers ({_state}")
+                    if any(s < 0 for s in _state):
+                        raise ValueError(f"no value in internal state may be negative ({_state}")
+                    self._state = list(_state)
+                
+                case _:
+                    self._initindex( _state[1] )
+                    if (len(_state[0]) == self._STATE_SIZE):
+                        # each entry in _seedState MUST be a positive or null integer
+                        if not all(isinstance(s, int) and s >= 0 for s in _state[0]):
+                            raise ValueError(f"all values of internal state must be non negative integers: {_state[0]}")
+                        self._state = list(_state[0][:])
+                    else:
+                        raise ValueError(f"Incorrect size for initializing state (should be {self._STATE_SIZE} integers, currently is {len(_state)})")
 
 
     #-------------------------------------------------------------------------

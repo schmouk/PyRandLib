@@ -73,6 +73,11 @@ class TestBaseSquares:
         assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
         assert b_sqr._OUT_BITS == 32
 
+        with pytest.raises(ValueError):
+            b_sqr = BaseSquares((21, 160, 3))
+        with pytest.raises(ValueError):
+            b_sqr = BaseSquares((21,))
+
     #-------------------------------------------------------------------------
     def test_init_list(self):
         with pytest.raises(TypeError):  # notice: due to knwon bug about not hashable lists in some patch versions of Python 3.9
@@ -83,17 +88,24 @@ class TestBaseSquares:
             assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
             assert b_sqr._OUT_BITS == 32
 
+        with pytest.raises(TypeError):
+            # notice: due to knwon bug about not hashable lists in some patch versions of Python 3.9
+            b_sqr = BaseSquares([23, 162, 3])
+        with pytest.raises(TypeError):
+            # notice: due to knwon bug about not hashable lists in some patch versions of Python 3.9
+            b_sqr = BaseSquares([23])
+
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
-        with pytest.raises(TypeError):
+        with pytest.raises(ValueError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_sqr = BaseSquares(tuple((21, 161,), 11))
+            b_sqr = BaseSquares(((21, 161,), 11))
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         with pytest.raises(TypeError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_sqr = BaseSquares(tuple([23, 163], 13))
+            # notice: due to knwon bug about not hashable lists in some patch versions of Python 3.9
+            b_sqr = BaseSquares(([23, 163], 13))
 
     #-------------------------------------------------------------------------
     def test_getstate(self):
@@ -110,6 +122,13 @@ class TestBaseSquares:
     #-------------------------------------------------------------------------
     def test_seed(self):
         b_sqr = BaseSquares()
+
+        b_sqr.seed()
+        assert b_sqr._counter == 0
+        assert b_sqr._key & 1 == 1
+        assert b_sqr.gauss_next is None
+        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
+        assert b_sqr._OUT_BITS == 32
 
         b_sqr.seed(0x0123_4567_89ab_cdef)
         assert b_sqr._counter == 0
@@ -146,81 +165,33 @@ class TestBaseSquares:
         assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
         assert b_sqr._OUT_BITS
 
-        b_sqr.seed((1, 2))
-        assert b_sqr._counter == 1
-        assert b_sqr._key == 2 | 1
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.seed([11, 12])
-        assert b_sqr._counter == 11
-        assert b_sqr._key == 12 | 1
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.seed([21, 22, 23])
-        assert b_sqr._counter == 0
-        assert b_sqr._key & 1 == 1
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.seed((31, 32, 33, 34))
-        assert b_sqr._counter == 0
-        assert b_sqr._key & 1 == 1
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
+        with pytest.raises(TypeError):
+            b_sqr.seed((1, 2))
+        with pytest.raises(TypeError):
+            b_sqr.seed([11, 12])
+        with pytest.raises(TypeError):
+            b_sqr.seed([21, 22, 23])
+        with pytest.raises(TypeError):
+            b_sqr.seed((31, 32, 33, 34))
         with pytest.raises(ValueError):
             b_sqr.seed(-0.1)
         with pytest.raises(ValueError):
             b_sqr.seed(1.0001)
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_sqr.seed([31, 32.1])
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_sqr.seed((34, 35.1))
 
     #-------------------------------------------------------------------------
     def test_setstate(self):
         b_sqr = BaseSquares()
 
-        b_sqr.setstate(0x0123_4567_89ab_cdef)
+        b_sqr.setstate()
         assert b_sqr._counter == 0
-        assert b_sqr._key == 0x2c38_1b75_cd1e_96f3
+        assert b_sqr._key & 1 == 1
         assert b_sqr.gauss_next is None
         assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
         assert b_sqr._OUT_BITS == 32
-
-        b_sqr.setstate(-8_870_000_000_000_000_000)
-        assert b_sqr._counter == 0
-        assert b_sqr._key == 0x5d7f_2468_39ae_54f3
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.setstate(8_870_000_000_000_000_000)
-        assert b_sqr._counter == 0
-        assert b_sqr._key == 0xea49_fd18_2c19_435d
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.setstate(0.357)
-        assert b_sqr._counter == 0
-        assert b_sqr._key == 0x69ef_8b1a_6eda_9b27
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
-
-        b_sqr.setstate(0xfedc_ba98_7654_3210_0123_4567_89ab_cdef)
-        assert b_sqr._counter == 0
-        assert b_sqr._key == 0x2c38_1b75_cd1e_96f3
-        assert b_sqr.gauss_next is None
-        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-        assert b_sqr._OUT_BITS
 
         b_sqr.setstate((1, 2))
         assert b_sqr._counter == 1
@@ -236,9 +207,9 @@ class TestBaseSquares:
         assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
         assert b_sqr._OUT_BITS
 
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_sqr.setstate(-0.1)
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             b_sqr.setstate(1.0001)
         with pytest.raises(ValueError):
             b_sqr.setstate([31, 32.1])
