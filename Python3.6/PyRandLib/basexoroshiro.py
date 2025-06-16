@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Union
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList, StateType
+from .annotation_types import Numerical, StatesList
 from .splitmix         import SplitMix64
 
 
@@ -110,7 +110,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _stateSize: int, _seedState: Union[Numerical, StatesList] = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: Union[Numerical, StatesList] = None) -> None:
         """Constructor.
         
         _stateSize is the size of the internal state list of integers.
@@ -136,7 +136,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType) -> None:
+    def setstate(self, _state: StatesList) -> None:
         super().setstate(_state)
 
 

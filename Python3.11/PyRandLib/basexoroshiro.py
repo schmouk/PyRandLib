@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Final
 
 from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, SeedStateType, StateType
+from .annotation_types import Numerical, StatesList
 from .splitmix         import SplitMix64
 
 
@@ -136,7 +136,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType, /) -> None:
+    def setstate(self, _state: StatesList, /) -> None:
         super().setstate(_state)
 
 
