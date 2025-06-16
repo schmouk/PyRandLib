@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import Final, override
 
 from .basecwg          import BaseCWG
-from .annotation_types import SeedStateType
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -133,7 +133,26 @@ class Cwg128( BaseCWG ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: SeedStateType = None, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int | float):
+            if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+            else:
+                initRandLo = SplitMix64( _seed & 0xffff_ffff_ffff_ffff )
+                initRandHi = SplitMix64( (_seed >> 64) & 0xffff_ffff_ffff_ffff )
+                self._a = self._weyl = 0
+                self._s = (initRandHi() << 64) | initRandLo() | 1   # Notice: s must be odd
+                self._state = (initRandHi() << 64) | initRandLo()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
+
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    @override
+    def setstate(self, _state: StateType = None, /) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
@@ -142,29 +161,24 @@ class Cwg128( BaseCWG ):
         setstate() was called. If None, the local system time
         is used instead.
         """
-        if isinstance(_state, int) and _state > 0xffff_ffff_ffff_ffff:
-            initRandLo = SplitMix64( _state & 0xffff_ffff_ffff_ffff )
-            initRandHi = SplitMix64( (_state >> 64) & 0xffff_ffff_ffff_ffff )
-            self._a = self._weyl = 0
-            self._s = (initRandHi() << 64) | initRandLo() | 1   # Notice: s must be odd
-            self._state = (initRandHi() << 64) | initRandLo()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
-            
-        elif _state is None or isinstance(_state, int) or isinstance(_state, float):
-            initRand = SplitMix64( _state )
-            self._a = self._weyl = 0
-            self._state = (initRand() << 64) | initRand()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
-            self._s = (initRand() << 64) | initRand() | 1   # Notice: s must be odd
-                            
-        else:
-            try:
+        if _state is None:
+            self.seed()
+
+        elif not isinstance( _state, list | tuple ):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
+                
+        elif len(_state) == 4:
+            # each entry in _seedState MUST be a positive or null integer
+            if not all(isinstance(s, int) and s >= 0 for s in _state):
+                raise ValueError(f"all values of internal state must be single non negative integers: {_state}")
+            else:
                 self._a     =  _state[0] & self._MODULO
                 self._weyl  =  _state[1] & self._MODULO
                 self._s     = (_state[2] & self._MODULO) | 1  # Notice: s must be odd
                 self._state =  _state[3] & self._MODULO
-
-            except:
-                # uses local time as initial seed
-                self.setstate()
+            
+        else:
+            raise ValueError(f"Incorrect size for initializing state (should be 4 integers, currently is {len(_state)})")
 
 
 #=====   end of module   cwg128.py   =========================================

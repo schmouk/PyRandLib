@@ -21,10 +21,10 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Tuple
+from typing import Final
 
 from .basecwg          import BaseCWG
-from .annotation_types import SeedStateType
+from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
@@ -84,15 +84,16 @@ class Cwg64( BaseCWG ):
     should definitively pass.
     """
     
+
     #-------------------------------------------------------------------------
-    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: int = 64
+    _OUT_BITS: Final[int] = 64
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -123,7 +124,23 @@ class Cwg64( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType = None) -> None:
+    def seed(self, _seed: Numerical = None) -> None:
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int | float):
+            if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+            else:
+                initRand = SplitMix64( _seed )
+                self._a = self._weyl = 0
+                self._s = initRand() | 1;  # Notice: must be odd
+                self._state = initRand()
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StateType = None) -> None:
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
@@ -132,22 +149,24 @@ class Cwg64( BaseCWG ):
         setstate() was called. If None, the local system time
         is used instead.
         """
-        if _state is None or isinstance(_state, int) or isinstance(_state, float):
-            initRand = SplitMix64( _state )
-            self._a = self._weyl = 0
-            self._s = initRand() | 1;   # Notice: must be odd
-            self._state = initRand()
+        if _state is None:
+            self.seed()
+
+        elif not isinstance( _state, list | tuple ):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
                 
-        else:
-            try:
+        elif len(_state) == 4:
+            # each entry in _seedState MUST be a positive or null integer
+            if not all(isinstance(s, int) and s >= 0 for s in _state):
+                raise ValueError(f"all values of internal state must be single non negative integers: {_state}")
+            else:
                 self._a     = _state[0] & 0xffff_ffff_ffff_ffff
                 self._weyl  = _state[1] & 0xffff_ffff_ffff_ffff
                 self._s     = (_state[2] & 0xffff_ffff_ffff_ffff) | 1  # notice: s must be odd
                 self._state = _state[3] & 0xffff_ffff_ffff_ffff
-
-            except:
-                # uses local time as initial seed
-                self.setstate()
+            
+        else:
+            raise ValueError(f"Incorrect size for initializing state (should be 4 integers, currently is {len(_state)})")
 
 
 #=====   end of module   cwg64.py   ==========================================
