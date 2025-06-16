@@ -97,16 +97,15 @@ class TestBaseSquares:
 
     #-------------------------------------------------------------------------
     def test_getstate(self):
-        with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
-            b_sqr = BaseSquares([23, 163])
-            counter, key = b_sqr.getstate()
-            assert counter == b_sqr._counter
-            assert key == b_sqr._key
-            assert counter == 23
-            assert key == 163
-            assert b_sqr.gauss_next is None
-            assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
-            assert b_sqr._OUT_BITS == 32
+        b_sqr = BaseSquares((23, 163))
+        counter, key = b_sqr.getstate()
+        assert counter == b_sqr._counter
+        assert key == b_sqr._key
+        assert counter == 23
+        assert key == 163
+        assert b_sqr.gauss_next is None
+        assert b_sqr._NORMALIZE == 1.0 / (1 << 32)
+        assert b_sqr._OUT_BITS == 32
 
     #-------------------------------------------------------------------------
     def test_seed(self):
