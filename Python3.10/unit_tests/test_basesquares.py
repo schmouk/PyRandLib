@@ -103,8 +103,7 @@ class TestBaseSquares:
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
-        with pytest.raises(ValueError):
-            # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
+        with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
             b_sqr = BaseSquares(([23, 163], 13))
 
     #-------------------------------------------------------------------------
