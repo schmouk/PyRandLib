@@ -40,7 +40,7 @@ class ListIndexState( BaseRandom ):
     
 
     #-------------------------------------------------------------------------
-    def __init__(self, _initRandClass, _stateSize: int, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _initRandClass, _stateSize: int, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         _initRandClass is the class to  be  instantiated  for  the  random
@@ -72,11 +72,11 @@ class ListIndexState( BaseRandom ):
         tuple containing a list of self._STATE_SIZE integers and an 
         index in this list (index value being then in range(0,self._STATE_SIZE).
         """
-        return (self._state, self._index)
+        return (self._state, self._index)  # type: ignore
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         
         Should _seedState be a sole integer or float then it is  used 
@@ -93,7 +93,7 @@ class ListIndexState( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType = None, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _seedState should have been obtained from a previous call  to 
@@ -129,7 +129,7 @@ class ListIndexState( BaseRandom ):
                     elif (len(_state[0]) != self._STATE_SIZE):
                         raise ValueError(f"Incorrect size for initializing state (should be {self._STATE_SIZE} integers, currently is {len(_state)})")
                     else:
-                        self._initindex( _state[1] )
+                        self._initindex( _state[1] )  # type: ignore
                         # each entry in _seedState MUST be a positive or null integer
                         if not all(isinstance(s, int) and s >= 0 for s in _state[0]):
                             raise ValueError(f"all values of internal state must be non negative integers: {_state[0]}")
@@ -148,7 +148,7 @@ class ListIndexState( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
+    def _initstate(self, _initialSeed: Numerical = None, /) -> None:  # type: ignore
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
