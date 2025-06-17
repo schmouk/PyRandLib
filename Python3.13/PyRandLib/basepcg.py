@@ -25,6 +25,7 @@ from typing import override
 
 from .baserandom       import BaseRandom
 from .annotation_types import Numerical
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -94,7 +95,7 @@ class BasePCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None, /) -> None:
+    def __init__(self, _seedState: Numerical = None, /) -> None:   # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -109,7 +110,7 @@ class BasePCG( BaseRandom ):
  
     #-------------------------------------------------------------------------
     @override
-    def getstate(self) -> int:
+    def getstate(self) -> SeedStateType:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
@@ -117,7 +118,7 @@ class BasePCG( BaseRandom ):
         which  has  to  be  used  in  methods 'random() and 'setstate() of every
         inheriting class.
         """
-        return self._state
+        return self._state  # notice: attribute _state MUST be initialized in inheriting classes  # type: ignore
  
 
 #=====   end of module   basepcg.py   ========================================

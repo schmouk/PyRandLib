@@ -49,12 +49,12 @@ class Pcg64_32( BasePCG ):
     of  the internal state of the PRNG.  The output of PCGs is this permutated
     subpart of its internal state,  leading to a very large enhancement of the
     randomness of these algorithms compared with the LCGs one.
-    
+ 
     These PRNGs have been tested with TestU01 and have shown to pass all tests
     (Pierre  L'Ecuyer and Richard Simard (Universite de Montreal) in 'TestU01: 
     A C Library for Empirical  Testing  of  Random  Number  Generators  -  ACM 
     Transactions on Mathematical Software, vol.33 n.4, pp.22-40, August 2007')
-  
+
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to
@@ -105,7 +105,7 @@ class Pcg64_32( BasePCG ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None, /) -> None:
+    def __init__(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a numerical then the local 
@@ -128,31 +128,43 @@ class Pcg64_32( BasePCG ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: Numerical, /) -> None:
+    @override
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None:
+            # uses shuffled local time as initial seed
+            self._state = SplitMix64()()
+
+        elif isinstance( _seed, int ):
+            # passed initial seed is an integer, just uses it
+            self._state = _seed & 0xffff_ffff_ffff_ffff
+            
+        elif isinstance( _seed, float ):
+            if (0.0 <= _seed <= 1.0):
+                # transforms passed initial seed from float to integer
+                self._state = int(_seed * 0xffff_ffff_ffff_ffff)
+            else:
+                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
+        
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    @override
+    def setstate(self, _state: int = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
         setstate() was called.
-        Raises exception ValueError if _state is a float  and 
-        its value is out of range [0.0, 1.0].
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            self._state = _state & 0xffff_ffff_ffff_ffff
-            
-        elif isinstance( _state, float ):
-            if ( 0.0 <= _state <= 1.0):
-                # transforms passed initial seed from float to integer
-                self._counter = 0
-                self._key = self.__call__( int(_state * 0xffff_ffff_ffff_ffff) )
-            else:
-                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_state})")
-                
+        if _state is None or isinstance( _state, int ):
+            self.seed( _state )
         else:
-            # uses local time as initial seed
-            self._state = SplitMix64()()
+            raise TypeError(f"State value must be None or an int (currently is {type(_state)})")
 
 
 #=====   end of module   pcg64_32.py   =======================================

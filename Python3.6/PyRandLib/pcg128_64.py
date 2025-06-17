@@ -21,6 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import Final
+
 from .basepcg          import BasePCG
 from .annotation_types import Numerical
 from .splitmix         import SplitMix64
@@ -102,33 +104,34 @@ class Pcg128_64( BasePCG ):
     should definitively pass.
     """
     
+
     #-------------------------------------------------------------------------
-    _NORMALIZE: float = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20 # i.e. 1.0 / (1 << 64)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: int = 64
+    _OUT_BITS: Final[int] = 64  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
     """
 
-    _A: int = 0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645  # LCG mult. attribute
-    _C: int = 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F  # LCG add. attribute
-    _MODULO_128 : int = (1 << 128) - 1  # notice: optimization on modulo calculations
+    _A: Final[int] = 0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645  # LCG mult. attribute
+    _C: Final[int] = 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F  # LCG add. attribute
+    _MODULO_128 : Final[int] = (1 << 128) - 1  # optimization here to get modulo via operator &
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None) -> None:
+    def __init__(self, _seed: Numerical = None) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a numerical then the local 
         time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed )  # this call creates attribute self._state and sets it
+        super().__init__( _seed ) # this call creates attribute self._state and sets it
 
 
     #-------------------------------------------------------------------------
@@ -136,41 +139,50 @@ class Pcg128_64( BasePCG ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates next internal state
-        previous_state = self._state
-        self._state = (self._A * previous_state + self._C) & Pcg128_64._MODULO_128
+        self._state = (self._A * (previous_state := self._state) + self._C) & Pcg128_64._MODULO_128  # type: ignore
         # the permutated output is then computed
-        random_rotation = previous_state >> 122  # random right rotation is set with the 6 upper bits of internal state
-        value = (previous_state ^ (previous_state >> 64)) & 0xffff_ffff_ffff_ffff
+        random_rotation = previous_state >> 122  # random right rotation is set with the 6 upper bits of internal state  # type: ignore
+        value = (previous_state ^ (previous_state >> 64)) & 0xffff_ffff_ffff_ffff  # type: ignore
         return (value >> random_rotation) | ((value & ((1 << random_rotation) - 1))) << (64 - random_rotation)
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: Numerical) -> None:
+    def seed(self, _seed: Numerical = None) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None:
+            # uses shuffled local time as initial seed
+            initRand = SplitMix64()
+            self._state = (initRand() << 64) | initRand()
+
+        elif isinstance( _seed, int ):
+            # passed initial seed is an integer, just uses it
+            self._state = _seed & Pcg128_64._MODULO_128
+            
+        elif isinstance( _seed, float ):
+            if (0.0 <= _seed <= 1.0):
+                # transforms passed initial seed from float to integer
+                self._state = self.__call__( int(_seed * Pcg128_64._MODULO_128) )
+            else:
+                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
+        
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: int = None) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
         setstate() was called.
-        Raises exception ValueError if _state is a float  and 
-        its value is out of range [0.0, 1.0].
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
-            self._state = _state & Pcg128_64._MODULO_128
-            
-        elif isinstance( _state, float ):
-            if ( 0.0 <= _state <= 1.0):
-                # transforms passed initial seed from float to integer
-                self._counter = 0
-                self._key = self.__call__( int(_state * 0xffff_ffff_ffff_ffff) )
-            else:
-                raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_state})")
-                
+        if _state is None or isinstance( _state, int ):
+            self.seed( _state )
         else:
-            # uses local time as initial seed
-            initRand = SplitMix64()
-            self._state = (initRand() << 64) | initRand()
+            raise TypeError(f"State value must be None or an int (currently is {type(_state)})")
 
 
 #=====   end of module   pcg128_64.py   ======================================
