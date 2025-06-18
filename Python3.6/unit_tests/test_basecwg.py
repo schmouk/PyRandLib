@@ -29,7 +29,8 @@ from PyRandLib.basecwg import BaseCWG
 
 #=============================================================================
 class TestBaseCwg:
-    """Tests the base class BaseCWG"""
+    """Tests the base class BaseCWG.
+    """
     
     python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')
 

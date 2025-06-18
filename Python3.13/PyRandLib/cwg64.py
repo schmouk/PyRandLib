@@ -129,7 +129,7 @@ class Cwg64( BaseCWG ):
     def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int | float):
+        if _seed is None or isinstance(_seed, (int, float)):
             if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
                 raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
             else:
@@ -155,7 +155,7 @@ class Cwg64( BaseCWG ):
         if _state is None:
             self.seed()
 
-        elif not isinstance( _state, list | tuple ):
+        elif not isinstance( _state, (list, tuple) ):
             raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
                 
         elif len(_state) == 4:

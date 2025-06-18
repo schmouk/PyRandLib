@@ -28,7 +28,8 @@ from PyRandLib.basecwg import BaseCWG
 
 #=============================================================================
 class TestBaseCwg:
-    """Tests the base class BaseCWG"""
+    """Tests the base class BaseCWG.
+    """
     
     #-------------------------------------------------------------------------
     def test_init_empty(self):

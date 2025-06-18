@@ -301,7 +301,7 @@ class TestSplitMix31:
 
     #-------------------------------------------------------------------------
     def test_call_int(self):
-        splt = SplitMix32()
+        splt = SplitMix31()
 
         assert splt(1) == 0x910a2dec89025cc1 >> 33
         assert splt(-1) == 0xe4d971771b652c20 >> 33
