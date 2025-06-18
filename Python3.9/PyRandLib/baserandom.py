@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from random import Random
-from typing import Union
+from typing import List, Tuple, Union
 
 from .annotation_types import Numerical, SeedStateType, StateType
 
@@ -302,7 +302,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -312,7 +312,7 @@ class BaseRandom( Random ):
         calls method setstate() which MUST be overridden in classes that 
         inherit from class BaseRandom.
         """
-        if _seedState is None or isinstance(_seedState, int) or isinstance(_seedState, float):
+        if _seedState is None or isinstance(_seedState, (int, float)):
             if isinstance(_seedState, float) and not (0.0 <= _seedState <= 1.0):
                 raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seedState})")
             else:
@@ -350,7 +350,7 @@ class BaseRandom( Random ):
         The probability of success in each trial is p, 0.0 <= p <= 1.0.
         Built-in method available since Python 3.12, implemented in PyRandLib
         for all  former versions of Python.
-        """       
+        """
         return sum( self.random() < p for _ in range(n) )
 
 
@@ -365,10 +365,10 @@ class BaseRandom( Random ):
         return super().expovariate(lambd)
 
     #-------------------------------------------------------------------------
-    def getrandbits(self, k: int, /) -> int:
+    def getrandbits(self, k: int) -> int:
         """Returns k bits from the internal state of the generator.
 
-        k must be a positive value greater or equal to  zero.
+        k must be a positive value greater or equal to zero.
         """
         assert k >= 0, "the returned bits count must not be negative"
         assert k < self._OUT_BITS, f"the returned bits count must be less than {self._OUT_BITS}"
@@ -377,7 +377,7 @@ class BaseRandom( Random ):
         
 
     #-------------------------------------------------------------------------
-    def randbytes(self, n: int, /) -> bytes:
+    def randbytes(self, n: int) -> bytes:
         """Generates n random bytes.
 
         This method should not be used for generating security tokens.
@@ -388,7 +388,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def getstate(self) -> StateType:
+    def getstate(self) -> StateType:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can then be passed to setstate() to restore the state.
@@ -398,20 +398,20 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int) or isinstance(_seed, float):
+        if _seed is None or isinstance(_seed, (int, float)):
             if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
                 raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
             else:
                 super().seed( _seed )
         else:
-            raise ValueError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType = None, /) -> None:
+    def setstate(self, _state: StateType = None) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call to getstate().
@@ -424,10 +424,9 @@ class BaseRandom( Random ):
 
     #-------------------------------------------------------------------------
     def __call__(self, _max : Union[Numerical,
-                                    tuple[Numerical],
-                                    list[Numerical]] = 1.0,
-                       /,
-                       times: int                    = 1   ) -> Union[Numerical, list[Numerical]]:
+                                    Tuple[Numerical],
+                                    List[Numerical]] = 1.0,
+                       times: int                    = 1   ) -> Union[Numerical, List[Numerical]]:
         """This class's instances are callable.
         
         The returned value is uniformly contained within the 
@@ -441,35 +440,32 @@ class BaseRandom( Random ):
         indexed entry in '_max'.
         """
         assert isinstance( times, int )
-        if times < 1:
-            times =  1
+        assert times >= 0
          
         if isinstance( _max, int ):
             ret = [ int(_max * self.random()) for _ in range(times) ]
         elif isinstance( _max, float ):
             ret = [ _max * self.random() for _ in range(times) ]
         else:
-            try:
-                if times == 1:
-                    ret = [ self(m,1) for m in _max ] 
-                else:
-                    ret = [ [self(m,1) for m in _max] for _ in range(times) ]
-            except:
-                ret = [ self.__call__(times=1) ]
+            assert isinstance(_max, (tuple, list))
+            if all(isinstance(m, (int, float)) for m in _max):
+                ret = [ [self(m,1) for m in _max] for _ in range(times) ]
+            else:
+                raise ValueError(f"all max values must be int or float ({_max})")
         
-        return ret[0] if len(ret) == 1 else ret
+        return ret[0] if len(ret) == 1 else ret  # type: ignore
     
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _rotleft(cls, _value: int, _rotCount: int, _bitsCount: int = 64, /) -> int:
+    def _rotleft(cls, _value: int, _rotCount: int, _bitsCount: int = 64) -> int:
         """Returns the value of a left rotating by _rotCount bits
 
         Useful for some inheriting classes.
         """
         #assert 1 <=_rotCount <= _bitsCount 
         hiMask = ((1 << _bitsCount) - 1) ^ (loMask := (1 << (_bitsCount - _rotCount)) - 1)
-        return ((_value & loMask) << _rotCount) | ((_value & hiMask) >> (_bitsCount - _rotCount))
+        return (((_value & loMask) << _rotCount) & ((1 << _bitsCount) - 1)) | ((_value & hiMask) >> (_bitsCount - _rotCount))
 
 
 #=====   end of module   baserandom.py   =====================================

@@ -24,7 +24,7 @@ SOFTWARE.
 from typing import override
 
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical
+from .annotation_types import Numerical, SeedStateType
 
 
 #=============================================================================

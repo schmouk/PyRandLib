@@ -302,7 +302,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -350,7 +350,7 @@ class BaseRandom( Random ):
         The probability of success in each trial is p, 0.0 <= p <= 1.0.
         Built-in method available since Python 3.12, implemented in PyRandLib
         for all  former versions of Python.
-        """       
+        """
         return sum( self.random() < p for _ in range(n) )
 
 
@@ -389,7 +389,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def getstate(self) -> StateType:
+    def getstate(self) -> StateType:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can then be passed to setstate() to restore the state.
@@ -399,7 +399,7 @@ class BaseRandom( Random ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
         if _seed is None or isinstance(_seed, int) or isinstance(_seed, float):
@@ -408,11 +408,11 @@ class BaseRandom( Random ):
             else:
                 super().seed( _seed )
         else:
-            raise ValueError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType = None, /) -> None:
+    def setstate(self, _state: StateType = None) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call to getstate().
@@ -441,23 +441,20 @@ class BaseRandom( Random ):
         indexed entry in '_max'.
         """
         assert isinstance( times, int )
-        if times < 1:
-            times =  1
+        assert times >= 0
          
         if isinstance( _max, int ):
             ret = [ int(_max * self.random()) for _ in range(times) ]
         elif isinstance( _max, float ):
             ret = [ _max * self.random() for _ in range(times) ]
         else:
-            try:
-                if times == 1:
-                    ret = [ self(m,1) for m in _max ] 
-                else:
-                    ret = [ [self(m,1) for m in _max] for _ in range(times) ]
-            except:
-                ret = [ self.__call__(times=1) ]
+            assert isinstance(_max, (tuple, list))
+            if all(isinstance(m, (int, float)) for m in _max):
+                ret = [ [self(m,1) for m in _max] for _ in range(times) ]
+            else:
+                raise ValueError(f"all max values must be int or float ({_max})")
         
-        return ret[0] if len(ret) == 1 else ret
+        return ret[0] if len(ret) == 1 else ret  # type: ignore
     
 
     #-------------------------------------------------------------------------
@@ -471,7 +468,7 @@ class BaseRandom( Random ):
         loMask = (1 << (_bitsCount - _rotCount)) - 1
         hiMask = ((1 << _bitsCount) - 1) ^ loMask
         hiBits = (_value & hiMask) >> (_bitsCount - _rotCount)
-        return ((_value & loMask) << _rotCount) | hiBits
+        return (((_value & loMask) << _rotCount) & ((1 << _bitsCount) - 1)) | hiBits
 
 
 #=====   end of module   baserandom.py   =====================================
