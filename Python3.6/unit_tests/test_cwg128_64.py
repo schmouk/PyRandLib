@@ -31,7 +31,7 @@ from PyRandLib.cwg128_64 import Cwg128_64
 class TestCwg128_64:
     """Tests class Cwg128_64.
     """
-            
+
     python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')
 
     #-------------------------------------------------------------------------
