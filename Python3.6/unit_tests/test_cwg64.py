@@ -253,3 +253,5 @@ class TestCwg64:
             cwg.setstate([1, 2, '3', 4])  # type: ignore
         with pytest.raises(ValueError):
             cwg.setstate([11, 12, 13.1, 14])  # type: ignore
+        with pytest.raises(ValueError):
+            cwg.setstate((21, 22, 23, -24))  # type: ignore

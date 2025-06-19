@@ -129,18 +129,38 @@ class Cwg128_64( BaseCWG ):
     def seed(self, _seed: Numerical = None, /) -> None:
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int | float):
-            if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
-                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+        if _seed is None:
+            self._seed()
+
+        elif isinstance(_seed, int):
+            self._seed(_seed)
+
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
+                self._seed( int(_seed * 0xffff_ffff_ffff_ffff) )
             else:
-                initRandLo = SplitMix64( _seed & 0xffff_ffff_ffff_ffff )
-                initRandHi = SplitMix64( (_seed >> 64) & 0xffff_ffff_ffff_ffff )
-                self._a = self._weyl = 0
-                self._s = initRandLo() | 1                          # Notice: s must be odd
-                self._state = (initRandHi() << 64) | initRandLo()   # Notice: coded on 128 bits
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
 
         else:
             raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def _seed(self, s: int = None, /) -> None:  # type: ignore
+        """Sets the internal state of this pseudo-random generator.
+        """
+        if s is None or abs(s) < (1 << 64):
+            initRand = SplitMix64( s )
+            self._a = self._weyl = 0
+            self._s = initRand() | 1                        # Notice: s must be odd
+            self._state = (initRand() << 64) | initRand()   # Notice: coded on 128 bits
+        
+        else:
+            initRandLo = SplitMix64( s & 0xffff_ffff_ffff_ffff )
+            initRandHi = SplitMix64( (s >> 64) & 0xffff_ffff_ffff_ffff )
+            self._a = self._weyl = 0
+            self._s = initRandLo() | 1                          # Notice: s must be odd
+            self._state = (initRandHi() << 64) | initRandLo()   # Notice: coded on 128 bits
 
 
     #-------------------------------------------------------------------------
@@ -157,7 +177,7 @@ class Cwg128_64( BaseCWG ):
         if _state is None:
             self.seed()
 
-        elif not isinstance( _state, list | tuple ):
+        elif not isinstance( _state, (list, tuple) ):
             raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
                 
         elif len(_state) == 4:
