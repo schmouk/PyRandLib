@@ -90,14 +90,14 @@ class Cwg128( BaseCWG ):
     
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 2.938_735_877_055_718_769_921_8e-39  # i.e. 1.0 / (1 << 128)
+    _NORMALIZE: Final[float] = 2.938_735_877_055_718_769_921_8e-39  # i.e. 1.0 / (1 << 128)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 128
+    _OUT_BITS: Final[int] = 128  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -108,7 +108,7 @@ class Cwg128( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -133,26 +133,46 @@ class Cwg128( BaseCWG ):
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int | float):
-            if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
-                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+        if _seed is None:
+            self._seed()
+
+        elif isinstance(_seed, int):
+            self._seed(_seed)
+
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
+                self._seed( int(_seed * ((1 << 64) - 1)) )  # Notice: 64 rather than 128 here to comply with c++ version of PyRandLib
             else:
-                initRandLo = SplitMix64( _seed & 0xffff_ffff_ffff_ffff )
-                initRandHi = SplitMix64( (_seed >> 64) & 0xffff_ffff_ffff_ffff )
-                self._a = self._weyl = 0
-                self._s = (initRandHi() << 64) | initRandLo() | 1   # Notice: s must be odd
-                self._state = (initRandHi() << 64) | initRandLo()   # Notice: in the original paper, this seems to be erroneously initialized on sole 64 lowest bits
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
 
         else:
             raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
 
 
     #-------------------------------------------------------------------------
+    def _seed(self, s: int = None, /) -> None:  # type: ignore
+        """Sets the internal state of this pseudo-random generator.
+        """
+        if s is None or abs(s) < (1 << 64):
+            initRand = SplitMix64( s )
+            self._a = self._weyl = 0
+            self._s = (initRand() << 64) | initRand() | 1   # Notice: s must be odd, coded on 128 bits
+            self._state = (initRand() << 64) | initRand()   # Notice: coded on 128 bits
+
+        else:
+            initRandLo = SplitMix64( s & 0xffff_ffff_ffff_ffff )
+            initRandHi = SplitMix64( (s >> 64) & 0xffff_ffff_ffff_ffff )
+            self._a = self._weyl = 0
+            self._s = (initRandHi() << 64) | initRandLo() | 1   # Notice: s must be odd, coded on 128 bits
+            self._state = (initRandHi() << 64) | initRandLo()   # Notice: coded on 128 bits
+
+
+    #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StateType = None, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
@@ -162,9 +182,9 @@ class Cwg128( BaseCWG ):
         is used instead.
         """
         if _state is None:
-            self.seed()
+            self._seed()
 
-        elif not isinstance( _state, list | tuple ):
+        elif not isinstance( _state, (list, tuple) ):
             raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
                 
         elif len(_state) == 4:
