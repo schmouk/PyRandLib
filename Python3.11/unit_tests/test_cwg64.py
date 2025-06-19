@@ -22,19 +22,15 @@ SOFTWARE.
 
 #=============================================================================
 import pytest
-import time
 
 from PyRandLib.cwg64 import Cwg64
 
 
 #=============================================================================
-class TestCwg:
-    """Tests the base class Cwg64.
+class TestCwg64:
+    """Tests class Cwg64.
     """
-class TestBaseCwg:
-    """Tests the base class BaseCWG.
-    """
-    
+
     #-------------------------------------------------------------------------
     def test_class(self):
         assert Cwg64._NORMALIZE == 1.0 / (1 << 64)

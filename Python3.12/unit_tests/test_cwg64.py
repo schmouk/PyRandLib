@@ -22,17 +22,13 @@ SOFTWARE.
 
 #=============================================================================
 import pytest
-import time
 
 from PyRandLib.cwg64 import Cwg64
 
 
 #=============================================================================
-class TestCwg:
-    """Tests the base class Cwg64.
-    """
-class TestBaseCwg:
-    """Tests the base class BaseCWG.
+class TestCwg64:
+    """Tests class Cwg64.
     """
     
     #-------------------------------------------------------------------------
