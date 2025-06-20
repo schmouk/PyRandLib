@@ -77,7 +77,7 @@ class BaseLCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None) -> None:
+    def __init__(self, _seedState: Numerical = None) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -91,7 +91,7 @@ class BaseLCG( BaseRandom ):
             
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> int:
+    def getstate(self) -> int:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
@@ -99,6 +99,6 @@ class BaseLCG( BaseRandom ):
         which  has  to  be  used  in  methods 'next() and 'setstate() of every
         inheriting class.
         """
-        return self._state
+        return self._state  # type: ignore
  
 #=====   end of module   baselcg.py   ========================================

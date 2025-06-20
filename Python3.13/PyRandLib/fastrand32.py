@@ -88,7 +88,7 @@ class FastRand32( BaseLCG ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None, /) -> None:
+    def __init__(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a numerical then the local 
@@ -108,10 +108,10 @@ class FastRand32( BaseLCG ):
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int | float):
+        if _seed is None or isinstance(_seed, (int, float)):
             if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
                 raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
             else:
@@ -122,18 +122,21 @@ class FastRand32( BaseLCG ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: Numerical, /) -> None:
+    def setstate(self, _state: Numerical = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
-        setstate() was called.
+        setstate() was called. If None, the local system time
+        is used instead.
         """
-        if isinstance(_state, int):
+        if _state is None:
+            self.seed()
+        elif isinstance(_state, int):
             self._state = SplitMix32( _state )()
         else:
-            raise TypeError(f"initialization state must be an integer (actually is {type(_state)})")
+            raise TypeError(f"initialization state must be None or an integer (actually is {type(_state)})")
 
 
 #=====   end of module   fastrand32.py   =====================================
