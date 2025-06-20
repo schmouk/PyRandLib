@@ -86,16 +86,6 @@ class FastRand32( BaseLCG ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None) -> None:  # type: ignore
-        """Constructor.
-        
-        Should _seed be None or not a numerical then the local 
-        time is used (with its shuffled value) as a seed.
-        """
-        super().__init__( _seed ) # this call creates attribute self._state and sets it
-
-
-    #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -107,11 +97,15 @@ class FastRand32( BaseLCG ):
     def seed(self, _seed: Numerical = None) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, (int, float)):
-            if isinstance(_seed, float) and not (0.0 <= _seed <= 1.0):
-                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
-            else:
+        if _seed is None or isinstance(_seed, int):
+            self._state = SplitMix32( _seed )()
+        
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
                 self._state = SplitMix32( _seed )()
+            else:
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+
         else:
             raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
 
