@@ -114,7 +114,24 @@ class FastRand63( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: Numerical) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int):
+            self._state = SplitMix63( _seed )()
+        
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
+                self._state = SplitMix63( _seed )()
+            else:
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: Numerical = None) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
@@ -122,12 +139,19 @@ class FastRand63( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance(_state, int) or isinstance(_state, float):
+        if _state is None:
+            self.seed()
+        elif isinstance(_state, int):
+            self._state = SplitMix63(_state)()
+        else:
+            raise TypeError(f"initialization state must be None or an integer (actually is {type(_state)})")
+
+        """if isinstance(_state, int) or isinstance(_state, float):
             initRand = SplitMix63( _state )
             self._state = initRand()
         else:
             initRand = SplitMix63()
-            self._state = initRand()
+            self._state = initRand()"""
 
 
 #=====   end of module   fastrand63.py   =====================================

@@ -94,14 +94,14 @@ class FastRand63( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 1.084_202_172_485_504_434_007_453e-19  # i.e. 1.0 / (1 << 63)
+    _NORMALIZE: Final[float] = 1.084_202_172_485_504_434_007_453e-19  # i.e. 1.0 / (1 << 63)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 63
+    _OUT_BITS: Final[int] = 63  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -115,8 +115,26 @@ class FastRand63( BaseLCG ):
         self._state = (0x7ff3_19fa_a77b_e975 * self._state + 1) & 0x7fff_ffff_ffff_ffff
         return self._state
 
+
     #-------------------------------------------------------------------------
-    def setstate(self, _state: Numerical, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int):
+            self._state = SplitMix63( _seed )()
+        
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
+                self._state = SplitMix63( _seed )()
+            else:
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: Numerical = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
@@ -124,10 +142,12 @@ class FastRand63( BaseLCG ):
         state of the generator to what it  was  at  the  time 
         setstate() was called.
         """
-        if isinstance(_state, int | float):
-            self._state = SplitMix63( _state )()
+        if _state is None:
+            self.seed()
+        elif isinstance(_state, int):
+            self._state = SplitMix63(_state)()
         else:
-            self._state = SplitMix63()()
+            raise TypeError(f"initialization state must be None or an integer (actually is {type(_state)})")
 
 
 #=====   end of module   fastrand63.py   =====================================
