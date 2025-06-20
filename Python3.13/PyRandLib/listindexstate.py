@@ -89,7 +89,7 @@ class ListIndexState( BaseRandom ):
         the shuffling of the local current time value is used as such 
         an initial seed.
         """
-        if _seed is None or isinstance(_seed, int | float):
+        if _seed is None or isinstance(_seed, (int, float)):
             self._index = 0
             self._initstate( _seed )
         else:
@@ -111,7 +111,7 @@ class ListIndexState( BaseRandom ):
         if (_state is None):
             self.seed()
 
-        elif not isinstance( _state, list | tuple ):
+        elif not isinstance( _state, (list, tuple) ):
             raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
         
         else:
@@ -129,7 +129,7 @@ class ListIndexState( BaseRandom ):
                         self._state = list(_state)
                 
                 case _:
-                    if not isinstance( _state[0], list | tuple ):
+                    if not isinstance( _state[0], (list, tuple) ):
                         raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state[0])})")
                     elif (len(_state[0]) != self._STATE_SIZE):
                         raise ValueError(f"Incorrect size for initializing state (should be {self._STATE_SIZE} integers, currently is {len(_state)})")
