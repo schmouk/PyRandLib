@@ -112,7 +112,7 @@ class LFib1340( BaseLFib64 ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -133,7 +133,7 @@ class LFib1340( BaseLFib64 ):
             k861 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
-        self._state[self._index] = (myValue := (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)
+        self._state[self._index] = (myValue := (self._state[k861] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)  # type: ignore
         
         # next index
         self._index = (self._index+1) % self._STATE_SIZE
