@@ -285,6 +285,15 @@ class TestLFib78:
         assert lfib.gauss_next is None  # type: ignore
         assert lfib._state == [i+21 for i in range(TestLFib78.LFib78_STATE_SIZE)]  # type: ignore
 
+        lfib.setstate(tuple())
+        assert lfib.gauss_next is None  # type: ignore
+        assert lfib._index == 0
+        assert lfib.gauss_next is None  # type: ignore
+        assert all(0 <= s < (1 << 64) for s in lfib._state)  # type: ignore
+
+        with pytest.raises(ValueError):
+            lfib.setstate(((1, 2, 3), 4))  # type: ignore
+
         with pytest.raises(TypeError):
             lfib.setstate([1, 2])
         with pytest.raises(TypeError):
@@ -306,3 +315,39 @@ class TestLFib78:
             _state = [i+1 for i in range(TestLFib78.LFib78_STATE_SIZE)]  # type: ignore
             _state[12] = {1, 2}
             lfib.setstate(_state)  # type: ignore
+
+    #-------------------------------------------------------------------------
+    def test_getstate(self):
+        lfib = LFib78()
+
+        state = (tuple(i+31 for i in range(TestLFib78.LFib78_STATE_SIZE)), 3)
+        lfib.setstate(state)  # type: ignore
+        lfib_state = lfib.getstate()
+        assert all(s == t for (s, t) in zip(state[0], lfib_state[0]))  # type: ignore
+        assert lfib_state[1] == state[1] % 17  # type: ignore
+
+        state33 = (tuple(i+1 for i in range(17)), 33)
+        lfib.setstate(state33)  # type: ignore
+        lfib_state = lfib.getstate()
+        assert all(s == t for (s, t) in zip(state33[0], lfib_state[0]))  # type: ignore
+        assert lfib_state[1] == state33[1] % 17  # type: ignore
+
+    #-------------------------------------------------------------------------
+    def test_init_index(self):
+        lfib = LFib78()
+
+        lfib._initindex(3)
+        assert lfib._index == 3
+
+        lfib._initindex(2 * TestLFib78.LFib78_STATE_SIZE + 11)
+        assert lfib._index == 11
+
+        with pytest.raises(TypeError):
+            lfib._initindex(1.234)  # type: ignore
+        with pytest.raises(TypeError):
+            lfib._initindex((1, 2, 3))  # type: ignore
+        with pytest.raises(TypeError):
+            lfib._initindex("456")  # type: ignore
+        with pytest.raises(TypeError):
+            lfib._initindex(set())  # type: ignore
+        

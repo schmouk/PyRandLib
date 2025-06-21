@@ -128,7 +128,7 @@ class ListIndexState( BaseRandom ):
                 if not (isinstance(_state[0], list) or isinstance(_state[0], tuple)):
                     raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state[0])})")
                 elif (len(_state[0]) != self._STATE_SIZE):
-                    raise ValueError(f"Incorrect size for initializing state (should be {self._STATE_SIZE} integers, currently is {len(_state)})")
+                    raise ValueError(f"Incorrect size for initializing state (should be {self._STATE_SIZE} integers, currently is {len(_state[0])})")
                 else:
                     self._initindex( _state[1] )  # type: ignore
                     # each entry in _seedState MUST be a positive or null integer
