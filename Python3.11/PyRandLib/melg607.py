@@ -98,7 +98,7 @@ class Melg607( BaseMELG ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -118,11 +118,11 @@ class Melg607( BaseMELG ):
         self._index = (i_1 := (i+1) % 9)
 
         s9 = self._state[9]
-        x = (self._state[i] & 0xffff_ffff_8000_0000) | (self._state[i_1] & 0x0000_0000_7fff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
-        self._state[9] = (s9 := ((x >> 1) ^ Melg607._A_COND[x & 0x01]) ^ self._state[(i+5) % 9] ^ (s9 ^ ((s9 << 13) & 0xffff_ffff_ffff_ffff)))
+        x = (self._state[i] & 0xffff_ffff_8000_0000) | (self._state[i_1] & 0x0000_0000_7fff_ffff)  # notice: | instead of ^ as erroneously printed in [11]  # type: ignore
+        self._state[9] = (s9 := ((x >> 1) ^ Melg607._A_COND[x & 0x01]) ^ self._state[(i+5) % 9] ^ (s9 ^ ((s9 << 13) & 0xffff_ffff_ffff_ffff)))  # type: ignore
 
         si = self._state[i] = x ^ (s9 ^ (s9 >> 35))
-        return (si ^ ((si << 30) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 3) % 9]) & 0x66ed_c62a_6bf8_c826)
+        return (si ^ ((si << 30) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 3) % 9]) & 0x66ed_c62a_6bf8_c826)  # type: ignore
 
 
 #=====   end of module   melg607.py   ========================================
