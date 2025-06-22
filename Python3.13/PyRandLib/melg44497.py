@@ -96,11 +96,11 @@ class Melg44497( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _A_COND: list[int] = (0, 0x4fa9_ca36_f293_c9a9)
+    _A_COND: tuple[int, int] = (0, 0x4fa9_ca36_f293_c9a9) # this tuple will avoid an 'if' in method 'next()'
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -121,11 +121,11 @@ class Melg44497( BaseMELG ):
         self._index = (i_1 := (i+1) % 695)
 
         s695 = self._state[695]
-        x = (self._state[i] & 0xffff_8000_0000_0000) | (self._state[i_1] & 0x0000_7fff_ffff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
-        self._state[695] = (s695 := ((x >> 1) ^ Melg44497._A_COND[x & 0x01]) ^ self._state[(i+373) % 695] ^ (s695 ^ ((s695 << 37) & 0xffff_ffff_ffff_ffff)))
+        x = (self._state[i] & 0xffff_8000_0000_0000) | (self._state[i_1] & 0x0000_7fff_ffff_ffff)  # notice: | instead of ^ as erroneously printed in [11]  # type: ignore
+        self._state[695] = (s695 := ((x >> 1) ^ Melg44497._A_COND[x & 0x01]) ^ self._state[(i+373) % 695] ^ (s695 ^ ((s695 << 37) & 0xffff_ffff_ffff_ffff)))  # type: ignore
 
         si = self._state[i] = x ^ (s695 ^ (s695 >> 14))
-        return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)
+        return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)  # type: ignore
         
 
 #=====   end of module   melg44977.py   ======================================

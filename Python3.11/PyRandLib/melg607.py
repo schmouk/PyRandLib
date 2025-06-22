@@ -94,7 +94,7 @@ class Melg607( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _A_COND = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
+    _A_COND: tuple[int, int] = (0, 0x81f1_fd68_0123_48bc)  # this tuple will avoid an 'if' in method 'next()', a=0x81f1...
 
 
     #-------------------------------------------------------------------------
