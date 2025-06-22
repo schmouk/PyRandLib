@@ -87,7 +87,7 @@ class BaseMRG( ListIndexState ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _initRandClass, _stateSize: int = 0, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _initRandClass, _stateSize: int = 0, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         _initRandClass is the class to be  instantiated  for  the  random

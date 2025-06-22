@@ -115,7 +115,7 @@ class Mrg287( BaseMRG ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None) -> None:
+    def __init__(self, _seed: SeedStateType = None) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -143,7 +143,7 @@ class Mrg287( BaseMRG ):
             k179 += self._STATE_SIZE
         
         # then evaluates current value
-        self._state[self._index] = (myValue := (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) & 0xffff_ffff)
+        self._state[self._index] = (myValue := (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) & 0xffff_ffff)  # type: ignore
         
         # next index
         self._index = (self._index + 1) % self._STATE_SIZE
