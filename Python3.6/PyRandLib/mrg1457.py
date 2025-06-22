@@ -100,7 +100,7 @@ class Mrg1457( BaseMRG ):
     """
     
     #-------------------------------------------------------------------------
-    _NORMALIZE: float = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
+    _NORMALIZE: float = 1.0 / (1 << 31)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
@@ -115,7 +115,7 @@ class Mrg1457( BaseMRG ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None) -> None:
+    def __init__(self, _seed: SeedStateType = None) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -140,7 +140,7 @@ class Mrg1457( BaseMRG ):
             k24 += self._STATE_SIZE
         
         # then evaluates current value
-        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index])) % 2_147_483_647
+        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index])) % 2_147_483_647  # type: ignore
         self._state[self._index] = myValue
         
         # next index
