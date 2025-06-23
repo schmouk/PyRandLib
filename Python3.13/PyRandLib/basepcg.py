@@ -109,7 +109,7 @@ class BasePCG( BaseRandom ):
  
     #-------------------------------------------------------------------------
     @override
-    def getstate(self) -> SeedStateType:  # type: ignore
+    def getstate(self) -> int:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
