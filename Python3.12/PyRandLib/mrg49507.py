@@ -104,22 +104,24 @@ class Mrg49507( BaseMRG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _NORMALIZE: Final[float] = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
+    _NORMALIZE: Final[float] = 1.0 / (1 << 31)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 31
+    _OUT_BITS: Final[int] = 31  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
     """
 
+    _MULT = -(1 << 25) - (1 << 7)
+
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -139,7 +141,8 @@ class Mrg49507( BaseMRG ):
             k7 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
-        self._state[self._index] = ((myValue := (-67_108_992 * (self._state[k7] + self._state[self._index])) % 2_147_483_647) & 0x7fff_ffff_ffff_ffff)
+        v = (Mrg49507._MULT * (self._state[k7] + self._state[self._index])) & 0xffff_ffff_ffff_ffff  # type: ignore
+        self._state[self._index] = (myValue := (v % 2_147_483_647) & 0x7fff_ffff)  # type: ignore
         
         # next index
         self._index = (self._index+1) % self._STATE_SIZE
