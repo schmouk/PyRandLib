@@ -92,7 +92,7 @@ class BasePCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None) -> None:  # type: ignore
+    def __init__(self, _seedState: SeedStateType = None) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 

@@ -118,13 +118,13 @@ class Pcg1024_32( Pcg64_32 ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None, /) -> None:  # type: ignore
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not be of SeedStateType then the 
         local time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attributes self._state and self._extendedState and sets them
+        super().__init__( _seed ) # this call creates attributes self._state and self._extendedState and sets them  # type: ignore
 
 
     #-------------------------------------------------------------------------
@@ -135,7 +135,7 @@ class Pcg1024_32( Pcg64_32 ):
         # evaluates a to-be-xor'ed 32-bits value from current extended state
         if self._state & 0xffff_ffff == 0:
             self._advancetable()
-        extendedValue = self._extendedState[ self._state & 0x03ff ]
+        extendedValue = self._extendedState[ (self._state >> 22) & 0x03ff ]
 
         # then xor's it with the next 32-bits value evaluated with the internal state
         return super().next() ^ extendedValue
@@ -143,7 +143,7 @@ class Pcg1024_32( Pcg64_32 ):
 
     #-------------------------------------------------------------------------
     @override
-    def getstate(self) -> StateType:
+    def getstate(self) -> StateType:  # type: ignore
         """Returns an object capturing the current internal state of the  generator.
         
         This object can be passed to setstate() to restore the state.
@@ -157,8 +157,7 @@ class Pcg1024_32( Pcg64_32 ):
     def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
-        if _seed is None or isinstance(_seed, int | float):
-            # uses shuffled local time as initial seed
+        if _seed is None or isinstance(_seed, (int, float)):
             self._initstate( _seed )
             self._initextendedstate( _seed )        
         else:
@@ -167,7 +166,7 @@ class Pcg1024_32( Pcg64_32 ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StateType, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call to getstate().
@@ -180,11 +179,14 @@ class Pcg1024_32( Pcg64_32 ):
         if _state is None:
             self.seed()
 
-        elif not isinstance( _state, list | tuple ):
+        elif not isinstance( _state, (list, tuple) ):
             raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
         
         elif len(_state) != 2:
-            raise ValueError(f"Incorrect size for initializing state (should be of length 2, currently is {len(_state)})")
+            raise TypeError(f"Incorrect size for initializing state (should be of length 2, currently is {len(_state)})")
+
+        elif not isinstance( _state[0], (list, tuple) ):
+            raise TypeError(f"initialization state[0] must be a tuple or a list (actually is {type(_state[0])})")
         
         else:
             extendedCount = len( _state[0] )  # type: ignore
@@ -210,27 +212,25 @@ class Pcg1024_32( Pcg64_32 ):
         carry = False
         for i, s in enumerate( self._extendedState ):
             if carry:
-                carry = self._extendedstep(s, i)
-            if self._extendedstep(s, i):  # notice: must be evaluated before carry is set
+                carry = self._externalstep(s, i)
+            if self._externalstep(s, i):  # notice: must be evaluated before carry is set
                 carry = True
 
 
     #-------------------------------------------------------------------------
-    def _extendedstep(self, value: int, i: int, /) -> bool:
+    def _externalstep(self, value: int, i: int, /) -> bool:
         """Evaluates new extended state indexed value in the extended state table.
 
         Returns True when the evaluated extended value is set to zero on all bits
         but its two lowest ones - these two bits never change with MCGs.
         """
         state = (0xacb8_6d69 * (value ^ (value >> 22))) & 0xffff_ffff
-        state = Pcg1024_32._invxrs( state, 32, 4 + (state >> 28) & 0x0f )
-        state = (0x108e_f2d9 * state + 2 * (i + 1)) & 0xffff_ffff
+        state = (0x2c92_77b5 * Pcg1024_32._invxrs( state, 32, 4 + (state >> 28) ) + 2 * (i + 1)) & 0xffff_ffff
 
-        result = 0x108e_f2d9 * (state ^ (state >> (4 + (state >> 28))))
+        state ^= state >> 16
+        self._extendedState[i] = state
 
-        self._extendedState[i] = (result := result ^ (result >> 22))
-
-        return result == (state & 0b11)
+        return state == (state & 0b11)
 
 
     #-------------------------------------------------------------------------

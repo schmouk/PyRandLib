@@ -121,7 +121,7 @@ class Pcg64_32( BasePCG ):
         """
         # evaluates next internal state
         current_state = self._state
-        self._state = (0x5851_F42D_4C95_7F2D * current_state + 0x1405_7B7E_F767_814F) & 0xffff_ffff_ffff_ffff
+        self._state = (0x5851_f42D_4c95_7f2d * current_state + 0x1405_7b7e_f767_814f) & 0xffff_ffff_ffff_ffff
         # the permutated output is then computed
         random_shift = (current_state >> 61) & 0x07  # random shift is set with the 3 upper bits of internal state
         return ((current_state ^ (current_state >> 22)) >> (22 + random_shift)) & 0xffff_ffff
