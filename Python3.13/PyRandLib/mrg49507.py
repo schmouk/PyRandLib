@@ -150,19 +150,5 @@ class Mrg49507( BaseMRG ):
         # then returns the integer generated value
         return  myValue
 
-"""
-    const std::uint32_t index{ _internal_state.state.index };
-    const std::uint32_t k7{ (index < 7) ? (index + SEED_SIZE) - 7 : index - 7 };
 
-    // evaluates current value and modifies internal state
-    const std::uint64_t value{ 
-        (0xffff'ffff'fdff'ff80ull *  //i.e. (-2^25 - 2^7), or -67'108'992
-            std::uint64_t(_internal_state.state.list[k7] + _internal_state.state.list[index])
-        ) % _MODULO
-    };
-    _internal_state.state.list[index] = std::uint32_t(value);
-
-    // next index
-    _internal_state.state.index = (index + 1) % SEED_SIZE;
-"""
 #=====   end of module   mrgrand49507.py   ===================================
