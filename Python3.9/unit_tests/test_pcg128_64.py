@@ -23,109 +23,120 @@ SOFTWARE.
 #=============================================================================
 import pytest
 
-from PyRandLib.pcg64_32 import Pcg64_32
+from PyRandLib.pcg128_64 import Pcg128_64
 
 
 #=============================================================================
-class TestCwg64_32:
-    """Tests class Pcg64_32.
+class TestCwg128_64:
+    """Tests class Pcg128_64.
     """
     
     #-------------------------------------------------------------------------
     def test_class(self):
-        assert Pcg64_32._NORMALIZE == 1.0 / (1 << 32)
-        assert Pcg64_32._OUT_BITS == 32
-    
+        assert Pcg128_64._NORMALIZE == 1.0 / (1 << 64)
+        assert Pcg128_64._OUT_BITS == 64
+        assert Pcg128_64._A == 0x2360_ed05_1fc6_5da4_4385_df64_9fcc_f645
+        assert Pcg128_64._C == 0x5851_f42d_4c95_7f2d_1405_7b7e_f767_814f
+        assert Pcg128_64._MODULO_128 == (1 << 128) - 1
+
     #-------------------------------------------------------------------------
     def test_init_empty(self):
-        pcg = Pcg64_32()
+        pcg = Pcg128_64()
         assert pcg.gauss_next is None  # type: ignore
         assert pcg._state != 0  # notice: may be 0 but shouldn't
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
-        pcg = Pcg64_32(1)
+        pcg = Pcg128_64(1)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 1
+        assert pcg._state == 0x1_ffff_ffff_ffff_fffe
 
-        pcg = Pcg64_32(-2)
+        pcg = Pcg128_64(-2)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0xfffffffffffffffe
+        assert pcg._state == 0xffff_ffff_ffff_fffe_0000_0000_0000_0001
 
-        pcg = Pcg64_32(0x0123_4567_89ab_cdef)
+        pcg = Pcg128_64(0x0123_4567_89ab_cdef)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x0123_4567_89ab_cdef
+        assert pcg._state == 0x0123_4567_89ab_cdef_fedc_ba98_7654_3210
 
-        pcg = Pcg64_32(-8_870_000_000_000_000_000)
+        pcg = Pcg128_64(-8_870_000_000_000_000_000)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x84e76dfeca490000
+        assert pcg._state == 0x84e7_6dfe_ca49_0000_7b18_9201_35b6_ffff
 
-        pcg = Pcg64_32(8_870_000_000_000_000_000)
+        pcg = Pcg128_64(8_870_000_000_000_000_000)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x7b18920135b70000
+        assert pcg._state == 0x7b18_9201_35b7_0000_84e7_6dfe_ca48_ffff
 
-        pcg = Pcg64_32(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
+        pcg = Pcg128_64(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0xfffffffffffffffd
+        assert pcg._state == 0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
-        pcg = Pcg64_32(0.357)
+        pcg = Pcg128_64(0.357)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x5b645a1cac083000
+        assert pcg._state == 0x5b64_5a1c_ac08_3000_0000_0000_0000_0000
 
-        pcg = Pcg64_32(1.0)
+        pcg = Pcg128_64(1.0)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == int(1.0 * 0xffff_ffff_ffff_ffff)
+        assert pcg._state == int(1.0 * 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff)
 
         with pytest.raises(ValueError):
-            pcg = Pcg64_32(-0.0001)
+            pcg = Pcg128_64(-0.0001)
         with pytest.raises(ValueError):
-            pcg = Pcg64_32(1.001)
+            pcg = Pcg128_64(1.001)
 
     #-------------------------------------------------------------------------
     def test_init_state(self):
-        pcg = Pcg64_32(3)  # type: ignore
+        pcg = Pcg128_64(3)  # type: ignore
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 3
+        assert pcg._state == 0x3_ffff_ffff_ffff_fffc
 
-        pcg = Pcg64_32(0.357)
+        pcg = Pcg128_64(0.357)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x5b645a1cac083000
+        assert pcg._state == 0x5b64_5a1c_ac08_3000_0000_0000_0000_0000
 
         with pytest.raises(TypeError):
-            pcg = Pcg64_32((1, 2, 3))  # type: ignore
+            pcg = Pcg128_64((1, 2, 3))  # type: ignore
         with pytest.raises(TypeError):
-            pcg = Pcg64_32((1, 2, 3, 4, 5))  # type: ignore
+            pcg = Pcg128_64((1, 2, 3, 4, 5))  # type: ignore
         with pytest.raises(TypeError):
-            pcg = Pcg64_32([1, 2, 3])  # type: ignore
+            pcg = Pcg128_64([1, 2, 3])  # type: ignore
         with pytest.raises(TypeError):
-            pcg = Pcg64_32([1, 2, 3, 4, 5])  # type: ignore
+            pcg = Pcg128_64([1, 2, 3, 4, 5])  # type: ignore
         with pytest.raises(TypeError):
-            pcg = Pcg64_32(set())  # type: ignore
+            pcg = Pcg128_64(set())  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_next(self):
-        pcg = Pcg64_32(0x0123_4567_89ab_cdef)
+        pcg = Pcg128_64(0x0123_4567_89ab_cdef)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x0123_4567_89ab_cdef
+        assert pcg._state == 0x0123_4567_89ab_cdef_fedc_ba98_7654_3210
 
-        for v in [0x8d158c12, 0xc65b2172, 0xa18de728, 0x83d45f91, 0x1094d283]:
+        for v in [0xffffffffffffffff, 0x13c49fecdee35f71, 0x4ee9574cc31f57d2, 0x718b9867b2c7ef05, 0xa9b3898995846d5c]:
             assert pcg.next() == v
 
-        assert pcg._state == 0xc60c9ae76aeb1026
+        assert pcg._state == 0x08ab_2233_cb87_c6d6_2bf1_6123_1d0f_c8d3
 
     #-------------------------------------------------------------------------
     def test_seed(self):
-        pcg = Pcg64_32()
+        pcg = Pcg128_64()
         
         pcg.seed(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0xfffffffffffffffd
+        assert pcg._state == 0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd
+
+        pcg.seed(-0x1_0123_4567_89ab_cdef)
+        assert pcg.gauss_next is None  # type: ignore
+        assert pcg._state == (1 << 128) - 0x1_0123_4567_89ab_cdef
+
+        pcg.seed(-0x3_1000_0012_3456_789f_0123_4567_89ab_cdef)
+        assert pcg.gauss_next is None  # type: ignore
+        assert pcg._state == (1 << 128) - 0x1000_0012_3456_789f_0123_4567_89ab_cdef
 
         pcg.seed(0.357)
         assert pcg.gauss_next is None  # type: ignore
-        assert pcg._state == 0x5b645a1cac083000
+        assert pcg._state == 0x5b64_5a1c_ac08_3000_0000_0000_0000_0000
 
         with pytest.raises(ValueError):
             pcg.seed(-0.0001)
@@ -149,14 +160,14 @@ class TestCwg64_32:
 
     #-------------------------------------------------------------------------
     def test_setstate(self):
-        pcg = Pcg64_32()
+        pcg = Pcg128_64()
 
         pcg.setstate()
         assert pcg.gauss_next is None  # type: ignore
         assert pcg._state != 0
     
         pcg.setstate(1)  # type: ignore
-        assert pcg._state == 1
+        assert pcg._state == 0x1_ffff_ffff_ffff_fffe
 
         with pytest.raises(TypeError):
             pcg.setstate(0.1)  # type: ignore

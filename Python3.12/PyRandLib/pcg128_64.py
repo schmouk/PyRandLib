@@ -119,8 +119,8 @@ class Pcg128_64( BasePCG ):
     than 32 bits.
     """
 
-    _A: Final[int] = 0x2360_ED05_1FC6_5DA4_4385_DF64_9FCC_F645  # LCG mult. attribute
-    _C: Final[int] = 0x5851_F42D_4C95_7F2D_1405_7B7E_F767_814F  # LCG add. attribute
+    _A: Final[int] = 0x2360_ed05_1fc6_5da4_4385_df64_9fcc_f645  # LCG mult. attribute
+    _C: Final[int] = 0x5851_f42d_4c95_7f2d_1405_7b7e_f767_814f  # LCG add. attribute
     _MODULO_128 : Final[int] = (1 << 128) - 1  # optimization here to get modulo via operator &
 
 
@@ -159,12 +159,19 @@ class Pcg128_64( BasePCG ):
 
         elif isinstance( _seed, int ):
             # passed initial seed is an integer, just uses it
-            self._state = _seed & Pcg128_64._MODULO_128
+            if abs(_seed) <= 0xffff_ffff_ffff_ffff:
+                if _seed < 0:
+                    _seed = (1 << 64) + _seed
+                self._state = (_seed << 64) | (~_seed & 0xffff_ffff_ffff_ffff)
+            else:
+                if _seed < 0:
+                    _seed = (1 << 128) + (_seed & Pcg128_64._MODULO_128)
+                self._state = _seed & Pcg128_64._MODULO_128
             
         elif isinstance( _seed, float ):
             if (0.0 <= _seed <= 1.0):
                 # transforms passed initial seed from float to integer
-                self._state = self.__call__( int(_seed * Pcg128_64._MODULO_128) )
+                self._state = int(_seed * Pcg128_64._MODULO_128)
             else:
                 raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
         
