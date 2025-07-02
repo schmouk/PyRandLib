@@ -79,7 +79,7 @@ class BaseSquares( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -97,12 +97,12 @@ class BaseSquares( BaseRandom ):
     def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
         """
-        return (self._counter, self._key)
+        return (self._counter, self._key)  # type: ignore
 
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seed: Numerical = None, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
         if _seed is None or isinstance(_seed, int | float):
@@ -122,7 +122,7 @@ class BaseSquares( BaseRandom ):
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StatesList = None, /) -> None:
+    def setstate(self, _state: StatesList = None, /) -> None:  # type: ignore
         """Restores or sets the internal state of the generator.
         """
         if _state is None:
@@ -146,7 +146,7 @@ class BaseSquares( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def _initKey(self, _seed: int = None, /) -> int:
+    def _initKey(self, _seed: int = None, /) -> int:  # type: ignore
         """Initalizes the attribute _key according to the original recommendations - see [9].
         """
         hexDigits = [ i for i in range(1, 16) ]

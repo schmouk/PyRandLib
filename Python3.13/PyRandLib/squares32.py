@@ -74,7 +74,7 @@ class Squares32( BaseSquares ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
