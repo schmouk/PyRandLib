@@ -107,7 +107,7 @@ class BaseWELL( ListIndexState ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _stateSize: int, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         _stateSize is the size of the internal state list of integers.
@@ -129,19 +129,19 @@ class BaseWELL( ListIndexState ):
 
     #-------------------------------------------------------------------------
     @override
-    def seed(self, _seed: Numerical, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _state: StateType, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         super().setstate(_state)
 
 
     #-------------------------------------------------------------------------
     @classmethod
-    def _M0(cls, x: int = None, /) -> int:
+    def _M0(cls, x: int = None, /) -> int:  # type: ignore
         return 0
  
     #-------------------------------------------------------------------------

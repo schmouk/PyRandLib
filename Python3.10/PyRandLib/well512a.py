@@ -110,7 +110,7 @@ class Well512a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -127,14 +127,14 @@ class Well512a( BaseWELL ):
         z0 = self._state[(i_1 := ((i := self._index) - 1) & 0xf)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
-        z1 = self._M3_neg(self._state[i], 16) ^ self._M3_neg(self._state[(i + 13) & 0x0f], 15)
-        z2 = self._M3_pos(self._state[(i + 9) & 0x0f], 11)
+        z1 = self._M3_neg(self._state[i], 16) ^ self._M3_neg(self._state[(i + 13) & 0x0f], 15)  # type: ignore
+        z2 = self._M3_pos(self._state[(i + 9) & 0x0f], 11)  # type: ignore
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well512a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
         z3 = z1 ^ z2
 
         self._state[i] = z3
-        self._state[i_1] = self._M3_neg(z0, 2) ^ self._M3_neg(z1, 18) ^ self._M2_neg(z2, 28) ^ self._M5_neg(z3, 5, self._a1)
+        self._state[i_1] = self._M3_neg(z0, 2) ^ self._M3_neg(z1, 18) ^ self._M2_neg(z2, 28) ^ self._M5_neg(z3, 5, self._a1)  # type: ignore
 
         self._index = i_1
         return z3
