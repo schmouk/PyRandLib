@@ -28,7 +28,7 @@ from PyRandLib.well1024a import Well1024a
 
 
 #=============================================================================
-class TestMrg287:
+class TestWell1024a:
     """Tests class Well1024a.
     """
     
@@ -42,7 +42,7 @@ class TestMrg287:
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         wll = Well1024a()
-        assert wll._STATE_SIZE == TestMrg287.Well1024a_STATE_SIZE
+        assert wll._STATE_SIZE == TestWell1024a.Well1024a_STATE_SIZE
         assert wll._index == 0
         assert wll.gauss_next is None  # type: ignore
         assert all(isinstance(s, int) for s in wll._state)
@@ -131,15 +131,15 @@ class TestMrg287:
 
     #-------------------------------------------------------------------------
     def test_init_state(self):
-        wll = Well1024a(tuple(i for i in range(TestMrg287.Well1024a_STATE_SIZE)))  # type: ignore
+        wll = Well1024a(tuple(i for i in range(TestWell1024a.Well1024a_STATE_SIZE)))  # type: ignore
         assert wll._index == 0
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll = Well1024a(list(i+10 for i in range(TestMrg287.Well1024a_STATE_SIZE)))  # type: ignore
+        wll = Well1024a(list(i+10 for i in range(TestWell1024a.Well1024a_STATE_SIZE)))  # type: ignore
         assert wll._index == 0
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == list(i+10 for i in range(TestMrg287.Well1024a_STATE_SIZE))  # type: ignore
+        assert wll._state == list(i+10 for i in range(TestWell1024a.Well1024a_STATE_SIZE))  # type: ignore
 
         with pytest.raises(TypeError):
             wll = Well1024a((1, 2, 3))  # type: ignore
@@ -239,41 +239,41 @@ class TestMrg287:
         with pytest.raises(TypeError):
             wll.setstate("123")  # type: ignore
 
-        wll.setstate((tuple(i+31 for i in range(TestMrg287.Well1024a_STATE_SIZE)), 3))  # type: ignore
+        wll.setstate((tuple(i+31 for i in range(TestWell1024a.Well1024a_STATE_SIZE)), 3))  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 3
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+31 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+31 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll.setstate([[i+41 for i in range(TestMrg287.Well1024a_STATE_SIZE)], TestMrg287.Well1024a_STATE_SIZE + 8])  # type: ignore
+        wll.setstate([[i+41 for i in range(TestWell1024a.Well1024a_STATE_SIZE)], TestWell1024a.Well1024a_STATE_SIZE + 8])  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 8
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+41 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+41 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll.setstate([tuple(i+51 for i in range(TestMrg287.Well1024a_STATE_SIZE)), 3])  # type: ignore
+        wll.setstate([tuple(i+51 for i in range(TestWell1024a.Well1024a_STATE_SIZE)), 3])  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 3
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+51 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+51 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll.setstate(([i+61 for i in range(TestMrg287.Well1024a_STATE_SIZE)], TestMrg287.Well1024a_STATE_SIZE + 8))  # type: ignore
+        wll.setstate(([i+61 for i in range(TestWell1024a.Well1024a_STATE_SIZE)], TestWell1024a.Well1024a_STATE_SIZE + 8))  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 8
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+61 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+61 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll.setstate(tuple(i+11 for i in range(TestMrg287.Well1024a_STATE_SIZE)))  # type: ignore
+        wll.setstate(tuple(i+11 for i in range(TestWell1024a.Well1024a_STATE_SIZE)))  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 0
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+11 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+11 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
-        wll.setstate([i+21 for i in range(TestMrg287.Well1024a_STATE_SIZE)])  # type: ignore
+        wll.setstate([i+21 for i in range(TestWell1024a.Well1024a_STATE_SIZE)])  # type: ignore
         assert wll.gauss_next is None  # type: ignore
         assert wll._index == 0
         assert wll.gauss_next is None  # type: ignore
-        assert wll._state == [i+21 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
+        assert wll._state == [i+21 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
 
         with pytest.raises(TypeError):
             wll.setstate([1, 2])
@@ -285,14 +285,14 @@ class TestMrg287:
             wll.setstate([11, 12, 13.1, 14])  # type: ignore
         _state: list[Any]
         with pytest.raises(ValueError):
-            _state = [i+1 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
-            _state[TestMrg287.Well1024a_STATE_SIZE - 2] = -1
+            _state = [i+1 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
+            _state[TestWell1024a.Well1024a_STATE_SIZE - 2] = -1
             wll.setstate(_state)  # type: ignore
         with pytest.raises(ValueError):
-            _state = [i+1 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
-            _state[TestMrg287.Well1024a_STATE_SIZE - 3] = 0.321
+            _state = [i+1 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
+            _state[TestWell1024a.Well1024a_STATE_SIZE - 3] = 0.321
             wll.setstate(_state)  # type: ignore
         with pytest.raises(ValueError):
-            _state = [i+1 for i in range(TestMrg287.Well1024a_STATE_SIZE)]  # type: ignore
-            _state[TestMrg287.Well1024a_STATE_SIZE - 5] = {1, 2}
+            _state = [i+1 for i in range(TestWell1024a.Well1024a_STATE_SIZE)]  # type: ignore
+            _state[TestWell1024a.Well1024a_STATE_SIZE - 5] = {1, 2}
             wll.setstate(_state)  # type: ignore
