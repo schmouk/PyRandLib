@@ -28,52 +28,53 @@ from PyRandLib.baselcg import BaseLCG
 
 #=============================================================================
 class TestBaseLcg:
-    """Tests the base class BaseLCG"""
+    """Tests the base class BaseLCG.
+    """
     
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_lcg = BaseLCG()
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
         b_lcg = BaseLCG(0X1234_5678_9abc_def0)
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
         b_lcg = BaseLCG(0.1)
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         with pytest.raises(NotImplementedError):
-            b_lcg = BaseLCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+            b_lcg = BaseLCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
         with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
-            b_lcg = BaseLCG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])
+            b_lcg = BaseLCG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         with pytest.raises(NotImplementedError):
-            b_lcg = BaseLCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+            b_lcg = BaseLCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
-            b_lcg = BaseLCG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))
+            b_lcg = BaseLCG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple_int_2(self):
         with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
-            b_lcg = BaseLCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )
+            b_lcg = BaseLCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int_2(self):
         with pytest.raises(TypeError):  # notice: TypeError here due to a known bug with unhashable lists in Python 3.10
-            b_lcg = BaseLCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )
+            b_lcg = BaseLCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_getstate(self):

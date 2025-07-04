@@ -29,54 +29,55 @@ from PyRandLib.baselcg import BaseLCG
 
 #=============================================================================
 class TestBaseLcg:
-    """Tests the base class BaseLCG"""
+    """Tests the base class BaseLCG.
+    """
     
     python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')
 
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_lcg = BaseLCG()
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
         b_lcg = BaseLCG(0X1234_5678_9abc_def0)
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
         b_lcg = BaseLCG(0.1)
-        assert b_lcg.gauss_next is None
+        assert b_lcg.gauss_next is None  # type: ignore
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         with pytest.raises(NotImplementedError):
-            b_lcg = BaseLCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+            b_lcg = BaseLCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
         with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
-            b_lcg = BaseLCG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])
+            b_lcg = BaseLCG([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0])  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         with pytest.raises(NotImplementedError):
-            b_lcg = BaseLCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+            b_lcg = BaseLCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
-            b_lcg = BaseLCG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))
+            b_lcg = BaseLCG( ([0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple_int_2(self):
         with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
-            b_lcg = BaseLCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )
+            b_lcg = BaseLCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int_2(self):
         with pytest.raises(TypeError if self.python_version_39 else  NotImplementedError):  # notice: tests have been processed w. Python 3.9
-            b_lcg = BaseLCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )
+            b_lcg = BaseLCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_getstate(self):

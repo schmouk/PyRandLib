@@ -34,22 +34,22 @@ class TestBaseCwg:
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_cwg = BaseCWG()
-        assert b_cwg.gauss_next is None
+        assert b_cwg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
         b_cwg = BaseCWG(0X1234_5678_9abc_def0)
-        assert b_cwg.gauss_next is None
+        assert b_cwg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
         b_cwg = BaseCWG(0.1)
-        assert b_cwg.gauss_next is None
+        assert b_cwg.gauss_next is None  # type: ignore
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         with pytest.raises(NotImplementedError):
-            b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+            b_cwg = BaseCWG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -59,7 +59,7 @@ class TestBaseCwg:
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         with pytest.raises(NotImplementedError):
-            b_cwg = BaseCWG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+            b_cwg = BaseCWG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
@@ -70,4 +70,4 @@ class TestBaseCwg:
     def test_getstate(self):
         b_cwg = BaseCWG()
         with pytest.raises(AttributeError):
-            a, weyl, s, state = b_cwg.getstate()
+            a, weyl, s, state = b_cwg.getstate()  # type: ignore
