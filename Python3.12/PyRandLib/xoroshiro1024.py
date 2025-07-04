@@ -79,7 +79,7 @@ class Xoroshiro1024( BaseXoroshiro ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical | StatesList = None, /) -> None:
+    def __init__(self, _seedState: Numerical | StatesList = None, /) -> None:  # type: ignore
         """Constructor.
         
         _seedState is either a valid state, an integer,  a float or None.
@@ -109,11 +109,11 @@ class Xoroshiro1024( BaseXoroshiro ):
         previousIndex = self._index
         # advances the internal state of the PRNG
         self._index = (self._index + 1) & (self._STATE_SIZE-1)
-        sHigh = self._state[ previousIndex ] ^ (sLow := self._state[ self._index ])
-        self._state[ previousIndex ] = BaseRandom._rotleft( sLow, 25 ) ^ sHigh ^ ((sHigh << 27) & self._MODULO)
+        sHigh = self._state[ previousIndex ] ^ (sLow := self._state[ self._index ])  # type: ignore
+        self._state[ previousIndex ] = BaseRandom._rotleft( sLow, 25 ) ^ sHigh ^ ((sHigh << 27) & self._MODULO)  # type: ignore
         self._state[ self._index ]   = BaseRandom._rotleft( sHigh, 36 )
         # returns the output value
-        return (BaseRandom._rotleft( sLow * 5, 7) * 9) & self._MODULO 
+        return (BaseRandom._rotleft( sLow * 5, 7) * 9) & self._MODULO  # type: ignore
 
 
 #=====   end of module   xoroshiro1024.py   ==================================
