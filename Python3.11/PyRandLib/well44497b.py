@@ -109,7 +109,7 @@ class Well44497b( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not a number then the local time is used
@@ -133,9 +133,9 @@ class Well44497b( BaseWELL ):
             case _:
                 i_1, i_2 = i-1, i-2
 
-        z0 = (self._state[i_1] & 0x0001_ffff) ^ (self._state[i_2] & 0xfffe_0000)
-        z1 = BaseWELL._M3_neg(self._state[i], 24) ^ BaseWELL._M3_pos(self._state[(i + 23) % 1391], 30)
-        z2 = BaseWELL._M3_neg(self._state[(i + 481) % 1391], 10) ^ BaseWELL._M2_neg(self._state[(i + 229) % 1391], 26)
+        z0 = (self._state[i_1] & 0x0001_ffff) ^ (self._state[i_2] & 0xfffe_0000)  # type: ignore
+        z1 = BaseWELL._M3_neg(self._state[i], 24) ^ BaseWELL._M3_pos(self._state[(i + 23) % 1391], 30)  # type: ignore
+        z2 = BaseWELL._M3_neg(self._state[(i + 481) % 1391], 10) ^ BaseWELL._M2_neg(self._state[(i + 229) % 1391], 26)  # type: ignore
 
         self._state[i] = (z3 := z1 ^ z2)
         self._state[i_1] = z0 ^ BaseWELL._M3_pos(z1, 20) ^ BaseWELL._M6(z2, 9, 14, 5, BaseWELL._a7) ^ z3
