@@ -110,7 +110,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _stateSize: int, _seedState: Union[Numerical, StatesList] = None) -> None:
+    def __init__(self, _stateSize: int, _seedState: Union[Numerical, StatesList] = None) -> None:  # type: ignore
         """Constructor.
         
         _stateSize is the size of the internal state list of integers.
@@ -131,12 +131,12 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StatesList) -> None:
+    def setstate(self, _state: StatesList = None, /) -> None:  # type: ignore
         super().setstate(_state)
 
 

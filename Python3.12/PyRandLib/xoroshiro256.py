@@ -84,7 +84,7 @@ class Xoroshiro256( BaseXoroshiro ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical | StatesList = None, /) -> None:
+    def __init__(self, _seedState: Numerical | StatesList = None, /) -> None:  # type: ignore
         """Constructor.
         
         _seedState is either a valid state, an integer,  a float or None.
@@ -111,14 +111,14 @@ class Xoroshiro256( BaseXoroshiro ):
         """
         currentS1 = self._state[1]
         # advances the internal state of the PRNG
-        self._state[2] ^= self._state[0]
-        self._state[3] ^= self._state[1]
-        self._state[1] ^= self._state[2]
-        self._state[0] ^= self._state[3]
-        self._state[2] ^= (currentS1 << 17) & BaseXoroshiro._MODULO
+        self._state[2] ^= self._state[0]  # type: ignore
+        self._state[3] ^= self._state[1]  # type: ignore
+        self._state[1] ^= self._state[2]  # type: ignore
+        self._state[0] ^= self._state[3]  # type: ignore
+        self._state[2] ^= (currentS1 << 17) & BaseXoroshiro._MODULO  # type: ignore
         self._state[3] = BaseRandom._rotleft( self._state[3], 45 )
         # returns the output value
-        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO
+        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO  # type: ignore
 
 
 #=====   end of module   xoroshiro256.py   ===================================

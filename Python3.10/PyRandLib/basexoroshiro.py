@@ -93,14 +93,14 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 64
+    _OUT_BITS: Final[int] = 64  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -110,7 +110,7 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _stateSize: int, _seedState: Numerical | StatesList = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: Numerical | StatesList = None, /) -> None:  # type: ignore
         """Constructor.
         
         _stateSize is the size of the internal state list of integers.
@@ -131,12 +131,12 @@ class BaseXoroshiro( ListIndexState ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StatesList, /) -> None:
+    def setstate(self, _state: StatesList = None, /) -> None:  # type: ignore
         super().setstate(_state)
 
 
