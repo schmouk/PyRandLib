@@ -78,13 +78,13 @@ class TestSplitMix64:
     #-------------------------------------------------------------------------
     def test_not_none(self):
         with pytest.raises(TypeError):
-            splt = SplitMix64((1, 2))
+            splt = SplitMix64((1, 2))  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix64([1, 2])
+            splt = SplitMix64([1, 2])  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix64("123")
+            splt = SplitMix64("123")  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix64(SplitMix64())
+            splt = SplitMix64(SplitMix64())  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_call_int(self):
@@ -149,13 +149,13 @@ class TestSplitMix63:
     #-------------------------------------------------------------------------
     def test_not_none(self):
         with pytest.raises(TypeError):
-            splt = SplitMix63((1, 2))
+            splt = SplitMix63((1, 2))  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63([1, 2])
+            splt = SplitMix63([1, 2])  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63("123")
+            splt = SplitMix63("123")  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63(SplitMix63())
+            splt = SplitMix63(SplitMix63())  # type: ignore
 
 
 #=============================================================================
@@ -210,13 +210,13 @@ class TestSplitMix32:
     #-------------------------------------------------------------------------
     def test_not_none(self):
         with pytest.raises(TypeError):
-            splt = SplitMix63((1, 2))
+            splt = SplitMix32((1, 2))  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63([1, 2])
+            splt = SplitMix32([1, 2])  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63("123")
+            splt = SplitMix32("123")  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63(SplitMix32())
+            splt = SplitMix32(SplitMix32())  # type: ignore
 
 
 #=============================================================================
@@ -271,10 +271,10 @@ class TestSplitMix31:
     #-------------------------------------------------------------------------
     def test_not_none(self):
         with pytest.raises(TypeError):
-            splt = SplitMix63((1, 2))
+            splt = SplitMix31((1, 2))  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63([1, 2])
+            splt = SplitMix31([1, 2])  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63("123")
+            splt = SplitMix31("123")  # type: ignore
         with pytest.raises(TypeError):
-            splt = SplitMix63(SplitMix31())
+            splt = SplitMix31(SplitMix31())  # type: ignore
