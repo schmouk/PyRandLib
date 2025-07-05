@@ -29,7 +29,8 @@ from PyRandLib.splitmix import SplitMix32
 
 #=============================================================================
 class TestBaseWELL:
-    """Tests the base class BaseWELL"""
+    """Tests the base class BaseWELL.
+    """
     
     #-------------------------------------------------------------------------
     def test_class_WELL(self):
@@ -42,7 +43,7 @@ class TestBaseWELL:
         b_wll = BaseWELL(STATE_SIZE)
         assert b_wll._STATE_SIZE == STATE_SIZE
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
         assert all(s != 0 for s in b_wll._state)
@@ -53,7 +54,7 @@ class TestBaseWELL:
         b_wll = BaseWELL(STATE_SIZE, 0X1234_5678_9abc_def0)
         assert b_wll._STATE_SIZE == STATE_SIZE
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
         assert all(s != 0 for s in b_wll._state)
@@ -64,7 +65,7 @@ class TestBaseWELL:
         b_wll = BaseWELL(STATE_SIZE, 0.1)
         assert b_wll._STATE_SIZE == STATE_SIZE
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
         assert all(s != 0 for s in b_wll._state)
@@ -72,10 +73,10 @@ class TestBaseWELL:
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         STATE_SIZE = 19
-        b_wll = BaseWELL(STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))
+        b_wll = BaseWELL(STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))  # type: ignore
         assert b_wll._STATE_SIZE == STATE_SIZE
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
         assert all(s != 0 for s in b_wll._state)
@@ -86,7 +87,7 @@ class TestBaseWELL:
         b_wll = BaseWELL(STATE_SIZE, [i+1 for i in range(STATE_SIZE)])
         assert b_wll._STATE_SIZE == STATE_SIZE
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
         assert all(s != 0 for s in b_wll._state)
@@ -96,47 +97,47 @@ class TestBaseWELL:
         STATE_SIZE = 23
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_wll = BaseWELL(STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))
+            b_wll = BaseWELL(STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         STATE_SIZE = 25
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_wll = BaseWELL( STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )
+            b_wll = BaseWELL( STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_seed(self):
         b_wll = BaseWELL(5)
         assert b_wll._STATE_SIZE == 5
         assert b_wll._initRandClass is SplitMix32
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == 5
         assert all(s != 0 for s in b_wll._state)
 
         with pytest.raises(TypeError):
-            b_wll.seed((1, 2, 3, 4, 5))
+            b_wll.seed((1, 2, 3, 4, 5))  # type: ignore
             assert b_wll._state == [1, 2, 3, 4, 5]
-            assert b_wll.gauss_next is None
+            assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
 
         with pytest.raises(TypeError):
-            b_wll.seed([11, 12, 13, 14, 15])
+            b_wll.seed([11, 12, 13, 14, 15])  # type: ignore
             assert b_wll._state == [11, 12, 13, 14, 15]
-            assert b_wll.gauss_next is None
+            assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
 
         with pytest.raises(TypeError):
-            b_wll.seed([[31, 32, 33, 34, 35], 2])
+            b_wll.seed([[31, 32, 33, 34, 35], 2])  # type: ignore
             assert b_wll._state == [31, 32, 33, 34, 35]
-            assert b_wll.gauss_next is None
+            assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 2
 
         with pytest.raises(TypeError):
-            b_wll.seed(((21, 22, 23, 24, 25), 3))
+            b_wll.seed(((21, 22, 23, 24, 25), 3))  # type: ignore
             assert b_wll._state == [21, 22, 23, 24, 25]
-            assert b_wll.gauss_next is None
+            assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 3
 
         with pytest.raises(ValueError):
@@ -144,72 +145,72 @@ class TestBaseWELL:
         with pytest.raises(ValueError):
             b_wll.seed(-0.987)
         with pytest.raises(TypeError):
-            b_wll.seed([[31, 32, 33, 34, 35.1], 1])
+            b_wll.seed([[31, 32, 33, 34, 35.1], 1])  # type: ignore
         with pytest.raises(TypeError):
-            b_wll.seed((31, 32, 33, 34, 35.1))
+            b_wll.seed((31, 32, 33, 34, 35.1))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_setstate(self):
         b_wll = BaseWELL(5)
 
         with pytest.raises(TypeError):
-            b_wll.setstate(-1)
+            b_wll.setstate(-1)  # type: ignore
 
         with pytest.raises(TypeError):
-            b_wll.setstate(28031)
+            b_wll.setstate(28031)  # type: ignore
 
         with pytest.raises(TypeError):
-            b_wll.setstate(0xffff_ffff_ffff_ffff)
+            b_wll.setstate(0xffff_ffff_ffff_ffff)  # type: ignore
 
         with pytest.raises(TypeError):
-            b_wll.setstate(0.187)
+            b_wll.setstate(0.187)  # type: ignore
 
         with pytest.raises(TypeError):
-            b_wll.setstate(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)
+            b_wll.setstate(0xffff_ffff_ffff_fffe_ffff_ffff_ffff_fffd)  # type: ignore
 
-        b_wll.setstate((1, 2, 3, 4, 5))
+        b_wll.setstate((1, 2, 3, 4, 5))  # type: ignore
         assert b_wll._state == [1, 2, 3, 4, 5]
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
 
         b_wll.setstate([11, 12, 13, 14, 15])
         assert b_wll._state == [11, 12, 13, 14, 15]
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
 
-        b_wll.setstate([[31, 32, 33, 34, 35], 2])
+        b_wll.setstate([[31, 32, 33, 34, 35], 2])  # type: ignore
         assert b_wll._state == [31, 32, 33, 34, 35]
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 2
 
-        b_wll.setstate(((21, 22, 23, 24, 25), 3))
+        b_wll.setstate(((21, 22, 23, 24, 25), 3))  # type: ignore
         assert b_wll._state == [21, 22, 23, 24, 25]
-        assert b_wll.gauss_next is None
+        assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 3
 
         with pytest.raises(TypeError):
-            b_wll.setstate(8.87e+18)
+            b_wll.setstate(8.87e+18)  # type: ignore
         with pytest.raises(TypeError):
-            b_wll.setstate(-0.987)
+            b_wll.setstate(-0.987)  # type: ignore
 
         with pytest.raises(ValueError):
-            b_wll.setstate([31, 32, 33.5, 34, 35.1])
+            b_wll.setstate([31, 32, 33.5, 34, 35.1])  # type: ignore
         with pytest.raises(ValueError):
-            b_wll.setstate((31, 32.6, 33, 34, 35.1))
+            b_wll.setstate((31, 32.6, 33, 34, 35.1))  # type: ignore
             
         with pytest.raises(ValueError):
             b_wll.setstate([-31, 32, 33, 34, -35])
         with pytest.raises(ValueError):
-            b_wll.setstate((31, -32, 33, 34, 35))
+            b_wll.setstate((31, -32, 33, 34, 35))  # type: ignore
 
         with pytest.raises(ValueError):
-            b_wll.setstate([[31, 32, 33, 34, 35.1], 1])
+            b_wll.setstate([[31, 32, 33, 34, 35.1], 1])  # type: ignore
         with pytest.raises(ValueError):
             b_wll.setstate(([31, 32, 33, 34.0, 35.1], 2))
         with pytest.raises(ValueError):
-            b_wll.setstate([(31, 32, 33, 34, -35), 1])
+            b_wll.setstate([(31, 32, 33, 34, -35), 1])  # type: ignore
         with pytest.raises(ValueError):
-            b_wll.setstate(((31, 32, 33, -34, -35), 1))
+            b_wll.setstate(((31, 32, 33, -34, -35), 1))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_M0(self):

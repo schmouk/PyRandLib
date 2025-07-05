@@ -29,7 +29,8 @@ from PyRandLib.splitmix import SplitMix31, SplitMix32
 
 #=============================================================================
 class TestBaseMRG:
-    """Tests the base class BaseMRG"""
+    """Tests the base class BaseMRG.
+    """
     
     #-------------------------------------------------------------------------
     def test_init_empty(self):
@@ -37,7 +38,7 @@ class TestBaseMRG:
         b_mrg = BaseMRG(SplitMix31, STATE_SIZE)
         assert b_mrg._STATE_SIZE == STATE_SIZE
         assert b_mrg._initRandClass is SplitMix31
-        assert b_mrg.gauss_next is None
+        assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
         assert all(s != 0 for s in b_mrg._state)
@@ -50,7 +51,7 @@ class TestBaseMRG:
         b_mrg = BaseMRG(SplitMix32, STATE_SIZE, 0X1234_5678_9abc_def0)
         assert b_mrg._STATE_SIZE == STATE_SIZE
         assert b_mrg._initRandClass is SplitMix32
-        assert b_mrg.gauss_next is None
+        assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
         assert all(s != 0 for s in b_mrg._state)
@@ -63,7 +64,7 @@ class TestBaseMRG:
         b_mrg = BaseMRG(SplitMix31, STATE_SIZE, 0.1)
         assert b_mrg._STATE_SIZE == STATE_SIZE
         assert b_mrg._initRandClass is SplitMix31
-        assert b_mrg.gauss_next is None
+        assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
         assert all(s != 0 for s in b_mrg._state)
@@ -73,10 +74,10 @@ class TestBaseMRG:
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         STATE_SIZE = 19
-        b_mrg = BaseMRG(SplitMix32, STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))
+        b_mrg = BaseMRG(SplitMix32, STATE_SIZE, tuple(i+1 for i in range(STATE_SIZE)))  # type: ignore
         assert b_mrg._STATE_SIZE == STATE_SIZE
         assert b_mrg._initRandClass is SplitMix32
-        assert b_mrg.gauss_next is None
+        assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
         assert all(s != 0 for s in b_mrg._state)
@@ -89,7 +90,7 @@ class TestBaseMRG:
         b_mrg = BaseMRG(SplitMix31, STATE_SIZE, [i+1 for i in range(STATE_SIZE)])
         assert b_mrg._STATE_SIZE == STATE_SIZE
         assert b_mrg._initRandClass is SplitMix31
-        assert b_mrg.gauss_next is None
+        assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
         assert all(s != 0 for s in b_mrg._state)
@@ -101,11 +102,11 @@ class TestBaseMRG:
         STATE_SIZE = 23
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_mrg = BaseMRG(SplitMix32, STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))
+            b_mrg = BaseMRG(SplitMix32, STATE_SIZE, tuple(STATE_SIZE-1, tuple(i+1 for i in range(STATE_SIZE))))  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
         STATE_SIZE = 25
         with pytest.raises(TypeError):
             # notice: no 2 arguments accepted in tuple with base class random.Random constructor since Python 3.11
-            b_mrg = BaseMRG( SplitMix31, STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )
+            b_mrg = BaseMRG( SplitMix31, STATE_SIZE, tuple(STATE_SIZE-1, [i+1 for i in range(STATE_SIZE)]) )  # type: ignore

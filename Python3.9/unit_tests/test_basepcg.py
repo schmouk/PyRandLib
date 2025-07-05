@@ -33,22 +33,22 @@ class TestBasePcg:
     #-------------------------------------------------------------------------
     def test_init_empty(self):
         b_pcg = BasePCG()
-        assert b_pcg.gauss_next is None
+        assert b_pcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
         b_pcg = BasePCG(0X1234_5678_9abc_def0)
-        assert b_pcg.gauss_next is None
+        assert b_pcg.gauss_next is None  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
         b_pcg = BasePCG(0.1)
-        assert b_pcg.gauss_next is None
+        assert b_pcg.gauss_next is None  # type: ignore
         
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
         with pytest.raises(NotImplementedError):
-            b_pcg = BasePCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))
+            b_pcg = BasePCG((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0))  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -58,7 +58,7 @@ class TestBasePcg:
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
         with pytest.raises(NotImplementedError):
-            b_pcg = BasePCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )
+            b_pcg = BasePCG( ((0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11) )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int(self):
@@ -68,12 +68,12 @@ class TestBasePcg:
     #-------------------------------------------------------------------------
     def test_init_tuple_int_2(self):
         with pytest.raises(TypeError):  ## notice: TypeError here due to a known bug with lists in Python 3.9 (.0, .1, still present with .21 and .23)
-            b_pcg = BasePCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )
+            b_pcg = BasePCG( [(0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0), 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_list_int_2(self):
         with pytest.raises(TypeError):  ## notice: TypeError here due to a known bug with lists in Python 3.9 (.0, .1, still present with .21 and .23)
-            b_pcg = BasePCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )
+            b_pcg = BasePCG( [[0, 1, 0X1234_5678_9abc_def0, 0X1234_5678_9abc_def0], 11] )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_getstate(self):
