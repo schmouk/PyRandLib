@@ -389,7 +389,7 @@ Each of the implemented PRNG is described in an independent module. The  name of
 
 **BaseRandom** is the base class for every implemented PRNG in library **PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
 
-Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution Functions**.
+Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution and Generic Methods**.
 
 Furthermore, every inheriting class MUST override the next three methods (if not, they each raise a `NotImplementedError` exception when called):
 
@@ -725,8 +725,8 @@ It escapes the zeroland at a fast pace (about 100 loops) and offers jump-ahead f
 
 
 
-## Inherited Distribution and Generic Functions
-(some of next explanation may be free to exact copy of Python documentation.
+## Inherited Distribution and Generic Methods
+(some of next explanation may be either free or exact copy of Python documentation.
 
 Since the base class **BaseRandom** inherits from the built-in class `random.Random`, every PRNG class of **PyRandLib** gets automatic access to the next distribution and generic methods:
 
