@@ -70,7 +70,7 @@ class BaseRandom( Random ):
     computation  time  (2^31-1 modulus calculations) but less memory space consumption 
     (32-bits 47 integers).
     See Mrg49507 for a far larger period MR-Generator (2^49507, i.e. 1.2e+14903)  with
-    low computation  time  too  (31-bits  modulus)  but us  of more memory space (1597 
+    low computation  time  too  (31-bits  modulus)  but use of more memory space (1597 
     32-bits integers).
 
     See Pcg64_32, Pcg128_64 and Pcg1024_32 for Permuted Congruential  Generators  with 
@@ -98,8 +98,7 @@ class BaseRandom( Random ):
     See Xoroshiro256, Xoroshiro512, Xoroshiro1024 for long  period  generators  (resp. 
     2^256,  2^512  and  2^1024 periods,  i.e. resp. 1.16e+77,  1.34e+154 and 1.80e+308 
     periods),  64-bits precision calculations and short memory consumption  (resp.  4, 
-    8 and 16 integers coded on 64 bits.
-
+    8 and 16 integers each coded on 64 bits.
 
     Python built-in class random.Random is subclassed here to use  a  different  basic 
     generator of our own devising: in that case, overriden methods are:
@@ -133,13 +132,11 @@ class BaseRandom( Random ):
      |  choice(self, seq)
      |      Choose a random element from a non-empty sequence.
      |  
-     |  
+     |
      |  binomialvariate**(self, n=1, p=0.5)
      |      Binomial distribution. Return the number of successes for n 
      |      independent trials with the probability of success in each 
      |      trial being p.
-     |      Notice: added since Python 3.12, implemented in PyRandLib
-     |              for all previous versions of Python.
      |      n >= 0, 0.0 <= p <= 1.0,
      |      the result is an integer in the range 0 <= X <= n.
      |  
@@ -172,7 +169,7 @@ class BaseRandom( Random ):
      |  getrandbits(self, k)
      |      Returns a non-negative Python integer with k random bits.
      |      Changed since version 3.9: This method now accepts zero for k.
-     | 
+     |  
      |
      |  getstate(self)
      |      Return internal state; can be passed to setstate() later.
@@ -201,7 +198,7 @@ class BaseRandom( Random ):
      |      This method should not be used for generating security tokens.
      |      Notice: this method has been added in Python 3.9. It is implemented
      |      in PyRandLib for former versions of the language also.
-     |
+     |  
      |
      |  randint(self, a, b)
      |      Return random integer in range [a, b], including both end points.
@@ -234,16 +231,11 @@ class BaseRandom( Random ):
      |      large population:   sample(range(10000000), 60)
      |  
      |
-     |  seed(self, a=None, version=2)
+     |  seed(self, a=None)
      |      Initialize internal state from hashable object.
      |      
      |      None or no argument seeds from current time or from an operating
      |      system specific randomness source if available.
-     |      
-     |      For version 2 (the default), all of the bits are used if *a *is a str,
-     |      bytes, or bytearray.  For version 1, the hash() of *a* is used instead.
-     |      
-     |      If *a* is an int, all bits are used.
      |  
      |
      |  setstate(self, state)

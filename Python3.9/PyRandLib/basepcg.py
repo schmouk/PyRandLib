@@ -38,10 +38,10 @@ class BasePCG( BaseRandom ):
  
        x(i) = (a * x(i-1) + c) mod m
 
-    PCGs associate to this recurrence a permutation of a subpart o f the  bits 
-    of  the internal state of the PRNG.  The output of PCGs is this permutated
-    subpart of its internal state,  leading to a very large enhancement of the
-    randomness of these algorithms compared with the LCGs one.
+    PCGs associate to this recurrence a permutation  of  a  subpart  of  their
+    internal state bits.  The output of PCGs is this permutated subpart of its 
+    internal state,  leading to a very large enhancement of the randomness  of 
+    these algorithms compared with the LCGs one.
  
     These PRNGs have been tested with TestU01 and have shown to pass all tests
     (Pierre  L'Ecuyer and Richard Simard (Universite de Montreal) in 'TestU01: 
@@ -110,7 +110,7 @@ class BasePCG( BaseRandom ):
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For LCG,  the state is defined with  a  single  integer,  'self._value',
+        For PCG,  the state is defined with  a  single  integer,  'self._value',
         which  has  to  be  used  in  methods 'random() and 'setstate() of every
         inheriting class.
         """

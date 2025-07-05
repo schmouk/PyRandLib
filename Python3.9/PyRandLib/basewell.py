@@ -50,24 +50,24 @@ class BaseWELL( ListIndexState ):
     zeroland.
 
     Notice: the algorithm in the 4 different versions implemented here has been  coded 
-    here  as  a  direct  implementation  of  their  descriptions  in the initial paper 
-    "Improved Long-Period Generators Based on Linear Recurrences  Modulo 2",  François  
-    PANNETON  and  Pierre  L’ECUYER  (Université  de  Montréal)  and  Makoto MATSUMOTO 
-    (Hiroshima University),  in ACM Transactions on  Mathematical  Software,  Vol. 32, 
-    No. 1, March 2006, Pages 1–16.
+    as  a  direct  implementation of their descriptions in the initial paper "Improved
+    Long-Period Generators Based on Linear Recurrences  Modulo 2",  François  PANNETON
+    and  Pierre  L'ECUYER  (Université  de  Montréal)  and Makoto MATSUMOTO (Hiroshima 
+    University),  in ACM Transactions on Mathematical Software,  Vol. 32, No. 1, March 
+    2006, Pages 1-16.
     (see https://www.iro.umontreal.ca/~lecuyer/myftp/papers/wellrng.pdf).
     So,  only minimalist optimization has been coded,  with  the  aim  at  easing  the 
     verification of its proper implementation.
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
     computation time and 16 integers memory little consumption.
+
     See Well1024a for a longer period WELL-Generator  (2^1024,  i.e. 2.68e+308),  same 
     computation time and 32 integers memory consumption.
-    See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
+
+    See Well199937c for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497b for a very large period (2^44497,  i.e. 15.1e+13466)  with  similar 
-    computation time but use of even more memory space (1,391 integers).
-    
+
     Please notice that this class and all its  inheriting  sub-classes  are  callable.
     Example:
     
@@ -129,11 +129,20 @@ class BaseWELL( ListIndexState ):
 
     #-------------------------------------------------------------------------
     def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
     def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call to getstate().
+        'setstate()' restores the internal state of the generator to what it
+        was at the time getstate() was lastly called.
+        Inheriting classes MUST IMPLEMENT this method.
+        """
         super().setstate(_state)
 
 

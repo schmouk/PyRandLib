@@ -117,7 +117,6 @@ class BaseMELG( ListIndexState ):
         random filling of the internal state of the PRNG. Should _seedState 
         be anything else (e.g. None)  then  the   shuffling  of  the  local 
         current time value is used as such an initial seed.
-
         """
         super().__init__( SplitMix64, _stateSize, _seedState )
             # this  call  creates  the  two  attributes
@@ -128,12 +127,21 @@ class BaseMELG( ListIndexState ):
     #-------------------------------------------------------------------------
     @override
     def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
     @override
     def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call to getstate().
+        'setstate()' restores the internal state of the generator to what it
+        was at the time getstate() was lastly called.
+        Inheriting classes MUST IMPLEMENT this method.
+        """
         super().setstate(_state)
 
 

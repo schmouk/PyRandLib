@@ -133,12 +133,21 @@ class BaseXoroshiro( ListIndexState ):
     #-------------------------------------------------------------------------
     @override
     def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
         super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
     @override
     def setstate(self, _state: StatesList = None, /) -> None:  # type: ignore
+        """Restores the internal state of the generator.
+        
+        _state should have been obtained from a previous call to getstate().
+        'setstate()' restores the internal state of the generator to what it
+        was at the time getstate() was lastly called.
+        Inheriting classes MUST IMPLEMENT this method.
+        """
         super().setstate(_state)
 
 

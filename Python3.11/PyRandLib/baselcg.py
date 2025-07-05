@@ -48,6 +48,7 @@ class BaseLCG( BaseRandom ):
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator with very  low 
     computation  time  but shorter period and worse randomness characteristics
     than for FastRand63.
+    
     See FastRand63 for a 2^63 (i.e. about 9.2e+18)  period  LC-Generator  with  
     low  computation  time  also,  longer  period  and quite better randomness 
     characteristics than for FastRand32.

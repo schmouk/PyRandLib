@@ -52,9 +52,11 @@ class BaseCWG( BaseRandom ):
     See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
     with low computation time, medium period,  64- bits output values and very
     good randomness characteristics.
+
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
+    
     See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
@@ -90,7 +92,7 @@ class BaseCWG( BaseRandom ):
         Should _seedState be None then the local time is used as a seed  (with 
         its shuffled value).
         Notice: method setstate() is not implemented in base class BaseRandom.
-        So,  it  must be implemented in classes inheriting BaseLCG and it must
+        So,  it  must be implemented in classes inheriting BaseCWG and it must
         initialize attribute self._state.
         """
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
@@ -102,11 +104,11 @@ class BaseCWG( BaseRandom ):
     def getstate(self) -> StatesListAndExt:
         """Returns an object capturing the current internal state of the generator.
         
-        This object can be passed to setstate() to restore the state.
-        For  CWG,  this  state is defined by a list of control values 
-        (a, weyl and s - or a list of 4 coeffs) and an internal state 
-        value,  which  are used in methods 'next() and 'setstate() of 
-        every inheriting class.
+        This object can be passed to setstate()  to  restore  the  state.
+        For  CWG,  this  state  is  defined  by  a list of control values 
+        (a, weyl, s and an internal state value - or a list of 4 coeffs),
+        which  are  used  in methods 'next() and 'setstate() of every in-
+        heriting class.
 
         All inheriting classes MUST IMPLEMENT this method.
         """
