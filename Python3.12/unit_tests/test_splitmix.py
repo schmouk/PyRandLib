@@ -222,7 +222,7 @@ class TestSplitMix32:
         with pytest.raises(TypeError):
             splt = SplitMix32((1, 2))  # type: ignore
         with pytest.raises(TypeError):
-            splt = SpliSplitMix32tMix63([1, 2])  # type: ignore
+            splt = SplitMix32([1, 2])  # type: ignore
         with pytest.raises(TypeError):
             splt = SplitMix32("123")  # type: ignore
         with pytest.raises(TypeError):

@@ -82,7 +82,7 @@ class BaseCWG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -107,7 +107,7 @@ class BaseCWG( BaseRandom ):
 
         All inheriting classes MUST IMPLEMENT this method.
         """
-        return (self._a, self._weyl, self._s, self._state)
+        return (self._a, self._weyl, self._s, self._state)  # type: ignore
 
 
 #=====   end of module   basecwg.py   ========================================

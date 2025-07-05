@@ -86,14 +86,14 @@ class Cwg64( BaseCWG ):
     
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 64
+    _OUT_BITS: Final[int] = 64  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -101,7 +101,7 @@ class Cwg64( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -124,7 +124,7 @@ class Cwg64( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
-    def seed(self, _seed: Numerical = None) -> None:
+    def seed(self, _seed: Numerical = None) -> None:  # type: ignore
         """Initiates the internal state of this pseudo-random generator.
         """
         if _seed is None or isinstance(_seed, (int, float)):
@@ -140,7 +140,7 @@ class Cwg64( BaseCWG ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: StateType = None) -> None:
+    def setstate(self, _state: StateType = None) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
