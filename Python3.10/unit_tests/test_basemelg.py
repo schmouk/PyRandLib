@@ -46,7 +46,7 @@ class TestBaseMELG:
         assert b_melg.gauss_next is None  # type: ignore
         assert b_melg._index == 0
         assert len(b_melg._state) == STATE_SIZE
-        assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
@@ -58,7 +58,7 @@ class TestBaseMELG:
             assert b_melg.gauss_next is None  # type: ignore
             assert b_melg._index == 0
             assert len(b_melg._state) == STATE_SIZE
-            assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+            assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -70,7 +70,7 @@ class TestBaseMELG:
             assert b_melg.gauss_next is None  # type: ignore
             assert b_melg._index == 0
             assert len(b_melg._state) == STATE_SIZE
-            assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+            assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
@@ -82,7 +82,7 @@ class TestBaseMELG:
             assert b_melg.gauss_next is None  # type: ignore
             assert b_melg._index == 0
             assert len(b_melg._state) == STATE_SIZE
-            assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+            assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -94,7 +94,7 @@ class TestBaseMELG:
             assert b_melg.gauss_next is None  # type: ignore
             assert b_melg._index == 0
             assert len(b_melg._state) == STATE_SIZE
-            assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+            assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
@@ -118,7 +118,7 @@ class TestBaseMELG:
         assert b_melg.gauss_next is None  # type: ignore
         assert b_melg._index == 0
         assert len(b_melg._state) == 5
-        assert all( 0 < s <= (1 << 64) for s in b_melg._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_melg._state )  # type: ignore
 
         with pytest.raises(TypeError):
             b_melg.seed((1, 2, 3, 4, 5))  # type: ignore

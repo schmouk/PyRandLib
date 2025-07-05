@@ -46,7 +46,7 @@ class TestBaseWELL:
         assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == STATE_SIZE
-        assert all(s != 0 for s in b_wll._state)
+        assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
@@ -59,7 +59,7 @@ class TestBaseWELL:
             assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
             assert len(b_wll._state) == STATE_SIZE
-            assert all(s != 0 for s in b_wll._state)
+            assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -72,7 +72,7 @@ class TestBaseWELL:
             assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
             assert len(b_wll._state) == STATE_SIZE
-            assert all(s != 0 for s in b_wll._state)
+            assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
@@ -85,7 +85,7 @@ class TestBaseWELL:
             assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
             assert len(b_wll._state) == STATE_SIZE
-            assert all(s != 0 for s in b_wll._state)
+            assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -98,7 +98,7 @@ class TestBaseWELL:
             assert b_wll.gauss_next is None  # type: ignore
             assert b_wll._index == 0
             assert len(b_wll._state) == STATE_SIZE
-            assert all(s != 0 for s in b_wll._state)
+            assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
@@ -122,7 +122,7 @@ class TestBaseWELL:
         assert b_wll.gauss_next is None  # type: ignore
         assert b_wll._index == 0
         assert len(b_wll._state) == 5
-        assert all(s != 0 for s in b_wll._state)
+        assert all(0 < s < (1 << b_wll._OUT_BITS) for s in b_wll._state)  # type: ignore
 
         with pytest.raises(TypeError):
             b_wll.seed((1, 2, 3, 4, 5))  # type: ignore

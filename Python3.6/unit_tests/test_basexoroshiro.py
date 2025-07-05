@@ -49,7 +49,7 @@ class TestBaseXoroshiro:
         assert b_xrsr.gauss_next is None  # type: ignore
         assert b_xrsr._index == 0
         assert len( b_xrsr._state ) == STATE_SIZE
-        assert all( s != 0 for s in b_xrsr._state )
+        assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
@@ -60,7 +60,7 @@ class TestBaseXoroshiro:
         assert b_xrsr.gauss_next is None  # type: ignore
         assert b_xrsr._index == 0
         assert len( b_xrsr._state ) == STATE_SIZE
-        assert all( s != 0 for s in b_xrsr._state )
+        assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -71,7 +71,7 @@ class TestBaseXoroshiro:
         assert b_xrsr.gauss_next is None  # type: ignore
         assert b_xrsr._index == 0
         assert len( b_xrsr._state ) == STATE_SIZE
-        assert all( s != 0 for s in b_xrsr._state )
+        assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
@@ -82,7 +82,7 @@ class TestBaseXoroshiro:
         assert b_xrsr.gauss_next is None  # type: ignore
         assert b_xrsr._index == 0
         assert len( b_xrsr._state ) == STATE_SIZE
-        assert all( s != 0 for s in b_xrsr._state )
+        assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -98,7 +98,7 @@ class TestBaseXoroshiro:
             assert b_xrsr.gauss_next is None  # type: ignore
             assert b_xrsr._index == 0
             assert len( b_xrsr._state ) == STATE_SIZE
-            assert all( s != 0 for s in b_xrsr._state )
+            assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
@@ -122,7 +122,7 @@ class TestBaseXoroshiro:
         assert b_xrsr.gauss_next is None  # type: ignore
         assert b_xrsr._index == 0
         assert len(b_xrsr._state) == 5
-        assert all(s != 0 for s in b_xrsr._state)
+        assert all( 0 < s < (1 << b_xrsr._OUT_BITS) for s in b_xrsr._state )  # type: ignore
 
         b_xrsr.seed(-1)
         assert b_xrsr._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]

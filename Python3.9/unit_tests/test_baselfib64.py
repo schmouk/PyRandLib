@@ -46,7 +46,7 @@ class TestBaseLFib64:
         assert b_lfib.gauss_next is None  # type: ignore
         assert b_lfib._index == 0
         assert len( b_lfib._state ) == STATE_SIZE
-        assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_int(self):
@@ -57,7 +57,7 @@ class TestBaseLFib64:
         assert b_lfib.gauss_next is None  # type: ignore
         assert b_lfib._index == 0
         assert len( b_lfib._state ) == STATE_SIZE
-        assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_float(self):
@@ -68,7 +68,7 @@ class TestBaseLFib64:
         assert b_lfib.gauss_next is None  # type: ignore
         assert b_lfib._index == 0
         assert len( b_lfib._state ) == STATE_SIZE
-        assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
 
     #-------------------------------------------------------------------------
     def test_init_tuple(self):
@@ -79,7 +79,7 @@ class TestBaseLFib64:
         assert b_lfib.gauss_next is None  # type: ignore
         assert b_lfib._index == 0
         assert len( b_lfib._state ) == STATE_SIZE
-        assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_list(self):
@@ -92,7 +92,7 @@ class TestBaseLFib64:
             assert b_lfib.gauss_next is None  # type: ignore
             assert b_lfib._index == 0
             assert len( b_lfib._state ) == STATE_SIZE
-            assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+            assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
                 
     #-------------------------------------------------------------------------
     def test_init_tuple_int(self):
@@ -116,7 +116,7 @@ class TestBaseLFib64:
         assert b_lfib.gauss_next is None  # type: ignore
         assert b_lfib._index == 0
         assert len(b_lfib._state) == 5
-        assert all( 0 < s <= (1 << 64) for s in b_lfib._state )  # type: ignore
+        assert all( 0 < s < (1 << 64) for s in b_lfib._state )  # type: ignore
 
         b_lfib.seed(-1)
         assert b_lfib._state == [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2, 0xb4a0472e578069ae]

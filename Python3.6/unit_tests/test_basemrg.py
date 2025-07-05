@@ -51,7 +51,7 @@ class TestBaseMRG:
         assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
-        assert all(s != 0 for s in b_mrg._state)
+        assert all(0 < s < (1 << b_mrg._OUT_BITS) for s in b_mrg._state)  # type: ignore
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)  # should be (1 << 31), but not set after construction of base class BaseMRG
         assert b_mrg._OUT_BITS == 32                # should be 31, but not set after construction of base class BaseMRG
 
@@ -64,7 +64,7 @@ class TestBaseMRG:
         assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
-        assert all(s != 0 for s in b_mrg._state)
+        assert all(0 < s < (1 << b_mrg._OUT_BITS) for s in b_mrg._state)  # type: ignore
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)
         assert b_mrg._OUT_BITS == 32
 
@@ -77,7 +77,7 @@ class TestBaseMRG:
         assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
-        assert all(s != 0 for s in b_mrg._state)
+        assert all(0 < s < (1 << b_mrg._OUT_BITS) for s in b_mrg._state)  # type: ignore
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)  # should be (1 << 31), but not set after construction of base class BaseMRG
         assert b_mrg._OUT_BITS == 32                # should be 31, but not set after construction of base class BaseMRG
 
@@ -90,7 +90,7 @@ class TestBaseMRG:
         assert b_mrg.gauss_next is None  # type: ignore
         assert b_mrg._index == 0
         assert len(b_mrg._state) == STATE_SIZE
-        assert all(s != 0 for s in b_mrg._state)
+        assert all(0 < s < (1 << b_mrg._OUT_BITS) for s in b_mrg._state)  # type: ignore
         assert b_mrg._NORMALIZE == 1.0 / (1 << 32)
         assert b_mrg._OUT_BITS == 32
                 
@@ -105,7 +105,7 @@ class TestBaseMRG:
             assert b_mrg.gauss_next is None  # type: ignore
             assert b_mrg._index == 0
             assert len(b_mrg._state) == STATE_SIZE
-            assert all(s != 0 for s in b_mrg._state)
+            assert all(0 < s < (1 << b_mrg._OUT_BITS) for s in b_mrg._state)  # type: ignore
             assert b_mrg._NORMALIZE == 1.0 / (1 << 32)  # should be (1 << 31), but not set after construction of base class BaseMRG
             assert b_mrg._OUT_BITS == 32                # should be 31, but not set after construction of base class BaseMRG
                     
