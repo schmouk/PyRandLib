@@ -30,7 +30,7 @@ from PyRandLib.splitmix       import SplitMix31, SplitMix32, SplitMix63, SplitMi
 
 #=============================================================================
 class TestListIndexState:
-    """Tests class SplitMix64.
+    """Tests class ListIndexState.
     """
 
     python_version_39: bool = platform.python_version_tuple()[:2] == ('3', '9')

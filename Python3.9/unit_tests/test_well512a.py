@@ -138,7 +138,7 @@ class TestWell512a:
         assert wll._state == [i for i in range(TestWell512a.Well512a_STATE_SIZE)]  # type: ignore
 
         with pytest.raises(TypeError):
-            # due to unhashable lists in Python 3.10
+            # due to unhashable lists in Python 3.9
             wll = Well512a(list(i+10 for i in range(TestWell512a.Well512a_STATE_SIZE)))  # type: ignore
             assert wll._index == 0
             assert wll.gauss_next is None  # type: ignore

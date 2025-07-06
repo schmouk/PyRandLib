@@ -143,7 +143,7 @@ class TestMrg287:
         assert mrg._state == [i for i in range(TestMrg287.Mrg287_STATE_SIZE)]  # type: ignore
 
         with pytest.raises(TypeError):
-            # due to unhashable lists bug in Python 3.10
+            # due to unhashable lists bug in Python 3.9
             mrg = Mrg287(list(i+10 for i in range(TestMrg287.Mrg287_STATE_SIZE)))  # type: ignore
             assert mrg._index == 0
             assert mrg.gauss_next is None  # type: ignore

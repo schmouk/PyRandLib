@@ -27,7 +27,7 @@ from PyRandLib.pcg64_32 import Pcg64_32
 
 
 #=============================================================================
-class TestCwg64_32:
+class TestPcg64_32:
     """Tests class Pcg64_32.
     """
     
