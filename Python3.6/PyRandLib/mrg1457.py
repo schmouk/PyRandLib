@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,7 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basemrg import BaseMRG
+from .basemrg          import BaseMRG
+from .annotation_types import SeedStateType
+from .splitmix         import SplitMix31
 
 
 #=============================================================================
@@ -31,6 +33,8 @@ class Mrg1457( BaseMRG ):
     Generator with long period (3.98e+438).
 
     This module is part of library PyRandLib.
+    
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -56,6 +60,7 @@ class Mrg1457( BaseMRG ):
 
     See Mrg287 for  a  short  period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 integers memory consumption.
+
     See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
     integers).
@@ -65,6 +70,7 @@ class Mrg1457( BaseMRG ):
       random(), seed(), getstate(), and setstate().
       
     Furthermore this class is callable:
+      rand = Mrg1457()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)
@@ -97,15 +103,8 @@ class Mrg1457( BaseMRG ):
     should definitively pass.
     """
     
-    
     #-------------------------------------------------------------------------
-    # 'protected' constants
-    _STATE_SIZE: int = 47            # this 'DX-47-3' MRG is based on a suite containing 47 integers
-    _MODULO    : int = 2_147_483_647 # i.e., 0xffff_ffff or (1<<31)-1, the modulo for DX-47-3 MRG
-
-
-    #-------------------------------------------------------------------------
-    _NORMALIZE: float = 4.656_612_873_077_039_257_8e-10  # i.e. 1.0 / (1 << 31)
+    _NORMALIZE: float = 1.0 / (1 << 31)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
@@ -120,6 +119,17 @@ class Mrg1457( BaseMRG ):
 
 
     #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this DX-47-3 generator is based on a suite containing 47 integers
+        super().__init__( SplitMix31, 47, _seed )
+
+
+    #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -127,23 +137,21 @@ class Mrg1457( BaseMRG ):
         #   x(i) = (2^26+2^19) * (x(i-1) + x(i-24) + x(i-47)) mod (2^31-1)
 
         # evaluates indexes in suite for the i-1, i-24 (and i-47) -th values
-        k1  = self._index-1
-        if k1 < 0:
-            k1 = Mrg1457._STATE_SIZE - 1
+        if (k1 := self._index - 1) < 0:
+            k1 = self._STATE_SIZE - 1  # notice: attribute _STATE_SIZE is set in base class
         
-        k24 = self._index-24
-        if k24 < 0:
-            k24 += Mrg1457._STATE_SIZE
+        if (k24 := self._index - 24) < 0:
+            k24 += self._STATE_SIZE
         
         # then evaluates current value
-        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index]) ) % 2_147_483_647
+        myValue = (0x0408_0000 * (self._state[k1] + self._state[k24] + self._state[self._index])) % 2_147_483_647  # type: ignore
         self._state[self._index] = myValue
         
         # next index
-        self._index = (self._index + 1) % Mrg1457._STATE_SIZE
+        self._index = (self._index + 1) % self._STATE_SIZE
 
         # then returns the integer generated value
         return  myValue
 
 
-#=====   end of module   mrg1457.py   ========================================
+#=====   end of module   mrgrand1457.py   ====================================

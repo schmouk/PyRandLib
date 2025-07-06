@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -50,6 +50,7 @@ class BaseLCG( BaseRandom ):
     See FastRand32 for a 2^32 (i.e. 4.3e+9) period LC-Generator with very  low 
     computation  time  but shorter period and worse randomness characteristics
     than for FastRand63.
+    
     See FastRand63 for a 2^63 (i.e. about 9.2e+18)  period  LC-Generator  with  
     low  computation  time  also,  longer  period  and quite better randomness 
     characteristics than for FastRand32.
@@ -79,7 +80,7 @@ class BaseLCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None, /) -> None:
+    def __init__(self, _seedState: Numerical = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -94,7 +95,7 @@ class BaseLCG( BaseRandom ):
  
     #-------------------------------------------------------------------------
     @override
-    def getstate(self) -> int:
+    def getstate(self) -> int:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
@@ -102,7 +103,7 @@ class BaseLCG( BaseRandom ):
         which  has  to  be  used  in  methods 'next() and 'setstate() of every
         inheriting class.
         """
-        return self._state
+        return self._state  # type: ignore
  
 
 #=====   end of module   baselcg.py   ========================================

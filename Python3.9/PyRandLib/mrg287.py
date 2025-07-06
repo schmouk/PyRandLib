@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,9 +21,9 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
-from .basemrg import BaseMRG
+from .basemrg          import BaseMRG
+from .annotation_types import SeedStateType
+from .splitmix         import SplitMix32
 
 
 #=============================================================================
@@ -77,6 +77,7 @@ class Mrg287( BaseMRG ):
     See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
     computation  time  (2^31-1 modulus calculations) but less memory space consumption 
     (47 integers).
+    
     See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (31-bits  modulus)  but  use  of  more memory space (1_597 
     integers).
@@ -115,9 +116,14 @@ class Mrg287( BaseMRG ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 256  # this 'Marsa-LFIB4' MRG is based on a suite containing 256 integers
-    _MODULO    : Final[int] = 0xffff_ffff
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Marsa-LIBF4' generator is based on a suite containing 256 integers
+        super().__init__( SplitMix32, 256, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -129,19 +135,19 @@ class Mrg287( BaseMRG ):
 
         # evaluates indexes in suite for the i-55, i-119, i-179 (and i-256) -th values
         if (k55 := self._index-55) < 0:
-            k55 += Mrg287._STATE_SIZE
+            k55 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         if (k119 := self._index-119) < 0:
-            k119 += Mrg287._STATE_SIZE
+            k119 += self._STATE_SIZE
         
         if (k179 := self._index-179) < 0:
-            k179 += Mrg287._STATE_SIZE
+            k179 += self._STATE_SIZE
         
         # then evaluates current value
-        self._state[self._index] = (myValue := (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) & 0xffff_ffff)
+        self._state[self._index] = (myValue := (self._state[k55] + self._state[k119] + self._state[k179] + self._state[self._index]) & 0xffff_ffff)  # type: ignore
         
         # next index
-        self._index = (self._index+1) % Mrg287._STATE_SIZE
+        self._index = (self._index + 1) % self._STATE_SIZE
         
         # then returns the integer generated value
         return  myValue

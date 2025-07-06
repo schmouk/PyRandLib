@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -60,12 +59,12 @@ class Well44497b( BaseWELL ):
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
     computation time and 16 integers memory consumption.
+
     See Well1024a for a longer period WELL-Generator  (2^1024,  i.e. 2.68e+308),  same 
     computation time and 32 integers memory consumption.
-    See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
+
+    See Well199937c for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497c for a very large period (2^44497,  i.e. 1.51e+13466)  with  similar 
-    computation time but use of even more memory space (1,391 integers).
     
     Furthermore, this class is callable:
       rand = Well44497b()
@@ -92,10 +91,12 @@ class Well44497b( BaseWELL ):
  | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well44497b (2)  | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937c generator provided with library PyRandLib implements the
-    Well19937a  algorithm  augmented  with  an associated tempering algorithm.
+    Well19937a algorithm augmented with an associated tempering algorithm.
+    (2)The Well44497b generator provided with library PyRandLib implements the
+    Well44497a algorithm augmented with an associated *tempering* algorithm.
     This should very slightly slow down its CPU  performance  while  enhancing 
     its pseudo-randomness quality, as measured by TestU01.
 
@@ -108,8 +109,14 @@ class Well44497b( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: Final[int] = 1391  # this Well44497b PRNG internal state is based on a suite containing 1391 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well44497b' generator is based on a suite containing 1391 integers
+        super().__init__( 1391, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -126,15 +133,15 @@ class Well44497b( BaseWELL ):
             case _:
                 i_1, i_2 = i-1, i-2
 
-        z0 = (self._state[i_1] & 0x0001_ffff) ^ (self._state[i_2] & 0xfffe_0000)
-        z1 = BaseWELL._M3_neg(self._state[i], 24) ^ BaseWELL._M3_pos(self._state[(i + 23) % 1391], 30)
-        z2 = BaseWELL._M3_neg(self._state[(i + 481) % 1391], 10) ^ BaseWELL._M2_neg(self._state[(i + 229) % 1391], 26)
+        z0 = (self._state[i_1] & 0x0001_ffff) ^ (self._state[i_2] & 0xfffe_0000)  # type: ignore
+        z1 = BaseWELL._M3_neg(self._state[i], 24) ^ BaseWELL._M3_pos(self._state[(i + 23) % 1391], 30)  # type: ignore
+        z2 = BaseWELL._M3_neg(self._state[(i + 481) % 1391], 10) ^ BaseWELL._M2_neg(self._state[(i + 229) % 1391], 26)  # type: ignore
 
         self._state[i] = (z3 := z1 ^ z2)
         self._state[i_1] = z0 ^ BaseWELL._M3_pos(z1, 20) ^ BaseWELL._M6(z2, 9, 14, 5, BaseWELL._a7) ^ z3
 
         self._index = i_1
-        return BaseWELL._tempering(z3, 0x93dd1400, 0xfa118000)
+        return BaseWELL._tempering(z3, 0x93dd_1400, 0xfa11_8000)
 
 
 #=====   end of module   Well44497b.py   =====================================

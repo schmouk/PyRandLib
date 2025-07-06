@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,13 +21,12 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baserandom       import BaseRandom
-from .annotation_types import Numerical, SeedStateType, StateType
-from .splitmix         import SplitMix64
+from .listindexstate   import ListIndexState
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
-class BaseMRG( BaseRandom ):
+class BaseMRG( ListIndexState ):
     """Definition of the base class for all MRG pseudo-random generators.
     
     This module is part of library PyRandLib.
@@ -50,9 +49,11 @@ class BaseMRG( BaseRandom ):
        
     See Mrg287 for  a  shor t period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 integers memory consumption.
+    
     See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
     computation  time  (2^31-1 modulus calculations) but less memory space consumption 
     (47 integers).
+    
     See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (32-bits  modulus)  but  use  of  more  memory space (1597 
     integers).
@@ -88,9 +89,12 @@ class BaseMRG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _initRandClass, _stateSize: int, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
+        _initRandClass is the class to be  instantiated  for  the  random
+        initialization of the internal state list of integers.
+        _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state, an integer, a float or  None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
         self._STATE_SIZE integers and an index in this list (index  value 
@@ -100,83 +104,10 @@ class BaseMRG( BaseRandom ):
         Should _seedState be anything else (e.g. None) then the shuffling 
         of the local current time value is used as such an initial seed.
         """
-        super().__init__( _seedState )
+        super().__init__( _initRandClass, _stateSize, _seedState )
             # this  call  creates  the  two  attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
-            
- 
-    #-------------------------------------------------------------------------
-    def getstate(self) -> StateType:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This object can be passed to setstate() to restore the state. It is a
-        tuple  containing a list of self._STATE_SIZE integers and an index in 
-        this list (index value being then in range(0,self._STATE_SIZE).
-        """
-        return (self._state[:], self._index)
-            
- 
-    #-------------------------------------------------------------------------
-    def setstate(self, _seedState: StateType, /) -> None:
-        """Restores the internal state of the generator.
-
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About valid state:  this is a  tuple  containing  a  list  of 
-        self._STATE_SIZE integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)). Should 
-        _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of 
-        self._STATE_SIZE integers. Should _seedState be anything else
-        (e.g. None) then the shuffling  of  the  local  current  time
-        value is used as such an initial seed.
-        """
-        try:
-            match len( _seedState ):
-                case 0:
-                    self._index = 0
-                    self._initstate()
-                
-                case 1:
-                    self._index = 0
-                    self._initstate( _seedState[0] )
-                
-                case _:
-                    self._initindex( _seedState[1] )
-                    if (len(_seedState[0]) == self._STATE_SIZE):
-                        self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
-                    else:
-                        self._initstate( _seedState[0] )
-                
-        except:
-            self._index = 0
-            self._initstate( _seedState )
-                       
- 
-    #-------------------------------------------------------------------------
-    def _initindex(self, _index: int, /) -> None:
-        """Inits the internal index pointing to the internal list.
-        """
-        try:
-            self._index = int( _index ) % self._STATE_SIZE
-        except:
-            self._index = 0
-                       
- 
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        # feeds the list according to an initial seed and the value+1 of the modulo.
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() & self._MODULO for _ in range(self._STATE_SIZE) ]
 
  
 #=====   end of module   basemrg.py   ========================================

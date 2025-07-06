@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .basewell import BaseWELL
+from .basewell         import BaseWELL
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -58,11 +59,11 @@ class Well1024a( BaseWELL ):
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
     computation time and 16 integers memory consumption.
-    See Well1024a for a longer period WELL-Generator  (2^1024,  i.e. 2.68e+308),  same 
-    computation time and 32 integers memory consumption.
-    See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
+
+    See Well199937c for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
-    See Well44497c for a very large period (2^44497,  i.e. 1.51e+13466)  with  similar 
+    
+    See Well44497b for a very large period (2^44497,  i.e. 1.51e+13466)  with  similar 
     computation time but use of even more memory space (1,391 integers).
     
     Furthermore, this class is callable:
@@ -90,10 +91,12 @@ class Well1024a( BaseWELL ):
  | Well512a        | not available       |    16 x 4-bytes | 2^512   |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
  | Well1024a       | WELL1024a           |    32 x 4-bytes | 2^1024  |    4.0      |     1.1      |          0       |       4     |       4        |
  | Well19937c (1)  | WELL19937a          |   624 x 4-bytes | 2^19937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497b      | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
+ | Well44497b (2)  | not available       | 1,391 x 4-bytes | 2^44497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
 
     (1)The Well19937c generator provided with library PyRandLib implements the
-    Well19937a  algorithm  augmented  with  an associated tempering algorithm.
+    Well19937a algorithm augmented with an associated tempering algorithm.
+    (2)The Well44497b generator provided with library PyRandLib implements the
+    Well44497a algorithm augmented with an associated *tempering* algorithm.
     This should very slightly slow down its CPU  performance  while  enhancing 
     its pseudo-randomness quality, as measured by TestU01.
 
@@ -106,28 +109,30 @@ class Well1024a( BaseWELL ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 32  # this Well1024a PRNG internal state is based on a suite containing 32 integers (32-bits wide each)
+    def __init__(self, _seed: SeedStateType = None) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'Well1024a' generator is based on a suite containing 32 integers
+        super().__init__( 32, _seed )
 
 
     #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
-        i = self._index
-        i_1 = (i - 1) & 0x1f
-
-        z0 = self._state[i_1]
+        z0 = self._state[(i_1 :=((i := self._index) - 1) & 0x1f)]
             # notice:  all blocks of bits in the internal state are 32 bits wide, which leads to a great 
             # simplification for the implementation of the generic WELL algorithm when evaluating z0.
-        z1 = self._state[i] ^ self._M3_pos(self._state[(i + 3) & 0x1f], 8)
+        z1 = self._state[i] ^ BaseWELL._M3_pos(self._state[(i + 3) & 0x1f], 8)  # type: ignore
             # notice: the transformation applied to self._state[i] for Well1024a
             # is the identity which leads to simplification also
-        z2 = self._M3_neg(self._state[(i + 24) & 0x1f], 19) ^ self._M3_neg(self._state[(i + 10) & 0x1f], 14)
-        z3 = z1 ^ z2
+        z2 = BaseWELL._M3_neg(self._state[(i + 24) & 0x1f], 19) ^ BaseWELL._M3_neg(self._state[(i + 10) & 0x1f], 14)  # type: ignore
         
-        self._state[i] = z3
-        self._state[i_1] = self._M3_neg(z0, 11) ^ self._M3_neg(z1, 7) ^ self._M3_neg(z2, 13)
+        self._state[i] = (z3 := z1 ^ z2)
+        self._state[i_1] = BaseWELL._M3_neg(z0, 11) ^ BaseWELL._M3_neg(z1, 7) ^ BaseWELL._M3_neg(z2, 13)  # type: ignore
             # notice: the last term of the above equation in the WELL generic algorithm is, for its Well1024a
             # version, the zero matrix _M0 which we suppress here for calculations optimization purpose
 
