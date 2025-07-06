@@ -142,6 +142,9 @@ or run
 to get an HTML version of the report, to be displayed by double-clicking on file `<path to your PyRandLib directory>/Python3.13/htmlcov/index.html`. This file will automatically open itself in your favorite web browser. Click on any not fully covered file to get a whole view of their code with highlighted missed statements (there should be none).
 
 
+### Expected results
+In each of the subdirectories `Python3.xx` a text file `tests-cov.txt` contains a screen copy of the expected results.
+
 
 ## Randomness evaluation
 In [1], every known PRNG at the time of the editing has been tested according to three different sets of tests:
