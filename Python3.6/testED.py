@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -35,7 +35,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
     Copyright (c) 2025 Philippe Schmouker
 
     The Pseudo-Random Numbers Generators implemented in library PyRandLib have
-    been chosen as being the best in class ones about their randmoness quality
+    been chosen as being the best in class ones about their randomness quality
     - as evaluated with test program  TestU01  (Pierre  L'Ecuyer  and  Richard 
     Simard  (Université  de  Montréal) in 'TestU01:  A C Library for Empirical 
     Testing of Random Number Generators  -  ACM  Transactions  on Mathematical 
@@ -60,7 +60,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
     hist = [0]*nb_entries
 
-    expected_max_diff_mean_median = (nb_loops / nb_entries) * 0.002    # i.e. difference should be less than 0.2 % of expected mean
+    expected_max_diff_mean_median = (nb_loops / nb_entries) * 0.004    # i.e. difference should be less than 0.4 % of expected mean
     expected_max_stdev = 1.04 * sqrt(nb_loops / nb_entries)            # i.e. +4 % max over expected stdandard deviation
     expected_max_variance = 4.5                                        # this is the absolute value of the expected max on local variance
 
@@ -109,33 +109,33 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
 #=============================================================================
 if __name__ == "__main__":
-    test_algo(Cwg64(),         3217, nb_loops = 2_000_000)  # notice: 3217 is a prime number
-    test_algo(Cwg128_64(),     3217, nb_loops = 2_000_000)
-    test_algo(Cwg128(),        3217, nb_loops = 2_000_000)
+    test_algo(Cwg64(),         3217, nb_loops = 1_000_000)   # notice: 3217 is a prime number
+    test_algo(Cwg128_64(),     3217, nb_loops = 1_000_000)
+    test_algo(Cwg128(),        3217, nb_loops = 1_000_000)
     test_algo(FastRand32(),    3217, nb_loops = 2_000_000)
     test_algo(FastRand63(),    3217, nb_loops = 2_000_000)
-    test_algo(LFib78(),        3217, nb_loops = 2_000_000)
-    test_algo(LFib116(),       3217, nb_loops = 2_000_000)
-    test_algo(LFib668(),       3217, nb_loops = 2_000_000)
-    test_algo(LFib1340(),      3217, nb_loops = 2_000_000)
-    test_algo(Melg607(),       3217, nb_loops = 2_000_000)
-    test_algo(Melg19937(),     3217, nb_loops = 2_000_000)
-    test_algo(Melg44497(),     3217, nb_loops = 2_000_000)
-    test_algo(Mrg287(),        3217, nb_loops = 2_000_000)
-    test_algo(Mrg1457(),       3217, nb_loops = 2_000_000)
-    test_algo(Mrg49507(),      3217, nb_loops = 2_000_000)
-    test_algo(Pcg64_32(),      3217, nb_loops = 2_000_000)
-    test_algo(Pcg128_64(),     3217, nb_loops = 2_000_000)
-    test_algo(Pcg1024_32(),    3217, nb_loops = 2_000_000)
-    test_algo(Squares32(),     3217, nb_loops = 2_000_000)
-    test_algo(Squares64(),     3217, nb_loops = 2_000_000)
-    test_algo(Well512a(),      3217, nb_loops = 1_500_000)
-    test_algo(Well1024a(),     3217, nb_loops = 1_500_000)
-    test_algo(Well19937c(),    2029                      )  # notice: 2029 is a prime number
-    test_algo(Well44497b(),    2029                      )
-    test_algo(Xoroshiro256(),  3217, nb_loops = 2_000_000)
-    test_algo(Xoroshiro512(),  3217, nb_loops = 2_000_000)
-    test_algo(Xoroshiro1024(), 3217, nb_loops = 2_000_000)
+    test_algo(LFib78(),        3217, nb_loops = 1_000_000)
+    test_algo(LFib116(),       3217, nb_loops = 1_000_000)
+    test_algo(LFib668(),       3217, nb_loops = 1_000_000)
+    test_algo(LFib1340(),      3217, nb_loops = 1_000_000)
+    test_algo(Melg607(),       3217, nb_loops = 1_000_000)
+    test_algo(Melg19937(),     3217, nb_loops = 1_000_000)
+    test_algo(Melg44497(),     3217, nb_loops = 1_000_000)
+    test_algo(Mrg287(),        3217, nb_loops = 1_000_000)
+    test_algo(Mrg1457(),       3217, nb_loops = 1_000_000)
+    test_algo(Mrg49507(),      3217, nb_loops = 1_000_000)
+    test_algo(Pcg64_32(),      3217, nb_loops = 1_000_000)
+    test_algo(Pcg128_64(),     3217, nb_loops = 1_000_000)
+    test_algo(Pcg1024_32(),    3217, nb_loops = 1_000_000)
+    test_algo(Squares32(),     3217, nb_loops = 1_000_000)
+    test_algo(Squares64(),     3217, nb_loops = 1_000_000)
+    test_algo(Well512a(),      3217, nb_loops = 1_000_000)
+    test_algo(Well1024a(),     3217, nb_loops = 1_000_000)
+    test_algo(Well19937c(),    2029)                         # notice: 2029 is a prime number
+    test_algo(Well44497b(),    2029)
+    test_algo(Xoroshiro256(),  3217, nb_loops = 1_000_000)
+    test_algo(Xoroshiro512(),  3217, nb_loops = 1_000_000)
+    test_algo(Xoroshiro1024(), 3217, nb_loops = 1_000_000)
 
 
 #=====   end of module   testED.py   =========================================

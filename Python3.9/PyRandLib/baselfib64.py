@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -23,13 +23,13 @@ SOFTWARE.
 #=============================================================================
 from typing import Final
 
-from .baserandom       import BaseRandom
+from .listindexstate   import ListIndexState
 from .annotation_types import Numerical, SeedStateType, StateType
 from .splitmix         import SplitMix64
 
 
 #=============================================================================
-class BaseLFib64( BaseRandom ):
+class BaseLFib64( ListIndexState ):
     """The base class for all LFib PRNG based on 64-bits numbers.
     
     Definition of the base class for all LFib pseudo-random generators based
@@ -47,7 +47,7 @@ class BaseLFib64( BaseRandom ):
         + (addition),
         - (substraction),
         * (multiplication),
-        ^(bitwise exclusive-or).
+        ^ (bitwise exclusive-or).
     
     With the + or - operation, such generators are in fact MRGs. They offer very large
     periods  with  the  best  known  results in the evaluation of their randomness, as
@@ -81,10 +81,10 @@ class BaseLFib64( BaseRandom ):
 
  | PyRandLib class | TU01 generator name      | Memory Usage    | Period  | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------------ | --------------- | ------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | LFibRand78      | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFibRand116     | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFibRand668     | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFibRand1340    | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib78          | LFib(2^64, 17, 5, +)     |    34 x 4-bytes | 2^78    |    n.a.     |     1.1      |          0       |       0     |       0        |
+ | LFib116         | LFib(2^64, 55, 24, +)    |   110 x 4-bytes | 2^116   |    n.a.     |     1.0      |          0       |       0     |       0        |
+ | LFib668         | LFib(2^64, 607, 273, +)  | 1,214 x 4-bytes | 2^668   |    n.a.     |     0.9      |          0       |       0     |       0        |
+ | LFib1340        | LFib(2^64, 1279, 861, +) | 2,558 x 4-bytes | 2^1340  |    n.a.     |     0.9      |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;
@@ -96,14 +96,14 @@ class BaseLFib64( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)
+    _NORMALIZE: Final[float] = 5.421_010_862_427_522_170_037_3e-20  # i.e. 1.0 / (1 << 64)  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in  inheriting
     classes  if  returned random integer values are coded on anything else 
     than 32 bits.  It is THE multiplier constant value to  be  applied  to  
     pseudo-random number for them to be normalized in interval [0.0, 1.0).
     """
 
-    _OUT_BITS: Final[int] = 64
+    _OUT_BITS: Final[int] = 64  # type: ignore
     """The value of this class attribute MUST BE OVERRIDDEN in inheriting
     classes  if returned random integer values are coded on anything else 
     than 32 bits.
@@ -111,97 +111,43 @@ class BaseLFib64( BaseRandom ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _stateSize: int, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
+        _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state, an integer,  a float or None.
         About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index  value 
-        being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
-        a sole integer or float then it  is  used  as  initial  seed  for 
-        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
+        self._STATE_SIZE  64-bits  integers  and  an  index  in this list 
+        (index value being  then  in range (0,self._STATE_SIZE)).  Should 
+        _seedState be a sole integer or float then it is used as  initial
+        seed for the random filling of the internal list of self._STATE_SIZE  
         integers.  Should _seedState be anything else  (e.g.  None)  then  
         the  shuffling of the local current time value is used as such an 
         initial seed.
         """
-        super().__init__( _seedState )
+        super().__init__( SplitMix64, _stateSize, _seedState )
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
 
 
     #-------------------------------------------------------------------------
-    def getstate(self) -> StateType:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This  object can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE integers and an 
-        index in this list (index value being then in range(0,self._STATE_SIZE).
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
         """
-        return (self._state[:], self._index)
+        super().seed( _seed )
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _seedState: StateType, /) -> None:
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About valid state:  this is a  tuple  containing  a  list  of 
-        self._STATE_SIZE integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)). Should 
-        _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of 
-        self._STATE_SIZE integers. Should _seedState be anything else
-        (e.g. None) then the shuffling  of  the  local  current  time
-        value is used as such an initial seed.
+        _state should have been obtained from a previous call to getstate().
+        'setstate()' restores the internal state of the generator to what it
+        was at the time getstate() was lastly called.
+        Inheriting classes MUST IMPLEMENT this method.
         """
-        try:
-            count = len( _seedState )
-            
-            if count == 0:
-                self._index = 0
-                self._initstate()
-                
-            elif count == 1:
-                self._index = 0
-                self._initstate( _seedState[0] )
-                
-            else:
-                self._initindex( _seedState[1] )
-                if (len(_seedState[0]) == self._STATE_SIZE):
-                    self._state = _seedState[0][:]    # each entry in _seedState MUST be integer
-                else:
-                    self._initstate( _seedState[0] )
-                
-        except:
-            self._index = 0
-            self._initstate( _seedState )
-
-
-    #-------------------------------------------------------------------------
-    def _initindex(self, _index: int, /) -> None:
-        """Inits the internal index pointing to the internal list.
-        """
-        try:
-            self._index = int( _index ) % self._STATE_SIZE
-        except:
-            self._index = 0
-
-
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(self._STATE_SIZE) ]        
+        super().setstate(_state)
 
 
 #=====   end of module   baselfib64.py   =====================================
-

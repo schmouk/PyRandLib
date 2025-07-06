@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -50,9 +50,11 @@ class BaseCWG( BaseRandom ):
     See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
     with low computation time, medium period,  64- bits output values and very
     good randomness characteristics.
+
     See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
+    
     See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
@@ -70,7 +72,7 @@ class BaseCWG( BaseRandom ):
  | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | Cwg64           | CWG64              |   8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |_
+ | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |
  | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
@@ -82,13 +84,13 @@ class BaseCWG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None) -> None:
+    def __init__(self, _seedState: SeedStateType = None) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
         its shuffled value).
         Notice: method setstate() is not implemented in base class BaseRandom.
-        So,  it  must be implemented in classes inheriting BaseLCG and it must
+        So,  it  must be implemented in classes inheriting BaseCWG and it must
         initialize attribute self._state.
         """
         super().__init__( _seedState )  # this internally calls 'setstate()'  which
@@ -99,15 +101,15 @@ class BaseCWG( BaseRandom ):
     def getstate(self) -> StatesListAndExt:
         """Returns an object capturing the current internal state of the generator.
         
-        This object can be passed to setstate() to restore the state.
-        For  CWG,  this  state is defined by a list of control values 
-        (a, weyl and s - or a list of 4 coeffs) and an internal state 
-        value,  which  are used in methods 'next() and 'setstate() of 
-        every inheriting class.
+        This object can be passed to setstate()  to  restore  the  state.
+        For  CWG,  this  state  is  defined  by  a list of control values 
+        (a, weyl, s and an internal state value - or a list of 4 coeffs),
+        which  are  used  in methods 'next() and 'setstate() of every in-
+        heriting class.
 
         All inheriting classes MUST IMPLEMENT this method.
         """
-        return (self._a, self._weyl, self._s, self._state)
-   
+        return (self._a, self._weyl, self._s, self._state)  # type: ignore
+
 
 #=====   end of module   basecwg.py   ========================================

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2021-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -29,5 +29,3 @@ SeedStateType    = Numerical | StateType
 
 
 #=====   end of   PyRandLib.annotation_types   ===============================
-
-# type: ignore  (this comment line is just to avoid boring pylance related error checking)

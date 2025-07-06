@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,12 +21,11 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, Union
+from typing import Union
 
 from .baserandom       import BaseRandom
 from .basexoroshiro    import BaseXoroshiro
 from .annotation_types import Numerical, StatesList
-from .splitmix         import SplitMix64
 
 
 #=============================================================================
@@ -50,6 +49,7 @@ class Xoroshiro512( BaseXoroshiro ):
     See Xoroshiro256 for a large 2^256 period (i.e. about  1.16e+77)  scramble  linear 
     PRNG,  with  low  computation  time,  64-bits  output  values  and good randomness
     characteristics.
+
     See Xoroshiro1024 for a large 2^1024 period (i.e. about 1.80e+308) scramble linear 
     PRNG,  with  low computation time,  64-bits output values and very good randomness
     characteristics.
@@ -80,24 +80,20 @@ class Xoroshiro512( BaseXoroshiro ):
     """
 
     #-------------------------------------------------------------------------
-    _STATE_SIZE: Final[int] = 8
-
-
-    #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Union[Numerical, StatesList] = None, /) -> None:
+    def __init__(self, _seedState: Union[Numerical, StatesList] = None, /) -> None:  # type: ignore
         """Constructor.
         
         _seedState is either a valid state, an integer,  a float or None.
-        About  valid  state:  this  is  a  tuple  containing  a  list  of  
-        self._STATE_SIZE integers and  an index in this list (index value 
-        being  then  in range (0,self._STATE_SIZE)). Should _seedState be 
-        a sole integer or float then it  is  used  as  initial  seed  for 
-        the  random  filling  of  the  internal  list of self._STATE_SIZE  
-        integers.  Should _seedState be anything else  (e.g.  None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        About  valid  state:   this  is  a  tuple  containing  a  list  of  
+        self._STATE_SIZE integers and  an index in this list (index  value 
+        being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
+        a sole integer or float then  it  is  used  as  initial  seed  for 
+        the  random  filling  of  the  internal  list  of self._STATE_SIZE  
+        integers.  Should _seedState be None then  the  shuffling  of  the 
+        local current time value is used as such an initial seed.
         """
-        super().__init__( _seedState )
+        # this 'xoroshiro512**' generator is based on a suite containing 8 integers
+        super().__init__( 8, _seedState )
             # this  call  creates  the  two   attributes
             # self._state and self._index, and sets them
             # since it internally calls self.setstate().
@@ -109,73 +105,18 @@ class Xoroshiro512( BaseXoroshiro ):
         """
         currentS1 = self._state[1]
         # advances the internal state of the PRNG
-        self._state[2] ^= self._state[0]
-        self._state[5] ^= self._state[1]
-        self._state[1] ^= self._state[2]
-        self._state[7] ^= self._state[3]
-        self._state[3] ^= self._state[4]
-        self._state[4] ^= self._state[5]
-        self._state[0] ^= self._state[6]
-        self._state[6] ^= self._state[7]
-        self._state[6] ^= (currentS1 << 11) & BaseXoroshiro._MODULO
+        self._state[2] ^= self._state[0]  # type: ignore
+        self._state[5] ^= self._state[1]  # type: ignore
+        self._state[1] ^= self._state[2]  # type: ignore
+        self._state[7] ^= self._state[3]  # type: ignore
+        self._state[3] ^= self._state[4]  # type: ignore
+        self._state[4] ^= self._state[5]  # type: ignore
+        self._state[0] ^= self._state[6]  # type: ignore
+        self._state[6] ^= self._state[7]  # type: ignore
+        self._state[6] ^= (currentS1 << 11) & BaseXoroshiro._MODULO  # type: ignore
         self._state[7] = BaseRandom._rotleft( self._state[7], 21 )
         # returns the output value
-        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO
-
-
-    #-------------------------------------------------------------------------
-    def getstate(self) -> tuple[ int ]:
-        """Returns an object capturing the current internal state of the  generator.
-        
-        This object can be passed to setstate() to restore the state. 
-        It is a tuple containing a list of self._STATE_SIZE integers.
-        """
-        return (self._s0, self._s1, self._s2, self._s3)
-
-
-    #-------------------------------------------------------------------------
-    def setstate(self, _seedState: Union[ Numerical, StatesList ] = None, /) -> None:
-        """Restores the internal state of the generator.
-        
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About  valid  state:  this  is  a  list  of  self._STATE_SIZE 
-        integers (64-bits). Should _seedState be a  sole  integer  or 
-        float  then it is used as initial seed for the random filling 
-        of the internal list  of  self._STATE_SIZE  integers.  Should 
-        _seedState be anything else (e.g. None) then the shuffling of 
-        the local current time value is used as such an initial seed.
-        """
-        try:
-            if (count := len( _seedState )) == 0:
-                self._initstate()
-                
-            elif count == 1:
-                self._initstate( _seedState[0] )
-                
-            else:
-                if (len(_seedState[0]) == Xoroshiro512._STATE_SIZE):
-                    self._state = _seedState[:]    # Notice: all entries MUST BE integers and not all zero
-                else:
-                    self._initstate( _seedState[0] )
-                
-        except:
-            self._initstate( _seedState )
-
-
-    #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
-        """Inits the internal list of values.
-        
-        Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
-        """
-        initRand = SplitMix64( _initialSeed )
-        self._state = [ initRand() for _ in range(Xoroshiro512._STATE_SIZE) ]
+        return (BaseRandom._rotleft( currentS1 * 5, 7) * 9) & BaseXoroshiro._MODULO  # type: ignore
 
 
 #=====   end of module   xoroshiro512.py   ===================================
-

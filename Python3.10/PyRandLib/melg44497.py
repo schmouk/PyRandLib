@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,9 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final
-
 from .basemelg import BaseMELG
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -47,7 +46,7 @@ class Melg44497( BaseMELG ):
     Notice: the implementation of this version of the MELG algorithm in  PyRandLib  is 
     not as optimized as it is in C code provided by MELG authors. It is rather derived
     from the formal description and related tables provided in paper  referenced  [11]
-    in  file  README.md,  to be able to easier validate the Python code here.
+    in file README.md, to be able to easier validate the Python code here.
 
     Notice also:  in the original paper [11],  in the description of  Algorithm 1,  an 
     error  (typo)  appears at the initialization of 'x'.  An bit-xor operation appears 
@@ -57,8 +56,9 @@ class Melg44497( BaseMELG ):
     See Melg607 for a large period MELG-Generator (2^607, i.e. 5.31e+182)  with medium
     computation  time  and  the  equivalent  of  21  32-bits  integers  memory  little 
     consumption.
+    
     See Melg19937 for an even larger period MELG-Generator (2^19937, i.e. 4.32e+6001),
-    same computation time and equivalent of 626 integers memory consumption.
+    same computation time and equivalent of 625 integers memory consumption.
     
     Furthermore, this class is callable:
       rand = Melg444907()
@@ -95,8 +95,18 @@ class Melg44497( BaseMELG ):
     
     #-------------------------------------------------------------------------
     # 'protected' constants
-    _STATE_SIZE: Final[int] = 696
-    _A_COND = (0, 0x4fa9_ca36_f293_c9a9)
+    _A_COND: tuple[int, int] = (0, 0x4fa9_ca36_f293_c9a9) # this tuple will avoid an 'if' in method 'next()'
+
+
+    #-------------------------------------------------------------------------
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # the internal state of this PRNG is set on 696 64-bits integers
+        super().__init__( 696, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -109,11 +119,11 @@ class Melg44497( BaseMELG ):
         self._index = (i_1 := (i+1) % 695)
 
         s695 = self._state[695]
-        x = (self._state[i] & 0xffff_8000_0000_0000) | (self._state[i_1] & 0x0000_7fff_ffff_ffff)  # notice: | instead of ^ as erroneously printed in [11]
-        self._state[695] = (s695 := ((x >> 1) ^ Melg44497._A_COND[x & 0x01]) ^ self._state[(i+373) % 695] ^ (s695 ^ ((s695 << 37) & 0xffff_ffff_ffff_ffff)))
+        x = (self._state[i] & 0xffff_8000_0000_0000) | (self._state[i_1] & 0x0000_7fff_ffff_ffff)  # notice: | instead of ^ as erroneously printed in [11]  # type: ignore
+        self._state[695] = (s695 := ((x >> 1) ^ Melg44497._A_COND[x & 0x01]) ^ self._state[(i+373) % 695] ^ (s695 ^ ((s695 << 37) & 0xffff_ffff_ffff_ffff)))  # type: ignore
 
         si = self._state[i] = x ^ (s695 ^ (s695 >> 14))
-        return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)
+        return (si ^ ((si << 6) & 0xffff_ffff_ffff_ffff)) ^ ((self._state[(i + 95) % 695]) & 0x06fb_bee2_9aae_fd91)  # type: ignore
         
 
 #=====   end of module   melg44977.py   ======================================

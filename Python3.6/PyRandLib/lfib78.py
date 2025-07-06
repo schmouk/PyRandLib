@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -21,7 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .baselfib64 import BaseLFib64
+from .baselfib64       import BaseLFib64
+from .annotation_types import SeedStateType
 
 
 #=============================================================================
@@ -107,8 +108,14 @@ class LFib78( BaseLFib64 ):
     """
 
     #-------------------------------------------------------------------------
-    # 'protected' constant
-    _STATE_SIZE: int = 17  # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
+    def __init__(self, _seed: SeedStateType = None) -> None:  # type: ignore
+        """Constructor.
+        
+        Should _seed be None or not a number then the local time is used
+        (with its shuffled value) as a seed.
+        """
+        # this 'LFib(2^64, 17, 5, +)' generator is based on a suite containing 17 integers
+        super().__init__( 17, _seed )
 
 
     #-------------------------------------------------------------------------
@@ -116,16 +123,15 @@ class LFib78( BaseLFib64 ):
         """This is the core of the pseudo-random generator.
         """
         # evaluates indexes in suite for the i-5 and i-17 -th values
-        k5 = self._index-5
-        if k5 < 0:
-            k5 += LFib78._STATE_SIZE
+        
+        if (k5 := self._index - 5) < 0:
+            k5 += self._STATE_SIZE  # notice: attribute _STATE_SIZE is set in base class
         
         # then evaluates current value
-        myValue = (self._state[k5] + self._state[self._index]) & 0xffff_ffff_ffff_ffff
-        self._state[self._index] = myValue
+        self._state[self._index] = (myValue := (self._state[k5] + self._state[self._index]) & 0xffff_ffff_ffff_ffff)  # type: ignore
         
         # next index
-        self._index = (self._index+1) % LFib78._STATE_SIZE
+        self._index = (self._index + 1) % self._STATE_SIZE
 
         return myValue
 

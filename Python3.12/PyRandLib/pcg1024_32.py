@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -32,7 +32,7 @@ from .splitmix         import SplitMix32
 class Pcg1024_32( Pcg64_32 ):
     """
     Pseudo-random  numbers  generator  -  Permutated  Congruential  Generator 
-    extended   by  1,024  equistributed  generators,   dedicated  to  64-bits 
+    extended  by  1,024  equidistributed  generators,  dedicated  to  64-bits 
     calculations and 32-bits output with very large period (about 6.53e+9882) 
     but  very short time computation.  This version of the PCG algorithm gets
     the largest memory consumption: 1,026 x 4-bytes. The PCG algorithm offers 
@@ -42,14 +42,14 @@ class Pcg1024_32( Pcg64_32 ):
     
     Copyright (c) 2025 Philippe Schmouker
 
-    PCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
-    atical function of 
-    
-        x(i) = (a * x(i-1) + c) mod m 
+    As LCGs do, PCG models evaluate pseudo-random numbers  suites  x(i)  as  a 
+    simple mathematical function of x(i-1):
+ 
+       x(i) = (a * x(i-1) + c) mod m
 
-    as are LCGs, but associated with a permutation of a subpart of the bits of 
-    the  internal  state  of  the PRNG.  The output of PCGs is this permutated 
-    subpart of its internal state,  leading to a very large enhancement of the 
+    PCGs associate to this recurrence a permutation of a subpart of  the  bits 
+    of  the internal state of the PRNG.  The output of PCGs is this permutated
+    subpart of its internal state,  leading to a very large enhancement of the
     randomness of these algorithms compared with the LCGs one.
     
     These PRNGs have been tested with TestU01 and have shown to pass all tests
@@ -118,13 +118,13 @@ class Pcg1024_32( Pcg64_32 ):
 
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: SeedStateType = None, /) -> None:
+    def __init__(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor.
         
         Should _seed be None or not be of SeedStateType then the 
         local time is used (with its shuffled value) as a seed.
         """
-        super().__init__( _seed ) # this call creates attributes self._state and self._extendedState and sets them
+        super().__init__( _seed ) # this call creates attributes self._state and self._extendedState and sets them  # type: ignore
 
 
     #-------------------------------------------------------------------------
@@ -135,7 +135,7 @@ class Pcg1024_32( Pcg64_32 ):
         # evaluates a to-be-xor'ed 32-bits value from current extended state
         if self._state & 0xffff_ffff == 0:
             self._advancetable()
-        extendedValue = self._extendedState[ self._state & 0x03ff ]
+        extendedValue = self._extendedState[ (self._state >> 22) & 0x03ff ]
 
         # then xor's it with the next 32-bits value evaluated with the internal state
         return super().next() ^ extendedValue
@@ -143,61 +143,66 @@ class Pcg1024_32( Pcg64_32 ):
 
     #-------------------------------------------------------------------------
     @override
-    def getstate(self) -> StateType:
+    def getstate(self) -> StateType:  # type: ignore
         """Returns an object capturing the current internal state of the  generator.
         
         This object can be passed to setstate() to restore the state.
         It is a list that contains self._STATE_SIZE integers.
         """
-        return [ self._extendedState[:], self._state ]
+        return ( self._extendedState[:], self._state )
 
 
     #-------------------------------------------------------------------------
     @override
-    def setstate(self, _seedState: SeedStateType, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, (int, float)):
+            self._initstate( _seed )
+            self._initextendedstate( _seed )        
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    @override
+    def setstate(self, _state: StateType = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
-        _seedState should have been obtained from a previous call  to 
-        getstate(), and setstate() restores the internal state of the 
-        generator to what it was at the time setstate()  was  called.
-        About valid state:  this is a  tuple  containing  a  list  of 
-        self._STATE_SIZE integers (31-bits) and an index in this list 
-        (index value being then in range(0,self._STATE_SIZE)). Should 
-        _seedState  be  a  sole  integer  or float then it is used as 
-        initial seed for the random filling of the internal  list  of 
-        self._STATE_SIZE integers. Should _seedState be anything else
-        (e.g. None) then the shuffling  of  the  local  current  time
-        value is used as such an initial seed.
+        _state should have been obtained from a previous call to getstate().
+        About valid state:  this is either None or a tuple containing a list 
+        of  self._STATE_SIZE integers (32-bits) as the external state and an
+        integer (64-bits) as the internal state.  Should _state be None, the
+        the shuffling of the local current time value is  used  as  such  an 
+        initial seed.
         """
-        try:
-            match len( _seedState ):
-                case 0:
-                    self._initstate()
+        if _state is None:
+            self.seed()
 
-                case 1:
-                    self._initstate( _seedState )
+        elif not isinstance( _state, (list, tuple) ):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
+        
+        elif len(_state) != 2:
+            raise TypeError(f"Incorrect size for initializing state (should be of length 2, currently is {len(_state)})")
 
-                case 2:
-                    # each entry in _seedState[0] MUST be a 32-bits integer
-                    # _seedState[1] MUST be a 64-bits integer
-                    extendedCount = len( _seedState[0] )
-                    if extendedCount == Pcg1024_32._EXTENDED_STATE_SIZE:
-                        self._extendedState = _seedState[0][:]
-                        self._state = _seedState[1]             
-                    elif extendedCount > 0:
-                        extended = _seedState[0]
-                        for s in _seedState[1:]:
-                            extended ^= s
-                        self._initextendedstate( extended )
-                        self._state = _seedState[1]
-                    else:
-                        self._initstate( _seedState[1] )
-            
-                case _:
-                    self._initstate()
-                
-        except:
-            self._initstate( _seedState )
+        elif not isinstance( _state[0], (list, tuple) ):
+            raise TypeError(f"initialization state[0] must be a tuple or a list (actually is {type(_state[0])})")
+        
+        else:
+            extendedCount = len( _state[0] )  # type: ignore
+            if extendedCount != Pcg1024_32._EXTENDED_STATE_SIZE:
+                raise ValueError(f"Incorrect size for initializing the extended state (should be of length {Pcg1024_32._EXTENDED_STATE_SIZE}, currently is {len(_state)})")
+            else:
+                # sets the internal state, MUST be a 64-bits unsigned integer
+                if isinstance(_state[1], int) and _state[1] >= 0:
+                    super().setstate( _state[1] & 0xffff_ffff_ffff_ffff )
+                else:
+                    raise ValueError(f"seed values for internal state must be a non negative integer (currently is {_state[1]})")
+                # then sets the extended state, MUST be 32-bits integers
+                if all(isinstance(s, int) and s >= 0 for s in _state[0]):  # type: ignore
+                    self._extendedState = [s & 0xffff_ffff for s in _state[0]]  # type: ignore
+                else:
+                    raise ValueError(f"all values of extended state must be non negative integers ({_state[0]})")
 
 
     #-------------------------------------------------------------------------
@@ -207,31 +212,29 @@ class Pcg1024_32( Pcg64_32 ):
         carry = False
         for i, s in enumerate( self._extendedState ):
             if carry:
-                carry = self._extendedstep(s, i)
-            if self._extendedstep(s, i):  # notice: must be evaluated before carry is set
+                carry = self._externalstep(s, i)
+            if self._externalstep(s, i):  # notice: must be evaluated before carry is set
                 carry = True
 
 
     #-------------------------------------------------------------------------
-    def _extendedstep(self, value: int, i: int, /) -> bool:
+    def _externalstep(self, value: int, i: int, /) -> bool:
         """Evaluates new extended state indexed value in the extended state table.
 
         Returns True when the evaluated extended value is set to zero on all bits
         but its two lowest ones - these two bits never change with MCGs.
         """
         state = (0xacb8_6d69 * (value ^ (value >> 22))) & 0xffff_ffff
-        state = Pcg1024_32._invxrs( state, 32, 4 + (state >> 28) & 0x0f )
-        state = (0x108e_f2d9 * state + 2 * (i + 1)) & 0xffff_ffff
+        state = (0x2c92_77b5 * Pcg1024_32._invxrs( state, 32, 4 + (state >> 28) ) + 2 * (i + 1)) & 0xffff_ffff
 
-        result = 0x108e_f2d9 * (state ^ (state >> (4 + (state >> 28))))
+        state ^= state >> 16
+        self._extendedState[i] = state
 
-        self._extendedState[i] = (result := result ^ (result >> 22))
-
-        return result == (state & 0b11)
+        return state == (state & 0b11)
 
 
     #-------------------------------------------------------------------------
-    def _initextendedstate(self, _initialSeed: Numerical = None, /) -> None:
+    def _initextendedstate(self, _initialSeed: Numerical = None, /) -> None:  # type: ignore
         """Inits the extended list of values.
         
         Inits the extended list of values according to some initial
@@ -245,7 +248,7 @@ class Pcg1024_32( Pcg64_32 ):
         
 
     #-------------------------------------------------------------------------
-    def _initstate(self, _initialSeed: Numerical = None, /) -> None:
+    def _initstate(self, _initialSeed: Numerical = None, /) -> None:  # type: ignore
         """Inits the internal state of this PRNG.
 
         Inits its current state and its  extended  state  also.  The
@@ -257,9 +260,11 @@ class Pcg1024_32( Pcg64_32 ):
         correlation between current  state  and  any  value  of  the 
         extended  one,  we  use different PRNGs to seed the internal 
         state on one side and the extended state on the other side.
+        Raises exception ValueError if _initialSeed is a  float  and 
+        its value is out of range [0.0, 1.0].
         """
-        super().setstate( _initialSeed )        # uses Pcg64_32()
-        self._initextendedstate( _initialSeed ) # uses Well1024a()
+        super().seed( _initialSeed )
+        self._initextendedstate( _initialSeed )
 
 
     #-------------------------------------------------------------------------

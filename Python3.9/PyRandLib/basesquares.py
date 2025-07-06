@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import SeedStateType, StatesList
+from .annotation_types import SeedStateType, Numerical, StatesList
 from .splitmix         import SplitMix32
 
 
@@ -48,7 +48,7 @@ class BaseSquares( BaseRandom ):
     See Squares64 for a 2^64 (i.e. about 1.84e+19)  period  PRNG  with 
     low  computation  time,  medium period,  64-bits output values and 
     very good randomness characteristics. Caution: the 64-bits version
-    should  not  pass the birthday test,  which is a randmoness issue, 
+    should  not  pass the birthday test,  which is a randomness issue, 
     while this is not mentionned in the original  paper  (see  [9]  in
     file README.md).
 
@@ -66,7 +66,7 @@ class BaseSquares( BaseRandom ):
  | PyRandLib class | [9] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
  | Squares32       | squares32          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Squares64       | squares64          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |_
+ | Squares64       | squares64          |  4 x 4-bytes  |   2^64   |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;
@@ -77,7 +77,7 @@ class BaseSquares( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: SeedStateType = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -94,61 +94,84 @@ class BaseSquares( BaseRandom ):
     def getstate(self) -> StatesList:
         """Returns an object capturing the current internal state of the generator.
         """
-        return (self._counter, self._key)
+        return (self._counter, self._key)  # type: ignore
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: SeedStateType, /) -> None:
+    def seed(self, _seed: SeedStateType = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int) or isinstance(_seed, float):
+            self._counter = 0
+            if isinstance(_seed, float):
+                if ( 0.0 <= _seed <= 1.0):
+                    # transforms passed initial seed from float to integer
+                    self._key = self._initKey( int(_seed * 0xffff_ffff_ffff_ffff) )
+                else:
+                    raise ValueError(f"can't set internal state with a float value outside range [0.0, 1.0] (actually is {_seed})")
+            else:
+                # _seed is None or an int
+                self._key = self._initKey( _seed )
+        else:
+            raise TypeError( f"seed value must be None, an integer or a float (currently is of type {type(_seed)})" )
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: StatesList = None, /) -> None:  # type: ignore
         """Restores or sets the internal state of the generator.
         """
-        if isinstance( _state, int ):
-            # passed initial seed is an integer, just uses it
+        if _state is None:
             self._counter = 0
-            self._key = self._initKey( _state )
-            
-        elif isinstance( _state, float ):
-            # transforms passed initial seed from float to integer
-            self._counter = 0
-            if _state < 0.0 :
-                _state = -_state
-            if _state >= 1.0:
-                self._key = self._initKey( int(_state + 0.5) & 0xffff_ffff_ffff_ffff )
-            else:
-                self._key = self._initKey( int(_state * 0x1_0000_0000_0000_0000) & 0xffff_ffff_ffff_ffff )
-                
+            self._key = self._initKey()
+
+        elif not (isinstance( _state, list) or isinstance(_state, tuple)):
+            raise TypeError(f"initialization state must be a tuple or a list (actually is {type(_state)})")
+
         else:
-            try:
-                self._counter = _state[0] & 0xffff_ffff_ffff_ffff
-                self._key     = (_state[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
-            except:
-                # uses local time as initial seed
-                self._counter = 0
-                self._key     = self._initKey()
+            if len(_state) == 2:
+                # each entry in _seedState MUST be a positive or null integer
+                if not all(isinstance(s, int) and s >= 0 for s in _state):
+                    raise ValueError(f"all values of internal state must be single non negative integers: {_state}")
+                else:
+                    self._counter = _state[0] & 0xffff_ffff_ffff_ffff
+                    self._key     = (_state[1] & 0xffff_ffff_ffff_ffff) | 1  # Notice: key must be odd
+                
+            else:
+                raise ValueError(f"Incorrect size for initializing state (should be 2 integers, currently is {len(_state)})")
 
 
     #-------------------------------------------------------------------------
-    def _initKey(self, _seed: int = None, /) -> int:
+    def _initKey(self, _seed: int = None, /) -> int:  # type: ignore
         """Initalizes the attribute _key according to the original recommendations - see [9].
         """
         hexDigits = [ i for i in range(1, 16) ]
         key = 0
 
         initRand = SplitMix32( _seed )
+        _NORMALIZE = 2.328_306_436_538_696_289_062_5e-10  # i.e. 1.0 / (1 << 32)
 
         # 8 high hexa digits - all different
         n = 15
         while n >= 8:
-            h = hexDigits[ (k := int(n * initRand() * self._NORMALIZE)) ]  # Notice: _NORMALIZE is defined in base class
+            h = hexDigits[ (k := int(n * (initRand() * _NORMALIZE))) ]
             key <<= 4
             key += h
             if k < (n := n-1):
                 hexDigits[ k ] = hexDigits[ n ]
                 hexDigits[ n ] = h
 
-        # 8 low hexa digits - all different
-        n = 15
+        # 9th hexa digit - different from the 8th one
+        hexDigits[7], hexDigits[14] = hexDigits[14], hexDigits[7]
+        h = hexDigits[ (k := int(14 * (initRand() * _NORMALIZE))) ]
+        key <<= 4
+        key += h
+        hexDigits[ k ] = hexDigits[ 14 ]
+        hexDigits[ 14 ] = h
+
+        # 7 low hexa digits - all different
+        n = 14
         while n >= 8:
-            h = hexDigits[ (k := int(n * initRand() * self._NORMALIZE)) ]  # Notice: _NORMALIZE is defined in base class
+            h = hexDigits[ (k := int(n * (initRand() * _NORMALIZE))) ]
             key <<= 4
             key += h
             if k < (n := n-1):

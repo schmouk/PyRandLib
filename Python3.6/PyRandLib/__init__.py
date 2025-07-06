@@ -3,7 +3,7 @@ This file is part of library PyRandLib.
 It is provided under MIT License.
 Please see files README.md and LICENSE.
 
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 """
 
 from .basecwg        import BaseCWG

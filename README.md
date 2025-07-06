@@ -1,4 +1,4 @@
-# PyRandLib  [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)
+# PyRandLib  [![license](http://img.shields.io/github/license/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=lightblue)](https://github.com/schmouk/pyrandlib/license)  [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)  [![code_coverage](https://img.shields.io/badge/code_coverage-100%25-success?style=plastic&labelColor=blueviolet)]()  [![tests](https://img.shields.io/badge/tests-passed-success?style=plastic&labelColor=blueviolet)]()
 Many best in class pseudo random generators grouped into one simple library.
 
 
@@ -36,7 +36,33 @@ This library implements some of the best-in-class pseudo  random  generators as 
 
 Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
 
-Latest version of **PyRandLib** is version **2.0**, released by March 2025. It provides additional implementations of recent pseudo-random generators with very good randomness characteristics. It provides also implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12 and 3.13. Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*. 
+Latest version of **PyRandLib** is version **2.1**, released by July 2025.
+* It provides additional implementations of recent pseudo-random generators with very good randomness characteristics.
+* It provides also implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12 and 3.13.
+* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
+* Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
+
+
+Exhaustive list of currently implemented algorithms (since PyRandLib 2.0, 2025/03):
+* **Collatz-Weyl Generator** (Tomasz R. Dziala, **2023**)  
+ (CWG, 64 bits, 128 bits or 128/64 bits, 3 different values of periodicities, see reference [8]);
+* **Linear Congruential Generator** (Georges Marsaglia, **1972**, F.B. Brown and Y. Nagaya, **2002**)  
+ (LCG, or FastRand, 32 bits or 63 bits, 2 different values of periodicities, see references [12] and [13] and [1]);
+* **Lagged Fibonacci Generator** (Georges Marsaglia, **1985**)  
+ (LFib, 64 bits, 4 different periodicities, see reference [4]);
+* **Maximally Equidistributed Long-period Linear Generator** (Shin Harase, Takamitsu Kimoto, **2018**)  
+ (MELG, 64/32 bits, 3 different values of periodicities, see reference [11]);
+* **Multiple Recursive Generator** (Lih-Yuan Deng & Dennis K. J. Lin., **2000**, and Lih-Yuan Deng, **2005**)  
+ (MRG, 31 bits or 32 bits, 3 different values of periodicities, see references [2] and [3]);
+* **Permutated Congruential Generator** (Melissa E. O'Neill, **2014**)  
+ (PCG, 64, 128 bits or 64/32 bits, 3 different values of periodicities, see reference [7]);
+* **Squares** (ernard Widynski, **2022**)  
+ (Squares, 32 or 64 bits, 1 value of periodicity but 32- or 64-bits output values, see reference [9]);
+* **Well-Equilibrated Long-period Linear generators** (François Panneton, Pierre L'Ecuyer, Makoto Matsumoto, **2006**)  
+ (WELL, 32 bits, 4 different values of periodicities, see reference [6]);
+* **Scrambled Linear Pseudorandom Number Generators** (David Blackman, Sebastiano Vigna, **2018**)  
+ (Xoroshiro, 64 bits, 4 different values of periodicities, see reference [10]).
+
 
 
 ### Why not Mersenne twister?
@@ -48,12 +74,76 @@ It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this
 
 
 ## Installation
-Currently, the only way to install **PyRandLib** is to download the `.zip` or `.tar.gz` archive, then to directly put sub-directory `PyRandLib\` from archive into directory `Lib\site-packages\` of your Python environment. See https://schmouk.github.io/PyRandLib/ for an easy access to download versions or click on tab **releases** on the home page of this GitHub repository.
+Currently, the only way to install **PyRandLib** is to download the `.zip` or `.tar.gz` archive, then to directly put sub-directory `PyRandLib\` from archive into directory `Lib\site-packages\` of your Python environment. See https://schmouk.github.io/PyRandLib/ for an easy access to downloadable versions or click on tab **releases** on the home page of this GitHub repository.
 
-Since release **2.0** of **PyrandLib**, the root directory of the library is splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
+Since release **2.0** of **PyrandLib**, the root directory of the library has been splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
 
-Notice: distribution version to be installed via pip or easy-install in cmd tool or in console is to come (no date yet).
+Since release **2.1** of **PyRandLib**, the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
+Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
 
+**Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is to come (no date yet, expected with release **3.0** of **PyRandLib**).
+
+
+
+## Testing PyRandLib
+The unit tests code is available for every Python standard version (3.6, 3.9 and above), in dedicated subdirectory `unit-tests` of every Python version directories.
+
+### Install pytest and pytest-cov
+To run the unit tests by your own, you have to install first pytest and pytest-cov in your Python environment (or virtual environment, recommended). The procedure is desribed below.
+
+#### In a Virtual environment
+In a console, create a new virtual environment in a path of your choice on disk:
+
+    > python -m venv <path to the newly created virtual environment>
+
+Activate it:
+
+    > <path to the newly created virtual environment>/Scripts/Activate.ps1 (for Windows Powershell)
+    or
+    > <path to the newly created virtual environment>/Scripts/activate.bat (for Windows console)
+    or
+    $ source <path to the newly created virtual environment>/bin/activate (on Linux)
+
+Install pytest:
+
+    > python -m pip install --upgrade pip (not mandatory but always good to check)
+    > python -m pip install pytest
+
+Install pytest-cov:
+
+    > python -m pip install pytest-cov
+
+#### In your Python environment:
+Install pytest:
+
+    > python -m pip install --upgrade pip
+    > python -m pip install pytest
+
+Install pytest-cov:
+
+    > python -m pip install pytest-cov
+
+
+### Run the tests
+Tests have been written to run in the context of a single Python standard version. Make the directory of your choice the working directory. For instance to test the Python3.13 version of PyRandLib just type:
+
+    > cd <path to your PyRandLib directory>/Python3.13
+
+Then either run
+
+    > pytest --cov-config=.coveragerc --cov=. unit_tests
+
+to get a full display of the code coverage and the detected failed tests (there should be none).
+
+or run
+
+    > pytest --cov-config=.coveragerc --cov=. unit_tests --cov-report=html
+
+to get an HTML version of the report, to be displayed by double-clicking on file `<path to your PyRandLib directory>/Python3.13/htmlcov/index.html`. This file will automatically open itself in your favorite web browser. Click on any not fully covered file to get a whole view of their code with highlighted missed statements (there should be none).
+
+
+### Expected results
+In each of the subdirectories `Python3.xx` a text file `tests-cov.txt` contains a screen copy of the expected results.
 
 
 ## Randomness evaluation
@@ -65,39 +155,40 @@ In [1], every known PRNG at the time of the editing has been tested according to
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- | PyRabndLib class | TU01 generator name (1)            | Memory Usage    | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------------------------------- | --------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128           | *CWG128*                           |    16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |    3.20     |     0.67     |         11       |     106     |   *too many*   |
- | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |    4.20     |     0.75     |          0       |       5     |       7        |
- | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |    n.a.     |     1.1      |          0       |       0     |       0        |
- | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |    n.a.     |     1.0      |          0       |       0     |       0        |
- | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |    n.a.     |     0.9      |          0       |       0     |       0        |
- | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |    n.a.     |     0.9      |          0       |       0     |       0        |
- | Melg607          | *Melg607-64*                       |    21 x 4-bytes | 2^607    |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Melg19937        | *Melg19937-64*                     |   625 x 4-bytes | 2^19,937 |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Melg44497        | *Melg44497-64*                     | 1,392 x 4-bytes | 2^44,497 |    n.a      |     n.a.     |          0       |       0     |       0        |
- | Mrg287           | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |    3.40     |     0.8      |          0       |       0     |       0        |
- | Mrg1457          | DX-47-3                            |    47 x 4-bytes | 2^1,457  |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Mrg49507         | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |    n.a.     |     1.4      |          0       |       0     |       0        |
- | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |    n.a.     |     n.a.     |          0       |       0     |       0        | 
- | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Well512a         | not available                      |    16 x 4-bytes | 2^512    |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |    4.0      |     1.1      |          0       |       4     |       4        |
- | Well19937b (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |    4.3      |     1.3      |          0       |       2     |       2        |
- | Well44497c       | not available                      | 1,391 x 4-bytes | 2^44,497 |    n.a.     |     n.a.     |        n.a.      |     n.a.    |     n.a.       |
- | Mersenne twister | MT19937                            |   624 x 4-bytes | 2^19,937 |    4.30     |     1.6      |          0       |       2     |       2        |
- | Xoroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |    n.a.     |     0.84     |          0       |       0     |       0        |
- | Xoroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |    n.a.     |     0.99     |          0       |       0     |       0        |
- | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |    n.a.     |     1.17     |          0       |       0     |       0        |
+ | PyRandLib class  | TU01 generator name (1)            | Memory Usage    | Period   | SmallCrush fails | Crush fails | BigCrush fails | time-64 bits | time-32bits |
+ | ---------------- | ---------------------------------- | --------------- | -------- | ---------------- | ----------- | -------------- | ------------ | ----------- |
+ | Cwg64            | *CWG64*                            |     8 x 4-bytes | >= 2^70  |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Cwg128_64        | *CWG128-64*                        |    10 x 4-bytes | >= 2^71  |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Cwg128           | *CWG128*                           |    16 x 4-bytes | >= 2^135 |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | FastRand32       | LCG(2^32, 69069, 1)                |     1 x 4-bytes | 2^32     |         11       |     106     |   *too many*   |     0.67     |    3.20     |
+ | FastRand63       | LCG(2^63, 9219741426499971445, 1)  |     2 x 4-bytes | 2^63     |          0       |       5     |       7        |     0.75     |    4.20     |
+ | LFib78           | LFib(2^64, 17, 5, +)               |    34 x 4-bytes | 2^78     |          0       |       0     |       0        |     1.1      |    n.a.     |
+ | LFib116          | LFib(2^64, 55, 24, +)              |   110 x 4-bytes | 2^116    |          0       |       0     |       0        |     1.0      |    n.a.     |
+ | LFib668          | LFib(2^64, 607, 273, +)            | 1,214 x 4-bytes | 2^668    |          0       |       0     |       0        |     0.9      |    n.a.     |
+ | LFib1340         | LFib(2^64, 1279, 861, +)           | 2,558 x 4-bytes | 2^1,340  |          0       |       0     |       0        |     0.9      |    n.a.     |
+ | Melg607          | *Melg607-64*                       |    21 x 4-bytes | 2^607    |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Melg19937        | *Melg19937-64*                     |   625 x 4-bytes | 2^19,937 |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Melg44497        | *Melg44497-64*                     | 1,392 x 4-bytes | 2^44,497 |          0       |       0     |       0        |     n.a.     |    n.a      |
+ | Mrg287           | Marsa-LFIB4                        |   256 x 4-bytes | 2^287    |          0       |       0     |       0        |     0.8      |    3.40     |
+ | Mrg1457          | DX-47-3                            |    47 x 4-bytes | 2^1,457  |          0       |       0     |       0        |     1.4      |    n.a.     |
+ | Mrg49507         | DX-1597-2-7                        | 1,597 x 4-bytes | 2^49,507 |          0       |       0     |       0        |     1.4      |    n.a.     |
+ | Pcg64_32         | *PCG XSH RS 64/32 (LCG)*           |     2 x 4 bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Pcg128_64        | *PCG XSL RR 128/64 (LCG)*          |     4 x 4 bytes | 2^128    |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Pcg1024_32       | *PCG XSH RS 64/32 (EXT 1024)*      | 1,026 x 4 bytes | 2^32,830 |          0       |       0     |       0        |     n.a.     |    n.a.     | 
+ | Squares32        | *squares32*                        |     4 x 4-bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Squares64        | *squares64*                        |     4 x 4-bytes | 2^64     |          0       |       0     |       0        |     n.a.     |    n.a.     |
+ | Well512a         | not available                      |    16 x 4-bytes | 2^512    |        n.a.      |     n.a.    |     n.a.       |     n.a.     |    n.a.     |
+ | Well1024a        | WELL1024a                          |    32 x 4-bytes | 2^1,024  |          0       |       4     |       4        |     1.1      |    4.0      |
+ | Well19937c (2)   | WELL19937a                         |   624 x 4-bytes | 2^19,937 |          0       |       2     |       2        |     1.3      |    4.3      |
+ | Well44497b (3)   | not available                      | 1,391 x 4-bytes | 2^44,497 |        n.a.      |     n.a.    |     n.a.       |     n.a.     |    n.a.     |
+ | Mersenne Twister | MT19937                            |   624 x 4-bytes | 2^19,937 |          0       |       2     |       2        |     1.6      |    4.30     |
+ | Xoroshiro256     | *xiroshiro256***                   |    16 x 4-bytes | 2^256    |          0       |       0     |       0        |     0.84     |    n.a.     |
+ | Xoroshiro512     | *xiroshiro512***                   |    32 x 4-bytes | 2^512    |          0       |       0     |       0        |     0.99     |    n.a.     |
+ | Xoroshiro1024    | *xiroshiro1024***                  |    64 x 4-bytes | 2^1,024  |          0       |       0     |       0        |     1.17     |    n.a.     |
 
-(1) *or the generator original name in the related paper*  
-(2) The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm.
+(1) *or the generator original name in the related more recent paper*  
+(2) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
+(3) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
 
 
 
@@ -106,64 +197,159 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
 The above table provides times related to the C implementation of the specified PRNGs as measured with TestU01 [1] by the authors of the paper.  
 We provide in the table below the evaluation of times spent in calling the `__call__()` method for all PRNGs implemented in library **PyRandLib**. Then, the measured elapsed time includes the calling and returning Python mechanisms and not only the computation time of the sole algorithm code. This is the duration of interest to you since this is the main use of the library you will have. It only helps comparing the performances between the implemented PRNGs and between the Python different versions.
 
-Time unit is microsecond. Tests have been run on an Intel(R) Core(TM) i5-1035G1 CPU @ 1.00 GHz, 1190 MHz, 4 cores, 8 logical processors, 64-bits, with 8 GB RAM and over Microsoft Windows 11 ed. Family.  
+Time unit is microsecond.  
+* First table  
+Tests have been run on an Intel&reg; Core&trade; i7-150U CPU @ 1.80 GHz, 10 cores, 64-bits, with 16 GB RAM and over Microsoft Windows 11 ed. Family (build 26100.4061, 18 Apr. 2025).  
+* Second table  
+Tests have been run on an Intel&reg; Core&trade; i5-1035G1 CPU @ 1.00 GHz, 4 cores, 8 logical processors, 64-bits, with 8 GB RAM and over Microsoft Windows 11 ed. Family.  
+
 The evaluation script is provided at the root of **PyRandLib** repository: `testCPUPerfs.py`.
 
 The Python versions used for these evaluations in their related virtual environment are (all 64-bits):
-* 3.9.21 (Dec.3, 2024)
-* 3.10.16 (Dec.3, 2024)
-* 3.11.11 (Dec.3, 2024)
-* 3.12.9 (Feb. 4, 2025)
-* 3.13.2 (Feb. 4, 2025)
+* 3.9.23 (Jun. 3, 2025)
+* 3.10.16 (Jun. 3, 2025)
+* 3.11.13 (Jun. 3, 2025)
+* 3.12.11 (Jun. 3, 2025)
+* 3.13.5 (Jun. 11, 2025)
 
-**PyRandLib** time-64 bits table:
+**PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i7-150U** CPU @ 1.80 GHz:
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
- | Cwg64            |    0.83    |    0.77     |    0.87     |    0.74     |    0.76     |        *0*       |      *0*    |      *0*       |
- | Cwg128_64        |    0.85    |    0.80     |    0.91     |    0.79     |    0.79     |        *0*       |      *0*    |      *0*       |
- | Cwg128           |    0.94    |    0.94     |    0.99     |    0.83     |    0.83     |        *0*       |      *0*    |      *0*       |
- | FastRand32       |    0.27    |    0.27     |    0.26     |    0.22     |    0.22     |       *11*       |    *106*    |   *too many*   |
- | FastRand63       |    0.30    |    0.29     |    0.29     |    0.24     |    0.22     |        *0*       |      *5*    |      *7*       |
- | LFib78           |    0.52    |    0.50     |    0.51     |    0.36     |    0.35     |        *0*       |      *0*    |      *0*       |
- | LFib116          |    0.53    |    0.52     |    0.51     |    0.38     |    0.36     |        *0*       |      *0*    |      *0*       |
- | LFib668          |    0.56    |    0.54     |    0.53     |    0.40     |    0.39     |        *0*       |      *0*    |      *0*       |
- | LFib1340         |    0.59    |    0.56     |    0.55     |    0.41     |    0.41     |        *0*       |      *0*    |      *0*       |
- | Melg607          |    1.39    |    1.35     |    1.34     |    1.08     |    1.15     |        *0*       |      *0*    |      *0*       |
- | Melg19937        |    1.41    |    1.37     |    1.36     |    1.20     |    1.23     |        *0*       |      *0*    |      *0*       |
- | Melg44497        |    1.42    |    1.35     |    1.37     |    1.23     |    1.19     |        *0*       |      *0*    |      *0*       |
- | Mrg287           |    0.89    |    0.88     |    0.85     |    0.61     |    0.61     |        *0*       |      *0*    |      *0*       |
- | Mrg1457          |    0.85    |    0.82     |    0.81     |    0.63     |    0.61     |        *0*       |      *0*    |      *0*       |
- | Mrg49507         |    0.75    |    0.69     |    0.68     |    0.57     |    0.56     |        *0*       |      *0*    |      *0*       |
- | Pcg64_32         |    0.56    |    0.52     |    0.49     |    0.43     |    0.44     |        *0*       |      *0*    |      *0*       |
- | Pcg128_64        |    0.80    |    0.74     |    0.73     |    0.67     |    0.63     |        *0*       |      *0*    |      *0*       |
- | Pcg1024_32       |    1.12    |    1.06     |    0.95     |    0.75     |    0.75     |        *0*       |      *0*    |      *0*       | 
- | Squares32        |    1.58    |    1.47     |    1.49     |    1.39     |    1.37     |        *0*       |      *0*    |      *0*       |
- | Squares64        |    1.97    |    1.81     |    1.84     |    1.76     |    1.67     |        *0*       |      *0*    |      *0*       |
- | Well512a         |    2.80    |    2.74     |    2.43     |    2.11     |    2.08     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Well1024a        |    2.52    |    2.44     |    2.19     |    1.94     |    1.87     |        *0*       |      *4*    |      *4*       |
- | Well19937c (1)   |    3.48    |    3.44     |    3.06     |    2.67     |    2.61     |        *0*       |      *2*    |      *2*       |
- | Well44497b       |    3.96    |    3.91     |    3.40     |    3.09     |    2.92     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Xoroshiro256     |    2.37    |    2.24     |    2.25     |    1.95     |    1.93     |        *0*       |      *0*    |      *0*       |
- | Xoroshiro512     |    2.94    |    2.81     |    2.72     |    2.40     |    2.30     |        *0*       |      *0*    |      *0*       |
- | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |    2.12     |    2.06     |        *0*       |      *0*    |      *0*       |
+ | Cwg64            |    0.46    |    0.44     |    0.50     |    0.56     |    0.35     |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.48    |    0.46     |    0.51     |    0.59     |    0.37     |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.53    |    0.54     |    0.55     |    0.64     |    0.41     |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.15    |    0.16     |    0.15     |    0.17     |    0.10     |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.16    |    0.17     |    0.16     |    0.18     |    0.10     |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.29    |    0.29     |    0.29     |    0.32     |    0.19     |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.29    |    0.30     |    0.29     |    0.32     |    0.19     |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.30    |    0.30     |    0.30     |    0.34     |    0.20     |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.31    |    0.32     |    0.31     |    0.35     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    0.73    |    0.75     |    0.75     |    0.79     |    0.56     |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    0.76    |    0.74     |    0.78     |    0.82     |    0.61     |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    0.75    |    0.76     |    0.78     |    0.83     |    0.60     |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.47    |    0.48     |    0.46     |    0.51     |    0.32     |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.43    |    0.44     |    0.42     |    0.48     |    0.31     |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.44    |    0.45     |    0.43     |    0.48     |    0.33     |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.30    |    0.31     |    0.28     |    0.32     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.45    |    0.46     |    0.44     |    0.49     |    0.34     |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    0.58    |    0.59     |    0.55     |    0.55     |    0.38     |        *0*       |      *0*    |      *0*       | 
+ | Squares32        |    0.83    |    0.83     |    0.82     |    0.92     |    0.63     |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.02    |    1.01     |    1.03     |    1.14     |    0.80     |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    1.37    |    1.44     |    1.28     |    1.42     |    0.97     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    1.27    |    1.31     |    1.18     |    1.29     |    0.90     |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    1.68    |    1.78     |    1.58     |    1.76     |    1.26     |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    1.91    |    2.03     |    1.80     |    2.02     |    1.52     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    1.39    |    1.38     |    1.32     |    1.47     |    1.01     |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    1.70    |    1.67     |    1.60     |    1.79     |    1.24     |        *0*       |      *0*    |      *0*        | 
+ | Xoroshiro1024    |    1.63    |    1.63     |    1.52     |    1.72     |    1.19     |        *0*       |      *0*    |      *0*       |
 
-(1) The Well19937b generator provided with library PyRandLib implements the Well19937a algorithm augmented with a *tempering* algorithm.  
-(*missing values in empty columns are to come*)
+(1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
+(2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
+
+
+**PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i5-1035G1** CPU @ 1.00 GHz:
+ | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | Cwg64            |    0.83    |    0.77     |    0.87     |     0.74    |     0.76    |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.85    |    0.80     |    0.91     |     0.79    |     0.79    |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.94    |    0.94     |    0.99     |     0.83    |     0.83    |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.27    |    0.27     |    0.26     |     0.22    |     0.22    |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.30    |    0.29     |    0.29     |     0.24    |     0.22    |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.52    |    0.50     |    0.51     |     0.36    |     0.35    |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.53    |    0.52     |    0.51     |     0.38    |     0.36    |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.56    |    0.54     |    0.53     |     0.40    |     0.39    |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.59    |    0.56     |    0.55     |     0.41    |     0.41    |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    1.39    |    1.35     |    1.34     |     1.08    |     1.15    |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    1.41    |    1.37     |    1.36     |     1.20    |     1.23    |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    1.42    |    1.35     |    1.37     |     1.23    |     1.19    |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.89    |    0.88     |    0.85     |     0.61    |     0.61    |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.85    |    0.82     |    0.81     |     0.63    |     0.61    |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.75    |    0.69     |    0.68     |     0.57    |     0.56    |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.56    |    0.52     |    0.49     |     0.43    |     0.44    |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.80    |    0.74     |    0.73     |     0.67    |     0.63    |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    1.12    |    1.06     |    0.95     |     0.75    |     0.75    |        *0*       |      *0*    |      *0*       | 
+ | Squares32        |    1.58    |    1.47     |    1.49     |     1.39    |     1.37    |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.97    |    1.81     |    1.84     |     1.76    |     1.67    |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    2.80    |    2.74     |    2.43     |     2.11    |     2.08    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    2.52    |    2.44     |    2.19     |     1.94    |     1.87    |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    3.48    |    3.44     |    3.06     |     2.67    |     2.61    |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    3.96    |    3.91     |    3.40     |     3.09    |     2.92    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    2.37    |    2.24     |    2.25     |     1.95    |     1.93    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    2.94    |    2.81     |    2.72     |     2.40    |     2.30    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |     2.12    |     2.06    |        *0*       |      *0*    |      *0*       |
+
+(1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
+(2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
+
 
 ## Implementation
-Current implementation of **PyRandLib** uses Python 3.x with no Cython  version.  
+Current implementation of **PyRandLib** uses Python 3.x with no Cython version.  
 It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
-Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to  have the library running correctly. 
+Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to have the library running correctly. *N.B. You should no more use Python 3.10 or any of its previous versions since these are no more maintained (July 2025).*
 
 Note 2: no version or **PyRandLib** will ever be provided for Python 2 which is a no more maintained version of the Python language.
 
 Note 3: since release **2.0** of **PyRandLib** directories have been created that are each dedicated to a version of Python : 3.6, 3.9, 3.10, etc. Each of these directories contains the sub-directory `PyRandLib\` with a specific implementation of the library, optimized for the version of Python it relates to.
 
-Note 4: a Cython version of **PyRandLib** will be delivered in a next major release (i.e. 3.0). Up today, no date is planned for this.
+Note 4: since release **2.1** of **PyRandLib** unit tests are provided in subdirectories `unit-tests` for every available version of Python standard.
+
+Note 5: a Cython version of **PyRandLib** will be delivered in a next major release (i.e. 3.0). Up today, no date is planned for this.
 
 
-## New in release 1.2
+## New in Release 2.1
+Version 2.1 of **PyRandLib** is now fully unit-tested. The code coverage is 100%. Test code is available in subdirectory `unit-tests` of every Python version directory.
+
+A few bugs have then been fixed:
+* protected method `Pcg1024_32._externalstep()` implementation is now correct;
+* a typo in a shifting constant in Well19937c`.next()` has been fixed (19 -> 9).  
+Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
+
+
+### New in Release 2.0
+Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features. Finally, it is splitted in many subdirectories each dedicated to a specific version of Python: Python3.6, Python3.9, Python3.10, etc. In each of these directories, library  **PyRandLib** code is fully copied and modified to take benefit of the improvements on new Python versions syntax and features. Copy the one version of value for your application to get all **PyRandLib** stuff at its best for your needs.
+
+**Major 2.0 novelties are listed below:**
+
+1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
+In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b - they all generate output values coded on 32-bits.
+
+1. The PCG algorithm (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and is clearly explained in technical report [7]. It offers jumping ahead, a hard to discover its internal state characteristic, and multi-streams feature. It passes all crush and big crush tests of TestU01.  
+**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128_64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can its code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
+
+1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated randomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of a well specified integer of its four integers state.  
+In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 that  generate output values coded on resp. 64-, 64- and 128- bits .
+
+1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
+In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented. They provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randomness issue, while this is not mentionned in the original paper [9].
+
+1. The xoroshiro algorithm ("Scrambled Linear Pseudorandom Number Generators", see [10], 2018) is now implemented in **PyRandLib**, in its *mult-mult* form for the output scrambler. This algorithm is fast, uses 64-bits integers as its internal state and outputs 64-bits values. It uses few memory space (4, 8 or 16 64-bits integers for resp. its 256-, 512- and 1024- versions that are implemented in **PyRandLib**. Notice: the 256 version of the algorithm is know to show close repeats flaws, with a bad Hamming weight near zero. *xoroshiro512* seems to best fit this property, according to the tables proposed by the authors in [10].
+
+1. The MELG algorithm ("Maximally Equidistributed Long-period Linear Generators", see [11], 2018) is now implemented in **PyRandLib**. It can be considered as an extension of the WELL algorithm, with a maximization of the equidistribution of generated values, making computations on 64-bits integers and outputing 64-bits values.  
+**PyRandLib** implements its versions numbered 627-64, 19937-64 and 44497-64 related to the power of 2 of their periods: Melg627, Melg19937 and Melg44497.
+
+1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random properties poorness.
+
+1. Method `bytesrand()` has been added to the Python built-in class `random.Random` since Python 3.9. So, it is also available in **PyRandLib** for **all** its Python versions: in Python 3.6 its implementation has been added into base class `BaseRandom`.
+
+1. Method `random.binomialvariate()`has been added to the Python built-in class `random.Random` since Python 3.12. So, it is also available in **PyRandLib** for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its implementation has been added into base class `BaseRandom`.
+
+1. Since Python 3.12, a default value has been specified (i.e. = 1.0) for parameter `lambd` in method `random.Random.expovariate()`. So, it is also specified now in **PyRandLib** for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its definition has been added into base class `BaseRandom`.
+
+1. A short script `testED.py` is now avalibale at root directory. It checks the equidistribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
+It is now **highly recommended** to not use previous releases of **PyRandLib**  (aka. 1.x).
+
+1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *CPU Evaluations* table.
+
+1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
+
+1. All developments are now done under a newly created branch named `dev` (GitHub). This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` should only happen when creating new releases.  
+So, if you want to see what is currently going on for next release of **PyRandLib**, just check-out branch `dev`.
+
+1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
+
+
+### New in Release 1.2
 This is available starting at version 1.2 of **PyRandLib**.
 
 The call  operator (i.e., '()') gets a new signature which is still backward compatible with previous versions of this library. Its new use is described here below. The implementation code can be found in class `BaseRandom`, in module `baserandom.py`.
@@ -198,50 +384,7 @@ The call  operator (i.e., '()') gets a new signature which is still backward com
     print( rand( (5, 50.0, 500.0, 5000, [5]*8), times=3 ) )
 
 
-## New in release 2.0
-Version 2.0 of **PyRandLib** implements some new other "recent" PRNGs - see them listed below. It also provides two test scripts, enhanced documentation and some other internal development features. Finally, it is splitted in many subdirectories each dedicated to a specific version of Python: Python3.6, Python3.9, Python3.10, etc. In each of these directories, library  **PyRandLib** code is fully copied and modified to take benefit of the improvements on new Python versions syntax and features. Copy the one version of value for your application to get all **PyRandLib** stuff at its best for your needs.
-
-**Major 2.0 novelties are listed below:**
-
-1. The WELL algorithm (Well-Equilibrated Long-period Linear, see [6], 2006) is now implemented in **PyRandLib**. This algorithm has proven to very quickly escape from the zeroland (up to 1,000 times faster than the Mersenne-Twister algorithm, for instance) while providing large to very large periods and rather small computation time.  
-In **PyRandLib**, the WELL algorithm is provided in next forms: Well512a, Well1024a, Well19937c and Well44497b - they all generate output values coded on 32-bits.
-
-1. The PCG algorithm (Permuted Congruential Generator, see [7], 2014) is now implemented in **PyRandLib**. This algorithm is a very fast and enhanced on randomness quality version of Linear Congruential Generators. It is based on solid Mathematics foundation and is clearly explained in technical report [7]. It offers jumping ahead, a hard to discover its internal state characteristic, and multi-streams feature. It passes all crush and big crush tests of TestU01.  
-**PyRandLib** implements its 3 major versions with resp. 2^32, 2^64 and 2^128 periodicities: Pcg64_32, Pcg128_64 and Pcg1024_32 classes which generate output values coded on resp. 32-, 64- and 32- bits. The original library (C and C++) can be downloaded here: [https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip](https://www.pcg-random.org/downloads/pcg-cpp-0.98.zip) as well as can its code be cloned from here: [https://github.com/imneme/pcg-cpp](https://github.com/imneme/pcg-cpp).
-
-1. The CWG algorithm (Collatz-Weyl Generator, see [8], 2024) is now implemented in **PyRandLib**. This algorithm is fast, uses four integers as its internal state and generates chaos via multiplication and xored-shifted instructions. Periods are medium to large and the generated randomness is of up quality. It does not offer jump ahead but multi-streams feature is available via the simple modification of a well specified integer of its four integers state.  
-In **PyRandLib**, the CWG algorithm is provided in next forms: Cwg64, Cwg64-128 and Cwg128 that  generate output values coded on resp. 64-, 64- and 128- bits .
-
-1. The Squares algorithm (see "Squares: A Fast Counter-Based RNG" [9], 2022) is now implemented in **PyRandLib**. This algorithm is fast, uses two 64-bits integers as its internal state (a counter and a key), gets a period of 2^64 and runs through 4 to 5 rounds of squaring, exchanging high and low bits and xoring intermediate values. Multi-streams feature is available via the value of the key.  
-In **PyRandLib**, the Squares32 and Squares64 versions of the algorithm are implemented. They provide resp. 32- and 64- bits output values. Caution: the 64-bits versions should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].
-
-1. The xoroshiro algorithm ("Scrambled Linear Pseudorandom Number Generators", see [10], 2018) is now implemented in **PyRandLib**, in its *mult-mult* form for the output scrambler. This algorithm is fast, uses 64-bits integers as its internal state and outputs 64-bits values. It uses few memory space (4, 8 or 16 64-bits integers for resp. its 256-, 512- and 1024- versions that are implemented in **PyRandLib**. Notice: the 256 version of the algorithm is know to show close repeats flaws, with a bad Hamming weight near zero. *xoroshiro512* seems to best fit this property, according to the tables proposed by the authors in [10].
-
-2. The MELG algorithm ("Maximally Equidistributed Long-period Linear Generators", see [11], 2018) is now implemented in **PyRandLib**. It can be considered as an extension of the WELL algorithm, with a maximization of the equidistribution of generated values, making computations on 64-bits integers and outputing 64-bits values.  
-**PyRandLib** implements its versions numbered 627-64, 19937-64 and 44497-64 related to the power of 2 of their periods: Melg627, Melg19937 and Melg44497.
-
-1. The SplitMix algorithm is now implemented in **PyRandLib**. It is used to initialize the internal state of all other PRNGs. It SHOULD NOT be used as a PRNG due to its random properties poorness.
-
-1. Method `bytesrand()` has been added to the Python built-in class `random.Random` since Python 3.9. So, it is also available in **PyRandLib** for **all** its Python versions: in Python 3.6 its implementation has been added into base class `BaseRandom`.
-
-1. Method `random.binomialvariate()`has been added to the Python built-in class `random.Random` since Python 3.12. So, it is also available in **PyRandLib** for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its implementation has been added into base class `BaseRandom`.
-
-1. Since Python 3.12, a default value has been specified (i.e. = 1.0) for parameter `lambd` in method `random.Random.expovariate()`. So, it is also specified now in **PyRandLib** for **all** its Python versions: in Python -3.6, -3.9, -3.10 and -3.11 its definition has been added into base class `BaseRandom`.
-
-1. A short script `testED.py` is now avalibale at root directory. It checks the equidistribution of every PRNG implemented in **PyRandLib** in a simple way and is used to test for their maybe bad implementation within the library. Since release 2.0 this test is run on all PRNGs.  
-It is now **highly recommended** to not use previous releases of **PyRandLib**  (aka. 1.x).
-
-1. Another short script `testCPUPerfs.py` is now avaliable for testing CPU performance of the different implemented algorithms. It has been used to enhance this documentation by providing a new *CPU Evaluations* table.
-
-1. Documentation has been enhanced, with typos and erroneous docstrings fixed also.
-
-1. All developments are now done under a newly created branch named `dev` (GitHub). This development branch may be derived into sub-branches for the development of new features. Merges from `dev` to branch `main` should only happen when creating new releases.  
-So, if you want to see what is currently going on for next release of **PyRandLib**, just check-out branch `dev`.
-
-1. A Github project dedicated to **PyRandLib** has been created: the [pyrandlib](https://github.com/users/schmouk/projects/14) project.
-
-
-## Architecture overview
+## Software architecture overview
 Each of the implemented PRNG is described in an independent module. The  name of the module is directly related to the name of the related class.
 
 
@@ -249,7 +392,7 @@ Each of the implemented PRNG is described in an independent module. The  name of
 
 **BaseRandom** is the base class for every implemented PRNG in library **PyRandLib**. It inherits from the Python built-in class `random.Random`. It aims at providing simple common behavior for all PRNG classes of the library, the most noticeable one being the 'callable' nature of every implemented PRNG.
 
-Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution Functions**.
+Inheriting from the Python built-in class random.Random, **BaseRandom** provides access to many useful distribution functions as described in later section **Inherited Distribution and Generic Methods**.
 
 Furthermore, every inheriting class MUST override the next three methods (if not, they each raise a `NotImplementedError` exception when called):
 
@@ -280,6 +423,7 @@ This version of the CGW algorithm evaluates pseudo-random suites *output(i)* as 
     weyl(i)   = weyl(i-1) + s  // s is constant over time and must be odd, this is the value to modify to get multi-streams
     x(i)      = ((x(i-1) >> 1) * ((a(i)) | 1)) ^ (weyl(i)))
     output(i) = (a(i) >> 48) ^ x(i)
+
 
 
 ### Cwg128_64  -  minimum 2^71 period
@@ -415,7 +559,7 @@ The base MELG algorithm mixes, xor's and shifts its internal state and offers la
 
 ### Melg44497 --  2^44497 periodicity
 
-**Melg44497** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a very large period (2^44,497,  i.e. 15.1e+13,466) and low computation time. The internal state of this PRNG is equivalent to 1.393 integers 32-bits coded.
+**Melg44497** implements a fast 64-bits Maximally Equidistributed Long-period Linear Generator (MELG) with a very large period (2^44,497,  i.e. 8.55e+13,395) and low computation time. The internal state of this PRNG is equivalent to 1.393 integers 32-bits coded.
 
 The base MELG algorithm mixes, xor's and shifts its internal state and offers large to very large periods with the best known results in the evaluation of their randomness. It escapes the zeroland at a fast pace. Its specializations are set with parameters that ensures the maximized equidistribution. It might be valuable to use these rather than the WELL algorithm derivations
 
@@ -484,7 +628,6 @@ The underlying algorithm acts as an LCG associated with a bits permutation as it
 
 
 
-
 ### Pcg128_64  -  2^128 periodicity
 
 **Pcg128_64** implements a fast 128-bits state and 64-bits output Permutated Congruential Generator with a medium period (2^128, i.e. 3.40e+38) with low computation time and very small memory space consumption (4 integers 32-bits coded).
@@ -513,7 +656,7 @@ The underlying algorithm acts as an LCG associated with a bits permutation as it
 ### Squares64  -  2^64 periodicity
 
 **Squares64** implements a fast counter-based pseudo-random numbers generator which outputs 64-bits random values. The core of the algorithm evaluates and squares 64-bits intermadiate values then exchanges their higher and lower bits on a five rounds operations. It uses a 64-bits counter and a 64-bits key. It provides multi-streams feature via different values of key and gets robust randomness characteristics. The counter starts counting at 0. Once returning to 0 modulo 2^64 the whole period of the algorithm will have been exhausted. Values for keys have to be cautiously chosen: the **PyRandLib** implementation of the manner to do it as recommended in [9] is of our own but stricly respects the original recommendation.  
-Notice: this version of the algorithm should not pass the birthday test, which is a randmoness issue, while this is not mentionned in the original paper [9].  
+Notice: this version of the algorithm should not pass the birthday test, which is a randomness issue, while this is not mentionned in the original paper [9].  
 **PyRandLib** Squares64 class implements the *squares64* version of the algorithm as described in [9]. 
 
 
@@ -585,8 +728,8 @@ It escapes the zeroland at a fast pace (about 100 loops) and offers jump-ahead f
 
 
 
-## Inherited Distribution and Generic Functions
-(some of next explanation may be free to exact copy of Python documentation.
+## Inherited Distribution and Generic Methods
+(some of next explanation may be either free or exact copy of Python documentation.
 
 Since the base class **BaseRandom** inherits from the built-in class `random.Random`, every PRNG class of **PyRandLib** gets automatic access to the next distribution and generic methods:
 
@@ -612,7 +755,7 @@ The number of trials `n` should be a non-negative integer. The probability of su
 Chooses a random element from a non-empty sequence. `seq` has to be non empty.
 
 
-**choices**(population, weights=None, *, cum_weights=None, k=1)  
+**choices**(self, population, weights=None, *, cum_weights=None, k=1)  
 Returns a `k` sized list of elements chosen from the population, with replacement. If the population is empty, raises `IndexError`.
 
 If a `weights` sequence is specified, selections are made according to  the relative weights. Alternatively, if a `cum_weights` sequence is given, the selections are made according to the cumulative weights (perhaps  computed using `itertools.accumulate()`).  
@@ -858,3 +1001,13 @@ In ACM Transactions on Mathematical Software, Volume 44, Issue 3, April 2018, Ar
 Also published in arXiv, March 2022 (11 pages)  
 Last reference: arXiv:1505.06582v6 [cs.DS] 20 Nov 2017, see [https://arxiv.org/pdf/1505.06582](https://arxiv.org/pdf/1505.06582).  
 DOI: https://doi.org/10.1145/3159444, https://doi.org/10.48550/arXiv.1505.06582
+
+
+**[12]** Marsaglia, G. 1972.  
+*The structure of linear congruential sequences.*  
+In Applications of Number Theory to Numerical Analysis, S. K. Zaremba, Ed. Academic Press, 249–285.
+
+
+**[13]** Brown, F. B. and Nagaya, Y. 2002.  
+*The MCNP5 random number generator.*  
+Tech. rep. LA-UR-02-3782, Los Alamos National Laboratory

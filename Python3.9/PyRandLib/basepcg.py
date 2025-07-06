@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -22,7 +22,7 @@ SOFTWARE.
 
 #=============================================================================
 from .baserandom       import BaseRandom
-from .annotation_types import Numerical
+from .annotation_types import Numerical, SeedStateType
 
 
 #=============================================================================
@@ -33,33 +33,35 @@ class BasePCG( BaseRandom ):
 
     Copyright (c) 2025 Philippe Schmouker
 
-    PCG models evaluate pseudo-random numbers suites x(i) as a simple mathem-
-    atical function of 
-    
-        x(i-1): x(i) = (a*x(i-1) + c) mod m 
-     
-    as are LCGs, but associated with a permutation of a subpart of the bits of 
-    the  internal  state  of  the PRNG.  The output of PCGs is this permutated 
-    subpart of its internal state,  leading to a very large enhancement of the 
-    randomness of these algorithms compared with the LCGs one.
+    As LCGs do, PCG models evaluate pseudo-random numbers  suites  x(i)  as  a 
+    simple mathematical function of x(i-1):
+ 
+       x(i) = (a * x(i-1) + c) mod m
 
+    PCGs associate to this recurrence a permutation  of  a  subpart  of  their
+    internal state bits.  The output of PCGs is this permutated subpart of its 
+    internal state,  leading to a very large enhancement of the randomness  of 
+    these algorithms compared with the LCGs one.
+ 
     These PRNGs have been tested with TestU01 and have shown to pass all tests
     (Pierre  L'Ecuyer and Richard Simard (Universite de Montreal) in 'TestU01: 
     A C Library for Empirical  Testing  of  Random  Number  Generators  -  ACM 
     Transactions on Mathematical Software, vol.33 n.4, pp.22-40, August 2007')
-  
+
     PCGs are very fast generators, with low memory usage except for a very few 
     of them and medium to very large periods.  They offer jump ahead and multi
     streams features for most of them. They are difficult to very difficult to
     invert and to predict.
-    
+
     See Pcg64_32 for a 2^64 (i.e. 1.84e+19) period PC-Generator with very  low 
     computation  time  and  medium period, with 2 32-bits word integers memory 
     consumption. Output values are returned on 32 bits.
+
     See Pcg128_64 for a 2^128 (i.e. about 3.40e+38) period  PC-Generator  with  
     low  computation  time also and a longer period than for Pcg64_32,  with 4 
     32-bits word integers memory consumption.  Output values are  returned  on 
     64 bits.
+   
     See Pcg1024_32 for a 2^32,830 (i.e. about 6.53e+9882) period  PC-Generator
     with low computation time also and a very large period,  but 1,026 32-bits
     word integers memory consumption. Output values are returned on 32 bits.
@@ -90,7 +92,7 @@ class BasePCG( BaseRandom ):
     """
     
     #-------------------------------------------------------------------------
-    def __init__(self, _seedState: Numerical = None, /) -> None:
+    def __init__(self, _seedState: SeedStateType = None, /) -> None:  # type: ignore
         """Constructor. 
         
         Should _seedState be None then the local time is used as a seed  (with 
@@ -104,15 +106,15 @@ class BasePCG( BaseRandom ):
             
  
     #-------------------------------------------------------------------------
-    def getstate(self) -> int:
+    def getstate(self) -> int:  # type: ignore
         """Returns an object capturing the current internal state of the generator.
         
         This object can be passed to setstate() to restore the state.
-        For LCG,  the state is defined with  a  single  integer,  'self._value',
+        For PCG,  the state is defined with  a  single  integer,  'self._value',
         which  has  to  be  used  in  methods 'random() and 'setstate() of every
         inheriting class.
         """
-        return self._state
+        return self._state  # notice: attribute _state MUST be initialized in inheriting classes  # type: ignore
 
 
 #=====   end of module   basepcg.py   ========================================

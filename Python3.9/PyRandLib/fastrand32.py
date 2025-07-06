@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, schmouk (at) gmail.com
+Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -86,16 +86,6 @@ class FastRand32( BaseLCG ):
     """
 
     #-------------------------------------------------------------------------
-    def __init__(self, _seed: Numerical = None, /) -> None:
-        """Constructor.
-        
-        Should _seed be None or not a numerical then the local 
-        time is used (with its shuffled value) as a seed.
-        """
-        super().__init__( _seed ) # this call creates attribute self._state and sets it
-
-
-    #-------------------------------------------------------------------------
     def next(self) -> int:
         """This is the core of the pseudo-random generator.
         """
@@ -104,18 +94,38 @@ class FastRand32( BaseLCG ):
 
 
     #-------------------------------------------------------------------------
-    def setstate(self, _state: Numerical, /) -> None:
+    def seed(self, _seed: Numerical = None, /) -> None:  # type: ignore
+        """Initiates the internal state of this pseudo-random generator.
+        """
+        if _seed is None or isinstance(_seed, int):
+            self._state = SplitMix32( _seed )()
+        
+        elif isinstance(_seed, float):
+            if 0.0 <= _seed <= 1.0:
+                self._state = SplitMix32( _seed )()
+            else:
+                raise ValueError(f"Float seeds must be in range [0.0, 1.0] (currently is {_seed})")
+
+        else:
+            raise TypeError(f"Seeding value must be None, an int or a float (currently is {type(_seed)})")
+
+
+    #-------------------------------------------------------------------------
+    def setstate(self, _state: Numerical = None, /) -> None:  # type: ignore
         """Restores the internal state of the generator.
         
         _state should have been obtained from a previous call 
         to  getstate(),  and setstate() restores the internal 
         state of the generator to what it  was  at  the  time 
-        setstate() was called.
+        setstate() was called. If None, the local system time
+        is used instead.
         """
-        if isinstance(_state, int) or isinstance(_state, float):
+        if _state is None:
+            self.seed()
+        elif isinstance(_state, int):
             self._state = SplitMix32( _state )()
         else:
-            self._state = SplitMix32()()
+            raise TypeError(f"initialization state must be None or an integer (actually is {type(_state)})")
 
 
 #=====   end of module   fastrand32.py   =====================================
