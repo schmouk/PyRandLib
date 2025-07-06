@@ -35,6 +35,8 @@ class Mrg1457( BaseMRG ):
     Generator with long period (3.98e+438).
 
     This module is part of library PyRandLib.
+    
+    Copyright (c) 2016-2025 Philippe Schmouker
 
     Multiple Recursive Generators (MRGs) uses  recurrence  to  evaluate  pseudo-random
     numbers suites. Recurrence is of the form:
@@ -60,6 +62,7 @@ class Mrg1457( BaseMRG ):
 
     See Mrg287 for  a  short  period  MR-Generator  (2^287,  i.e. 2.49e+86)  with  low
     computation time but 256 integers memory consumption.
+
     See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (31-bits  modulus)  but  use  of  more  memory space (1597 
     integers).
@@ -69,6 +72,7 @@ class Mrg1457( BaseMRG ):
       random(), seed(), getstate(), and setstate().
       
     Furthermore this class is callable:
+      rand = Mrg1457()
       print( rand() )     # prints a pseudo-random value within [0.0, 1.0)
       print( rand(a) )    # prints a pseudo-random value within [0, a) or [0.0, a) depending on the type of a
       print( rand(a, n) ) # prints a list of n pseudo-random values each within [0, a)

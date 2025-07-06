@@ -43,7 +43,7 @@ class Pcg64_32( BasePCG ):
  
        x(i) = (a * x(i-1) + c) mod m
 
-    PCGs associate to this recurrence a permutation of a subpart o f the  bits 
+    PCGs associate to this recurrence a permutation of a subpart of  the  bits 
     of  the internal state of the PRNG.  The output of PCGs is this permutated
     subpart of its internal state,  leading to a very large enhancement of the
     randomness of these algorithms compared with the LCGs one.

@@ -30,8 +30,8 @@ class ListIndexState( BaseRandom ):
     """The base class for all LFib PRNG based on 64-bits numbers.
         
         Definition of the class of the internal state data for many  pseudo
-        random  generators: those that embed a list a integers and maybe an
-        index related to this list..
+        random generators: those that embed a list of integers and maybe an
+        index related to this list.
 
         This module is part of library PyRandLib.
         
@@ -47,14 +47,13 @@ class ListIndexState( BaseRandom ):
         initialization of the internal state list of integers.
         _stateSize is the size of the internal state list of integers.
         _seedState is either a valid state, an integer,  a float or None.
-        About  valid  state:  this  is  a  tuple  containing  a  list  of  
+        About  valid  state:   this  is  a  tuple  containing  a  list  of  
         self._STATE_SIZE integers and  an index in this list (index  value 
         being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
-        a sole integer or float then it  is  used  as  initial  seed  for 
+        a sole integer or float then  it  is  used  as  initial  seed  for 
         the  random  filling  of  the  internal  list  of self._STATE_SIZE  
-        integers.  Should _seedState be anything else  (e.g.  None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        integers.  Should _seedState be None)  then  the  shuffling of the
+        local current time value is used as such an initial seed.
         """
         self._initRandClass = _initRandClass
         self._STATE_SIZE = _stateSize
@@ -66,11 +65,11 @@ class ListIndexState( BaseRandom ):
 
     #-------------------------------------------------------------------------
     def getstate(self) -> StateType:
-        """Returns an object capturing the current internal state of the generator.
+        """Returns a tuple capturing the current internal state of the generator.
         
-        This  object can be passed to setstate() to restore the state.  It is a
-        tuple containing a list of self._STATE_SIZE integers and an 
-        index in this list (index value being then in range(0,self._STATE_SIZE).
+        This object can be passed to setstate() to restore the state. It is a
+        tuple  containing a list of self._STATE_SIZE integers and an index in 
+        this list (index value being then in range(0,self._STATE_SIZE).
         """
         return (self._state, self._index)  # type: ignore
 
@@ -152,9 +151,9 @@ class ListIndexState( BaseRandom ):
         """Inits the internal list of values.
         
         Inits the internal list of values according to some initial
-        seed  that  has  to be an integer or a float ranging within
-        [0.0, 1.0).  Should it be None or anything  else  then  the
-        current local time value is used as initial seed value.
+        seed  that  has to be an integer, or a float ranging within
+        [0.0, 1.0).  Should it be None then the current local  time 
+        value is used as the initial seed value.
         """
         initRand = self._initRandClass( _initialSeed )
         self._state = [ initRand() for _ in range(self._STATE_SIZE) ]        

@@ -46,7 +46,7 @@ class Melg19937( BaseMELG ):
     Notice: the implementation of this version of the MELG algorithm in  PyRandLib  is 
     not as optimized as it is in C code provided by MELG authors. It is rather derived
     from the formal description and related tables provided in paper  referenced  [11]
-    in  file  README.md,  to be able to easier validate the Python code here.
+    in file README.md, to be able to easier validate the Python code here.
 
     Notice also:  in the original paper [11],  in the description of  Algorithm 1,  an 
     error  (typo)  appears at the initialization of 'x'.  An bit-xor operation appears 
@@ -56,6 +56,7 @@ class Melg19937( BaseMELG ):
     See Melg607 for a large period MELG-Generator (2^607, i.e. 5.31e+182)  with medium
     computation  time  and  the  equivalent  of  21  32-bits  integers  memory  little 
     consumption.
+    
     See Melg44497 for a very large period (2^44,497, i.e. 8.55e+13,395)  with  similar 
     computation  time  but  use of even more memory space (equivalent of 1,393 32-bits
     integers). This is the longest period version proposed in paper [11].

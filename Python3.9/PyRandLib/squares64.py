@@ -31,7 +31,7 @@ class Squares64( BaseSquares ):
     Pseudo-random numbers generator - Squares pseudo-random Generators 
     dedicated  to  64-bits calculations and 64-bits output values with 
     small period (min 2^64, i.e. 1.84e+19) but short computation time. 
-    All  Squares  algorithms  offer multi streams features,  by simply 
+    All  Squares  algorithms  offer multi streams  features  by simply 
     using different initial settings for control value 'key'.
 
     This module is part of library PyRandLib.

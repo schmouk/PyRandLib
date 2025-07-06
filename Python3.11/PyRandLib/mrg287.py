@@ -77,6 +77,7 @@ class Mrg287( BaseMRG ):
     See Mrg1457 for a longer period MR-Generator  (2^1457,  i.e. 4.0e+438)  and longer
     computation  time  (2^31-1 modulus calculations) but less memory space consumption 
     (47 integers).
+    
     See Mrg49507 for  a  far  longer  period  (2^49507,  i.e. 1.2e+14903)  with  lower 
     computation  time  too  (31-bits  modulus)  but  use  of  more memory space (1_597 
     integers).

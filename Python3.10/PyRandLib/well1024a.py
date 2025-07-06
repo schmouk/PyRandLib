@@ -59,10 +59,10 @@ class Well1024a( BaseWELL ):
        
     See Well512a for a large period WELL-Generator (2^512,  i.e. 1.34e+154)  with  low
     computation time and 16 integers memory consumption.
-    See Well1024a for a longer period WELL-Generator  (2^1024,  i.e. 2.68e+308),  same 
-    computation time and 32 integers memory consumption.
-    See Well199937b for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
+
+    See Well199937c for a far longer period  (2^19937,  i.e. 4.32e+6001) with  similar 
     computation time but use of more memory space (624 integers).
+
     See Well44497b for a very large period (2^44497,  i.e. 1.51e+13466)  with  similar 
     computation time but use of even more memory space (1,391 integers).
     

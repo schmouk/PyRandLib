@@ -47,6 +47,7 @@ class Xoroshiro1024( BaseXoroshiro ):
     See Xoroshiro256 for a large 2^256 period (i.e. about  1.16e+77)  scramble  linear 
     PRNG,  with  low  computation  time,  64-bits  output  values  and good randomness
     characteristics.
+
     See Xoroshiro512 for a large 2^512 period (i.e. about 1.34e+154)  scramble  linear 
     PRNG,  with  low computation time,  64-bits output values and very good randomness
     characteristics.
@@ -81,14 +82,13 @@ class Xoroshiro1024( BaseXoroshiro ):
         """Constructor.
         
         _seedState is either a valid state, an integer,  a float or None.
-        About  valid  state:  this  is  a  tuple  containing  a  list  of  
+        About  valid  state:   this  is  a  tuple  containing  a  list  of  
         self._STATE_SIZE integers and  an index in this list (index  value 
         being  then  in range (0,self._STATE_SIZE)).  Should _seedState be 
-        a sole integer or float then it  is  used  as  initial  seed  for 
+        a sole integer or float then  it  is  used  as  initial  seed  for 
         the  random  filling  of  the  internal  list  of self._STATE_SIZE  
-        integers.  Should _seedState be anything else  (e.g.  None)  then  
-        the  shuffling of the local current time value is used as such an 
-        initial seed.
+        integers.  Should _seedState be None then  the  shuffling  of  the 
+        local current time value is used as such an initial seed.
         """
         # this 'xoroshiro1024**' generator is based on a suite containing 16 integers
         super().__init__( 16, _seedState )
