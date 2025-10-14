@@ -255,7 +255,7 @@ The Python versions used for these evaluations in their related virtual environm
 
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i5-1035G1** CPU @ 1.00 GHz:
 <table>
-<tr><th>PyRandLib class</th><th>Python 3.9</th><th>Python 3.10</th><th>Python 3.11</th><th>Python 3.12</th><th>Python 3.13</th><th>Python 3.14</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th><th></th></tr>
+<tr><th>PyRandLib class</th><th>Python 3.9</th><th>Python 3.10</th><th>Python 3.11</th><th>Python 3.12</th><th>Python 3.13</th><th>Python 3.14</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th></tr>
 <tr><td>Cwg64</td><td>0.79</td><td>0.77</td><td>0.84</td><td>0.97</td><td>0.76</td><td>0.48</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Cwg128_64</td><td>0.82</td><td>0.80</td><td>0.88</td><td>0.99</td><td>0.78</td><td>0.49</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Cwg128</td><td>0.89</td><td>0.94</td><td>0.96</td><td>1.13</td><td>0.83</td><td>0.52</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
