@@ -32,18 +32,8 @@ SOFTWARE.
 
 
 ## Intro
-This library implements some of the best-in-class pseudo  random  generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper.
+This library implements some of the best-in-class pseudo random generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper. It implements also newer pseudo random generators that have been published since then. Their exhaustive list is provided here below and is valid for version 2.0 and above (i.e. since 2025/03):
 
-Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
-
-Latest version of **PyRandLib** is version **2.1**, released by July 2025.
-* It provides additional implementations of recent pseudo-random generators with very good randomness characteristics.
-* It provides also implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12 and 3.13.
-* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
-* Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
-
-
-Exhaustive list of currently implemented algorithms (since PyRandLib 2.0, 2025/03):
 * **Collatz-Weyl Generator** (Tomasz R. Dziala, **2023**)  
  (CWG, 64 bits, 128 bits or 128/64 bits, 3 different values of periodicities, see reference [8]);
 * **Linear Congruential Generator** (Georges Marsaglia, **1972**, F.B. Brown and Y. Nagaya, **2002**)  
@@ -64,6 +54,14 @@ Exhaustive list of currently implemented algorithms (since PyRandLib 2.0, 2025/0
  (Xoroshiro, 64 bits, 4 different values of periodicities, see reference [10]).
 
 
+Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
+
+Latest version of **PyRandLib** is version **2.2**, released by October 2025.
+* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
+* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
+* Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
+
+
 
 ### Why not Mersenne twister?
 
@@ -76,12 +74,14 @@ It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this
 ## Installation
 Currently, the only way to install **PyRandLib** is to download the `.zip` or `.tar.gz` archive, then to directly put sub-directory `PyRandLib\` from archive into directory `Lib\site-packages\` of your Python environment. See https://schmouk.github.io/PyRandLib/ for an easy access to downloadable versions or click on tab **releases** on the home page of this GitHub repository.
 
-Since release **2.0** of **PyrandLib**, the root directory of the library has been splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
+Since release **2.0** of **PyrandLib** (Mar. 2025), the root directory of the library has been splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
 
-Since release **2.1** of **PyRandLib**, the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
+Since release **2.1** of **PyRandLib** (Jun. 2025), the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
 Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
 
-**Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is to come (no date yet, expected with release **3.0** of **PyRandLib**).
+Release **2.2** (Oct. 2025) provides code for Python 3.14. Code is identical to the one provided for Python 3.13, with a very few optimizations on some generators code. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
+
+**Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
 
 
@@ -139,7 +139,7 @@ or run
 
     > pytest --cov-config=.coveragerc --cov=. unit_tests --cov-report=html
 
-to get an HTML version of the report, to be displayed by double-clicking on file `<path to your PyRandLib directory>/Python3.13/htmlcov/index.html`. This file will automatically open itself in your favorite web browser. Click on any not fully covered file to get a whole view of their code with highlighted missed statements (there should be none).
+to get an HTML version of the report, to be displayed by double-clicking on file `<path to your PyRandLib directory>/Python3.13/htmlcov/index.html`. This file will automatically open itself in your favorite web browser. Click on any not fully covered file to get a whole view of their code with highlighted missed statements (there should be none in official releases, just on current dev).
 
 
 ### Expected results
@@ -206,77 +206,78 @@ Tests have been run on an Intel&reg; Core&trade; i5-1035G1 CPU @ 1.00 GHz, 4 cor
 The evaluation script is provided at the root of **PyRandLib** repository: `testCPUPerfs.py`.
 
 The Python versions used for these evaluations in their related virtual environment are (all 64-bits):
-* 3.9.23 (Jun. 3, 2025)
-* 3.10.16 (Jun. 3, 2025)
-* 3.11.13 (Jun. 3, 2025)
-* 3.12.11 (Jun. 3, 2025)
-* 3.13.5 (Jun. 11, 2025)
+* 3.9.24 (Oct. 9, 2025)
+* 3.10.19 (0ct. 9, 2025)
+* 3.11.14 (0ct. 9, 2025)
+* 3.12.12 (0ct. 9, 2025)
+* 3.13.8 (Oct. 7, 2025)
+* 3.14.0 (Oct. 7, 2025)
 
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i7-150U** CPU @ 1.80 GHz:
- | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
- | Cwg64            |    0.46    |    0.44     |    0.50     |    0.56     |    0.35     |        *0*       |      *0*    |      *0*       |
- | Cwg128_64        |    0.48    |    0.46     |    0.51     |    0.59     |    0.37     |        *0*       |      *0*    |      *0*       |
- | Cwg128           |    0.53    |    0.54     |    0.55     |    0.64     |    0.41     |        *0*       |      *0*    |      *0*       |
- | FastRand32       |    0.15    |    0.16     |    0.15     |    0.17     |    0.10     |       *11*       |    *106*    |   *too many*   |
- | FastRand63       |    0.16    |    0.17     |    0.16     |    0.18     |    0.10     |        *0*       |      *5*    |      *7*       |
- | LFib78           |    0.29    |    0.29     |    0.29     |    0.32     |    0.19     |        *0*       |      *0*    |      *0*       |
- | LFib116          |    0.29    |    0.30     |    0.29     |    0.32     |    0.19     |        *0*       |      *0*    |      *0*       |
- | LFib668          |    0.30    |    0.30     |    0.30     |    0.34     |    0.20     |        *0*       |      *0*    |      *0*       |
- | LFib1340         |    0.31    |    0.32     |    0.31     |    0.35     |    0.21     |        *0*       |      *0*    |      *0*       |
- | Melg607          |    0.73    |    0.75     |    0.75     |    0.79     |    0.56     |        *0*       |      *0*    |      *0*       |
- | Melg19937        |    0.76    |    0.74     |    0.78     |    0.82     |    0.61     |        *0*       |      *0*    |      *0*       |
- | Melg44497        |    0.75    |    0.76     |    0.78     |    0.83     |    0.60     |        *0*       |      *0*    |      *0*       |
- | Mrg287           |    0.47    |    0.48     |    0.46     |    0.51     |    0.32     |        *0*       |      *0*    |      *0*       |
- | Mrg1457          |    0.43    |    0.44     |    0.42     |    0.48     |    0.31     |        *0*       |      *0*    |      *0*       |
- | Mrg49507         |    0.44    |    0.45     |    0.43     |    0.48     |    0.33     |        *0*       |      *0*    |      *0*       |
- | Pcg64_32         |    0.30    |    0.31     |    0.28     |    0.32     |    0.21     |        *0*       |      *0*    |      *0*       |
- | Pcg128_64        |    0.45    |    0.46     |    0.44     |    0.49     |    0.34     |        *0*       |      *0*    |      *0*       |
- | Pcg1024_32       |    0.58    |    0.59     |    0.55     |    0.55     |    0.38     |        *0*       |      *0*    |      *0*       | 
- | Squares32        |    0.83    |    0.83     |    0.82     |    0.92     |    0.63     |        *0*       |      *0*    |      *0*       |
- | Squares64        |    1.02    |    1.01     |    1.03     |    1.14     |    0.80     |        *0*       |      *0*    |      *0*       |
- | Well512a         |    1.37    |    1.44     |    1.28     |    1.42     |    0.97     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Well1024a        |    1.27    |    1.31     |    1.18     |    1.29     |    0.90     |        *0*       |      *4*    |      *4*       |
- | Well19937c (1)   |    1.68    |    1.78     |    1.58     |    1.76     |    1.26     |        *0*       |      *2*    |      *2*       |
- | Well44497b (2)   |    1.91    |    2.03     |    1.80     |    2.02     |    1.52     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Xoroshiro256     |    1.39    |    1.38     |    1.32     |    1.47     |    1.01     |        *0*       |      *0*    |      *0*       |
- | Xoroshiro512     |    1.70    |    1.67     |    1.60     |    1.79     |    1.24     |        *0*       |      *0*    |      *0*        | 
- | Xoroshiro1024    |    1.63    |    1.63     |    1.52     |    1.72     |    1.19     |        *0*       |      *0*    |      *0*       |
+ | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Python 3.14 | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | Cwg64            |    0.45    |    0.44     |    0.49     |    0.56     |    0.37     |    0.24     |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.47    |    0.46     |    0.50     |    0.59     |    0.38     |    0.26     |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.52    |    0.54     |    0.54     |    0.64     |    0.41     |    0.26     |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.15    |    0.16     |    0.14     |    0.17     |    0.11     |    0.07     |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.16    |    0.17     |    0.16     |    0.18     |    0.11     |    0.08     |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.28    |    0.29     |    0.27     |    0.32     |    0.20     |    0.11     |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.29    |    0.29     |    0.28     |    0.32     |    0.21     |    0.11     |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.30    |    0.30     |    0.29     |    0.34     |    0.22     |    0.12     |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.31    |    0.31     |    0.30     |    0.35     |    0.22     |    0.13     |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    0.73    |    0.74     |    0.73     |    0.79     |    0.61     |    0.50     |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    0.76    |    0.74     |    0.76     |    0.82     |    0.60     |    0.51     |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    0.75    |    0.76     |    0.77     |    0.82     |    0.62     |    0.52     |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.46    |    0.48     |    0.44     |    0.51     |    0.34     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.43    |    0.44     |    0.41     |    0.48     |    0.32     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.44    |    0.45     |    0.42     |    0.48     |    0.34     |    0.24     |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.30    |    0.31     |    0.28     |    0.32     |    0.22     |    0.19     |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.45    |    0.46     |    0.44     |    0.49     |    0.34     |    0.30     |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    0.58    |    0.59     |    0.54     |    0.55     |    0.39     |    0.33     |        *0*       |      *0*    |      *0*       | 
+ | Squares32        |    0.83    |    0.83     |    0.82     |    0.92     |    0.67     |    0.63     |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.02    |    1.01     |    1.01     |    1.14     |    0.86     |    0.80     |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    1.37    |    1.44     |    1.27     |    1.42     |    1.10     |    0.88     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    1.27    |    1.31     |    1.17     |    1.29     |    1.00     |    0.83     |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    1.68    |    1.75     |    1.58     |    1.76     |    1.38     |    1.26     |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    1.91    |    1.99     |    1.80     |    2.02     |    1.63     |    1.43     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    1.39    |    1.38     |    1.31     |    1.47     |    1.06     |    0.98     |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    1.70    |    1.67     |    1.60     |    1.77     |    1.37     |    1.17     |        *0*       |      *0*    |      *0*       | 
+ | Xoroshiro1024    |    1.63    |    1.63     |    1.52     |    1.72     |    1.26     |    1.15     |        *0*       |      *0*    |      *0*       |
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
 (2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
 
 
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i5-1035G1** CPU @ 1.00 GHz:
- | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | SmallCrush fails | Crush fails | BigCrush fails |
- | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
- | Cwg64            |    0.83    |    0.77     |    0.87     |     0.74    |     0.76    |        *0*       |      *0*    |      *0*       |
- | Cwg128_64        |    0.85    |    0.80     |    0.91     |     0.79    |     0.79    |        *0*       |      *0*    |      *0*       |
- | Cwg128           |    0.94    |    0.94     |    0.99     |     0.83    |     0.83    |        *0*       |      *0*    |      *0*       |
- | FastRand32       |    0.27    |    0.27     |    0.26     |     0.22    |     0.22    |       *11*       |    *106*    |   *too many*   |
- | FastRand63       |    0.30    |    0.29     |    0.29     |     0.24    |     0.22    |        *0*       |      *5*    |      *7*       |
- | LFib78           |    0.52    |    0.50     |    0.51     |     0.36    |     0.35    |        *0*       |      *0*    |      *0*       |
- | LFib116          |    0.53    |    0.52     |    0.51     |     0.38    |     0.36    |        *0*       |      *0*    |      *0*       |
- | LFib668          |    0.56    |    0.54     |    0.53     |     0.40    |     0.39    |        *0*       |      *0*    |      *0*       |
- | LFib1340         |    0.59    |    0.56     |    0.55     |     0.41    |     0.41    |        *0*       |      *0*    |      *0*       |
- | Melg607          |    1.39    |    1.35     |    1.34     |     1.08    |     1.15    |        *0*       |      *0*    |      *0*       |
- | Melg19937        |    1.41    |    1.37     |    1.36     |     1.20    |     1.23    |        *0*       |      *0*    |      *0*       |
- | Melg44497        |    1.42    |    1.35     |    1.37     |     1.23    |     1.19    |        *0*       |      *0*    |      *0*       |
- | Mrg287           |    0.89    |    0.88     |    0.85     |     0.61    |     0.61    |        *0*       |      *0*    |      *0*       |
- | Mrg1457          |    0.85    |    0.82     |    0.81     |     0.63    |     0.61    |        *0*       |      *0*    |      *0*       |
- | Mrg49507         |    0.75    |    0.69     |    0.68     |     0.57    |     0.56    |        *0*       |      *0*    |      *0*       |
- | Pcg64_32         |    0.56    |    0.52     |    0.49     |     0.43    |     0.44    |        *0*       |      *0*    |      *0*       |
- | Pcg128_64        |    0.80    |    0.74     |    0.73     |     0.67    |     0.63    |        *0*       |      *0*    |      *0*       |
- | Pcg1024_32       |    1.12    |    1.06     |    0.95     |     0.75    |     0.75    |        *0*       |      *0*    |      *0*       | 
- | Squares32        |    1.58    |    1.47     |    1.49     |     1.39    |     1.37    |        *0*       |      *0*    |      *0*       |
- | Squares64        |    1.97    |    1.81     |    1.84     |     1.76    |     1.67    |        *0*       |      *0*    |      *0*       |
- | Well512a         |    2.80    |    2.74     |    2.43     |     2.11    |     2.08    |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Well1024a        |    2.52    |    2.44     |    2.19     |     1.94    |     1.87    |        *0*       |      *4*    |      *4*       |
- | Well19937c (1)   |    3.48    |    3.44     |    3.06     |     2.67    |     2.61    |        *0*       |      *2*    |      *2*       |
- | Well44497b (2)   |    3.96    |    3.91     |    3.40     |     3.09    |     2.92    |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Xoroshiro256     |    2.37    |    2.24     |    2.25     |     1.95    |     1.93    |        *0*       |      *0*    |      *0*       |
- | Xoroshiro512     |    2.94    |    2.81     |    2.72     |     2.40    |     2.30    |        *0*       |      *0*    |      *0*       |
- | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |     2.12    |     2.06    |        *0*       |      *0*    |      *0*       |
+ | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Python 3.14 | SmallCrush fails | Crush fails | BigCrush fails |
+ | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
+ | Cwg64            |    0.79    |    0.77     |    0.84     |     0.97    |     0.76    |     0.48    |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.82    |    0.80     |    0.88     |     0.99    |     0.78    |     0.49    |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.89    |    0.94     |    0.96     |     1.13    |     0.83    |     0.52    |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.27    |    0.27     |    0.26     |     0.31    |     0.21    |     0.14    |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.30    |    0.29     |    0.29     |     0.35    |     0.22    |     0.15    |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.52    |    0.49     |    0.50     |     0.56    |     0.35    |     0.21    |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.53    |    0.51     |    0.51     |     0.57    |     0.36    |     0.22    |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.55    |    0.52     |    0.53     |     0.60    |     0.39    |     0.24    |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.55    |    0.53     |    0.55     |     0.62    |     0.41    |     0.25    |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    1.30    |    1.31     |    1.26     |     1.40    |     1.15    |     0.98    |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    1.37    |    1.32     |    1.31     |     1.43    |     1.14    |     0.99    |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    1.33    |    1.35     |    1.32     |     1.42    |     1.16    |     0.99    |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.86    |    0.84     |    0.82     |     0.91    |     0.61    |     0.37    |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.81    |    0.78     |    0.76     |     0.86    |     0.61    |     0.40    |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.75    |    0.69     |    0.68     |     0.86    |     0.56    |     0.49    |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.56    |    0.52     |    0.48     |     0.56    |     0.44    |     0.40    |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.80    |    0.74     |    0.73     |     0.86    |     0.63    |     0.62    |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    1.08    |    1.06     |    0.95     |     0.96    |     0.75    |     0.69    |        *0*       |      *0*    |      *0*       |
+ | Squares32        |    1.48    |    1.45     |    1.40     |     1.67    |     1.31    |     1.26    |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.83    |    1.79     |    1.71     |     2.01    |     1.62    |     1.62    |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    2.62    |    2.64     |    2.26     |     2.60    |     2.08    |     1.77    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    2.28    |    2.36     |    1.98     |     2.24    |     1.87    |     1.60    |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    3.23    |    3.44     |    2.84     |     3.12    |     2.61    |     2.44    |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    3.66    |    3.91     |    3.18     |     3.55    |     2.92    |     2.82    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    2.37    |    2.24     |    2.25     |     2.55    |     1.93    |     1.87    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    2.94    |    2.81     |    2.72     |     3.04    |     2.30    |     2.27    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |     3.01    |     2.06    |     2.23    |        *0*       |      *0*    |      *0*       |
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
 (2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
@@ -284,7 +285,6 @@ The Python versions used for these evaluations in their related virtual environm
 
 ## Implementation
 Current implementation of **PyRandLib** uses Python 3.x with no Cython version.  
-It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
 Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to have the library running correctly. *N.B. You should no more use Python 3.10 or any of its previous versions since these are no more maintained (July 2025).*
 
@@ -295,6 +295,10 @@ Note 3: since release **2.0** of **PyRandLib** directories have been created tha
 Note 4: since release **2.1** of **PyRandLib** unit tests are provided in subdirectories `unit-tests` for every available version of Python standard.
 
 Note 5: a Cython version of **PyRandLib** will be delivered in a next major release (i.e. 3.0). Up today, no date is planned for this.
+
+
+## New in Release 2.2
+Version 2.2 of **PyRandLib** delivers a Python 3.14 version of the library. Note: no new feature introduced by Python 3.14 impacts code of PyRandLib. Code for version 3.14 of Python is then the same as for Python 3.13 with very minor optimizations on code for a very few generators. Meanwhile, the implementation of Python 3.14 shows computation speed-ups from 6 % up to 48 % for the Intel&reg; Core&trade; i7 CPU (see related above table).
 
 
 ## New in Release 2.1

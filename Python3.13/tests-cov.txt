@@ -1,52 +1,52 @@
-(py.3.13.5) PS E:\GitHub\PyRandLib\Python3.13> pytest --cov-config=.coveragerc --cov=. unit_tests
-========================================== test session starts ==========================================
-platform win32 -- Python 3.13.5, pytest-8.4.0, pluggy-1.6.0
+(py.3.13.8) PS E:\GitHub\PyRandLib\Python3.13> pytest --cov-config=.coveragerc --cov=. unit_tests
+====================================== test session starts =======================================
+platform win32 -- Python 3.13.8, pytest-8.4.2, pluggy-1.6.0
 rootdir: E:\GitHub\PyRandLib\Python3.13
-plugins: cov-6.2.1
+plugins: cov-7.0.0
 collected 356 items
 
-unit_tests\test_basecwg.py ........                                                                [  2%]
-unit_tests\test_baselcg.py ..........                                                              [  5%]
-unit_tests\test_baselfib64.py ..........                                                           [  7%]
-unit_tests\test_basemelg.py ..........                                                             [ 10%]
-unit_tests\test_basemrg.py .......                                                                 [ 12%]
-unit_tests\test_basepcg.py ..........                                                              [ 15%]
-unit_tests\test_baserandom.py ...................                                                  [ 20%]
-unit_tests\test_basesquares.py ...........                                                         [ 23%]
-unit_tests\test_basewell.py ......................                                                 [ 30%]
-unit_tests\test_basexoroshiro.py ..........                                                        [ 32%]
-unit_tests\test_cwg128.py ........                                                                 [ 35%]
-unit_tests\test_cwg128_64.py ........                                                              [ 37%]
-unit_tests\test_cwg64.py ........                                                                  [ 39%]
-unit_tests\test_fastrand32.py ........                                                             [ 41%]
-unit_tests\test_fastrand63.py ........                                                             [ 44%]
-unit_tests\test_lfib116.py ........                                                                [ 46%]
-unit_tests\test_lfib1340.py ........                                                               [ 48%]
-unit_tests\test_lfib668.py ........                                                                [ 50%]
-unit_tests\test_lfib78.py ........                                                                 [ 53%]
-unit_tests\test_listindexstate.py ......                                                           [ 54%]
-unit_tests\test_melg19937.py ........                                                              [ 57%]
-unit_tests\test_melg44497.py ........                                                              [ 59%]
-unit_tests\test_melg607.py ........                                                                [ 61%]
-unit_tests\test_mrg1457.py ........                                                                [ 63%]
-unit_tests\test_mrg287.py ........                                                                 [ 66%]
-unit_tests\test_mrg49507.py ........                                                               [ 68%]
-unit_tests\test_pcg1024_32.py ...........                                                          [ 71%]
-unit_tests\test_pcg128_64.py ........                                                              [ 73%]
-unit_tests\test_pcg64_32.py ........                                                               [ 75%]
-unit_tests\test_splitmix.py ....................                                                   [ 81%]
-unit_tests\test_squares32.py .....                                                                 [ 82%]
-unit_tests\test_squares64.py .....                                                                 [ 84%]
-unit_tests\test_well1024a.py ........                                                              [ 86%]
-unit_tests\test_well19937c.py ........                                                             [ 88%]
-unit_tests\test_well44497b.py ........                                                             [ 91%]
-unit_tests\test_well512a.py ........                                                               [ 93%]
-unit_tests\test_xoroshiro1024.py ........                                                          [ 95%]
-unit_tests\test_xoroshiro256.py ........                                                           [ 97%]
-unit_tests\test_xoroshiro512.py ........                                                           [100%]
+unit_tests\test_basecwg.py ........                                                         [  2%]
+unit_tests\test_baselcg.py ..........                                                       [  5%]
+unit_tests\test_baselfib64.py ..........                                                    [  7%]
+unit_tests\test_basemelg.py ..........                                                      [ 10%]
+unit_tests\test_basemrg.py .......                                                          [ 12%]
+unit_tests\test_basepcg.py ..........                                                       [ 15%]
+unit_tests\test_baserandom.py ...................                                           [ 20%]
+unit_tests\test_basesquares.py ...........                                                  [ 23%]
+unit_tests\test_basewell.py ......................                                          [ 30%]
+unit_tests\test_basexoroshiro.py ..........                                                 [ 32%]
+unit_tests\test_cwg128.py ........                                                          [ 35%]
+unit_tests\test_cwg128_64.py ........                                                       [ 37%]
+unit_tests\test_cwg64.py ........                                                           [ 39%]
+unit_tests\test_fastrand32.py ........                                                      [ 41%]
+unit_tests\test_fastrand63.py ........                                                      [ 44%]
+unit_tests\test_lfib116.py ........                                                         [ 46%]
+unit_tests\test_lfib1340.py ........                                                        [ 48%]
+unit_tests\test_lfib668.py ........                                                         [ 50%]
+unit_tests\test_lfib78.py ........                                                          [ 53%]
+unit_tests\test_listindexstate.py ......                                                    [ 54%]
+unit_tests\test_melg19937.py ........                                                       [ 57%]
+unit_tests\test_melg44497.py ........                                                       [ 59%]
+unit_tests\test_melg607.py ........                                                         [ 61%]
+unit_tests\test_mrg1457.py ........                                                         [ 63%]
+unit_tests\test_mrg287.py ........                                                          [ 66%]
+unit_tests\test_mrg49507.py ........                                                        [ 68%]
+unit_tests\test_pcg1024_32.py ...........                                                   [ 71%]
+unit_tests\test_pcg128_64.py ........                                                       [ 73%]
+unit_tests\test_pcg64_32.py ........                                                        [ 75%]
+unit_tests\test_splitmix.py ....................                                            [ 81%]
+unit_tests\test_squares32.py .....                                                          [ 82%]
+unit_tests\test_squares64.py .....                                                          [ 84%]
+unit_tests\test_well1024a.py ........                                                       [ 86%]
+unit_tests\test_well19937c.py ........                                                      [ 88%]
+unit_tests\test_well44497b.py ........                                                      [ 91%]
+unit_tests\test_well512a.py ........                                                        [ 93%]
+unit_tests\test_xoroshiro1024.py ........                                                   [ 95%]
+unit_tests\test_xoroshiro256.py ........                                                    [ 97%]
+unit_tests\test_xoroshiro512.py ........                                                    [100%]
 
-============================================ tests coverage =============================================
-____________________________ coverage: platform win32, python 3.13.5-final-0 ____________________________
+========================================= tests coverage =========================================
+________________________ coverage: platform win32, python 3.13.8-final-0 _________________________
 
 Name                            Stmts   Miss  Cover
 ---------------------------------------------------
@@ -94,4 +94,4 @@ PyRandLib\xoroshiro1024.py         15      0   100%
 ---------------------------------------------------
 TOTAL                            1061      0   100%
 Required test coverage of 100.0% reached. Total coverage: 100.00%
-========================================== 356 passed in 1.91s ==========================================
+====================================== 356 passed in 1.69s =======================================
