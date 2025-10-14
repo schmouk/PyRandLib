@@ -216,33 +216,33 @@ The Python versions used for these evaluations in their related virtual environm
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i7-150U** CPU @ 1.80 GHz:
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Python 3.14 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
- | Cwg64            |    0.46    |    0.44     |    0.50     |    0.56     |    0.35     |    0.35     |        *0*       |      *0*    |      *0*       |
- | Cwg128_64        |    0.48    |    0.46     |    0.51     |    0.59     |    0.37     |    0.37     |        *0*       |      *0*    |      *0*       |
- | Cwg128           |    0.53    |    0.54     |    0.55     |    0.64     |    0.41     |    0.39     |        *0*       |      *0*    |      *0*       |
- | FastRand32       |    0.15    |    0.16     |    0.15     |    0.17     |    0.10     |    0.10     |       *11*       |    *106*    |   *too many*   |
- | FastRand63       |    0.16    |    0.17     |    0.16     |    0.18     |    0.10     |    0.10     |        *0*       |      *5*    |      *7*       |
- | LFib78           |    0.29    |    0.29     |    0.29     |    0.32     |    0.19     |    0.17     |        *0*       |      *0*    |      *0*       |
- | LFib116          |    0.29    |    0.30     |    0.29     |    0.32     |    0.19     |    0.18     |        *0*       |      *0*    |      *0*       |
- | LFib668          |    0.30    |    0.30     |    0.30     |    0.34     |    0.20     |    0.18     |        *0*       |      *0*    |      *0*       |
- | LFib1340         |    0.31    |    0.32     |    0.31     |    0.35     |    0.21     |    0.20     |        *0*       |      *0*    |      *0*       |
- | Melg607          |    0.73    |    0.75     |    0.75     |    0.79     |    0.56     |    0.56     |        *0*       |      *0*    |      *0*       |
- | Melg19937        |    0.76    |    0.74     |    0.78     |    0.82     |    0.61     |    0.61     |        *0*       |      *0*    |      *0*       |
- | Melg44497        |    0.75    |    0.76     |    0.78     |    0.83     |    0.60     |    0.60     |        *0*       |      *0*    |      *0*       |
- | Mrg287           |    0.47    |    0.48     |    0.46     |    0.51     |    0.32     |    0.31     |        *0*       |      *0*    |      *0*       |
- | Mrg1457          |    0.43    |    0.44     |    0.42     |    0.48     |    0.31     |    0.31     |        *0*       |      *0*    |      *0*       |
- | Mrg49507         |    0.44    |    0.45     |    0.43     |    0.48     |    0.33     |    0.33     |        *0*       |      *0*    |      *0*       |
- | Pcg64_32         |    0.30    |    0.31     |    0.28     |    0.32     |    0.21     |    0.21     |        *0*       |      *0*    |      *0*       |
- | Pcg128_64        |    0.45    |    0.46     |    0.44     |    0.49     |    0.34     |    0.34     |        *0*       |      *0*    |      *0*       |
- | Pcg1024_32       |    0.58    |    0.59     |    0.55     |    0.55     |    0.38     |    0.38     |        *0*       |      *0*    |      *0*       | 
- | Squares32        |    0.83    |    0.83     |    0.82     |    0.92     |    0.63     |    0.63     |        *0*       |      *0*    |      *0*       |
- | Squares64        |    1.02    |    1.01     |    1.03     |    1.14     |    0.80     |    0.80     |        *0*       |      *0*    |      *0*       |
- | Well512a         |    1.37    |    1.44     |    1.28     |    1.42     |    0.97     |    0.97     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Well1024a        |    1.27    |    1.31     |    1.18     |    1.29     |    0.90     |    0.90     |        *0*       |      *4*    |      *4*       |
- | Well19937c (1)   |    1.68    |    1.78     |    1.58     |    1.76     |    1.26     |    1.26     |        *0*       |      *2*    |      *2*       |
- | Well44497b (2)   |    1.91    |    2.03     |    1.80     |    2.02     |    1.52     |    1.52     |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Xoroshiro256     |    1.39    |    1.38     |    1.32     |    1.47     |    1.01     |    1.01     |        *0*       |      *0*    |      *0*       |
- | Xoroshiro512     |    1.70    |    1.67     |    1.60     |    1.79     |    1.24     |    1.24     |        *0*       |      *0*    |      *0*       | 
- | Xoroshiro1024    |    1.63    |    1.63     |    1.52     |    1.72     |    1.19     |    1.19     |        *0*       |      *0*    |      *0*       |
+ | Cwg64            |    0.45    |    0.44     |    0.49     |    0.56     |    0.37     |    0.24     |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.47    |    0.46     |    0.50     |    0.59     |    0.38     |    0.26     |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.52    |    0.54     |    0.54     |    0.64     |    0.41     |    0.26     |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.15    |    0.16     |    0.14     |    0.17     |    0.11     |    0.07     |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.16    |    0.17     |    0.16     |    0.18     |    0.11     |    0.08     |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.28    |    0.29     |    0.27     |    0.32     |    0.20     |    0.11     |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.29    |    0.29     |    0.28     |    0.32     |    0.21     |    0.11     |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.30    |    0.30     |    0.29     |    0.34     |    0.22     |    0.12     |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.31    |    0.31     |    0.30     |    0.35     |    0.22     |    0.13     |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    0.73    |    0.74     |    0.73     |    0.79     |    0.61     |    0.50     |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    0.76    |    0.74     |    0.76     |    0.82     |    0.60     |    0.51     |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    0.75    |    0.76     |    0.77     |    0.82     |    0.62     |    0.52     |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.46    |    0.48     |    0.44     |    0.51     |    0.34     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.43    |    0.44     |    0.41     |    0.48     |    0.32     |    0.21     |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.44    |    0.45     |    0.42     |    0.48     |    0.34     |    0.24     |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.30    |    0.31     |    0.28     |    0.32     |    0.22     |    0.19     |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.45    |    0.46     |    0.44     |    0.49     |    0.34     |    0.30     |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    0.58    |    0.59     |    0.54     |    0.55     |    0.39     |    0.33     |        *0*       |      *0*    |      *0*       | 
+ | Squares32        |    0.83    |    0.83     |    0.82     |    0.92     |    0.67     |    0.63     |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.02    |    1.01     |    1.01     |    1.14     |    0.86     |    0.80     |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    1.37    |    1.44     |    1.27     |    1.42     |    1.10     |    0.88     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    1.27    |    1.31     |    1.17     |    1.29     |    1.00     |    0.83     |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    1.68    |    1.75     |    1.58     |    1.76     |    1.38     |    1.26     |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    1.91    |    1.99     |    1.80     |    2.02     |    1.63     |    1.43     |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    1.39    |    1.38     |    1.31     |    1.47     |    1.06     |    0.98     |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    1.70    |    1.67     |    1.60     |    1.77     |    1.37     |    1.17     |        *0*       |      *0*    |      *0*       | 
+ | Xoroshiro1024    |    1.63    |    1.63     |    1.52     |    1.72     |    1.26     |    1.15     |        *0*       |      *0*    |      *0*       |
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
 (2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
@@ -251,33 +251,33 @@ The Python versions used for these evaluations in their related virtual environm
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i5-1035G1** CPU @ 1.00 GHz:
  | PyRabndLib class | Python 3.9 | Python 3.10 | Python 3.11 | Python 3.12 | Python 3.13 | Python 3.14 | SmallCrush fails | Crush fails | BigCrush fails |
  | ---------------- | ---------- | ----------- | ----------- | ----------- | ----------- | ----------- | ---------------- | ----------- | -------------- |
- | Cwg64            |    0.83    |    0.77     |    0.87     |     0.74    |     0.76    |     0.76    |        *0*       |      *0*    |      *0*       |
- | Cwg128_64        |    0.85    |    0.80     |    0.91     |     0.79    |     0.79    |     0.79    |        *0*       |      *0*    |      *0*       |
- | Cwg128           |    0.94    |    0.94     |    0.99     |     0.83    |     0.83    |     0.83    |        *0*       |      *0*    |      *0*       |
- | FastRand32       |    0.27    |    0.27     |    0.26     |     0.22    |     0.22    |     0.22    |       *11*       |    *106*    |   *too many*   |
- | FastRand63       |    0.30    |    0.29     |    0.29     |     0.24    |     0.22    |     0.22    |        *0*       |      *5*    |      *7*       |
- | LFib78           |    0.52    |    0.50     |    0.51     |     0.36    |     0.35    |     0.35    |        *0*       |      *0*    |      *0*       |
- | LFib116          |    0.53    |    0.52     |    0.51     |     0.38    |     0.36    |     0.36    |        *0*       |      *0*    |      *0*       |
- | LFib668          |    0.56    |    0.54     |    0.53     |     0.40    |     0.39    |     0.39    |        *0*       |      *0*    |      *0*       |
- | LFib1340         |    0.59    |    0.56     |    0.55     |     0.41    |     0.41    |     0.41    |        *0*       |      *0*    |      *0*       |
- | Melg607          |    1.39    |    1.35     |    1.34     |     1.08    |     1.15    |     1.15    |        *0*       |      *0*    |      *0*       |
- | Melg19937        |    1.41    |    1.37     |    1.36     |     1.20    |     1.23    |     1.23    |        *0*       |      *0*    |      *0*       |
- | Melg44497        |    1.42    |    1.35     |    1.37     |     1.23    |     1.19    |     1.19    |        *0*       |      *0*    |      *0*       |
- | Mrg287           |    0.89    |    0.88     |    0.85     |     0.61    |     0.61    |     0.61    |        *0*       |      *0*    |      *0*       |
- | Mrg1457          |    0.85    |    0.82     |    0.81     |     0.63    |     0.61    |     0.61    |        *0*       |      *0*    |      *0*       |
- | Mrg49507         |    0.75    |    0.69     |    0.68     |     0.57    |     0.56    |     0.56    |        *0*       |      *0*    |      *0*       |
- | Pcg64_32         |    0.56    |    0.52     |    0.49     |     0.43    |     0.44    |     0.44    |        *0*       |      *0*    |      *0*       |
- | Pcg128_64        |    0.80    |    0.74     |    0.73     |     0.67    |     0.63    |     0.63    |        *0*       |      *0*    |      *0*       |
- | Pcg1024_32       |    1.12    |    1.06     |    0.95     |     0.75    |     0.75    |     0.75    |        *0*       |      *0*    |      *0*       | 
- | Squares32        |    1.58    |    1.47     |    1.49     |     1.39    |     1.37    |     1.37    |        *0*       |      *0*    |      *0*       |
- | Squares64        |    1.97    |    1.81     |    1.84     |     1.76    |     1.67    |     1.67    |        *0*       |      *0*    |      *0*       |
- | Well512a         |    2.80    |    2.74     |    2.43     |     2.11    |     2.08    |     2.08    |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Well1024a        |    2.52    |    2.44     |    2.19     |     1.94    |     1.87    |     1.87    |        *0*       |      *4*    |      *4*       |
- | Well19937c (1)   |    3.48    |    3.44     |    3.06     |     2.67    |     2.61    |     2.61    |        *0*       |      *2*    |      *2*       |
- | Well44497b (2)   |    3.96    |    3.91     |    3.40     |     3.09    |     2.92    |     2.92    |      *n.a.*      |    *n.a.*   |     n.a.       |
- | Xoroshiro256     |    2.37    |    2.24     |    2.25     |     1.95    |     1.93    |     1.93    |        *0*       |      *0*    |      *0*       |
- | Xoroshiro512     |    2.94    |    2.81     |    2.72     |     2.40    |     2.30    |     2.30    |        *0*       |      *0*    |      *0*       |
- | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |     2.12    |     2.06    |     2.06    |        *0*       |      *0*    |      *0*       |
+ | Cwg64            |    0.79    |    0.77     |    0.84     |     0.97    |     0.76    |     0.48    |        *0*       |      *0*    |      *0*       |
+ | Cwg128_64        |    0.82    |    0.80     |    0.88     |     0.99    |     0.78    |     0.49    |        *0*       |      *0*    |      *0*       |
+ | Cwg128           |    0.89    |    0.94     |    0.96     |     1.13    |     0.83    |     0.52    |        *0*       |      *0*    |      *0*       |
+ | FastRand32       |    0.27    |    0.27     |    0.26     |     0.31    |     0.21    |     0.14    |       *11*       |    *106*    |   *too many*   |
+ | FastRand63       |    0.30    |    0.29     |    0.29     |     0.35    |     0.22    |     0.15    |        *0*       |      *5*    |      *7*       |
+ | LFib78           |    0.52    |    0.49     |    0.50     |     0.56    |     0.35    |     0.21    |        *0*       |      *0*    |      *0*       |
+ | LFib116          |    0.53    |    0.51     |    0.51     |     0.57    |     0.36    |     0.22    |        *0*       |      *0*    |      *0*       |
+ | LFib668          |    0.55    |    0.52     |    0.53     |     0.60    |     0.39    |     0.24    |        *0*       |      *0*    |      *0*       |
+ | LFib1340         |    0.55    |    0.53     |    0.55     |     0.62    |     0.41    |     0.25    |        *0*       |      *0*    |      *0*       |
+ | Melg607          |    1.30    |    1.31     |    1.26     |     1.40    |     1.15    |     0.98    |        *0*       |      *0*    |      *0*       |
+ | Melg19937        |    1.37    |    1.32     |    1.31     |     1.43    |     1.14    |     0.99    |        *0*       |      *0*    |      *0*       |
+ | Melg44497        |    1.33    |    1.35     |    1.32     |     1.42    |     1.16    |     0.99    |        *0*       |      *0*    |      *0*       |
+ | Mrg287           |    0.86    |    0.84     |    0.82     |     0.91    |     0.61    |     0.37    |        *0*       |      *0*    |      *0*       |
+ | Mrg1457          |    0.81    |    0.78     |    0.76     |     0.86    |     0.61    |     0.40    |        *0*       |      *0*    |      *0*       |
+ | Mrg49507         |    0.75    |    0.69     |    0.68     |     0.86    |     0.56    |     0.49    |        *0*       |      *0*    |      *0*       |
+ | Pcg64_32         |    0.56    |    0.52     |    0.48     |     0.56    |     0.44    |     0.40    |        *0*       |      *0*    |      *0*       |
+ | Pcg128_64        |    0.80    |    0.74     |    0.73     |     0.86    |     0.63    |     0.62    |        *0*       |      *0*    |      *0*       |
+ | Pcg1024_32       |    1.08    |    1.06     |    0.95     |     0.96    |     0.75    |     0.69    |        *0*       |      *0*    |      *0*       |
+ | Squares32        |    1.48    |    1.45     |    1.40     |     1.67    |     1.31    |     1.26    |        *0*       |      *0*    |      *0*       |
+ | Squares64        |    1.83    |    1.79     |    1.71     |     2.01    |     1.62    |     1.62    |        *0*       |      *0*    |      *0*       |
+ | Well512a         |    2.62    |    2.64     |    2.26     |     2.60    |     2.08    |     1.77    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Well1024a        |    2.28    |    2.36     |    1.98     |     2.24    |     1.87    |     1.60    |        *0*       |      *4*    |      *4*       |
+ | Well19937c (1)   |    3.23    |    3.44     |    2.84     |     3.12    |     2.61    |     2.44    |        *0*       |      *2*    |      *2*       |
+ | Well44497b (2)   |    3.66    |    3.91     |    3.18     |     3.55    |     2.92    |     2.82    |      *n.a.*      |    *n.a.*   |     n.a.       |
+ | Xoroshiro256     |    2.37    |    2.24     |    2.25     |     2.55    |     1.93    |     1.87    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro512     |    2.94    |    2.81     |    2.72     |     3.04    |     2.30    |     2.27    |        *0*       |      *0*    |      *0*       |
+ | Xoroshiro1024    |    2.78    |    2.59     |    2.41     |     3.01    |     2.06    |     2.23    |        *0*       |      *0*    |      *0*       |
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
 (2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
@@ -285,7 +285,6 @@ The Python versions used for these evaluations in their related virtual environm
 
 ## Implementation
 Current implementation of **PyRandLib** uses Python 3.x with no Cython version.  
-It has been initally tested with Python 3.8 but should run with all subversions of Python 3 since 3.6.
 
 Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to have the library running correctly. *N.B. You should no more use Python 3.10 or any of its previous versions since these are no more maintained (July 2025).*
 
@@ -297,6 +296,9 @@ Note 4: since release **2.1** of **PyRandLib** unit tests are provided in subdir
 
 Note 5: a Cython version of **PyRandLib** will be delivered in a next major release (i.e. 3.0). Up today, no date is planned for this.
 
+
+## New in Release 2.2
+Version 2.2 of **PyRandLib** delivers a Python 3.14 version of the library. Note: no new feature introduced by Python 3.14 impacts code of PyRandLib. Code for version 3.14 of Python is then the same as for Python 3.13 with very minor optimizations on code for a very few generators. Meanwhile, the implementation of Python 3.14 shows computation speed-ups from 6 % up to 48 % (see above tables).
 
 ## New in Release 2.1
 Version 2.1 of **PyRandLib** is now fully unit-tested. The code coverage is 100%. Test code is available in subdirectory `unit-tests` of every Python version directory.
