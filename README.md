@@ -32,7 +32,7 @@ SOFTWARE.
 
 
 ## Intro
-This library implements some of the best-in-class pseudo random generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper. It implements also newer pseudo random generators that have been published since then. Their exhaustive list is provided here below and is valid for version 2.0 and above (i.e. since 2025/03):
+This library implements some of the best-in-class pseudo random generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]). The reader will take benefit from reading L'Ecuyer & Simard's paper. This library implements also newer pseudo random generators that have been published since then. Their exhaustive list is provided here below and is valid for versions 2.0 and above of the library (i.e. since 2025/03):
 
 * **Collatz-Weyl Generator** (Tomasz R. Dziala, **2023**)  
  (CWG, 64 bits, 128 bits or 128/64 bits, 3 different values of periodicities, see reference [8]);
@@ -58,14 +58,14 @@ Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** 
 
 Latest version of **PyRandLib** is version **2.2**, released by October 2025.
 * It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
-* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
+* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in tables below - see section *CPU Performances*.
 * Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
 
 
 
 ### Why not Mersenne twister?
 
-The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] - is the most widely used one. The Random class of module random in Python implements this PRNG. It is also implemented in C++ and Java standard libraries for instance.
+The Mersenne twister PRNG proposed by Matsumoto and Nishimura - see [5] - is the most widely used PRNG. The Random class of module random in Python implements this PRNG. It is also implemented in C++ and Java standard libraries for instance.
 
 It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this PRNG is a little bit long to compute (up to 3 times than LCGs, 60% more than LFibs and a little bit less than MRGs, see below  at section 'Architecture overview'). Moreover, it fails four of the hardest TestU01 tests. You can still use it as your preferred PRNG but **PyRandLib** implements many other PRNGs that are either far faster or far better in terms of generated pseudo-randomness than the Mersenne twister PRNG.
 
@@ -79,7 +79,7 @@ Since release **2.0** of **PyrandLib** (Mar. 2025), the root directory of the li
 Since release **2.1** of **PyRandLib** (Jun. 2025), the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
 Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
 
-Release **2.2** (Oct. 2025) provides code for Python 3.14. Code is identical to the one provided for Python 3.13, with a very few optimizations on some generators code. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
+Release **2.2** (Oct. 2025) provides code for Python 3.14. This code is identical to the one provided for Python 3.13, with a very few optimizations on some generators implementation. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
 
 **Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
@@ -91,7 +91,7 @@ The unit tests code is available for every Python standard version (3.6, 3.9 and
 ### Install pytest and pytest-cov
 To run the unit tests by your own, you have to install first pytest and pytest-cov in your Python environment (or virtual environment, recommended). The procedure is desribed below.
 
-#### In a Virtual environment
+#### Either in a Virtual environment
 In a console, create a new virtual environment in a path of your choice on disk:
 
     > python -m venv <path to the newly created virtual environment>
@@ -113,7 +113,7 @@ Install pytest-cov:
 
     > python -m pip install pytest-cov
 
-#### In your Python environment:
+#### Or in your Python environment:
 Install pytest:
 
     > python -m pip install --upgrade pip
@@ -153,7 +153,7 @@ In [1], every known PRNG at the time of the editing has been tested according to
 * **_big crush_** is the ultimate set of difficult tests that any **good**  PRNG should definitively pass.
 
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
-We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
+We add in this table the evaluations provided by the authors of every new PRNGs that have been described and published after the publication of [1]. Some fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in other belowing tables.
 
 <table>
 <tr><th>PyRandLib class</th><th>TU01 generator name (1)</th><th>Memory Usage</th><th>Period</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th><th>time-64 bits</th><th>time-32bits</th></tr>
@@ -208,9 +208,9 @@ The evaluation script is provided at the root of **PyRandLib** repository: `test
 
 The Python versions used for these evaluations in their related virtual environment are (all 64-bits):
 * 3.9.24 (Oct. 9, 2025)
-* 3.10.19 (0ct. 9, 2025)
-* 3.11.14 (0ct. 9, 2025)
-* 3.12.12 (0ct. 9, 2025)
+* 3.10.19 (Oct. 9, 2025)
+* 3.11.14 (Oct. 9, 2025)
+* 3.12.12 (Oct. 9, 2025)
 * 3.13.8 (Oct. 7, 2025)
 * 3.14.0 (Oct. 7, 2025)
 
