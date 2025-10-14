@@ -155,8 +155,7 @@ In [1], every known PRNG at the time of the editing has been tested according to
 We give you here below a copy of the resulting table for the PRNGs that have been implemented in **PyRandLib**, as provided in [1], plus the Mersenne twister one which is not implemented in **PyRandLib**.  
 We add in this table the evaluations provided by the authors of every new PRNGs that have been described after the publication of [1]. Fields may be missing then for them. A comparison of the computation times for all implemented PRNGs in **PyRandLib** is provided in an another belowing table.
 
- <table>
-<tr></tr>
+<table>
 <tr><th>PyRandLib class</th><th>TU01 generator name (1)</th><th>Memory Usage</th><th>Period</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th><th>time-64 bits</th><th>time-32bits</th></tr>
 <tr><td>Cwg64</td><td>*CWG64*</td><td>8 x 4-bytes</td><td>>= 2^70</td><td>0</td><td>0</td><td>0</td><td>n.a.</td><td>n.a.</td></tr>
 <tr><td>Cwg128_64</td><td>*CWG128-64*</td><td>10 x 4-bytes</td><td>>= 2^71</td><td>0</td><td>0</td><td>0</td><td>n.a.</td><td>n.a.</td></tr>
@@ -186,7 +185,6 @@ We add in this table the evaluations provided by the authors of every new PRNGs 
 <tr><td>Xoroshiro256</td><td>*xiroshiro256***</td><td>16 x 4-bytes</td><td>2^256</td><td>0</td><td>0</td><td>0</td><td>0.84</td><td>n.a.</td></tr>
 <tr><td>Xoroshiro512</td><td>*xiroshiro512***</td><td>32 x 4-bytes</td><td>2^512</td><td>0</td><td>0</td><td>0</td><td>0.99</td><td>n.a.</td></tr>
 <tr><td>Xoroshiro1024</td><td>*xiroshiro1024***</td><td>64 x 4-bytes</td><td>2^1,024</td><td>0</td><td>0</td><td>0</td><td>1.17</td><td>n.a.</td></tr>
-<tr></tr>
 </table>
 
 (1) *or the generator original name in the related more recent paper*  
@@ -246,7 +244,6 @@ The Python versions used for these evaluations in their related virtual environm
 <tr><td>Xoroshiro256</td><td>1.39</td><td>1.38</td><td>1.31</td><td>1.47</td><td>1.06</td><td>0.98</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Xoroshiro512</td><td>1.70</td><td>1.67</td><td>1.60</td><td>1.77</td><td>1.37</td><td>1.17</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Xoroshiro1024</td><td>1.63</td><td>1.63</td><td>1.52</td><td>1.72</td><td>1.26</td><td>1.15</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr></tr>
 </table>
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
@@ -283,7 +280,6 @@ The Python versions used for these evaluations in their related virtual environm
 <tr><td>Xoroshiro256</td><td>2.37</td><td>2.24</td><td>2.25</td><td>2.55</td><td>1.93</td><td>1.87</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Xoroshiro512</td><td>2.94</td><td>2.81</td><td>2.72</td><td>3.04</td><td>2.30</td><td>2.27</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>Xoroshiro1024</td><td>2.78</td><td>2.59</td><td>2.41</td><td>3.01</td><td>2.06</td><td>2.23</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr></tr>
 </table>
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
