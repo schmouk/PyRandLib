@@ -32,18 +32,8 @@ SOFTWARE.
 
 
 ## Intro
-This library implements some of the best-in-class pseudo  random  generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper.
+This library implements some of the best-in-class pseudo random generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]. The reader will take benefit reading L'Ecuyer & Simard's paper. It implements also newer pseudo random generators that have been published since then. Their exhaustive list is provided here below and is valid for version 2.0 and above (i.e. since 2025/03):
 
-Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
-
-Latest version of **PyRandLib** is version **2.1**, released by July 2025.
-* It provides additional implementations of recent pseudo-random generators with very good randomness characteristics.
-* It provides also implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12 and 3.13.
-* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
-* Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
-
-
-Exhaustive list of currently implemented algorithms (since PyRandLib 2.0, 2025/03):
 * **Collatz-Weyl Generator** (Tomasz R. Dziala, **2023**)  
  (CWG, 64 bits, 128 bits or 128/64 bits, 3 different values of periodicities, see reference [8]);
 * **Linear Congruential Generator** (Georges Marsaglia, **1972**, F.B. Brown and Y. Nagaya, **2002**)  
@@ -64,6 +54,14 @@ Exhaustive list of currently implemented algorithms (since PyRandLib 2.0, 2025/0
  (Xoroshiro, 64 bits, 4 different values of periodicities, see reference [10]).
 
 
+Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
+
+Latest version of **PyRandLib** is version **2.2**, released by October 2025.
+* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
+* Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in a table below - see section *CPU Performances*.
+* Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
+
+
 
 ### Why not Mersenne twister?
 
@@ -76,12 +74,14 @@ It offers a very good period (2^19937, i.e. about 4.3e6001). Unfortunately, this
 ## Installation
 Currently, the only way to install **PyRandLib** is to download the `.zip` or `.tar.gz` archive, then to directly put sub-directory `PyRandLib\` from archive into directory `Lib\site-packages\` of your Python environment. See https://schmouk.github.io/PyRandLib/ for an easy access to downloadable versions or click on tab **releases** on the home page of this GitHub repository.
 
-Since release **2.0** of **PyrandLib**, the root directory of the library has been splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
+Since release **2.0** of **PyrandLib** (Mar. 2025), the root directory of the library has been splitted into directories dedicated each to a different version of Python (3.6, 3.9, 3.10, etc.) Directory `PyRandLib\` is now a sub-directory of each of these directories, with code optimized for the related Python version. Just copy into your dev environment the `PyRandLib\` directory from the version of Python of your choice.
 
-Since release **2.1** of **PyRandLib**, the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
+Since release **2.1** of **PyRandLib** (Jun. 2025), the whole code has been validated with unit tests (via *pytest* and *pytest-cov*). A few bugs have been fixed (*protected method `Pcg1024_32._externalstep()` implementation, or a typo in a shifting constant in Well19937c`.next()` for instance*). The code coverage rate is 100%. Pytest coverage output results are provided in files `coverage-res.txt`.  
 Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
 
-**Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is to come (no date yet, expected with release **3.0** of **PyRandLib**).
+Release **2.2** (Oct. 2025) provides code for Python 3.14. Code is identical to the one provided for Python 3.13, with a very few optimizations on some generators code. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
+
+**Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
 
 
@@ -298,7 +298,8 @@ Note 5: a Cython version of **PyRandLib** will be delivered in a next major rele
 
 
 ## New in Release 2.2
-Version 2.2 of **PyRandLib** delivers a Python 3.14 version of the library. Note: no new feature introduced by Python 3.14 impacts code of PyRandLib. Code for version 3.14 of Python is then the same as for Python 3.13 with very minor optimizations on code for a very few generators. Meanwhile, the implementation of Python 3.14 shows computation speed-ups from 6 % up to 48 % (see above tables).
+Version 2.2 of **PyRandLib** delivers a Python 3.14 version of the library. Note: no new feature introduced by Python 3.14 impacts code of PyRandLib. Code for version 3.14 of Python is then the same as for Python 3.13 with very minor optimizations on code for a very few generators. Meanwhile, the implementation of Python 3.14 shows computation speed-ups from 6 % up to 48 % for the Intel&reg; Core&trade; i7 CPU (see related above table).
+
 
 ## New in Release 2.1
 Version 2.1 of **PyRandLib** is now fully unit-tested. The code coverage is 100%. Test code is available in subdirectory `unit-tests` of every Python version directory.
