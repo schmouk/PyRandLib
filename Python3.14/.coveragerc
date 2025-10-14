@@ -1,7 +1,0 @@
-[run]
-omit = unit_tests/* \
-    test*.py    
-
-[report]
-fail_under = 100
-precision = 0
