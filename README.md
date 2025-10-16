@@ -1,7 +1,7 @@
 <img src="lib-banner.jpg" alt="library banner">
 
-# PyRandLib  [![license](http://img.shields.io/github/license/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=lightblue)](https://github.com/schmouk/pyrandlib/license)  [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)  [![code_coverage](https://img.shields.io/badge/code_coverage-100%25-success?style=plastic&labelColor=blueviolet)]()  [![tests](https://img.shields.io/badge/tests-passed-success?style=plastic&labelColor=blueviolet)]()
-Many best in class pseudo random generators grouped into one simple library.
+[![license](http://img.shields.io/github/license/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=lightblue)](https://github.com/schmouk/pyrandlib/license)  [![Latest release](http://img.shields.io/github/release/schmouk/pyrandlib.svg?style=plastic&labelColor=blueviolet&color=success)](https://github.com/schmouk/pyrandlib/releases)  [![code_coverage](https://img.shields.io/badge/code_coverage-100%25-success?style=plastic&labelColor=blueviolet)]()  [![tests](https://img.shields.io/badge/tests-passed-success?style=plastic&labelColor=blueviolet)]()
+
 
 
 
