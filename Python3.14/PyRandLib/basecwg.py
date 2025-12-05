@@ -49,15 +49,15 @@ class BaseCWG( BaseRandom ):
     implemented  version.  See  implementation  classes  to  get  their formal 
     description.
     
-    See Cwg64 for a minimum  2^70  (i.e. about 1.18e+21)  period  CW-Generator 
+    See Cwg64 for a minimum  2^64  (i.e. about 1.84e+19)  period  CW-Generator 
     with low computation time, medium period,  64- bits output values and very
     good randomness characteristics.
 
-    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period CW-Generator 
+    See Cwg128_64 for a minimum 2^64 (i.e. about 1.84e+19) period CW-Generator 
     with very low computation time,  medium period,  64-bits output values and
     very good randomness characteristics.
     
-    See Cwg128 for a minimum 2^135 (i.e. about 4.36e+40)  period  CW-generator
+    See Cwg128 for a minimum 2^128 (i.e. about 6.81e+38)  period  CW-generator
     with very low computation time, medium period,  64- bits output values and 
     very good randomness characteristics.
 
@@ -73,9 +73,9 @@ class BaseCWG( BaseRandom ):
 
  | PyRandLib class | [8] generator name | Memory Usage  | Period   | time-32bits | time-64 bits | SmallCrush fails | Crush fails | BigCrush fails |
  | --------------- | ------------------ | ------------- | -------- | ----------- | ------------ | ---------------- | ----------- | -------------- |
- | Cwg64           | CWG64              |   8 x 4-bytes | >= 2^70  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^71  |    n.a.     |     n.a.     |          0       |       0     |       0        |
- | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^135 |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg64           | CWG64              |   8 x 4-bytes | >= 2^64  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128_64       | CWG128_64          |  10 x 4-bytes | >= 2^64  |    n.a.     |     n.a.     |          0       |       0     |       0        |
+ | Cwg128          | CWG128             |  16 x 4-bytes | >= 2^128 |    n.a.     |     n.a.     |          0       |       0     |       0        |
 
     * _small crush_ is a small set of simple tests that quickly tests some  of
     the expected characteristics for a pretty good PRNG;
