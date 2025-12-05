@@ -36,7 +36,7 @@ SOFTWARE.
 ## Intro
 This library implements some of the best-in-class pseudo random generators as evaluated by Pierre L'Ecuyer and Richard Simard in their famous paper "TestU01:  A C library for empirical testing of random  number generators" (ACM Trans. Math. Softw. Vol. 33 N.4, August 2007 -  see reference [1]). The reader will take benefit from reading L'Ecuyer & Simard's paper. This library implements also newer pseudo random generators that have been published since then. Their exhaustive list is provided here below and is valid for versions 2.0 and above of the library (i.e. since 2025/03):
 
-* **Collatz-Weyl Generator** (Tomasz R. Dziala, **2023**)  
+* **Collatz-Weyl Generator** (Tomasz R. Działa, **2023**)  
  (CWG, 64 bits, 128 bits or 128/64 bits, 3 different values of periodicities, see reference [8]);
 * **Linear Congruential Generator** (Georges Marsaglia, **1972**, F.B. Brown and Y. Nagaya, **2002**)  
  (LCG, or FastRand, 32 bits or 63 bits, 2 different values of periodicities, see references [12] and [13] and [1]);
@@ -983,7 +983,7 @@ Finally: Harvey Mudd College Computer Science Department Technical Report, HMC-C
 see also [https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf](https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf).
 
 
-**[8]** Tomasz R. Dziala. 2023.  
+**[8]** Tomasz R. Działa. 2023.  
 *Collatz-Weyl Generators: High Quality and High Throughput Parameterized Pseudorandom Number Generators*.  
 Published at arXiv, December 2023 (11 pages),  
 Last reference: arXiv:2312.17043v4 [cs.CE], 2 Dec 2024, see [https://arxiv.org/abs/2312.17043](https://arxiv.org/abs/2312.17043)  
