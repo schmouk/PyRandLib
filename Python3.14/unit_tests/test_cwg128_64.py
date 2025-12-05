@@ -147,7 +147,13 @@ class TestCwg128_64:
         assert cwg._s == 0x157a3807a48faa9d
         assert cwg._state == 0xd573529b34a1d0932f90b72e996dccbe
 
-        for v in [0x74c316a37df311ec, 0xef317b6dbb8bb2c0, 0x1ede53528e8f1440, 0xadc9d06765afa5ba, 0x6afa7b40ecc40951]:
+        for v in [
+            0x5cd4_1015_afdd_c2d2_74c3_16a3_7df3_11ec,
+            0x02db_2872_975a_0dc2_ef31_7b6d_bb8b_b2c0,
+            0xe9ae_0772_75c3_945f_1ede_5352_8e8f_1440,
+            0xfb7e_4d17_2841_1ef0_adc9_d067_65af_a5ba,
+            0x0293_03b5_b41b_2417_d6af_a7b4_0ecc_40951
+        ]:
             assert cwg.next() == v
 
         assert cwg._a == 0x602d6cf9c72ac16b
