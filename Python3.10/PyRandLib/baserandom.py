@@ -34,13 +34,13 @@ class BaseRandom( Random ):
     
     Copyright (c) 2016-2025 Philippe Schmouker
 
-    See Cwg64 for a minimum 2^70 (i.e. about 1.18e+21) period  Collatz-Weyl  Generator 
+    See Cwg64 for a minimum 2^64 (i.e. about 1.84e+19) period  Collatz-Weyl  Generator 
     with  low  computation time,  medium period,  64- bits output values and very good 
     randomness characteristics.
-    See Cwg128_64 for a minimum 2^71 (i.e. about 2.36e+21) period C-W  Generator  with
+    See Cwg128_64 for a minimum 2^64 (i.e. about 1.84e+19) period C-W  Generator  with
     with  very  low  computation time,  medium period,  64-bits output values and very 
     good randomness characteristics.
-    See Cwg128 for a minimum 2^135  (i.e. about 4.36e+40)  period  C-W generator  with 
+    See Cwg128 for a minimum 2^128  (i.e. about 6.81e+38)  period  C-W generator  with 
     very  low  computation time,  medium period,  64- bits output values and very good 
     randomness characteristics.
 
