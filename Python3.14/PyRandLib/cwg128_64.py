@@ -121,7 +121,7 @@ class Cwg128_64( BaseCWG ):
         self._weyl = (self._weyl + self._s) & 0xffff_ffff_ffff_ffff
         self._state = (((self._state | 1) * (self._a >> 1)) ^ self._weyl) & 0xffff_ffff_ffff_ffff_ffff_ffff_ffff_ffff
         # returns the xored-shifted output value
-        return (self._state ^ (self._a >> 48)) & 0xffff_ffff_ffff_ffff
+        return self._state ^ (self._a >> 48)
 
 
     #-------------------------------------------------------------------------
