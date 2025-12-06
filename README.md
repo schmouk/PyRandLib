@@ -305,6 +305,10 @@ Note 5: a Cython version of **PyRandLib** will be delivered in a next major rele
 ## New in Release 2.2
 Version 2.2 of **PyRandLib** delivers a Python 3.14 version of the library. Note: no new feature introduced by Python 3.14 impacts the code of PyRandLib which is then the same for version 3.14 as for Python 3.13 - with very minor optimizations on code for a very few generators. Meanwhile, the implementation of Python 3.14 shows computation speed-ups from 6 % up to 48 % for the Intel&reg; Core&trade; i7 CPU (see related above table).
 
+Notice: Thanks to great comments from Tomasz Działa, the author of the **CWG** algorithm (see ref. [8] - *Collatz-Weyl Generators: High Quality and High Throughput Parameterized Pseudorandom Number Generators. Published at arXiv, December 2023*):
+* an implementation error in `Cwg128_64.next()` method has been fixed, and
+* the values of the minimal periods of the three implemented versions of the algorithm have been fixed also.
+
 
 ## New in Release 2.1
 Version 2.1 of **PyRandLib** is now fully unit-tested. The code coverage is 100%. Test code is available in subdirectory `unit-tests` of every Python version directory.
