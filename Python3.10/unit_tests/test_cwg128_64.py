@@ -33,8 +33,8 @@ class TestCwg128_64:
     
     #-------------------------------------------------------------------------
     def test_class(self):
-        assert Cwg128_64._NORMALIZE == 1.0 / (1 << 64)
-        assert Cwg128_64._OUT_BITS == 64
+        assert Cwg128_64._NORMALIZE == 1.0 / (1 << 128)
+        assert Cwg128_64._OUT_BITS == 128
     
     #-------------------------------------------------------------------------
     def test_init_empty(self):
@@ -153,7 +153,7 @@ class TestCwg128_64:
             0x02db_2872_975a_0dc2_ef31_7b6d_bb8b_b2c0,
             0xe9ae_0772_75c3_945f_1ede_5352_8e8f_1440,
             0xfb7e_4d17_2841_1ef0_adc9_d067_65af_a5ba,
-            0x0293_03b5_b41b_2417_d6af_a7b4_0ecc_40951
+            0x2930_3b5b_41b2_417d_6afa_7b40_ecc4_0951
         ]:
             assert cwg.next() == v
 
