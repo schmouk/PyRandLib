@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
+Copyright (c) 2016-2026 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -33,7 +33,7 @@ class LFib116( BaseLFib64 ):
 
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2025 Philippe Schmouker
+    Copyright (c) 2016-2026 Philippe Schmouker
 
     Lagged Fibonacci generators LFib( m, r, k, op) use the recurrence
     

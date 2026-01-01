@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
+Copyright (c) 2025-2026 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -43,7 +43,7 @@ class Xoroshiro256( BaseXoroshiro ):
 
     This module is part of library PyRandLib.
     
-    Copyright (c) 2025 Philippe Schmouker
+    Copyright (c) 2025-2026 Philippe Schmouker
 
     The base xoroshiro linear transformation  is  obtained  combining  a  rotation,  a 
     shift,  and  again  a  rotation.  An  additional  scrambling  method  based on two 
