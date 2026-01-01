@@ -1,5 +1,5 @@
 """
-Copyright (c) 2016-2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
+Copyright (c) 2016-2026 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -33,7 +33,7 @@ class BaseRandom( Random ):
     
     This module is part of library PyRandLib.
     
-    Copyright (c) 2016-2025 Philippe Schmouker
+    Copyright (c) 2016-2026 Philippe Schmouker
 
     See Cwg64 for a minimum 2^64 (i.e. about 1.84e+19) period  Collatz-Weyl  Generator 
     with  low  computation time,  medium period,  64- bits output values and very good 

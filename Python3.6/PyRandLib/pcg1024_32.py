@@ -1,5 +1,5 @@
 """
-Copyright (c) 2025 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
+Copyright (c) 2025-2026 Philippe Schmouker, ph (dot) schmouker (at) gmail.com
 
 Permission is hereby granted,  free of charge,  to any person obtaining a copy
 of this software and associated documentation files (the "Software"),  to deal
@@ -38,7 +38,7 @@ class Pcg1024_32( Pcg64_32 ):
 
     This module is part of library PyRandLib.
     
-    Copyright (c) 2025 Philippe Schmouker
+    Copyright (c) 2025-2026 Philippe Schmouker
 
     As LCGs do, PCG models evaluate pseudo-random numbers  suites  x(i)  as  a 
     simple mathematical function of x(i-1):
