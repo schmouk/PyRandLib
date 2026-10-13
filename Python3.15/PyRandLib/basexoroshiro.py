@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .listindexstate   import ListIndexState
-from .annotation_types import Numerical, StatesList
-from .splitmix         import SplitMix64
+from .listindexstate        import ListIndexState
+lazy from .annotation_types import Numerical, StatesList
+from .splitmix              import SplitMix64
 
 
 #=============================================================================

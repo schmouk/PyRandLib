@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .basemrg          import BaseMRG
-from .annotation_types import SeedStateType
-from .splitmix         import SplitMix32
+from .basemrg               import BaseMRG
+lazy from .annotation_types import SeedStateType
+from .splitmix              import SplitMix32
 
 
 #=============================================================================

@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .basecwg          import BaseCWG
-from .annotation_types import Numerical, SeedStateType, StateType
-from .splitmix         import SplitMix64
+from .basecwg               import BaseCWG
+lazy from .annotation_types import Numerical, SeedStateType, StateType
+from .splitmix              import SplitMix64
 
 
 #=============================================================================

@@ -23,8 +23,8 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .baserandom       import BaseRandom
-from .annotation_types import Numerical, SeedStateType, StateType
+from .baserandom            import BaseRandom
+lazy from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================

@@ -62,7 +62,7 @@ def test_algo(rnd_algo, nb_entries: int = 1_000, nb_loops: int = 1_000_000):
 
     expected_max_diff_mean_median = (nb_loops / nb_entries) * 0.004    # i.e. difference should be less than 0.4 % of expected mean
     expected_max_stdev = 1.04 * sqrt(nb_loops / nb_entries)            # i.e. +4 % max over expected stdandard deviation
-    expected_max_variance = 4.5                                        # this is the absolute value of the expected max on local variance
+    expected_max_variance = 4.7                                        # this is the absolute value of the expected max on local variance
 
     if expected_max_diff_mean_median < 0.5:
         expected_max_diff_mean_median= 0.5

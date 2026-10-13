@@ -21,8 +21,8 @@ SOFTWARE.
 """
 
 #=============================================================================
-from .listindexstate   import ListIndexState
-from .annotation_types import SeedStateType
+from .listindexstate        import ListIndexState
+lazy from .annotation_types import SeedStateType
 
 
 #=============================================================================

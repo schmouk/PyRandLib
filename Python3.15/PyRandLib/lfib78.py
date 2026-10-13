@@ -23,8 +23,8 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .baselfib64       import BaseLFib64
-from .annotation_types import SeedStateType
+from .baselfib64            import BaseLFib64
+lazy from .annotation_types import SeedStateType
 
 
 #=============================================================================

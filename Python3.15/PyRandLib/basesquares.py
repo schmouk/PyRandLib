@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .baserandom       import BaseRandom
-from .annotation_types import SeedStateType, Numerical, StatesList
-from .splitmix         import SplitMix32
+from .baserandom            import BaseRandom
+lazy from .annotation_types import SeedStateType, Numerical, StatesList
+from .splitmix              import SplitMix32
 
 
 #=============================================================================

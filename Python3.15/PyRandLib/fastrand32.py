@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .baselcg          import BaseLCG
-from .annotation_types import Numerical
-from .splitmix         import SplitMix32
+from .baselcg               import BaseLCG
+lazy from .annotation_types import Numerical
+from .splitmix              import SplitMix32
 
 
 #=============================================================================

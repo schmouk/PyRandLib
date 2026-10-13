@@ -23,8 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .basewell         import BaseWELL
-from .annotation_types import SeedStateType
+lazy from .annotation_types import SeedStateType
+
+from .basewell import BaseWELL
 
 
 #=============================================================================

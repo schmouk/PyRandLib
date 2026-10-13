@@ -24,7 +24,8 @@ SOFTWARE.
 from typing import override
 
 from .basemelg import BaseMELG
-from .annotation_types import SeedStateType
+
+lazy from .annotation_types import SeedStateType
 
 
 #=============================================================================

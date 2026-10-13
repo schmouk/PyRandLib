@@ -24,7 +24,7 @@ SOFTWARE.
 from random import Random
 from typing import override
 
-from .annotation_types import Numerical, SeedStateType, StateType
+lazy from .annotation_types import Numerical, SeedStateType, StateType
 
 
 #=============================================================================

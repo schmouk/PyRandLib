@@ -24,7 +24,7 @@ SOFTWARE.
 import time
 from typing import override
 
-from .annotation_types import Numerical
+lazy from .annotation_types import Numerical
 
 
 #=============================================================================

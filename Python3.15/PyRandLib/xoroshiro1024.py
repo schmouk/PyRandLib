@@ -23,9 +23,9 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .baserandom       import BaseRandom
-from .basexoroshiro    import BaseXoroshiro
-from .annotation_types import Numerical, StatesList
+from .baserandom            import BaseRandom
+from .basexoroshiro         import BaseXoroshiro
+lazy from .annotation_types import Numerical, StatesList
 
 
 #=============================================================================

@@ -23,9 +23,10 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .annotation_types import Numerical, SeedStateType, StateType
-from .pcg64_32         import Pcg64_32
-from .splitmix         import SplitMix32
+lazy from .annotation_types import Numerical, SeedStateType, StateType
+
+from .pcg64_32 import Pcg64_32
+from .splitmix import SplitMix32
 
 
 #=============================================================================

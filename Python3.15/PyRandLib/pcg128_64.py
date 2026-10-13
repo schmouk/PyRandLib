@@ -23,9 +23,10 @@ SOFTWARE.
 #=============================================================================
 from typing import Final, override
 
-from .basepcg          import BasePCG
-from .annotation_types import Numerical
-from .splitmix         import SplitMix64
+lazy from .annotation_types import Numerical
+
+from .basepcg  import BasePCG
+from .splitmix import SplitMix64
 
 
 #=============================================================================

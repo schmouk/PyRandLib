@@ -23,8 +23,8 @@ SOFTWARE.
 #=============================================================================
 from typing import override
 
-from .basesquares      import BaseSquares
-from .annotation_types import SeedStateType, StatesList
+from .basesquares           import BaseSquares
+lazy from .annotation_types import SeedStateType, StatesList
 
 
 #=============================================================================
