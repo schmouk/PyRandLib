@@ -272,7 +272,7 @@ Note 5: a Cython version of **PyRandLib** will be delivered in a next major rele
 
 
 ## New in Release 2.3
-Version 2.3 of **PyRandLib** delivers a Python 3.15 version of the mibrary. It mainly uses the new `lazy` keyword and the newly defined  `typing.disjoint_base` decorator.
+Version 2.3 of **PyRandLib** delivers a Python 3.15 version of the library. It mainly uses the new `lazy` keyword and the newly defined  `typing.disjoint_base` decorator.
 
 CPU preformance measurements on the different PRNGs implementations finally show a speed-up of x2.3 to x3.0 when compared with Python 3.14 performances, with a mean of x2.5. We then strongly encourage the use of Python 3.15 (which has been delivered by Oct. 9, 2026).
 
