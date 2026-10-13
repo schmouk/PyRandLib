@@ -83,7 +83,7 @@ Release **2.0** of **PyRandLib** is nevertheless still available **but it should
 
 Release **2.2** (Oct. 2025) provides code for Python 3.14. This code is identical to the one provided for Python 3.13, with a very few optimizations on some generators implementation. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
 
-Release **2.3** (Oct. 2026) provides code for Python 3.15. The newly defined keyword `lazy` and the newly defined decorator `typing.disjoint_base` are used. CPU performances measurements show speed-ups from x2.3 to x3.0 compared with the Python 3.14 implementations, with a mean of x2.5.
+Release **2.3** (Oct. 2026) provides code for Python 3.15. The newly defined keyword `lazy` and the newly defined decorator `typing.disjoint_base` are used now. CPU performances measurements show speed-ups from x2.3 to x3.0 compared with the Python 3.14 implementations, with a mean of x2.5.
 
 **Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
@@ -229,7 +229,7 @@ The Python versions used for these evaluations in their related virtual environm
 <tr><td>Cwg128</td><td>0.89</td><td>0.94</td><td>0.96</td><td>1.13</td><td>0.83</td><td>0.52</td><td>0.22</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>FastRand32</td><td>0.27</td><td>0.27</td><td>0.26</td><td>0.31</td><td>0.21</td><td>0.14</td><td>0.06</td><td>*11*</td><td>*106*</td><td>*too many*</td></tr>
 <tr><td>FastRand63</td><td>0.30</td><td>0.29</td><td>0.29</td><td>0.35</td><td>0.22</td><td>0.15</td><td>0.06</td><td>*0*</td><td>*5*</td><td>*7*</td></tr>
-<tr><td>LFib78</td><td>0.52</td><td>0.49</td><td>0.50</td><td>0.56</td><td>0.35</td><td>0.21</td><td>0.08</td><td>*0*</td><td>0.08</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>LFib78</td><td>0.52</td><td>0.49</td><td>0.50</td><td>0.56</td><td>0.35</td><td>0.21</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>LFib116</td><td>0.53</td><td>0.51</td><td>0.51</td><td>0.57</td><td>0.36</td><td>0.22</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>LFib668</td><td>0.55</td><td>0.52</td><td>0.53</td><td>0.60</td><td>0.39</td><td>0.24</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 <tr><td>LFib1340</td><td>0.55</td><td>0.53</td><td>0.55</td><td>0.62</td><td>0.41</td><td>0.25</td><td>0.09</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
