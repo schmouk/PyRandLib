@@ -83,6 +83,8 @@ Release **2.0** of **PyRandLib** is nevertheless still available **but it should
 
 Release **2.2** (Oct. 2025) provides code for Python 3.14. This code is identical to the one provided for Python 3.13, with a very few optimizations on some generators implementation. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
 
+Release **2.3** (Oct. 2026) provides code for Python 3.15. The newly defined keyword `lazy` and the newly defined decorator `typing.disjoint_base` are used. CPU performances measurements show speed-ups from x2.3 to x3.0 compared with the Python 3.14 implementations, with a mean of x2.5.
+
 **Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
 
