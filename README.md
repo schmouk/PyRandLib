@@ -58,8 +58,8 @@ This library implements some of the best-in-class pseudo random generators as ev
 
 Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
 
-Latest version of **PyRandLib** is version **2.2**, released by October 2025.
-* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
+Latest version of **PyRandLib** is version **2.3**, released by October 2026.
+* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13, 3.14 and 3.15.
 * Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in tables below - see section *CPU Performances*.
 * Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
 
