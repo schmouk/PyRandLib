@@ -58,8 +58,8 @@ This library implements some of the best-in-class pseudo random generators as ev
 
 Each of the Pseudo Random Numbers Generator (PRNG) implemented in **PyRandLib** is self documented. Names of classes directly refer to the type of PRNG they implement augmented with some number characterizing their periodicity. All of their randomness characteristics are explained in every related module.
 
-Latest version of **PyRandLib** is version **2.2**, released by October 2025.
-* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14.
+Latest version of **PyRandLib** is version **2.3**, released by October 2026.
+* It provides implementations dedicated to different versions of Python: 3.6 (the original version of the library), 3.9, 3.10, 3.11, 3.12, 3.13, 3.14 and 3.15.
 * Time performances of every PRNG and for each version of Python (starting at 3.9) have been evaluated and are provided in tables below - see section *CPU Performances*.
 * Furthermore, starting from release 2.1 **PyRandLib** is **fully validated**. PyTest and PyTest-cov are now used to unit-test the code with a full 100% code coverage.
 
@@ -82,6 +82,8 @@ Since release **2.1** of **PyRandLib** (Jun. 2025), the whole code has been vali
 Release **2.0** of **PyRandLib** is nevertheless still available **but it should no more be used**.
 
 Release **2.2** (Oct. 2025) provides code for Python 3.14. This code is identical to the one provided for Python 3.13, with a very few optimizations on some generators implementation. Notice: the CPU performance tests show that Python 3.14 runs faster than Python 3.13 on same PyRandLib code.
+
+Release **2.3** (Oct. 2026) provides code for Python 3.15. The newly defined keyword `lazy` and the newly defined decorator `typing.disjoint_base` are used now. CPU performances measurements show speed-ups from x2.3 to x3.0 compared with the Python 3.14 implementations, with a mean of x2.5.
 
 **Notice**: distribution version to be installed via pip or easy-install in cmd tool or in console is still to come (no date yet, expected with release **3.0** of **PyRandLib**).
 
@@ -201,10 +203,11 @@ The above table provides times related to the C implementation of the specified 
 We provide in the table below the evaluation of times spent in calling the `__call__()` method for all PRNGs implemented in library **PyRandLib**. Then, the measured elapsed time includes the calling and returning Python mechanisms and not only the computation time of the sole algorithm code. This is the duration of interest to you since this is the main use of the library you will have. It only helps comparing the performances between the implemented PRNGs and between the Python different versions.
 
 Time unit is microsecond.  
-* First table  
-Tests have been run on an Intel&reg; Core&trade; i7-150U CPU @ 1.80 GHz, 10 cores, 64-bits, with 16 GB RAM and over Microsoft Windows 11 ed. Family (build 26100.4061, 18 Apr. 2025).  
-* Second table  
-Tests have been run on an Intel&reg; Core&trade; i5-1035G1 CPU @ 1.00 GHz, 4 cores, 8 logical processors, 64-bits, with 8 GB RAM and over Microsoft Windows 11 ed. Family.  
+
+Tests have been run on an Intel&reg; Core&trade; i5-1035G1 CPU @ 1.00 GHz, 4 cores, 8 logical processors, 64-bits, with 8 GB RAM and over Microsoft Windows 11 ed. Family.
+
+Notice: up to release 2.2.x of **PyRandLib**, CPU perfromances were also been measured on an Intel&reg; Core&trade; i7-150U CPU @ 1.80 GHz, 10 cores, 64-bits, with 16 GB RAM and over Microsoft Windows 11 ed. Family (build 26100.4061, 18 Apr. 2025). You can get access to them in former releases. These measurements are no more provided since release 2.3.0 of library **PyRandLib**. 
+ 
 
 The evaluation script is provided at the root of **PyRandLib** repository: `testCPUPerfs.py`.
 
@@ -215,73 +218,39 @@ The Python versions used for these evaluations in their related virtual environm
 * 3.12.12 (Oct. 9, 2025)
 * 3.13.8 (Oct. 7, 2025)
 * 3.14.0 (Oct. 7, 2025)
-
-**PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i7-150U** CPU @ 1.80 GHz:
-<table>
-<tr><th>PyRandLib class</th><th>Python 3.9</th><th>Python 3.10</th><th>Python 3.11</th><th>Python 3.12</th><th>Python 3.13</th><th>Python 3.14</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th></tr>
-<tr><td>Cwg64</td><td>0.45</td><td>0.44</td><td>0.49</td><td>0.56</td><td>0.37</td><td>0.24</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Cwg128_64</td><td>0.47</td><td>0.46</td><td>0.50</td><td>0.59</td><td>0.38</td><td>0.26</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Cwg128</td><td>0.52</td><td>0.54</td><td>0.54</td><td>0.64</td><td>0.41</td><td>0.26</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>FastRand32</td><td>0.15</td><td>0.16</td><td>0.14</td><td>0.17</td><td>0.11</td><td>0.07</td><td>*11*</td><td>*106*</td><td>*too many*</td></tr>
-<tr><td>FastRand63</td><td>0.16</td><td>0.17</td><td>0.16</td><td>0.18</td><td>0.11</td><td>0.08</td><td>*0*</td><td>*5*</td><td>*7*</td></tr>
-<tr><td>LFib78</td><td>0.28</td><td>0.29</td><td>0.27</td><td>0.32</td><td>0.20</td><td>0.11</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib116</td><td>0.29</td><td>0.29</td><td>0.28</td><td>0.32</td><td>0.21</td><td>0.11</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib668</td><td>0.30</td><td>0.30</td><td>0.29</td><td>0.34</td><td>0.22</td><td>0.12</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib1340</td><td>0.31</td><td>0.31</td><td>0.30</td><td>0.35</td><td>0.22</td><td>0.13</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg607</td><td>0.73</td><td>0.74</td><td>0.73</td><td>0.79</td><td>0.61</td><td>0.50</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg19937</td><td>0.76</td><td>0.74</td><td>0.76</td><td>0.82</td><td>0.60</td><td>0.51</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg44497</td><td>0.75</td><td>0.76</td><td>0.77</td><td>0.82</td><td>0.62</td><td>0.52</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg287</td><td>0.46</td><td>0.48</td><td>0.44</td><td>0.51</td><td>0.34</td><td>0.21</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg1457</td><td>0.43</td><td>0.44</td><td>0.41</td><td>0.48</td><td>0.32</td><td>0.21</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg49507</td><td>0.44</td><td>0.45</td><td>0.42</td><td>0.48</td><td>0.34</td><td>0.24</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg64_32</td><td>0.30</td><td>0.31</td><td>0.28</td><td>0.32</td><td>0.22</td><td>0.19</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg128_64</td><td>0.45</td><td>0.46</td><td>0.44</td><td>0.49</td><td>0.34</td><td>0.30</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg1024_32</td><td>0.58</td><td>0.59</td><td>0.54</td><td>0.55</td><td>0.39</td><td>0.33</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Squares32</td><td>0.83</td><td>0.83</td><td>0.82</td><td>0.92</td><td>0.67</td><td>0.63</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Squares64</td><td>1.02</td><td>1.01</td><td>1.01</td><td>1.14</td><td>0.86</td><td>0.80</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Well512a</td><td>1.37</td><td>1.44</td><td>1.27</td><td>1.42</td><td>1.10</td><td>0.88</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
-<tr><td>Well1024a</td><td>1.27</td><td>1.31</td><td>1.17</td><td>1.29</td><td>1.00</td><td>0.83</td><td>*0*</td><td>*4*</td><td>*4*</td></tr>
-<tr><td>Well19937c (1)</td><td>1.68</td><td>1.75</td><td>1.58</td><td>1.76</td><td>1.38</td><td>1.26</td><td>*0*</td><td>*2*</td><td>*2*</td></tr>
-<tr><td>Well44497b (2)</td><td>1.91</td><td>1.99</td><td>1.80</td><td>2.02</td><td>1.63</td><td>1.43</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
-<tr><td>Xoroshiro256</td><td>1.39</td><td>1.38</td><td>1.31</td><td>1.47</td><td>1.06</td><td>0.98</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Xoroshiro512</td><td>1.70</td><td>1.67</td><td>1.60</td><td>1.77</td><td>1.37</td><td>1.17</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Xoroshiro1024</td><td>1.63</td><td>1.63</td><td>1.52</td><td>1.72</td><td>1.26</td><td>1.15</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-</table>
-
-(1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
-(2) The Well44497b generator provided with library PyRandLib implements the Well44497a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.
+* 3.15.0 (Oct. 9, 2026)
 
 
 **PyRandLib** time-64 bits table, Intel&reg; Core&trade; **i5-1035G1** CPU @ 1.00 GHz:
 <table>
-<tr><th>PyRandLib class</th><th>Python 3.9</th><th>Python 3.10</th><th>Python 3.11</th><th>Python 3.12</th><th>Python 3.13</th><th>Python 3.14</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th></tr>
-<tr><td>Cwg64</td><td>0.79</td><td>0.77</td><td>0.84</td><td>0.97</td><td>0.76</td><td>0.48</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Cwg128_64</td><td>0.82</td><td>0.80</td><td>0.88</td><td>0.99</td><td>0.78</td><td>0.49</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Cwg128</td><td>0.89</td><td>0.94</td><td>0.96</td><td>1.13</td><td>0.83</td><td>0.52</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>FastRand32</td><td>0.27</td><td>0.27</td><td>0.26</td><td>0.31</td><td>0.21</td><td>0.14</td><td>*11*</td><td>*106*</td><td>*too many*</td></tr>
-<tr><td>FastRand63</td><td>0.30</td><td>0.29</td><td>0.29</td><td>0.35</td><td>0.22</td><td>0.15</td><td>*0*</td><td>*5*</td><td>*7*</td></tr>
-<tr><td>LFib78</td><td>0.52</td><td>0.49</td><td>0.50</td><td>0.56</td><td>0.35</td><td>0.21</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib116</td><td>0.53</td><td>0.51</td><td>0.51</td><td>0.57</td><td>0.36</td><td>0.22</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib668</td><td>0.55</td><td>0.52</td><td>0.53</td><td>0.60</td><td>0.39</td><td>0.24</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>LFib1340</td><td>0.55</td><td>0.53</td><td>0.55</td><td>0.62</td><td>0.41</td><td>0.25</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg607</td><td>1.30</td><td>1.31</td><td>1.26</td><td>1.40</td><td>1.15</td><td>0.98</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg19937</td><td>1.37</td><td>1.32</td><td>1.31</td><td>1.43</td><td>1.14</td><td>0.99</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Melg44497</td><td>1.33</td><td>1.35</td><td>1.32</td><td>1.42</td><td>1.16</td><td>0.99</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg287</td><td>0.86</td><td>0.84</td><td>0.82</td><td>0.91</td><td>0.61</td><td>0.37</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg1457</td><td>0.81</td><td>0.78</td><td>0.76</td><td>0.86</td><td>0.61</td><td>0.40</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Mrg49507</td><td>0.75</td><td>0.69</td><td>0.68</td><td>0.86</td><td>0.56</td><td>0.49</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg64_32</td><td>0.56</td><td>0.52</td><td>0.48</td><td>0.56</td><td>0.44</td><td>0.40</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg128_64</td><td>0.80</td><td>0.74</td><td>0.73</td><td>0.86</td><td>0.63</td><td>0.62</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Pcg1024_32</td><td>1.08</td><td>1.06</td><td>0.95</td><td>0.96</td><td>0.75</td><td>0.69</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Squares32</td><td>1.48</td><td>1.45</td><td>1.40</td><td>1.67</td><td>1.31</td><td>1.26</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Squares64</td><td>1.83</td><td>1.79</td><td>1.71</td><td>2.01</td><td>1.62</td><td>1.62</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Well512a</td><td>2.62</td><td>2.64</td><td>2.26</td><td>2.60</td><td>2.08</td><td>1.77</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
-<tr><td>Well1024a</td><td>2.28</td><td>2.36</td><td>1.98</td><td>2.24</td><td>1.87</td><td>1.60</td><td>*0*</td><td>*4*</td><td>*4*</td></tr>
-<tr><td>Well19937c (1)</td><td>3.23</td><td>3.44</td><td>2.84</td><td>3.12</td><td>2.61</td><td>2.44</td><td>*0*</td><td>*2*</td><td>*2*</td></tr>
-<tr><td>Well44497b (2)</td><td>3.66</td><td>3.91</td><td>3.18</td><td>3.55</td><td>2.92</td><td>2.82</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
-<tr><td>Xoroshiro256</td><td>2.37</td><td>2.24</td><td>2.25</td><td>2.55</td><td>1.93</td><td>1.87</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Xoroshiro512</td><td>2.94</td><td>2.81</td><td>2.72</td><td>3.04</td><td>2.30</td><td>2.27</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
-<tr><td>Xoroshiro1024</td><td>2.78</td><td>2.59</td><td>2.41</td><td>3.01</td><td>2.06</td><td>2.23</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><th>PyRandLib class</th><th>Python 3.9</th><th>Python 3.10</th><th>Python 3.11</th><th>Python 3.12</th><th>Python 3.13</th><th>Python 3.14</th><th>Python 3.15</th><th>SmallCrush fails</th><th>Crush fails</th><th>BigCrush fails</th></tr>
+<tr><td>Cwg64</td><td>0.79</td><td>0.77</td><td>0.84</td><td>0.97</td><td>0.76</td><td>0.48</td><td>0.20</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Cwg128_64</td><td>0.82</td><td>0.80</td><td>0.88</td><td>0.99</td><td>0.78</td><td>0.49</td><td>0.20</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Cwg128</td><td>0.89</td><td>0.94</td><td>0.96</td><td>1.13</td><td>0.83</td><td>0.52</td><td>0.22</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>FastRand32</td><td>0.27</td><td>0.27</td><td>0.26</td><td>0.31</td><td>0.21</td><td>0.14</td><td>0.06</td><td>*11*</td><td>*106*</td><td>*too many*</td></tr>
+<tr><td>FastRand63</td><td>0.30</td><td>0.29</td><td>0.29</td><td>0.35</td><td>0.22</td><td>0.15</td><td>0.06</td><td>*0*</td><td>*5*</td><td>*7*</td></tr>
+<tr><td>LFib78</td><td>0.52</td><td>0.49</td><td>0.50</td><td>0.56</td><td>0.35</td><td>0.21</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>LFib116</td><td>0.53</td><td>0.51</td><td>0.51</td><td>0.57</td><td>0.36</td><td>0.22</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>LFib668</td><td>0.55</td><td>0.52</td><td>0.53</td><td>0.60</td><td>0.39</td><td>0.24</td><td>0.08</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>LFib1340</td><td>0.55</td><td>0.53</td><td>0.55</td><td>0.62</td><td>0.41</td><td>0.25</td><td>0.09</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Melg607</td><td>1.30</td><td>1.31</td><td>1.26</td><td>1.40</td><td>1.15</td><td>0.98</td><td>0.39</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Melg19937</td><td>1.37</td><td>1.32</td><td>1.31</td><td>1.43</td><td>1.14</td><td>0.99</td><td>0.41</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Melg44497</td><td>1.33</td><td>1.35</td><td>1.32</td><td>1.42</td><td>1.16</td><td>0.99</td><td>0.39</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Mrg287</td><td>0.86</td><td>0.84</td><td>0.82</td><td>0.91</td><td>0.61</td><td>0.37</td><td>0.15</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Mrg1457</td><td>0.81</td><td>0.78</td><td>0.76</td><td>0.86</td><td>0.61</td><td>0.40</td><td>0.16</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Mrg49507</td><td>0.75</td><td>0.69</td><td>0.68</td><td>0.86</td><td>0.56</td><td>0.49</td><td>0.20</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Pcg64_32</td><td>0.56</td><td>0.52</td><td>0.48</td><td>0.56</td><td>0.44</td><td>0.40</td><td>0.15</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Pcg128_64</td><td>0.80</td><td>0.74</td><td>0.73</td><td>0.86</td><td>0.63</td><td>0.62</td><td>0.26</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Pcg1024_32</td><td>1.08</td><td>1.06</td><td>0.95</td><td>0.96</td><td>0.75</td><td>0.69</td><td>0.27</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Squares32</td><td>1.48</td><td>1.45</td><td>1.40</td><td>1.67</td><td>1.31</td><td>1.26</td><td>0.54</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Squares64</td><td>1.83</td><td>1.79</td><td>1.71</td><td>2.01</td><td>1.62</td><td>1.62</td><td>0.68</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Well512a</td><td>2.62</td><td>2.64</td><td>2.26</td><td>2.60</td><td>2.08</td><td>1.77</td><td>0.66</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
+<tr><td>Well1024a</td><td>2.28</td><td>2.36</td><td>1.98</td><td>2.24</td><td>1.87</td><td>1.60</td><td>0.64</td><td>*0*</td><td>*4*</td><td>*4*</td></tr>
+<tr><td>Well19937c (1)</td><td>3.23</td><td>3.44</td><td>2.84</td><td>3.12</td><td>2.61</td><td>2.44</td><td>0.96</td><td>*0*</td><td>*2*</td><td>*2*</td></tr>
+<tr><td>Well44497b (2)</td><td>3.66</td><td>3.91</td><td>3.18</td><td>3.55</td><td>2.92</td><td>2.82</td><td>1.15</td><td>*n.a.*</td><td>*n.a.*</td><td>n.a.</td></tr>
+<tr><td>Xoroshiro256</td><td>2.37</td><td>2.24</td><td>2.25</td><td>2.55</td><td>1.93</td><td>1.87</td><td>0.77</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Xoroshiro512</td><td>2.94</td><td>2.81</td><td>2.72</td><td>3.04</td><td>2.30</td><td>2.27</td><td>0.92</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
+<tr><td>Xoroshiro1024</td><td>2.78</td><td>2.59</td><td>2.41</td><td>3.01</td><td>2.06</td><td>2.23</td><td>0.98</td><td>*0*</td><td>*0*</td><td>*0*</td></tr>
 </table>
 
 (1) The Well19937c generator provided with library PyRandLib implements the Well19937a algorithm augmented with an associated *tempering* algorithm - see [6] p.9.  
@@ -289,7 +258,7 @@ The Python versions used for these evaluations in their related virtual environm
 
 
 ## Implementation
-Current implementation of **PyRandLib** uses Python 3.x with no Cython version.  
+Current implementation of **PyRandLib** uses Python 3.x with no Cython version.  , 2026
 
 Note 1: **PyRandLib** version 1.1 and below should work with all versions of Python 3. In version 1.2, we have added underscores in numerical constants for the better readability of the code. This feature has been introduced in Python 3.6. If you want to use PyRandLib version 1.2 or above with Python 3.5 or below, removing these underscores should be sufficient to have the library running correctly. *N.B. You should no more use Python 3.10 or any of its previous versions since these are no more maintained (July 2025).*
 
@@ -300,6 +269,12 @@ Note 3: since release **2.0** of **PyRandLib** directories have been created tha
 Note 4: since release **2.1** of **PyRandLib** unit tests are provided in subdirectories `unit-tests` for every available version of Python standard.
 
 Note 5: a Cython version of **PyRandLib** will be delivered in a next major release (i.e. 3.0). Up today, no date is planned for this.
+
+
+## New in Release 2.3
+Version 2.3 of **PyRandLib** delivers a Python 3.15 version of the library. It mainly uses the new `lazy` keyword and the newly defined  `typing.disjoint_base` decorator.
+
+CPU preformance measurements on the different PRNGs implementations finally show a speed-up of x2.3 to x3.0 when compared with Python 3.14 performances, with a mean of x2.5. We then strongly encourage the use of Python 3.15 (which has been delivered by Oct. 9, 2026).
 
 
 ## New in Release 2.2
