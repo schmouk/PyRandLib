@@ -21,11 +21,14 @@ SOFTWARE.
 """
 
 #=============================================================================
+from typing import disjoint_base
+
 from .listindexstate        import ListIndexState
 lazy from .annotation_types import SeedStateType
 
 
 #=============================================================================
+@disjoint_base
 class BaseMRG( ListIndexState ):
     """Definition of the base class for all MRG pseudo-random generators.
     

@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, override
+from typing import disjoint_base, Final, override
 
 from .listindexstate        import ListIndexState
 lazy from .annotation_types import Numerical, StatesList
@@ -29,6 +29,7 @@ from .splitmix              import SplitMix64
 
 
 #=============================================================================
+@disjoint_base
 class BaseXoroshiro( ListIndexState ):
     """The base class for all xoroshiro PRNGs.
     

@@ -21,13 +21,14 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import override
+from typing import disjoint_base, override
 
 from .baserandom            import BaseRandom
 lazy from .annotation_types import SeedStateType, StatesListAndExt
 
 
 #=============================================================================
+@disjoint_base
 class BaseCWG( BaseRandom ):
     """Definition of the base class for all Collatz-Weyl pseudo-random Generators.
     

@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import override
+from typing import disjoint_base, override
 
 from .baserandom            import BaseRandom
 lazy from .annotation_types import SeedStateType, Numerical, StatesList
@@ -29,6 +29,7 @@ from .splitmix              import SplitMix32
 
 
 #=============================================================================
+@disjoint_base
 class BaseSquares( BaseRandom ):
     """Definition of the base class for the Squares counter-based pseudo-random Generator.
     

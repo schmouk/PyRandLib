@@ -21,13 +21,14 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import override
+from typing import disjoint_base, override
 
 from .baserandom       import BaseRandom
 lazy from .annotation_types import Numerical
 
 
 #=============================================================================
+@disjoint_base
 class BaseLCG( BaseRandom ):
     """Definition of the base class for all LCG pseudo-random generators.
     

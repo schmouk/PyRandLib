@@ -21,13 +21,14 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import override
+from typing import disjoint_base, override
 
 from .baserandom            import BaseRandom
 lazy from .annotation_types import Numerical, SeedStateType
 
 
 #=============================================================================
+@disjoint_base
 class BasePCG( BaseRandom ):
     """Definition of the base class for all Permuted Congruential Generator pseudo-random generators.
     

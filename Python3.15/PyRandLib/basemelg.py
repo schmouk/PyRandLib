@@ -21,7 +21,7 @@ SOFTWARE.
 """
 
 #=============================================================================
-from typing import Final, override
+from typing import disjoint_base, Final, override
 
 from .listindexstate        import ListIndexState
 lazy from .annotation_types import Numerical, SeedStateType, StateType
@@ -29,6 +29,7 @@ from .splitmix              import SplitMix64
 
 
 #=============================================================================
+@disjoint_base
 class BaseMELG( ListIndexState ):
     """Definition of the base class for all MELG pseudo-random generators.
     
